@@ -6,6 +6,10 @@
 #include <string>
 namespace game
 {
+  struct Bad_File
+  {
+    std::string filename;
+  };
   struct Bad_Asset
   {
     std::string filename;

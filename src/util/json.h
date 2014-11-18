@@ -9,10 +9,6 @@
 #include "rapidjson/document.h"
 namespace game
 {
-  struct Bad_File
-  {
-    std::string filename;
-  };
   struct Bad_Json
   {
     std::string diagnostic;

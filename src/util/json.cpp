@@ -3,7 +3,10 @@
  * All rights reserved.
  */
 #include "json.h"
+
 #include <cstdlib>
+
+#include "except.h"
 #include "rapidjson/filereadstream.h"
 namespace game
 {
