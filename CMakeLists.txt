@@ -10,5 +10,8 @@ set(CMAKE_MODULE_PATH
 
 include(data_target)
 
+include_directories(${CMAKE_SOURCE_DIR}/catch)
+
 add_subdirectory(assets)
 add_subdirectory(src)
+add_subdirectory(test)
