@@ -17,8 +17,8 @@ namespace game
     const short power;
     short remaining_life;
 
-    std::array<Item_Type, 5> inventory;
-    Item_Type transport_item;
+    std::array<Item, 5> inventory;
+    Item transport_item;
 
     int visual_id;
   };
