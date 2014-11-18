@@ -13,8 +13,6 @@
 #include "SDL_image.h"
 
 #include "player.h"
-#include "event.h"
-#include "state.h"
 
 #define VIEWPORT_SIZE 400
 
