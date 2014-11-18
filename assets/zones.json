@@ -1,0 +1,22 @@
+{
+  "classes": [
+    { "str":"Water", "required_item":"Boat", "speed_cost":0.5 },
+    { "str":"Mountains", "required_item":"Rope", "speed_cost":0.5 },
+    { "str":"Win", "important":true }
+  ],
+
+  "zones": [
+    { "str": "The Great Sea", "class":"Water", "color":0 },
+    { "str": "The Arabian Desert", "color":1 },
+    { "str": "Jerusalem", "color":2 },
+    { "str": "Bethlehem", "class":"Win", "color":3 },
+    { "str": "Gloomy Swamp", "color":4 },
+    { "str": "Desert of Despair", "color":5 },
+    { "str": "Mountains of Madness", "class":"Mountains", "color":6 },
+    { "str": "Cedars of Lebanon", "color":7 },
+    { "str": "Sea of Gallilee", "class":"Water", "color":8 },
+    { "str": "Jordon River", "class":"Water", "color":9 },
+    { "str": "Desert Straight", "color":10 },
+    { "str": "Mountain Range", "class":"Mountains", "color":11 }
+  ]
+}

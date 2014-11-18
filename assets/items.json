@@ -1,0 +1,28 @@
+{
+  "spritesheet":"items.png",
+
+  "items":[
+    {"str":"Rope", "x":0, "y":0},
+    {"str":"Boat", "x":0, "y":0},
+    {"str":"Ring of Protection", "x":0, "y":0},
+    {"str":"Dagger", "x":0, "y":0},
+    {"str":"Longsword", "x":0, "y":0},
+    {"str":"Flair", "x":0, "y":0},
+    {"str":"Cloak of Protection", "x":0, "y":0},
+    {"str":"Waterskin", "x":0, "y":0},
+    {"str":"Lantern Bullseye", "x":0, "y":0},
+    {"str":"Torch", "x":0, "y":0},
+    {"str":"Raven", "x":0, "y":0},
+    {"str":"Axe", "x":0, "y":0},
+    {"str":"Bow", "x":0, "y":0},
+    {"str":"Potion of Strength", "x":0, "y":0},
+    {"str":"Potion of Haste", "x":0, "y":0},
+    {"str":"Potion of Defense", "x":0, "y":0},
+    {"str":"Wool", "x":0, "y":0},
+    {"str":"Starlight", "x":0, "y":0},
+    {"str":"Gold", "x":0, "y":0},
+    {"str":"Gemstones", "x":0, "y":0},
+    {"str":"Mirrh", "x":0, "y":0},
+    {"str":"Incense", "x":0, "y":0}
+  ]
+}
