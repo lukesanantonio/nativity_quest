@@ -5,12 +5,30 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <vector>
+
+#include "../common/vec.h"
 namespace game
 {
-  struct Item_Impl;
+  struct Item_Impl
+  {
+    std::string str;
+    Vec<int> sprite_position;
+  };
 
   using Item = std::shared_ptr<const Item_Impl>;
-  Item get_item(std::string const& item_name) noexcept;
+
+  struct Item_Parser
+  {
+    Item_Parser(std::string const& filename);
+
+    std::string get_spritesheet_filename() const noexcept;
+    Item get_item(std::string const& str) const noexcept;
+
+  private:
+    std::string spritesheet_;
+    std::vector<Item> items_;
+  };
 
   namespace no
   {
