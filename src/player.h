@@ -19,7 +19,7 @@ namespace game
     enum class Direction { Up, Down, Right, Left };
     Direction dir = Direction::Left;
 
-    std::array<Item_Type, 6> inventory;
+    std::array<Item, 6> inventory;
   };
 
   SDL_Rect get_sprite_from_direction(Player::Direction);
