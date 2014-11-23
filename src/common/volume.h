@@ -7,7 +7,7 @@
 namespace game
 {
   template <class T = int>
-  class Volume
+  struct Volume
   {
     Vec<T> pos;
     T width;
