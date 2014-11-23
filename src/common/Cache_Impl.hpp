@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 #pragma once
-#include "core/common/template_utility.hpp"
+#include "template_utility.hpp"
 namespace game
 {
   /*!
