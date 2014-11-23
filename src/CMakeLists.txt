@@ -16,8 +16,9 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_subdirectory(decl)
 add_subdirectory(util)
 
-#add_executable(game event.cpp main.cpp player.cpp state.cpp)
-#target_link_libraries(game decllib utillib)
+add_executable(game main.cpp Map.cpp State.cpp player.cpp step.cpp
+                    Graphics_Desc.cpp)
+target_link_libraries(game decllib utillib)
 
-#target_link_libraries(game ${SDL2_LIBRARIES})
-#target_link_libraries(game ${SDL2_IMAGE_LIBRARIES})
+target_link_libraries(game ${SDL2_LIBRARIES})
+target_link_libraries(game ${SDL2_IMAGE_LIBRARIES})
