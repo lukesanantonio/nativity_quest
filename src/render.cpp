@@ -24,4 +24,21 @@ namespace game
     SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderDrawRect(g.renderer, &dest);
   }
+  void render_viewport(Graphics_Desc& g, Map const& map, Volume<> viewport,
+                       Volume<> destination) noexcept
+  {
+    SDL_Rect src;
+    src.x = viewport.pos.x;
+    src.y = viewport.pos.y;
+    src.w = viewport.width;
+    src.h = viewport.height;
+
+    SDL_Rect dest;
+    dest.x = destination.pos.x;
+    dest.y = destination.pos.y;
+    dest.w = destination.width;
+    dest.h = destination.height;
+
+    SDL_RenderCopy(g.renderer, map.texture(g.renderer), &src, &dest);
+  }
 }
