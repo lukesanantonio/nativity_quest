@@ -6,7 +6,7 @@
 #include "vec.h"
 namespace game
 {
-  template <class T>
+  template <class T = int>
   class Volume
   {
     Vec<T> pos;
