@@ -22,7 +22,7 @@ namespace game
     std::FILE* fd;
   };
 
-  rapidjson::Document parse(std::string const& filename)
+  rapidjson::Document parse_json(std::string const& filename)
   {
     auto file = File_Wrapper{filename.c_str(), "r"};
     if(!file.fd) throw Bad_File{filename};
