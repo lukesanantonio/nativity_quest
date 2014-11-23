@@ -1,7 +1,9 @@
 {
+  "decl":"assets/zones.png",
+
   "classes": [
-    { "str":"Water", "required_item":"Boat", "speed_cost":0.5 },
-    { "str":"Mountains", "required_item":"Rope", "speed_cost":0.5 },
+    { "str":"Water", "required_item":"Boat", "speed_cost":1 },
+    { "str":"Mountains", "required_item":"Rope", "speed_cost":1 },
     { "str":"Win", "important":true }
   ],
 

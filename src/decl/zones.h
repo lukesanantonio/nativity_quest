@@ -5,11 +5,16 @@
 #pragma once
 #include <memory>
 
+#include "../util/surface.h"
 #include "../common/vec.h"
 
 #include "items.h"
 namespace game
 {
+  struct Invalid_Decl_Image
+  {
+    std::string given;
+  };
   struct Invalid_Class_Reference
   {
     std::string class_str;
@@ -28,11 +33,12 @@ namespace game
 
   struct Zone_Parser
   {
-    Zone_Parser(Item_Parser const& items, std::string const& filename);
-
+    Zone_Parser(std::string const& json_file, Item_Parser const& items);
     Zone get_zone(Vec<int> pos) const noexcept;
   private:
     std::vector<Zone> zones_;
+
+    Surface_Ptr png_;
   };
 
   namespace no

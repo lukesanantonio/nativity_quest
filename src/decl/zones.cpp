@@ -65,15 +65,22 @@ namespace game
       if(cl.important) zone.important = cl.important.value();
     }
   }
-  Zone_Parser::Zone_Parser(Item_Parser const& items,
-                           std::string const& filename)
+  Zone_Parser::Zone_Parser(std::string const& json, Item_Parser const& items)
   {
-    auto d = parse_json(filename);
+    auto d = parse_json(json);
 
-    if(!has_json_members(d, {"classes", "zones"}))
+    if(!has_json_members(d, {"decl", "classes", "zones"}))
     {
-      throw Bad_Asset{filename,
-                      "Missing 'classes' or 'zones' member (or both)"};
+      throw Bad_Asset{json,
+                      "Missing 'decl', 'classes' or 'zones' member"
+                      " (or a combonation of these)"};
+    }
+
+    png_.reset(IMG_Load(d["decl"].GetString()));
+    if(!png_)
+    {
+      std::string decl_fn{d["decl"].GetString(), d["decl"].GetStringLength()};
+      throw Invalid_Decl_Image{decl_fn};
     }
 
     auto zone_classes = std::vector<Zone_Class>{};
@@ -84,9 +91,9 @@ namespace game
 
     for(auto iter = d["zones"].Begin(); iter < d["zones"].End(); ++iter)
     {
-      if(!has_json_members(d, {"str", "color", "class"}))
+      if(!has_json_members(*iter, {"str", "color"}))
       {
-        throw Bad_Asset{filename, "Bad zone asset"};
+        throw Bad_Asset{json, "Bad zone asset"};
       }
 
       // Set defaults
@@ -100,6 +107,7 @@ namespace game
       zone.color = (*iter)["color"].GetInt();
 
       // Apply the class.
+      if(iter->HasMember("class"))
       {
         // Stringify the c-style string from the classname in the zone object.
         const auto class_reference_str =
@@ -127,28 +135,12 @@ namespace game
     }
   }
 
-  SDL_Surface* get_zone_png() noexcept
-  {
-    static Surface_Ptr zone_file = nullptr;
-    if(!zone_file)
-    {
-      zone_file = Surface_Ptr(IMG_Load("assets/zones.png"));
-    }
-    return zone_file.get();
-  }
-
   Zone Zone_Parser::get_zone(Vec<int> pos) const noexcept
   {
-    SDL_Surface* zone_file = get_zone_png();
-    if(!zone_file)
-    {
-      return no::zone;
-    }
-
     // pixel represents the red component of the color at pixel pos.
-    uint8_t* pixel = (uint8_t*) zone_file->pixels;
-    pixel += (pos.y * zone_file->pitch) +
-             (pos.x * zone_file->format->BytesPerPixel);
+    uint8_t* pixel = (uint8_t*) png_->pixels;
+    pixel += (pos.y * png_->pitch) +
+             (pos.x * png_->format->BytesPerPixel);
     if(!pixel) return no::zone;
 
     // Find the zone that is represented by the same color as our pixel.
