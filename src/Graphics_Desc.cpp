@@ -6,6 +6,7 @@
 namespace game
 {
   Graphics_Desc::Graphics_Desc(std::string const& title, Vec<int> extents)
+                               : extents_(extents)
   {
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED, extents.x, extents.y,
@@ -23,5 +24,13 @@ namespace game
   {
     if(renderer) SDL_DestroyRenderer(renderer);
     if(window) SDL_DestroyWindow(window);
+  }
+  int Graphics_Desc::get_width() const noexcept
+  {
+    return extents_.x;
+  }
+  int Graphics_Desc::get_height() const noexcept
+  {
+    return extents_.y;
   }
 }

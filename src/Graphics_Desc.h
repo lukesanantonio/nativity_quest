@@ -17,7 +17,12 @@ namespace game
     Graphics_Desc(std::string const& title, Vec<int> extents);
     ~Graphics_Desc() noexcept;
 
+    int get_width() const noexcept;
+    int get_height() const noexcept;
+
     SDL_Window* window;
     SDL_Renderer* renderer;
+  private:
+    Vec<int> extents_;
   };
 }
