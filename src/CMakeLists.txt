@@ -17,7 +17,7 @@ add_subdirectory(decl)
 add_subdirectory(util)
 
 add_executable(game main.cpp Map.cpp State.cpp player.cpp step.cpp
-                    Graphics_Desc.cpp)
+                    Graphics_Desc.cpp render.cpp)
 target_link_libraries(game decllib utillib)
 
 target_link_libraries(game ${SDL2_LIBRARIES})

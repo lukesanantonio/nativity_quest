@@ -10,6 +10,7 @@
 
 namespace game
 {
-  void render_as_minimap(Graphics_Desc& g, Map const& map, Volume vol,
-                         bool render_players = true) noexcept;
+  void render_as_minimap(Graphics_Desc& g,
+                         Map const& map,
+                         Volume<> vol) noexcept;
 }
