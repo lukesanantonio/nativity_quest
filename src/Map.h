@@ -10,6 +10,8 @@
 
 #include "common/Cache.h"
 
+#include "Sprite.h"
+
 #include "player.h"
 #include "decl/zones.h"
 namespace game
@@ -25,16 +27,11 @@ namespace game
         std::string const& items,
         std::string const& zone_json);
 
-    SDL_Surface* surface() const noexcept;
-    SDL_Texture* texture(SDL_Renderer* renderer) const noexcept;
-
     std::array<Player, 6> players;
 
     Item_Parser items;
     Zone_Parser zones;
-  private:
-    SDL_Surface* surface_;
-    mutable Cache_With_Deleter<SDL_Texture, Texture_Deleter,
-                               SDL_Renderer*, SDL_Surface*> texture_;
+
+    Sprite img;
   };
 }

@@ -15,7 +15,7 @@ namespace game
     dest.w = vol.width;
     dest.h = vol.height;
 
-    SDL_RenderCopy(g.renderer, map.texture(g.renderer), NULL, &dest);
+    SDL_RenderCopy(g.renderer, map.img.texture(g.renderer), NULL, &dest);
 
     --dest.x;
     --dest.y;
@@ -39,6 +39,6 @@ namespace game
     dest.w = destination.width;
     dest.h = destination.height;
 
-    SDL_RenderCopy(g.renderer, map.texture(g.renderer), &src, &dest);
+    SDL_RenderCopy(g.renderer, map.img.texture(g.renderer), &src, &dest);
   }
 }
