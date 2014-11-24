@@ -10,19 +10,19 @@
 namespace game
 {
   Sprite::Sprite(std::string const& filename)
+                 : surface_(make_shared_surface(IMG_Load(filename.c_str())))
   {
-    surface_ = IMG_Load(filename.c_str());
     if(!surface_) throw Bad_File{filename};
 
     texture_.gen_func([](auto ptr, auto r, auto surf){
       if(ptr) return ptr;
       return Texture_Ptr{SDL_CreateTextureFromSurface(r, surf)};
     });
-    texture_.set_dependency<1>(surface_);
+    texture_.set_dependency<1>(surface_.get());
   }
   SDL_Surface* Sprite::surface() const noexcept
   {
-    return surface_;
+    return surface_.get();
   }
   SDL_Texture* Sprite::texture(SDL_Renderer* r) const noexcept
   {

@@ -19,7 +19,7 @@ namespace game
     SDL_Surface* surface() const noexcept;
     SDL_Texture* texture(SDL_Renderer*) const noexcept;
   private:
-    SDL_Surface* surface_;
+    Shared_Surface_Ptr surface_;
     mutable Cache_With_Deleter<SDL_Texture, Texture_Deleter,
                                SDL_Renderer*, SDL_Surface*> texture_;
   };
