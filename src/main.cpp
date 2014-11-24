@@ -2,6 +2,8 @@
  * Copyright (C) 2014 Luke San Antonio
  * All rights reserved.
  */
+#include <thread>
+#include <chrono>
 #include <iostream>
 
 #include "Graphics_Desc.h"
@@ -33,11 +35,18 @@ int main(int argc, char** argv)
       SDL_Event event;
       while(SDL_PollEvent(&event))
       {
+        if(event.type == SDL_QUIT)
+        {
+          state.running = false;
+          continue;
+        }
         handle_event(state, event);
       }
 
       step(state);
       render(state, g);
+
+      std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
   }
   catch(game::Bad_Asset& e)
