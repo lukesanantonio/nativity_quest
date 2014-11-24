@@ -6,7 +6,11 @@
 #include <array>
 
 #include "player.h"
-#include "Map.h"
+
+#include "views/combat.h"
+#include "views/menu.h"
+#include "views/trade.h"
+#include "views/turn.h"
 
 #include <boost/variant.hpp>
 namespace game
@@ -14,19 +18,10 @@ namespace game
   enum class View
   {
     Menu,
-    Player_Turn,
+    Turn,
     Combat,
     Trade
   };
-
-  struct Menu_Data {};
-  struct Player_Turn_Data
-  {
-    Map map;
-    short current_player_;
-  };
-  struct Combat_Data {};
-  struct Trade_Data {};
 
   struct State
   {
@@ -36,7 +31,7 @@ namespace game
 
     View type;
     boost::variant<Menu_Data,
-                   Player_Turn_Data,
+                   Turn_Data,
                    Combat_Data,
                    Trade_Data> state_data;
   };

@@ -14,5 +14,5 @@ namespace game
                          Map const& map,
                          Volume<> vol) noexcept;
   void render_viewport(Graphics_Desc& g, Map const& map, Volume<> viewport,
-                       Volume<> destination = Volume<>{{0,0}, 0, 0}) noexcept;
+                       Volume<> destination) noexcept;
 }

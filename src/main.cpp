@@ -27,9 +27,9 @@ int main(int argc, char** argv)
 
     game::State state;
     state.running = true;
-    state.type = game::View::Player_Turn;
-    state.state_data = game::Player_Turn_Data{game::Map{MAP_IMAGE,
-                                              ITEMS_JSON, ZONES_JSON}};
+    state.type = game::View::Turn;
+    state.state_data = game::Turn_Data{game::Map{MAP_IMAGE,
+                                       ITEMS_JSON, ZONES_JSON}};
     while(state.running)
     {
       SDL_Event event;
