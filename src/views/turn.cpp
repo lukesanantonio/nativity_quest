@@ -11,42 +11,64 @@ namespace game
   {
     data.zone_label.text_height(35);
     data.zone_label.text_color({0x00, 0x00, 0x00, 0xff});
+    data.map.players[data.current_player].pos = {500,0};
   }
 
   void handle_event_state(Turn_Data& data, SDL_Event const& event) noexcept
   {
     Player& p = data.map.players[data.current_player];
+
     if(event.type == SDL_KEYDOWN)
     {
+      pong::math::vector<int> delta;
       if(event.key.keysym.scancode == SDL_SCANCODE_W)
       {
-        p.pos.y -= 5;
+        delta.y -= 5;
         p.dir = Player::Direction::Up;
       }
       if(event.key.keysym.scancode == SDL_SCANCODE_A)
       {
-        p.pos.x -= 5;
+        delta.x -= 5;
         p.dir = Player::Direction::Left;
       }
       if(event.key.keysym.scancode == SDL_SCANCODE_S)
       {
-        p.pos.y += 5;
+        delta.y += 5;
         p.dir = Player::Direction::Down;
       }
       if(event.key.keysym.scancode == SDL_SCANCODE_D)
       {
-        p.pos.x += 5;
+        delta.x += 5;
         p.dir = Player::Direction::Right;
       }
+
+      // Degrade or flat out forget about the delta if we don't have the item
+      // that we are required to have for this zone.
+      Zone next_zone = data.map.zones.get_zone(p.pos + delta);
+      if(next_zone)
+      {
+        if(next_zone->required_item)
+        {
+          using std::begin; using std::end;
+          auto item_find = std::find(begin(p.inventory), end(p.inventory),
+                                     next_zone->required_item);
+          // We didn't find the required item.
+          if(item_find == end(p.inventory))
+          {
+            // No move.
+            delta = {0,0};
+          }
+        }
+        if(delta.x) delta.x = delta.x - next_zone->speed_cost;
+        if(delta.y) delta.y = delta.y - next_zone->speed_cost;
+      }
+
+      p.pos += delta;
+
+      data.zone_label.data() = next_zone ? next_zone->str : "Unknown";
     }
   }
-  void step_state(Turn_Data& data) noexcept
-  {
-    Player& player = data.map.players[data.current_player];
-
-    Zone zone = data.map.zones.get_zone(player.pos);
-    data.zone_label.data(zone != no::zone ? zone->str : "Unknown");
-  }
+  void step_state(Turn_Data& data) noexcept {}
 
 #define MINIMAP_SCALE .25
 #define VIEWPORT_SIZE 225
