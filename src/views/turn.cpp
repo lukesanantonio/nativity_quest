@@ -68,8 +68,11 @@ namespace game
             delta = {0,0};
           }
         }
-        if(delta.x) delta.x = delta.x - next_zone->speed_cost;
-        if(delta.y) delta.y = delta.y - next_zone->speed_cost;
+        if(delta.x < 0) delta.x = delta.x + next_zone->speed_cost;
+        if(delta.y < 0) delta.y = delta.y + next_zone->speed_cost;
+
+        if(delta.x > 0) delta.x = delta.x - next_zone->speed_cost;
+        if(delta.y > 0) delta.y = delta.y - next_zone->speed_cost;
       }
 
       p.pos += delta;
