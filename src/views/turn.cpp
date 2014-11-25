@@ -7,11 +7,20 @@
 #include "../render.h"
 namespace game
 {
+  void update_zone(Turn_Data& data) noexcept
+  {
+    Player& player = data.map.players[data.current_player];
+    Zone zone = data.map.zones.get_zone(player.pos);
+    data.zone_label.data(zone ? zone->str : "Unknown");
+  }
+
   void initialize_state(Turn_Data& data) noexcept
   {
     data.zone_label.text_height(35);
     data.zone_label.text_color({0x00, 0x00, 0x00, 0xff});
+
     data.map.players[data.current_player].pos = {500,0};
+    update_zone(data);
   }
 
   void handle_event_state(Turn_Data& data, SDL_Event const& event) noexcept
@@ -64,8 +73,7 @@ namespace game
       }
 
       p.pos += delta;
-
-      data.zone_label.data() = next_zone ? next_zone->str : "Unknown";
+      update_zone(data);
     }
   }
   void step_state(Turn_Data& data) noexcept {}
@@ -110,8 +118,8 @@ namespace game
     // Render the zone.
     data.zone_label.font_face(&g.font.face);
     data.zone_label.rasterizer(&g.font.raster);
-    data.zone_label.position({g.get_width() - data.zone_label.surface_width(),
-                             5});
+    data.zone_label.position(
+      {g.get_width() - data.zone_label.surface_width() - 10, 5});
     data.zone_label.render(g.renderer);
 
     // Render the character sprite.
