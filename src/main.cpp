@@ -34,7 +34,9 @@ int main(int argc, char** argv)
     state.type = game::View::Turn;
     state.state_data = game::Turn_Data{game::Map{MAP_IMAGE,
                                        ITEMS_JSON, ZONES_JSON}, 0,
-                                       game::Sprite{CHAR_SPRITE}};
+                                       game::Sprite{CHAR_SPRITE},
+                                       pong::Label<std::string>{}};
+    game::initialize_state(boost::get<game::Turn_Data>(state.state_data));
     while(state.running)
     {
       SDL_Event event;

@@ -7,6 +7,12 @@
 #include "../render.h"
 namespace game
 {
+  void initialize_state(Turn_Data& data) noexcept
+  {
+    data.zone_label.text_height(35);
+    data.zone_label.text_color({0x00, 0x00, 0x00, 0xff});
+  }
+
   void handle_event_state(Turn_Data& data, SDL_Event const& event) noexcept
   {
     Player& p = data.map.players[data.current_player];
@@ -34,7 +40,13 @@ namespace game
       }
     }
   }
-  void step_state(Turn_Data&) noexcept {}
+  void step_state(Turn_Data& data) noexcept
+  {
+    Player& player = data.map.players[data.current_player];
+
+    Zone zone = data.map.zones.get_zone(player.pos);
+    data.zone_label.data(zone != no::zone ? zone->str : "Unknown");
+  }
 
 #define MINIMAP_SCALE .25
 #define VIEWPORT_SIZE 225
@@ -72,6 +84,13 @@ namespace game
     render_as_minimap(g, data.map, Volume<>{{5, 5},
                       int(data.map.img.surface()->w * MINIMAP_SCALE),
                       int(data.map.img.surface()->h * MINIMAP_SCALE)});
+
+    // Render the zone.
+    data.zone_label.font_face(&g.font.face);
+    data.zone_label.rasterizer(&g.font.raster);
+    data.zone_label.position({g.get_width() - data.zone_label.surface_width(),
+                             5});
+    data.zone_label.render(g.renderer);
 
     // Render the character sprite.
     SDL_Rect src = get_sprite_from_direction(player.dir);

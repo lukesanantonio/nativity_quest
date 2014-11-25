@@ -8,6 +8,8 @@
 #include "../Graphics_Desc.h"
 #include "../Map.h"
 #include "../Sprite.h"
+
+#include "pong/render/widgets/Label.h"
 namespace game
 {
   struct Turn_Data
@@ -16,7 +18,11 @@ namespace game
     short current_player;
 
     Sprite character;
+
+    pong::Label<std::string> zone_label;
   };
+
+  void initialize_state(Turn_Data&) noexcept;
 
   void handle_event_state(Turn_Data&, SDL_Event const&) noexcept;
   void step_state(Turn_Data&) noexcept;
