@@ -14,6 +14,9 @@ namespace game
   {
     if(!surface_) throw Bad_File{filename};
 
+    SDL_SetColorKey(surface_.get(), SDL_TRUE,
+                    SDL_MapRGB(surface_->format, 0xff, 0x00, 0xff));
+
     texture_.gen_func([](auto ptr, auto r, auto surf){
       if(ptr) return ptr;
       return Texture_Ptr{SDL_CreateTextureFromSurface(r, surf)};

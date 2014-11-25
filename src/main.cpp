@@ -18,6 +18,7 @@
 #define ITEMS_JSON "assets/items.json"
 #define ZONES_JSON "assets/zones.json"
 #define MAP_IMAGE "assets/map.png"
+#define CHAR_SPRITE "assets/char.png"
 
 int main(int argc, char** argv)
 {
@@ -29,7 +30,8 @@ int main(int argc, char** argv)
     state.running = true;
     state.type = game::View::Turn;
     state.state_data = game::Turn_Data{game::Map{MAP_IMAGE,
-                                       ITEMS_JSON, ZONES_JSON}};
+                                       ITEMS_JSON, ZONES_JSON}, 0,
+                                       game::Sprite{CHAR_SPRITE}};
     while(state.running)
     {
       SDL_Event event;

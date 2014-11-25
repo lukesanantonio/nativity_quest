@@ -7,12 +7,15 @@
 
 #include "../Graphics_Desc.h"
 #include "../Map.h"
+#include "../Sprite.h"
 namespace game
 {
   struct Turn_Data
   {
     Map map;
     short current_player;
+
+    Sprite character;
   };
 
   void handle_event_state(Turn_Data&, SDL_Event const&) noexcept;
