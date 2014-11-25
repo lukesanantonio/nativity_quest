@@ -20,7 +20,7 @@ namespace game
 
   struct Item_Parser
   {
-    Item_Parser(std::string const& filename);
+    explicit Item_Parser(std::string const& filename);
 
     std::string get_spritesheet_filename() const noexcept;
     Item get_item(std::string const& str) const noexcept;

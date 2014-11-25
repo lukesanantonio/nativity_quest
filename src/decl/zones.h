@@ -33,7 +33,8 @@ namespace game
 
   struct Zone_Parser
   {
-    Zone_Parser(std::string const& json_file, Item_Parser const& items);
+    explicit Zone_Parser(std::string const& json_file,
+                         Item_Parser const& items);
     Zone get_zone(pong::math::vector<int> pos) const noexcept;
   private:
     std::vector<Zone> zones_;
