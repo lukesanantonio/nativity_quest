@@ -6,6 +6,8 @@
 #include <string>
 #include "SDL.h"
 
+#include "pong/render/text.h"
+
 #include "pong/common/vector.h"
 namespace game
 {
@@ -14,7 +16,8 @@ namespace game
 
   struct Graphics_Desc
   {
-    Graphics_Desc(std::string const& title, pong::math::vector<int> extents);
+    Graphics_Desc(std::string const& title, pong::math::vector<int> extents,
+                  std::string const& font_file, pong::Logger* log);
     ~Graphics_Desc() noexcept;
 
     int get_width() const noexcept;
@@ -22,6 +25,12 @@ namespace game
 
     SDL_Window* window;
     SDL_Renderer* renderer;
+
+    struct
+    {
+      pong::text::Face face;
+      pong::text::AntiAliasedRaster raster;
+    } font;
   private:
     pong::math::vector<int> extents_;
   };

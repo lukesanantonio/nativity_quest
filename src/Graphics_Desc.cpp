@@ -6,8 +6,10 @@
 namespace game
 {
   Graphics_Desc::Graphics_Desc(std::string const& title,
-                               pong::math::vector<int> extents)
-                               : extents_(extents)
+                               pong::math::vector<int> extents,
+                               std::string const& font_file,
+                               pong::Logger* log)
+                               : extents_(extents), font{{font_file, log}, {}}
   {
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED, extents.x, extents.y,

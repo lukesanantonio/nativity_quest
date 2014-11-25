@@ -19,12 +19,15 @@
 #define ZONES_JSON "assets/zones.json"
 #define MAP_IMAGE "assets/map.png"
 #define CHAR_SPRITE "assets/char.png"
+#define FONT_FILE "/usr/share/fonts/TTF/DejaVuSans.ttf"
 
 int main(int argc, char** argv)
 {
   try
   {
-    game::Graphics_Desc g{"Tommy's Game", {1000, 1000}};
+    pong::Logger log;
+
+    game::Graphics_Desc g{"Tommy's Game", {1000, 1000}, FONT_FILE, &log};
 
     game::State state;
     state.running = true;
