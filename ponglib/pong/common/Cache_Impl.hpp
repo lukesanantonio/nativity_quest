@@ -1,10 +1,31 @@
 /*
- * Copyright (C) 2014 Luke San Antonio
- * All rights reserved.
+ * PpM - Pong Plus More - A pong clone full of surprises written with C++11.
+ * Copyright (C) 2013  Luke San Antonio
+ *
+ * You can contact me (Luke San Antonio) at lukesanantonio@gmail.com!
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * \file Cache.hpp
+ * \brief Contains the implementations of Cache_Impl member functions.
+ *
+ * This file is included from Cache.h since template member functions need
+ * to be put in the header. This is just for the sake of separation.
  */
 #pragma once
 #include "template_utility.hpp"
-namespace game
+namespace pong
 {
   /*!
    * \brief Move constructor, moves the cache!

@@ -6,7 +6,7 @@
 #include <array>
 #include "SDL.h"
 
-#include "common/vec.h"
+#include "pong/common/vector.h"
 #include "decl/items.h"
 
 namespace game
@@ -14,7 +14,7 @@ namespace game
   struct Player
   {
     // Position on the map.
-    Vec<int> pos;
+    pong::math::vector<int> pos;
 
     enum class Direction { Up, Down, Right, Left };
     Direction dir = Direction::Left;

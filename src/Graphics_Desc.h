@@ -6,7 +6,7 @@
 #include <string>
 #include "SDL.h"
 
-#include "common/vec.h"
+#include "pong/common/vector.h"
 namespace game
 {
   struct Bad_Window {};
@@ -14,7 +14,7 @@ namespace game
 
   struct Graphics_Desc
   {
-    Graphics_Desc(std::string const& title, Vec<int> extents);
+    Graphics_Desc(std::string const& title, pong::math::vector<int> extents);
     ~Graphics_Desc() noexcept;
 
     int get_width() const noexcept;
@@ -23,6 +23,6 @@ namespace game
     SDL_Window* window;
     SDL_Renderer* renderer;
   private:
-    Vec<int> extents_;
+    pong::math::vector<int> extents_;
   };
 }

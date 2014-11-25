@@ -135,7 +135,7 @@ namespace game
     }
   }
 
-  Zone Zone_Parser::get_zone(Vec<int> pos) const noexcept
+  Zone Zone_Parser::get_zone(pong::math::vector<int> pos) const noexcept
   {
     // pixel represents the red component of the color at pixel pos.
     uint8_t* pixel = (uint8_t*) png_->pixels;

@@ -8,8 +8,6 @@
 #include "SDL.h"
 #include "util/surface.h"
 
-#include "common/Cache.h"
-
 #include "Sprite.h"
 
 #include "player.h"

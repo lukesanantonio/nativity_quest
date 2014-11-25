@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "../util/surface.h"
-#include "../common/vec.h"
+#include "pong/common/vector.h"
 
 #include "items.h"
 namespace game
@@ -34,7 +34,7 @@ namespace game
   struct Zone_Parser
   {
     Zone_Parser(std::string const& json_file, Item_Parser const& items);
-    Zone get_zone(Vec<int> pos) const noexcept;
+    Zone get_zone(pong::math::vector<int> pos) const noexcept;
   private:
     std::vector<Zone> zones_;
 

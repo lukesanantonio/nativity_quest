@@ -5,7 +5,7 @@
 #pragma once
 #include <string>
 
-#include "common/Cache.h"
+#include "pong/common/Cache.h"
 #include "util/surface.h"
 
 #include "SDL.h"
@@ -20,7 +20,7 @@ namespace game
     SDL_Texture* texture(SDL_Renderer*) const noexcept;
   private:
     Shared_Surface_Ptr surface_;
-    mutable Cache_With_Deleter<SDL_Texture, Texture_Deleter,
-                               SDL_Renderer*, SDL_Surface*> texture_;
+    mutable pong::Cache_With_Deleter<SDL_Texture, Texture_Deleter,
+                                     SDL_Renderer*, SDL_Surface*> texture_;
   };
 }

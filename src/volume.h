@@ -3,13 +3,15 @@
  * All rights reserved.
  */
 #pragma once
-#include "vec.h"
+
+#include "pong/common/vector.h"
+
 namespace game
 {
-  template <class T = int>
+  template <typename T = int>
   struct Volume
   {
-    Vec<T> pos;
+    pong::math::vector<T> pos;
     T width;
     T height;
   };

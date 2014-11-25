@@ -5,7 +5,8 @@
 #include "Graphics_Desc.h"
 namespace game
 {
-  Graphics_Desc::Graphics_Desc(std::string const& title, Vec<int> extents)
+  Graphics_Desc::Graphics_Desc(std::string const& title,
+                               pong::math::vector<int> extents)
                                : extents_(extents)
   {
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,

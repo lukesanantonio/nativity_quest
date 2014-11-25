@@ -4,7 +4,7 @@
  */
 #pragma once
 
-#include "common/volume.h"
+#include "volume.h"
 #include "Map.h"
 #include "Graphics_Desc.h"
 
