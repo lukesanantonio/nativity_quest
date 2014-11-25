@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 #include "turn.h"
+
 #include "../render.h"
 namespace game
 {
@@ -48,6 +49,8 @@ namespace game
   void render_state(Graphics_Desc& g, Turn_Data& data) noexcept
   {
     Player& player = data.map.players[data.current_player];
+
+    // Render the main viewport.
     Volume<> viewport_src;
     viewport_src.pos.x = std::max(0, player.pos.x - VIEWPORT_SIZE / 2);
     viewport_src.pos.y = std::max(0, player.pos.y - VIEWPORT_SIZE / 2);
@@ -65,8 +68,10 @@ namespace game
     render_viewport(g, data.map, viewport_src,
                     {{0, 0}, g.get_width(), g.get_height()});
 
+    // Render the mini map.
     render_as_minimap(g, data.map, {{5, 5}, MINIMAP_SIZE, MINIMAP_SIZE});
 
+    // Render the character sprite.
     SDL_Rect src = get_sprite_from_direction(player.dir);
     SDL_Rect dest;
     dest.x = player.pos.x - viewport_src.pos.x;
