@@ -36,7 +36,7 @@ namespace game
   }
   void step_state(Turn_Data&) noexcept {}
 
-#define MINIMAP_SIZE 175
+#define MINIMAP_SCALE .25
 #define VIEWPORT_SIZE 225
 
   void use_viewport_scale(SDL_Rect& rect,
@@ -69,7 +69,9 @@ namespace game
                     {{0, 0}, g.get_width(), g.get_height()});
 
     // Render the mini map.
-    render_as_minimap(g, data.map, {{5, 5}, MINIMAP_SIZE, MINIMAP_SIZE});
+    render_as_minimap(g, data.map, Volume<>{{5, 5},
+                      int(data.map.img.surface()->w * MINIMAP_SCALE),
+                      int(data.map.img.surface()->h * MINIMAP_SCALE)});
 
     // Render the character sprite.
     SDL_Rect src = get_sprite_from_direction(player.dir);
