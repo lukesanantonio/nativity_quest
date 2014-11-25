@@ -338,7 +338,7 @@ namespace pong
                      font_face_(label.font_face_),
                      rasterizer_(label.rasterizer_),
                      mode_(label.mode_),
-                     cache_(label.cache_) {}
+                     cache_(make_label_cache(*this)) {}
   /*!
    * \brief Move constructor.
    *
@@ -353,7 +353,7 @@ namespace pong
                      font_face_(label.font_face_),
                      rasterizer_(label.rasterizer_),
                      mode_(label.mode_),
-                     cache_(std::move(label.cache_)) {}
+                     cache_(make_label_cache(*this)) {}
 
   /*!
    * \brief Copy assignment operator.
@@ -374,7 +374,7 @@ namespace pong
 
     this->mode_ = label.mode_;
 
-    this->cache_ = label.cache_;
+    this->cache_ = make_label_cache(*this);
 
     return *this;
   }
@@ -398,7 +398,7 @@ namespace pong
 
     this->mode(label.mode_);
 
-    this->cache_ = std::move(label.cache_);
+    this->cache_ = make_label_cache(*this);
 
     return *this;
   }
