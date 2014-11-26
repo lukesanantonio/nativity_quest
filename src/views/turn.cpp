@@ -14,13 +14,15 @@ namespace game
     data.zone_label.data(zone ? zone->str : "Unknown");
   }
 
-  void initialize_state(Turn_Data& data) noexcept
+  Turn_Data::Turn_Data(Map map, std::string char_img) noexcept
+                       : map(std::move(map)), current_player(0),
+                         character(char_img)
   {
-    data.zone_label.text_height(35);
-    data.zone_label.text_color({0x00, 0x00, 0x00, 0xff});
+    this->zone_label.text_height(35);
+    this->zone_label.text_color({0x00, 0x00, 0x00, 0xff});
 
-    data.map.players[data.current_player].pos = {500,0};
-    update_zone(data);
+    this->map.players[current_player].pos = {500, 0};
+    update_zone(*this);
   }
 
   void handle_event_state(Turn_Data& data, SDL_Event const& event) noexcept

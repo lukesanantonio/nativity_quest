@@ -14,6 +14,8 @@ namespace game
 {
   struct Turn_Data
   {
+    Turn_Data(Map map, std::string char_img) noexcept;
+
     Map map;
     short current_player;
 
@@ -21,8 +23,6 @@ namespace game
 
     pong::Label<std::string> zone_label;
   };
-
-  void initialize_state(Turn_Data&) noexcept;
 
   void handle_event_state(Turn_Data&, SDL_Event const&) noexcept;
   void step_state(Turn_Data&) noexcept;
