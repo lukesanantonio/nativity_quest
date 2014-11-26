@@ -8,7 +8,7 @@ add_subdirectory(decl)
 add_subdirectory(util)
 add_subdirectory(views)
 
-add_executable(game main.cpp Map.cpp State.cpp player.cpp step.cpp
+add_executable(game main.cpp Map.cpp State.cpp Player.cpp step.cpp
                     Graphics_Desc.cpp render.cpp Sprite.cpp)
 target_link_libraries(game decllib utillib viewlib)
 

@@ -5,7 +5,7 @@
 #pragma once
 #include <array>
 
-#include "player.h"
+#include "Player.h"
 
 #include "views/combat.h"
 #include "views/menu.h"

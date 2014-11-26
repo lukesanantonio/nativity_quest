@@ -10,7 +10,7 @@
 
 #include "Sprite.h"
 
-#include "player.h"
+#include "Player.h"
 #include "decl/zones.h"
 namespace game
 {

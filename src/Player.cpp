@@ -2,7 +2,7 @@
  * Copyright (C) 2014 Luke San Antonio
  * All rights reserved.
  */
-#include "player.h"
+#include "Player.h"
 
 #define PLAYER_SPEED 4
 
