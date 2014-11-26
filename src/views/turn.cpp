@@ -68,15 +68,16 @@ namespace game
             delta = {0,0};
           }
         }
+
         if(delta.x < 0) delta.x = delta.x + next_zone->speed_cost;
         if(delta.y < 0) delta.y = delta.y + next_zone->speed_cost;
 
         if(delta.x > 0) delta.x = delta.x - next_zone->speed_cost;
         if(delta.y > 0) delta.y = delta.y - next_zone->speed_cost;
-      }
 
-      p.pos += delta;
-      update_zone(data);
+        p.pos += delta;
+        update_zone(data);
+      }
     }
   }
   void step_state(Turn_Data& data) noexcept {}
