@@ -137,6 +137,10 @@ namespace game
 
   Zone Zone_Parser::get_zone(pong::math::vector<int> pos) const noexcept
   {
+    // Bad position!
+    if(pos.x < 0 || pos.y < 0) return no::zone;
+    if(pos.x > png_->w || pos.y > png_->h) return no::zone;
+
     // pixel represents the red component of the color at pixel pos.
     uint8_t* pixel = (uint8_t*) png_->pixels;
     pixel += (pos.y * png_->pitch) +
