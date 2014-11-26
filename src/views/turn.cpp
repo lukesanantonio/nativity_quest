@@ -108,9 +108,14 @@ namespace game
                     {{0, 0}, g.get_width(), g.get_height()});
 
     // Render the mini map.
-    render_as_minimap(g, data.map, Volume<>{{5, 5},
-                      int(data.map.img.surface()->w * MINIMAP_SCALE),
-                      int(data.map.img.surface()->h * MINIMAP_SCALE)});
+    Volume<> minimap_vol = {{5, 5},
+                            int(data.map.img.surface()->w * MINIMAP_SCALE),
+                            int(data.map.img.surface()->h * MINIMAP_SCALE)};
+
+    render_as_minimap(g, data.map, minimap_vol);
+
+    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
+    render_player_minimap(g, data.map, minimap_vol, player, 4);
 
     // Render the zone.
     data.zone_label.font_face(&g.font.face);
