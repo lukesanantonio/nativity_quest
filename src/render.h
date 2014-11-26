@@ -18,4 +18,8 @@ namespace game
 
   void use_viewport_scale(SDL_Rect& rect,
                           double xscale, double yscale) noexcept;
+
+  void render_player_minimap(Graphics_Desc& g, Map const& map,
+                             Volume<> map_vol, Player& player,
+                             short player_radius) noexcept;
 }

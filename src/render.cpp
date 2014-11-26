@@ -47,4 +47,22 @@ namespace game
     rect.x *= xscale;
     rect.y *= yscale;
   }
+  void render_player_minimap(Graphics_Desc& g, Map const& map,
+                             Volume<> map_vol, Player& player,
+                             short player_radius) noexcept
+  {
+    SDL_Rect rect;
+    rect.w = player_radius;
+    rect.h = player_radius;
+    rect.x = std::max(0, player.pos.x - player_radius / 2);
+    rect.y = std::max(0, player.pos.y - player_radius / 2);
+
+    use_viewport_scale(rect, map_vol.width / (double) map.img.surface()->w,
+                             map_vol.height / (double) map.img.surface()->h);
+
+    rect.x += map_vol.pos.x;
+    rect.y += map_vol.pos.y;
+
+    SDL_RenderFillRect(g.renderer, &rect);
+  }
 }
