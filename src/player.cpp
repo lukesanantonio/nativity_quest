@@ -42,30 +42,4 @@ namespace game
     }
     return rect;
   }
-  void handle_player_event(SDL_Event const& e, Player& p)
-  {
-    if(e.type == SDL_KEYDOWN)
-    {
-      if(e.key.keysym.scancode == SDL_SCANCODE_W)
-      {
-        p.dir = Player::Direction::Up;
-        p.pos.y -= PLAYER_SPEED;
-      }
-      else if(e.key.keysym.scancode == SDL_SCANCODE_A)
-      {
-        p.dir = Player::Direction::Left;
-        p.pos.x -= PLAYER_SPEED;
-      }
-      else if(e.key.keysym.scancode == SDL_SCANCODE_S)
-      {
-        p.dir = Player::Direction::Down;
-        p.pos.y += PLAYER_SPEED;
-      }
-      else if(e.key.keysym.scancode == SDL_SCANCODE_D)
-      {
-        p.dir = Player::Direction::Right;
-        p.pos.x += PLAYER_SPEED;
-      }
-    }
-  }
 }

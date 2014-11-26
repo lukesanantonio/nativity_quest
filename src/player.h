@@ -23,6 +23,4 @@ namespace game
   };
 
   SDL_Rect get_sprite_from_direction(Player::Direction);
-
-  void handle_player_event(SDL_Event const& e, Player& p);
 }
