@@ -15,4 +15,7 @@ namespace game
                          Volume<> vol) noexcept;
   void render_viewport(Graphics_Desc& g, Map const& map, Volume<> viewport,
                        Volume<> destination) noexcept;
+
+  void use_viewport_scale(SDL_Rect& rect,
+                          double xscale, double yscale) noexcept;
 }

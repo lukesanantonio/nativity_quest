@@ -84,13 +84,6 @@ namespace game
 #define MINIMAP_SCALE .25
 #define VIEWPORT_SIZE 225
 
-  void use_viewport_scale(SDL_Rect& rect,
-                          double xscale, double yscale) noexcept
-  {
-    rect.x *= xscale;
-    rect.y *= yscale;
-  }
-
   void render_state(Graphics_Desc& g, Turn_Data& data) noexcept
   {
     Player& player = data.map.players[data.current_player];

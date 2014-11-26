@@ -41,4 +41,10 @@ namespace game
 
     SDL_RenderCopy(g.renderer, map.img.texture(g.renderer), &src, &dest);
   }
+  void use_viewport_scale(SDL_Rect& rect,
+                          double xscale, double yscale) noexcept
+  {
+    rect.x *= xscale;
+    rect.y *= yscale;
+  }
 }
