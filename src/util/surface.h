@@ -34,7 +34,7 @@ namespace game
 
   using Shared_Texture_Ptr = std::shared_ptr<SDL_Texture>;
   inline Shared_Texture_Ptr
-  make_shared_surface(Shared_Texture_Ptr::element_type* ptr = nullptr) noexcept
+  make_shared_texture(Shared_Texture_Ptr::element_type* ptr = nullptr) noexcept
   {
     return Shared_Texture_Ptr(ptr, Texture_Deleter{});
   }
