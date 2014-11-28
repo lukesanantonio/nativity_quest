@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "Graphics_Desc.h"
+#include "Sprite_Container.h"
 #include "decl/items.h"
 #include "decl/zones.h"
 #include "State.h"
@@ -15,10 +16,13 @@
 #include "util/except.h"
 
 #define CHAR_SPRITES "assets/char.png"
+#define SPRITES_JSON "assets/sprites.json"
+
 #define ITEMS_JSON "assets/items.json"
 #define ZONES_JSON "assets/zones.json"
 #define MAP_IMAGE "assets/map.png"
 #define CHAR_SPRITE "assets/char.png"
+
 #define FONT_FILE "/usr/share/fonts/TTF/DejaVuSans.ttf"
 
 int main(int argc, char** argv)
@@ -29,10 +33,12 @@ int main(int argc, char** argv)
 
     game::Graphics_Desc g{"Tommy's Game", {1000, 1000}, FONT_FILE, &log};
 
+    game::Sprite_Container sprites(SPRITES_JSON);
+
     game::State state;
     state.running = true;
     state.type = game::View::Turn;
-    state.state_data = game::Turn_Data{game::Map{MAP_IMAGE,
+    state.state_data = game::Turn_Data{game::Map{
                                        ITEMS_JSON, ZONES_JSON}, CHAR_SPRITE};
     while(state.running)
     {
@@ -48,7 +54,7 @@ int main(int argc, char** argv)
       }
 
       step(state);
-      render(state, g);
+      render(state, g, sprites);
 
       std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }

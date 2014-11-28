@@ -8,8 +8,6 @@
 #include "SDL_image.h"
 namespace game
 {
-  Map::Map(std::string const& map,
-           std::string const& items_file,
-           std::string const& zone_json)
-           : items(items_file), zones(zone_json, items), img(map) {}
+  Map::Map(std::string const& items_file, std::string const& zone_json)
+           : items(items_file), zones(zone_json, items) {}
 }

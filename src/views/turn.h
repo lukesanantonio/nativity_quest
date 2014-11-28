@@ -7,7 +7,7 @@
 
 #include "../Graphics_Desc.h"
 #include "../Map.h"
-#include "../Sprite.h"
+#include "../Sprite_Container.h"
 
 #include "pong/render/widgets/Label.h"
 namespace game
@@ -26,5 +26,5 @@ namespace game
 
   void handle_event_state(Turn_Data&, SDL_Event const&) noexcept;
   void step_state(Turn_Data&) noexcept;
-  void render_state(Graphics_Desc&, Turn_Data&) noexcept;
+  void render_state(Graphics_Desc&, Sprite_Container&, Turn_Data&) noexcept;
 }

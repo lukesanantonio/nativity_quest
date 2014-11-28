@@ -7,6 +7,7 @@
 #include "../render.h"
 namespace game
 {
+#if 0
   void update_zone(Turn_Data& data) noexcept
   {
     Player& player = data.map.players[data.current_player];
@@ -15,8 +16,8 @@ namespace game
   }
 
   Turn_Data::Turn_Data(Map map, std::string char_img) noexcept
-                       : map(std::move(map)), current_player(0),
-                         character(char_img)
+                       : map(std::move(map)), character(char_img),
+                         state(Waiting_Data{0})
   {
     this->zone_label.text_height(35);
     this->zone_label.text_color({0x00, 0x00, 0x00, 0xff});
@@ -137,4 +138,5 @@ namespace game
                        g.get_height() / (double) VIEWPORT_SIZE);
     SDL_RenderCopy(g.renderer, data.character.texture(g.renderer), &src,&dest);
   }
+#endif
 }

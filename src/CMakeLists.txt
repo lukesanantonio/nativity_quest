@@ -9,7 +9,7 @@ add_subdirectory(util)
 add_subdirectory(views)
 
 add_executable(game main.cpp Map.cpp State.cpp Player.cpp step.cpp
-                    Graphics_Desc.cpp render.cpp Sprite.cpp)
+                    Graphics_Desc.cpp render.cpp Sprite_Container.cpp)
 target_link_libraries(game decllib utillib viewlib)
 
 target_link_libraries(game io_core render_core)

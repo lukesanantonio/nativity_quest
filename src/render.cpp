@@ -5,6 +5,7 @@
 #include "render.h"
 namespace game
 {
+#if 0
   void render_as_minimap(Graphics_Desc& g,
                          Map const& map,
                          Volume<> vol) noexcept
@@ -65,4 +66,5 @@ namespace game
 
     SDL_RenderFillRect(g.renderer, &rect);
   }
+#endif
 }
