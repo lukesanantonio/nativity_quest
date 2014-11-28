@@ -15,12 +15,8 @@ namespace game
   {
     // Position on the map.
     pong::math::vector<int> pos;
-
-    enum class Direction { Up, Down, Right, Left };
-    Direction dir = Direction::Left;
+    pong::math::vector<int> delta;
 
     std::array<Item, 6> inventory;
   };
-
-  SDL_Rect get_sprite_from_direction(Player::Direction);
 }
