@@ -40,8 +40,9 @@ namespace game
 
     // map coordinates.
     pong::math::vector<int> map_corner;
-  private:
+
     void update_zone() noexcept;
+    void next_player() noexcept;
   };
 
   void handle_event_state(Turn_Data&, SDL_Event const&) noexcept;

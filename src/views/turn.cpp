@@ -15,7 +15,7 @@ namespace game
   Turn_Data::Turn_Data(std::string const& items_file,
                        std::string const& zones_file) noexcept
                        : items(items_file), map(zones_file, items),
-                         player(0), state(Moving_Data{}), map_corner()
+                         player(0), state(Waiting_Data{}), map_corner()
   {
     zone_label.text_height(35);
     zone_label.text_color({0x00, 0x00, 0x00, 0xff});
@@ -31,6 +31,11 @@ namespace game
     Player& p = map.players[player];
     Zone zone = map.zones.get_zone(p.pos);
     zone_label.data(zone ? zone->str : "Unknown");
+  }
+
+  void Turn_Data::next_player() noexcept
+  {
+    if(++player == map.players.size()) player = 0;
   }
 
   template <typename T>
@@ -97,8 +102,33 @@ namespace game
         Player& player = turn.map.players[turn.player];
 
         // Step the player forward.
-        player.pos += data.delta;
-        return Waiting_Data{};
+        if(data.delta.x > 0)
+        {
+          ++player.pos.x;
+          --data.delta.x;
+        }
+        if(data.delta.x < 0)
+        {
+          --player.pos.x;
+          ++data.delta.x;
+        }
+        if(data.delta.y > 0)
+        {
+          ++player.pos.y;
+          --data.delta.y;
+        }
+        if(data.delta.y < 0)
+        {
+          --player.pos.y;
+          ++data.delta.y;
+        }
+
+        if(data.delta.x == 0 && data.delta.y == 0)
+        {
+          turn.next_player();
+          return Waiting_Data{};
+        }
+        return data;
       }
 
       Turn_Data& turn;
