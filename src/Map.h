@@ -12,6 +12,8 @@
 #include "decl/zones.h"
 namespace game
 {
+  struct Item_Parser;
+
   using player_id = short;
 
   /*!
@@ -21,11 +23,12 @@ namespace game
    */
   struct Map
   {
-    Map(std::string const& items, std::string const& zone_json);
+    Map(std::string const& zone_json, Item_Parser const&);
 
     std::array<Player, 6> players;
-
-    Item_Parser items;
     Zone_Parser zones;
+
+    double scale; // screen pixels / map pixel
+    double mini_scale; // screen pixels / map pixel
   };
 }

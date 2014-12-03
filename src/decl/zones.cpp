@@ -69,18 +69,21 @@ namespace game
   {
     auto d = parse_json(json);
 
-    if(!has_json_members(d, {"decl", "classes", "zones"}))
+    if(!has_json_members(d, {"map", "decl", "classes", "zones"}))
     {
       throw Bad_Asset{json,
-                      "Missing 'decl', 'classes' or 'zones' member"
+                      "Missing 'map', 'decl', 'classes' or 'zones' member"
                       " (or a combonation of these)"};
     }
 
-    png_.reset(IMG_Load(d["decl"].GetString()));
-    if(!png_)
+
+    map_asset_.assign(d["map"].GetString());
+
+    std::string zones_file(d["decl"].GetString());
+    zone_decl_.reset(IMG_Load(zones_file.c_str()));
+    if(!zone_decl_)
     {
-      std::string decl_fn{d["decl"].GetString(), d["decl"].GetStringLength()};
-      throw Invalid_Decl_Image{decl_fn};
+      throw Invalid_Decl_Filename{zones_file};
     }
 
     auto zone_classes = std::vector<Zone_Class>{};
@@ -137,14 +140,17 @@ namespace game
 
   Zone Zone_Parser::get_zone(pong::math::vector<int> pos) const noexcept
   {
+    SDL_Surface* png = zone_decl_.get();
+    if(!png) return no::zone;
+
     // Bad position!
     if(pos.x < 0 || pos.y < 0) return no::zone;
-    if(pos.x > png_->w || pos.y > png_->h) return no::zone;
+    if(pos.x > png->w || pos.y > png->h) return no::zone;
 
     // pixel represents the red component of the color at pixel pos.
-    uint8_t* pixel = (uint8_t*) png_->pixels;
-    pixel += (pos.y * png_->pitch) +
-             (pos.x * png_->format->BytesPerPixel);
+    uint8_t* pixel = (uint8_t*) png->pixels;
+    pixel += (pos.y * png->pitch) +
+             (pos.x * png->format->BytesPerPixel);
     if(!pixel) return no::zone;
 
     // Find the zone that is represented by the same color as our pixel.

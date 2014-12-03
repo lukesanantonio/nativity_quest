@@ -10,18 +10,38 @@
 #include "../Sprite_Container.h"
 
 #include "pong/render/widgets/Label.h"
+
+#include <boost/variant.hpp>
 namespace game
 {
+  struct Waiting_Data
+  {
+  };
+  struct Moving_Data
+  {
+    pong::math::vector<int> delta;
+    int steps;
+  };
+
+  using Turn_State = boost::variant<Waiting_Data, Moving_Data>;
+
   struct Turn_Data
   {
-    Turn_Data(Map map, std::string char_img) noexcept;
+    Turn_Data(std::string const& items_file,
+              std::string const& zones_file) noexcept;
 
+    Item_Parser items;
     Map map;
-    short current_player;
-
-    Sprite character;
 
     pong::Label<std::string> zone_label;
+
+    player_id player;
+    Turn_State state;
+
+    // map coordinates.
+    pong::math::vector<int> map_corner;
+  private:
+    void update_zone() noexcept;
   };
 
   void handle_event_state(Turn_Data&, SDL_Event const&) noexcept;

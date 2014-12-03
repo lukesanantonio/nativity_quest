@@ -1,5 +1,5 @@
 {
-  "spritesheet":"items.png",
+  "spritesheet":"items",
 
   "items":[
     {"str":"Rope", "x":0, "y":0},

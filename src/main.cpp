@@ -15,13 +15,10 @@
 
 #include "util/except.h"
 
-#define CHAR_SPRITES "assets/char.png"
 #define SPRITES_JSON "assets/sprites.json"
 
 #define ITEMS_JSON "assets/items.json"
 #define ZONES_JSON "assets/zones.json"
-#define MAP_IMAGE "assets/map.png"
-#define CHAR_SPRITE "assets/char.png"
 
 #define FONT_FILE "/usr/share/fonts/TTF/DejaVuSans.ttf"
 
@@ -38,8 +35,8 @@ int main(int argc, char** argv)
     game::State state;
     state.running = true;
     state.type = game::View::Turn;
-    state.state_data = game::Turn_Data{game::Map{
-                                       ITEMS_JSON, ZONES_JSON}, CHAR_SPRITE};
+    state.state_data = game::Turn_Data{ITEMS_JSON, ZONES_JSON};
+
     while(state.running)
     {
       SDL_Event event;

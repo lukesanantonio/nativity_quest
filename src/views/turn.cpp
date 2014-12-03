@@ -5,138 +5,165 @@
 #include "turn.h"
 
 #include "../render.h"
+
+#include <cmath>
+#include <iostream>
+#define PI 3.14159
+
 namespace game
 {
-#if 0
-  void update_zone(Turn_Data& data) noexcept
+  Turn_Data::Turn_Data(std::string const& items_file,
+                       std::string const& zones_file) noexcept
+                       : items(items_file), map(zones_file, items),
+                         player(0), state(Moving_Data{}), map_corner()
   {
-    Player& player = data.map.players[data.current_player];
-    Zone zone = data.map.zones.get_zone(player.pos);
-    data.zone_label.data(zone ? zone->str : "Unknown");
+    zone_label.text_height(35);
+    zone_label.text_color({0x00, 0x00, 0x00, 0xff});
+
+    map.players[player].pos = {500, 0};
+    map.scale = 3.5;
+    map.mini_scale = .25;
+    update_zone();
   }
 
-  Turn_Data::Turn_Data(Map map, std::string char_img) noexcept
-                       : map(std::move(map)), character(char_img),
-                         state(Waiting_Data{0})
+  void Turn_Data::update_zone() noexcept
   {
-    this->zone_label.text_height(35);
-    this->zone_label.text_color({0x00, 0x00, 0x00, 0xff});
-
-    this->map.players[current_player].pos = {500, 0};
-    update_zone(*this);
+    Player& p = map.players[player];
+    Zone zone = map.zones.get_zone(p.pos);
+    zone_label.data(zone ? zone->str : "Unknown");
   }
 
-  void handle_event_state(Turn_Data& data, SDL_Event const& event) noexcept
+  template <typename T>
+  pong::math::vector<T> scr_to_map(double scale,
+                                   pong::math::vector<T> const& start,
+                                   pong::math::vector<T> screen) noexcept
   {
-    Player& p = data.map.players[data.current_player];
+    screen.x /= scale;
+    screen.y /= scale;
 
-    if(event.type == SDL_KEYDOWN)
+    return {screen.x + start.x, screen.y + start.y};
+  }
+
+  void handle_event_state(Turn_Data& turn, SDL_Event const& event) noexcept
+  {
+    struct Turn_State_Visitor : boost::static_visitor<Turn_State>
     {
-      pong::math::vector<int> delta;
-      if(event.key.keysym.scancode == SDL_SCANCODE_W)
-      {
-        delta.y -= 5;
-        p.dir = Player::Direction::Up;
-      }
-      if(event.key.keysym.scancode == SDL_SCANCODE_A)
-      {
-        delta.x -= 5;
-        p.dir = Player::Direction::Left;
-      }
-      if(event.key.keysym.scancode == SDL_SCANCODE_S)
-      {
-        delta.y += 5;
-        p.dir = Player::Direction::Down;
-      }
-      if(event.key.keysym.scancode == SDL_SCANCODE_D)
-      {
-        delta.x += 5;
-        p.dir = Player::Direction::Right;
-      }
+      Turn_State_Visitor(Turn_Data& turn, SDL_Event const& event) noexcept
+                         : turn(turn), event(event) {}
 
-      // Degrade or flat out forget about the delta if we don't have the item
-      // that we are required to have for this zone.
-      Zone next_zone = data.map.zones.get_zone(p.pos + delta);
-      if(next_zone)
+      Turn_State operator()(Waiting_Data const& data) const noexcept
       {
-        if(next_zone->required_item)
+        if(event.type == SDL_MOUSEBUTTONDOWN)
         {
-          using std::begin; using std::end;
-          auto item_find = std::find(begin(p.inventory), end(p.inventory),
-                                     next_zone->required_item);
-          // We didn't find the required item.
-          if(item_find == end(p.inventory))
+          if(event.button.button == SDL_BUTTON_LEFT)
           {
-            // No move.
-            delta = {0,0};
+            Moving_Data md;
+
+            auto mouse = pong::math::vector<int>{event.button.x, event.button.y};
+            auto map_coord = scr_to_map(turn.map.scale, turn.map_corner, mouse);
+
+            md.delta = map_coord - turn.map.players[turn.player].pos;
+
+            return md;
           }
         }
-
-        if(delta.x < 0) delta.x = delta.x + next_zone->speed_cost;
-        if(delta.y < 0) delta.y = delta.y + next_zone->speed_cost;
-
-        if(delta.x > 0) delta.x = delta.x - next_zone->speed_cost;
-        if(delta.y > 0) delta.y = delta.y - next_zone->speed_cost;
-
-        p.pos += delta;
-        update_zone(data);
+        return data;
       }
-    }
+      Turn_State operator()(Moving_Data const& md) const noexcept
+      {
+        return md;
+      }
+
+      Turn_Data& turn;
+      SDL_Event const& event;
+    };
+
+    turn.state = boost::apply_visitor(Turn_State_Visitor{turn, event},
+                                      turn.state);
   }
-  void step_state(Turn_Data& data) noexcept {}
 
-#define MINIMAP_SCALE .25
-#define VIEWPORT_SIZE 225
-
-  void render_state(Graphics_Desc& g, Turn_Data& data) noexcept
+  void step_state(Turn_Data& turn_data) noexcept
   {
-    Player& player = data.map.players[data.current_player];
+    struct Turn_State_Visitor : boost::static_visitor<Turn_State>
+    {
+      Turn_State_Visitor(Turn_Data& td) noexcept : turn(td) {}
 
-    // Render the main viewport.
-    Volume<> viewport_src;
-    viewport_src.pos.x = std::max(0, player.pos.x - VIEWPORT_SIZE / 2);
-    viewport_src.pos.y = std::max(0, player.pos.y - VIEWPORT_SIZE / 2);
-    viewport_src.width =
-       std::min(data.map.img.surface()->w - viewport_src.pos.x, VIEWPORT_SIZE);
-    viewport_src.height =
-       std::min(data.map.img.surface()->h - viewport_src.pos.y, VIEWPORT_SIZE);
+      Turn_State operator()(Waiting_Data& data) const noexcept
+      {
+        return data;
+      }
+      Turn_State operator()(Moving_Data& data) const noexcept
+      {
+        Player& player = turn.map.players[turn.player];
 
-    viewport_src.pos.x -= VIEWPORT_SIZE - viewport_src.width;
-    viewport_src.pos.y -= VIEWPORT_SIZE - viewport_src.height;
+        // Step the player forward.
+        player.pos += data.delta;
+        return Waiting_Data{};
+      }
 
-    viewport_src.width = VIEWPORT_SIZE;
-    viewport_src.height = VIEWPORT_SIZE;
+      Turn_Data& turn;
+    };
 
-    render_viewport(g, data.map, viewport_src,
-                    {{0, 0}, g.get_width(), g.get_height()});
+    turn_data.state = boost::apply_visitor(Turn_State_Visitor{turn_data},
+                                           turn_data.state);
+  }
+
+  void render_state(Graphics_Desc& g, Sprite_Container& sprites,
+                    Turn_Data& turn) noexcept
+  {
+    Player& player = turn.map.players[turn.player];
+
+    // Recalculate the map corner.
+    const auto viewport_width = int(g.get_width() / turn.map.scale);
+    const auto viewport_height = int(g.get_height() / turn.map.scale);
+
+    auto map_sprite = sprites.get_sprite(turn.map.zones.map_asset());
+
+    SDL_Rect viewport_src;
+
+    // Find the coordinates of the top-left corner of a viewport that results
+    // in the player being centered on it.
+    // However, don't allow the corner to go behind (0,0).
+    viewport_src.x = std::max(0, player.pos.x - viewport_width / 2);
+    viewport_src.y = std::max(0, player.pos.y - viewport_height / 2);
+
+    // The width and height of the viewport are always no greater than the
+    // calculated values above (using the map scale and screen size). They will
+    // be smaller when the max width would result in a src rectangle that went
+    // beyond the map image's bounds.
+    viewport_src.w =
+           std::min(viewport_width, map_sprite->surface()->w - viewport_src.x);
+    viewport_src.h =
+          std::min(viewport_height, map_sprite->surface()->h - viewport_src.y);
+
+    // Adjust the viewport corners to give the possibly shortened width and
+    // height room to be the max.
+    viewport_src.x -= viewport_width - viewport_src.w;
+    viewport_src.y -= viewport_width - viewport_src.h;
+
+    // The viewport should always have the calculated width. We know this won't
+    // go beyond the map image's bounds because we already adjusted the x and y
+    // values accordingly.
+    viewport_src.w = viewport_width;
+    viewport_src.h = viewport_height;
+
+    // These are our calculated corners!
+    turn.map_corner.x = viewport_src.x;
+    turn.map_corner.y = viewport_src.y;
+
+    // Render the full map.
+    SDL_RenderCopy(g.renderer, map_sprite->texture(g.renderer),
+                   &viewport_src, NULL);
+
+    // Render the character.
+    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
+    SDL_Rect rect;
+    rect.x = (player.pos.x - viewport_src.x) * turn.map.scale - 25;
+    rect.y = (player.pos.y - viewport_src.y) * turn.map.scale - 25;
+    rect.w = 50; rect.h = 50;
+    SDL_RenderFillRect(g.renderer, &rect);
 
     // Render the mini map.
-    Volume<> minimap_vol = {{5, 5},
-                            int(data.map.img.surface()->w * MINIMAP_SCALE),
-                            int(data.map.img.surface()->h * MINIMAP_SCALE)};
-
-    render_as_minimap(g, data.map, minimap_vol);
-
-    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
-    render_player_minimap(g, data.map, minimap_vol, player, 4);
-
-    // Render the zone.
-    data.zone_label.font_face(&g.font.face);
-    data.zone_label.rasterizer(&g.font.raster);
-    data.zone_label.position(
-      {g.get_width() - data.zone_label.surface_width() - 10, 5});
-    data.zone_label.render(g.renderer);
-
-    // Render the character sprite.
-    SDL_Rect src = get_sprite_from_direction(player.dir);
-    SDL_Rect dest;
-    dest.x = player.pos.x - viewport_src.pos.x;
-    dest.y = player.pos.y - viewport_src.pos.y;
-    dest.w = src.w;
-    dest.h = src.h;
-    use_viewport_scale(dest, g.get_width() / (double) VIEWPORT_SIZE,
-                       g.get_height() / (double) VIEWPORT_SIZE);
-    SDL_RenderCopy(g.renderer, data.character.texture(g.renderer), &src,&dest);
+    render_as_minimap(g, sprites, turn.map, {5,5});
   }
-#endif
 }

@@ -7,14 +7,16 @@
 
 #include "../util/surface.h"
 #include "pong/common/vector.h"
+#include "../Sprite_Container.h"
 
 #include "items.h"
 namespace game
 {
-  struct Invalid_Decl_Image
+  struct Invalid_Decl_Filename
   {
-    std::string given;
+    std::string filename;
   };
+
   struct Invalid_Class_Reference
   {
     std::string class_str;
@@ -36,11 +38,20 @@ namespace game
     explicit Zone_Parser(std::string const& json_file,
                          Item_Parser const& items);
     Zone get_zone(pong::math::vector<int> pos) const noexcept;
+
+    inline std::string map_asset() const noexcept;
   private:
     std::vector<Zone> zones_;
 
-    Surface_Ptr png_;
+    Surface_Ptr zone_decl_;
+
+    std::string map_asset_;
   };
+
+  inline std::string Zone_Parser::map_asset() const noexcept
+  {
+    return map_asset_;
+  }
 
   namespace no
   {
