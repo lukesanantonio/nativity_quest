@@ -132,6 +132,28 @@ namespace game
                                            turn_data.state);
   }
 
+  namespace
+  {
+    struct Delta_Turn_State_Visitor : boost::static_visitor<Vec<double> >
+    {
+      template <typename T>
+      Vec<double> operator()(T const&) const noexcept
+      {
+        return {0.0, 0.0};
+      }
+
+      Vec<double> operator()(Moving_Data const& data) const noexcept
+      {
+        return data.delta;
+      }
+    };
+  }
+
+  Vec<double> moving_delta(Turn_State const& data) noexcept
+  {
+    return boost::apply_visitor(Delta_Turn_State_Visitor{}, data);
+  }
+
   void render_state(Graphics_Desc& g, Sprite_Container& sprites,
                     Turn_Data& turn) noexcept
   {
@@ -179,11 +201,25 @@ namespace game
     SDL_RenderCopy(g.renderer, map_sprite->texture(g.renderer),
                    &viewport_src, NULL);
 
+    // Figure out where the player will be on-screen.
+    auto player_scr_coord = (player.pos - turn.map_corner) * turn.map.scale;
+
+    // Render the path of the player (if applicable).
+    if(turn.render_active_player_path)
+    {
+      auto move_delta = moving_delta(turn.state);
+
+      SDL_SetRenderDrawColor(g.renderer, 0x00, 0x77, 0x00, 0xff);
+      SDL_RenderDrawLine(g.renderer, player_scr_coord.x, player_scr_coord.y,
+                         player_scr_coord.x + (move_delta.x * turn.map.scale),
+                         player_scr_coord.y + (move_delta.y * turn.map.scale));
+    }
+
     // Render the character.
     SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
     SDL_Rect rect;
-    rect.x = (player.pos.x - viewport_src.x) * turn.map.scale - 25;
-    rect.y = (player.pos.y - viewport_src.y) * turn.map.scale - 25;
+    rect.x = player_scr_coord.x - 25;
+    rect.y = player_scr_coord.y - 25;
     rect.w = 50; rect.h = 50;
     SDL_RenderFillRect(g.renderer, &rect);
 

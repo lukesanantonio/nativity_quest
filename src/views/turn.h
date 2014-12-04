@@ -42,6 +42,8 @@ namespace game
 
     void update_zone() noexcept;
     void next_player() noexcept;
+
+    bool render_active_player_path = true;
   };
 
   void handle_event_state(Turn_Data&, SDL_Event const&) noexcept;
