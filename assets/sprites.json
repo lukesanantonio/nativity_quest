@@ -1,6 +1,4 @@
 [
   {"id": 1, "str":"player", "file":"assets/char.png"},
-  {"id": 2, "str":"monster", "file":"assets/monster.png"},
-  {"id": 3, "str":"map", "file":"assets/map.png"},
-  {"id": 4, "str":"zones", "file":"assets/zones.png"}
+  {"id": 3, "str":"map", "file":"assets/map.png"}
 ]
