@@ -95,17 +95,28 @@ namespace game
       }
       Turn_State operator()(Moving_Data& data) const noexcept
       {
+        // Player movement!
+
         auto& player = turn.map.players[turn.player];
 
+        // Find out the distance we have yet to travel.
         auto delta_len = length(data.delta);
 
-        auto unit_delta = normalize<>(data.delta);
-        auto move_delta = unit_delta * std::min(2.0, delta_len);
+        auto max_len = 1.0;
 
+        // Isolate the direction.
+        auto unit_delta = normalize<>(data.delta);
+        // How much do we move this step?
+        auto move_delta = unit_delta * std::min(max_len, delta_len);
+
+        // Move the player.
         player.pos += move_delta;
+        // Mark some distance traveled.
         data.delta -= move_delta;
 
-        if(delta_len < 1.0)
+        // If we have less than the max units per step, it means we just
+        // completed that and we can become static.
+        if(delta_len < max_len)
         {
           //turn.next_player();
           return Waiting_Data{};
