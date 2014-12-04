@@ -6,8 +6,7 @@
 namespace game
 {
   void render_as_minimap(Graphics_Desc& g, Sprite_Container& sprites,
-                         Map const& map,
-                         pong::math::vector<int> const& start) noexcept
+                         Map const& map, Vec<int> const& start) noexcept
   {
     // Grab the starting coordinates.
     SDL_Rect dest;

@@ -8,7 +8,7 @@
 
 #include "pong/render/text.h"
 
-#include "pong/common/vector.h"
+#include "vec.h"
 namespace game
 {
   struct Bad_Window {};
@@ -16,7 +16,7 @@ namespace game
 
   struct Graphics_Desc
   {
-    Graphics_Desc(std::string const& title, pong::math::vector<int> extents,
+    Graphics_Desc(std::string const& title, Vec<int> const& extents,
                   std::string const& font_file, pong::Logger* log);
     ~Graphics_Desc() noexcept;
 
@@ -32,6 +32,6 @@ namespace game
       pong::text::AntiAliasedRaster raster;
     } font;
   private:
-    pong::math::vector<int> extents_;
+    Vec<int> extents_;
   };
 }

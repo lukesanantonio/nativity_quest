@@ -15,7 +15,7 @@ namespace game
   Turn_Data::Turn_Data(std::string const& items_file,
                        std::string const& zones_file) noexcept
                        : items(items_file), map(zones_file, items),
-                         player(0), state(Waiting_Data{}), map_corner()
+                         player(0), state(Waiting_Data{}), map_corner{}
   {
     zone_label.text_height(35);
     zone_label.text_color({0x00, 0x00, 0x00, 0xff});
@@ -23,30 +23,21 @@ namespace game
     map.players[player].pos = {500, 0};
     map.scale = 3.5;
     map.mini_scale = .25;
+
     update_zone();
   }
 
   void Turn_Data::update_zone() noexcept
   {
-    Player& p = map.players[player];
-    Zone zone = map.zones.get_zone(p.pos);
+    auto& active_player = map.players[player];
+
+    auto zone = map.zones.get_zone(Vec<int>{active_player.pos});
     zone_label.data(zone ? zone->str : "Unknown");
   }
 
   void Turn_Data::next_player() noexcept
   {
     if(++player == map.players.size()) player = 0;
-  }
-
-  template <typename T>
-  pong::math::vector<T> scr_to_map(double scale,
-                                   pong::math::vector<T> const& start,
-                                   pong::math::vector<T> screen) noexcept
-  {
-    screen.x /= scale;
-    screen.y /= scale;
-
-    return {screen.x + start.x, screen.y + start.y};
   }
 
   void handle_event_state(Turn_Data& turn, SDL_Event const& event) noexcept
@@ -64,9 +55,14 @@ namespace game
           {
             Moving_Data md;
 
-            auto mouse = pong::math::vector<int>{event.button.x, event.button.y};
-            auto map_coord = scr_to_map(turn.map.scale, turn.map_corner, mouse);
+            // Get the mouse in screen coordinates.
+            auto mouse = Vec<int>{event.button.x, event.button.y};
 
+            // Use the map scale and current top-left corner to calculate the
+            // map coordinates.
+            auto map_coord = (mouse / turn.map.scale) + turn.map_corner;
+
+            // Calculate our delta movement.
             md.delta = map_coord - turn.map.players[turn.player].pos;
 
             return md;
@@ -99,35 +95,22 @@ namespace game
       }
       Turn_State operator()(Moving_Data& data) const noexcept
       {
-        Player& player = turn.map.players[turn.player];
+        auto& player = turn.map.players[turn.player];
 
-        // Step the player forward.
-        if(data.delta.x > 0)
-        {
-          ++player.pos.x;
-          --data.delta.x;
-        }
-        if(data.delta.x < 0)
-        {
-          --player.pos.x;
-          ++data.delta.x;
-        }
-        if(data.delta.y > 0)
-        {
-          ++player.pos.y;
-          --data.delta.y;
-        }
-        if(data.delta.y < 0)
-        {
-          --player.pos.y;
-          ++data.delta.y;
-        }
+        auto delta_len = length(data.delta);
 
-        if(data.delta.x == 0 && data.delta.y == 0)
+        auto unit_delta = normalize<>(data.delta);
+        auto move_delta = unit_delta * std::min(2.0, delta_len);
+
+        player.pos += move_delta;
+        data.delta -= move_delta;
+
+        if(delta_len < 1.0)
         {
-          turn.next_player();
+          //turn.next_player();
           return Waiting_Data{};
         }
+
         return data;
       }
 
@@ -154,8 +137,8 @@ namespace game
     // Find the coordinates of the top-left corner of a viewport that results
     // in the player being centered on it.
     // However, don't allow the corner to go behind (0,0).
-    viewport_src.x = std::max(0, player.pos.x - viewport_width / 2);
-    viewport_src.y = std::max(0, player.pos.y - viewport_height / 2);
+    viewport_src.x = std::max(0.0, player.pos.x - viewport_width / 2);
+    viewport_src.y = std::max(0.0, player.pos.y - viewport_height / 2);
 
     // The width and height of the viewport are always no greater than the
     // calculated values above (using the map scale and screen size). They will

@@ -7,13 +7,13 @@
 #include <memory>
 #include <vector>
 
-#include "pong/common/vector.h"
+#include "../vec.h"
 namespace game
 {
   struct Item_Impl
   {
     std::string str;
-    pong::math::vector<int> sprite_position;
+    Vec<int> sprite_position;
   };
 
   using Item = std::shared_ptr<const Item_Impl>;

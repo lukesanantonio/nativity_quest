@@ -19,8 +19,7 @@ namespace game
   };
   struct Moving_Data
   {
-    pong::math::vector<int> delta;
-    int steps;
+    Vec<double> delta;
   };
 
   using Turn_State = boost::variant<Waiting_Data, Moving_Data>;
@@ -39,7 +38,7 @@ namespace game
     Turn_State state;
 
     // map coordinates.
-    pong::math::vector<int> map_corner;
+    Vec<int> map_corner;
 
     void update_zone() noexcept;
     void next_player() noexcept;

@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "../util/surface.h"
-#include "pong/common/vector.h"
+#include "../vec.h"
 #include "../Sprite_Container.h"
 
 #include "items.h"
@@ -37,7 +37,7 @@ namespace game
   {
     explicit Zone_Parser(std::string const& json_file,
                          Item_Parser const& items);
-    Zone get_zone(pong::math::vector<int> pos) const noexcept;
+    Zone get_zone(Vec<int> pos) const noexcept;
 
     inline std::string map_asset() const noexcept;
   private:

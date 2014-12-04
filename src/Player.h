@@ -6,7 +6,7 @@
 #include <array>
 #include "SDL.h"
 
-#include "pong/common/vector.h"
+#include "vec.h"
 #include "decl/items.h"
 
 namespace game
@@ -14,8 +14,7 @@ namespace game
   struct Player
   {
     // Position on the map.
-    pong::math::vector<int> pos;
-    pong::math::vector<int> delta;
+    Vec<double> pos;
 
     std::array<Item, 6> inventory;
   };

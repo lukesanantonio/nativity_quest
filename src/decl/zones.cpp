@@ -138,7 +138,7 @@ namespace game
     }
   }
 
-  Zone Zone_Parser::get_zone(pong::math::vector<int> pos) const noexcept
+  Zone Zone_Parser::get_zone(Vec<int> pos) const noexcept
   {
     SDL_Surface* png = zone_decl_.get();
     if(!png) return no::zone;

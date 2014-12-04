@@ -6,7 +6,7 @@
 namespace game
 {
   Graphics_Desc::Graphics_Desc(std::string const& title,
-                               pong::math::vector<int> extents,
+                               Vec<int> const& extents,
                                std::string const& font_file,
                                pong::Logger* log)
                                : extents_(extents), font{{font_file, log}, {}}

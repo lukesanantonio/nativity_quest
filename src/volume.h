@@ -4,14 +4,14 @@
  */
 #pragma once
 
-#include "pong/common/vector.h"
+#include "vec.h"
 
 namespace game
 {
   template <typename T = int>
   struct Volume
   {
-    pong::math::vector<T> pos;
+    Vec<T> pos;
     T width;
     T height;
   };
