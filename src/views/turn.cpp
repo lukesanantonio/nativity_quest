@@ -14,30 +14,31 @@ namespace game
 {
   Turn_Data::Turn_Data(std::string const& items_file,
                        std::string const& zones_file) noexcept
-                       : items(items_file), map(zones_file, items),
+                       : items(items_file),
+                         map{std::make_shared<Map>(zones_file, items)},
                          player(0), state(Waiting_Data{}), map_corner{}
   {
     zone_label.text_height(35);
     zone_label.text_color({0x00, 0x00, 0x00, 0xff});
 
-    map.players[player].pos = {500, 0};
-    map.scale = 3.5;
-    map.mini_scale = .25;
+    map->players[player].pos = {500, 0};
+    map->scale = 3.5;
+    map->mini_scale = .25;
 
     update_zone();
   }
 
   void Turn_Data::update_zone() noexcept
   {
-    auto& active_player = map.players[player];
+    auto& active_player = map->players[player];
 
-    auto zone = map.zones.get_zone(Vec<int>{active_player.pos});
+    auto zone = map->zones.get_zone(Vec<int>{active_player.pos});
     zone_label.data(zone ? zone->str : "Unknown");
   }
 
   void Turn_Data::next_player() noexcept
   {
-    if(++player == map.players.size()) player = 0;
+    if(++player == map->players.size()) player = 0;
   }
 
   void handle_event_state(Turn_Data& turn, SDL_Event const& event) noexcept
@@ -60,10 +61,10 @@ namespace game
 
             // Use the map scale and current top-left corner to calculate the
             // map coordinates.
-            auto map_coord = (mouse / turn.map.scale) + turn.map_corner;
+            auto map_coord = (mouse / turn.map->scale) + turn.map_corner;
 
             // Calculate our delta movement.
-            md.delta = map_coord - turn.map.players[turn.player].pos;
+            md.delta = map_coord - turn.map->players[turn.player].pos;
 
             return md;
           }
@@ -97,7 +98,7 @@ namespace game
       {
         // Player movement!
 
-        auto& player = turn.map.players[turn.player];
+        auto& player = turn.map->players[turn.player];
 
         // Find out the distance we have yet to travel.
         auto delta_len = length(data.delta);
@@ -157,13 +158,13 @@ namespace game
   void render_state(Graphics_Desc& g, Sprite_Container& sprites,
                     Turn_Data& turn) noexcept
   {
-    Player& player = turn.map.players[turn.player];
+    Player& player = turn.map->players[turn.player];
 
     // Recalculate the map corner.
-    const auto viewport_width = int(g.get_width() / turn.map.scale);
-    const auto viewport_height = int(g.get_height() / turn.map.scale);
+    const auto viewport_width = int(g.get_width() / turn.map->scale);
+    const auto viewport_height = int(g.get_height() / turn.map->scale);
 
-    auto map_sprite = sprites.get_sprite(turn.map.zones.map_asset());
+    auto map_sprite = sprites.get_sprite(turn.map->zones.map_asset());
 
     SDL_Rect viewport_src;
 
@@ -202,17 +203,17 @@ namespace game
                    &viewport_src, NULL);
 
     // Figure out where the player will be on-screen.
-    auto player_scr_coord = (player.pos - turn.map_corner) * turn.map.scale;
+    auto player_scr_coord = (player.pos - turn.map_corner) * turn.map->scale;
 
     // Render the path of the player (if applicable).
     if(turn.render_active_player_path)
     {
-      auto move_delta = moving_delta(turn.state);
+      auto move = moving_delta(turn.state);
 
       SDL_SetRenderDrawColor(g.renderer, 0x00, 0x77, 0x00, 0xff);
       SDL_RenderDrawLine(g.renderer, player_scr_coord.x, player_scr_coord.y,
-                         player_scr_coord.x + (move_delta.x * turn.map.scale),
-                         player_scr_coord.y + (move_delta.y * turn.map.scale));
+                         player_scr_coord.x + (move.x * turn.map->scale),
+                         player_scr_coord.y + (move.y * turn.map->scale));
     }
 
     // Render the character.
@@ -224,6 +225,6 @@ namespace game
     SDL_RenderFillRect(g.renderer, &rect);
 
     // Render the mini map.
-    render_as_minimap(g, sprites, turn.map, {5,5});
+    render_as_minimap(g, sprites, *turn.map, {5,5});
   }
 }

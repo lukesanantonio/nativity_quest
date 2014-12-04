@@ -3,6 +3,8 @@
  * All rights reserved.
  */
 #pragma once
+#include <memory>
+
 #include "SDL.h"
 
 #include "../Graphics_Desc.h"
@@ -30,7 +32,7 @@ namespace game
               std::string const& zones_file) noexcept;
 
     Item_Parser items;
-    Map map;
+    std::shared_ptr<Map> map;
 
     pong::Label<std::string> zone_label;
 
