@@ -8,6 +8,7 @@
 
 #include "except.h"
 #include "rapidjson/filereadstream.h"
+#include "rapidjson/error/en.h"
 namespace game
 {
   struct File_Wrapper
@@ -36,7 +37,9 @@ namespace game
 
     if(doc.HasParseError())
     {
-      throw Bad_Asset{"Error code: " + std::to_string(doc.GetParseError())};
+      throw Bad_Asset{filename, "Err at pos " +
+                      std::to_string(doc.GetErrorOffset()) + ". " +
+                      rapidjson::GetParseError_En(doc.GetParseError())};
     }
 
     return doc;
