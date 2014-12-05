@@ -7,7 +7,7 @@
 #include "../render.h"
 
 #include <cmath>
-#define PI 3.14159
+#define PI 3.1415926535
 
 namespace game
 {
@@ -207,9 +207,9 @@ namespace game
     auto player_scr_coord = (player.pos - turn.map_corner) * turn.map->scale;
 
     // Render the path of the player (if applicable).
+    auto move = moving_delta(turn.state);
     if(turn.render_active_player_path)
     {
-      auto move = moving_delta(turn.state);
 
       SDL_SetRenderDrawColor(g.renderer, 0x00, 0x77, 0x00, 0xff);
       SDL_RenderDrawLine(g.renderer, player_scr_coord.x, player_scr_coord.y,
@@ -218,7 +218,45 @@ namespace game
     }
 
     // Render the character.
-    auto char_info = turn.character.get_sprite_info(0);
+
+    // Determine the character orientation, then the required rotation in
+    // addition to that.
+
+    auto move_unit = normalize(move);
+    auto angle = std::atan2(move_unit.y, move_unit.x);
+
+    auto segment_len = (2 * PI) / 4;
+
+    auto orient = short{0};
+
+    if(segment_len + segment_len / 2 >= angle &&
+       angle >= segment_len - segment_len / 2)
+    {
+      orient = 0;
+      angle = angle - segment_len;
+    }
+    else if(segment_len / 2 >= angle && angle >= -segment_len / 2)
+    {
+      orient = 1;
+      // angle = angle
+    }
+    else if(-segment_len - segment_len / 2 <= angle &&
+            angle <= -segment_len + segment_len / 2)
+    {
+      orient = 2;
+      angle = angle - -segment_len;
+    }
+    else if(angle >= 2 * segment_len - segment_len / 2 ||
+            2 * -segment_len + segment_len / 2 >= angle)
+    {
+      orient = 3;
+      if(angle > 0)
+        angle = angle - segment_len * 2;
+      else
+        angle = angle - -segment_len * 2;
+    }
+
+    auto char_info = turn.character.get_sprite_info(orient);
 
     SDL_Rect char_src;
     char_src.x = char_info.src.pos.x;
@@ -239,9 +277,14 @@ namespace game
     char_dest.w = char_info.src.width * turn.map->scale * char_info.scale;
     char_dest.h = char_info.src.height * turn.map->scale * char_info.scale;
 
+    SDL_Point char_center;
+    char_center.x = char_info.center.x * turn.map->scale * char_info.scale;
+    char_center.y = char_info.center.y * turn.map->scale * char_info.scale;
+
     Sprite char_sprite = sprites.get_sprite(char_info.sprite);
-    SDL_RenderCopy(g.renderer, char_sprite->texture(g.renderer), &char_src,
-                   &char_dest);
+    SDL_RenderCopyEx(g.renderer, char_sprite->texture(g.renderer),
+                     &char_src, &char_dest,
+                     angle / PI * 180, &char_center, SDL_FLIP_NONE);
 
     // Render the mini map.
     render_as_minimap(g, sprites, *turn.map, {5,5});
