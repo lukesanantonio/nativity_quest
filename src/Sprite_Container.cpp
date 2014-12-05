@@ -67,6 +67,13 @@ namespace game
         sprites_.emplace_back(std::make_shared<Sprite_Impl>(id, str, file));
       }
     }
+
+    // Set up a color key for each sprite.
+    for(auto sprite : sprites_)
+    {
+      auto sf = sprite->surface();
+      SDL_SetColorKey(sf, SDL_TRUE, SDL_MapRGB(sf->format, 0xff, 0x00, 0xff));
+    }
   }
 
   Sprite Sprite_Container::get_sprite(sprite_id id) const noexcept
