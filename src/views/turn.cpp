@@ -7,7 +7,6 @@
 #include "../render.h"
 
 #include <cmath>
-#include <iostream>
 #define PI 3.14159
 
 namespace game
