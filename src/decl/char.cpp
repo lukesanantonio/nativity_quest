@@ -12,11 +12,12 @@ namespace game
     {
       auto doc = parse_json(json_file);
 
-      if(!has_json_members(doc, {"sprite", "width", "height", "decl"}))
+      if(!has_json_members(doc,
+                           {"sprite", "scale", "width", "height", "decl"}))
       {
-        throw Bad_Asset{json_file, "Missing members 'sprite', 'width', "
-                                   "'height', 'decl' or a combination of "
-                                   "these."};
+        throw Bad_Asset{json_file, "Missing members 'sprite', 'scale', "
+                                   "'width', 'height', 'decl' or a "
+                                   "combination of these."};
       }
 
       auto const& decl_arr = doc["decl"];
@@ -26,6 +27,9 @@ namespace game
         auto& info = infos_[index];
 
         info.sprite.assign(doc["sprite"].GetString());
+
+        info.scale = doc["scale"].GetDouble();
+
         info.src.width = doc["width"].GetInt();
         info.src.height = doc["height"].GetInt();
 

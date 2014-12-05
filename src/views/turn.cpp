@@ -219,12 +219,30 @@ namespace game
     }
 
     // Render the character.
-    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
-    SDL_Rect rect;
-    rect.x = player_scr_coord.x - 25;
-    rect.y = player_scr_coord.y - 25;
-    rect.w = 50; rect.h = 50;
-    SDL_RenderFillRect(g.renderer, &rect);
+    auto char_info = turn.character.get_sprite_info(0);
+
+    SDL_Rect char_src;
+    char_src.x = char_info.src.pos.x;
+    char_src.y = char_info.src.pos.y;
+    char_src.w = char_info.src.width;
+    char_src.h = char_info.src.height;
+
+    SDL_Rect char_dest;
+    char_dest.x = player_scr_coord.x;
+    char_dest.y = player_scr_coord.y;
+
+    // The center point of the sprite should be the player position.
+    char_dest.x -= char_info.center.x * turn.map->scale * char_info.scale;
+    char_dest.y -= char_info.center.y * turn.map->scale * char_info.scale;
+
+    // The width is scaled first by the map scale, then by the sprite-specific
+    // scale.
+    char_dest.w = char_info.src.width * turn.map->scale * char_info.scale;
+    char_dest.h = char_info.src.height * turn.map->scale * char_info.scale;
+
+    Sprite char_sprite = sprites.get_sprite(char_info.sprite);
+    SDL_RenderCopy(g.renderer, char_sprite->texture(g.renderer), &char_src,
+                   &char_dest);
 
     // Render the mini map.
     render_as_minimap(g, sprites, *turn.map, {5,5});

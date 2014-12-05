@@ -12,6 +12,9 @@ namespace game
   struct Char_Info
   {
     std::string sprite;
+
+    double scale;
+
     Volume<int> src;
     Vec<int> center;
   };
