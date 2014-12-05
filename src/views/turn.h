@@ -11,6 +11,8 @@
 #include "../Map.h"
 #include "../Sprite_Container.h"
 
+#include "../decl/char.h"
+
 #include "pong/render/widgets/Label.h"
 
 #include <boost/variant.hpp>
@@ -29,7 +31,9 @@ namespace game
   struct Turn_Data
   {
     Turn_Data(std::string const& items_file,
-              std::string const& zones_file) noexcept;
+              std::string const& zones_file,
+              std::string const& char_file);
+
 
     Item_Parser items;
     std::shared_ptr<Map> map;
@@ -41,6 +45,8 @@ namespace game
 
     // map coordinates.
     Vec<int> map_corner;
+
+    Character_Parser character;
 
     void update_zone() noexcept;
     void next_player() noexcept;

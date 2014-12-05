@@ -13,10 +13,12 @@
 namespace game
 {
   Turn_Data::Turn_Data(std::string const& items_file,
-                       std::string const& zones_file) noexcept
+                       std::string const& zones_file,
+                       std::string const& char_file)
                        : items(items_file),
                          map{std::make_shared<Map>(zones_file, items)},
-                         player(0), state(Waiting_Data{}), map_corner{}
+                         player(0), state(Waiting_Data{}), map_corner{},
+                         character{char_file}
   {
     zone_label.text_height(35);
     zone_label.text_color({0x00, 0x00, 0x00, 0xff});

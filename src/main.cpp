@@ -17,6 +17,7 @@
 
 #define SPRITES_JSON "assets/sprites.json"
 
+#define CHAR_JSON "assets/char.json"
 #define ITEMS_JSON "assets/items.json"
 #define ZONES_JSON "assets/zones.json"
 
@@ -35,7 +36,7 @@ int main(int argc, char** argv)
     game::State state;
     state.running = true;
     state.type = game::View::Turn;
-    state.state_data = game::Turn_Data{ITEMS_JSON, ZONES_JSON};
+    state.state_data = game::Turn_Data{ITEMS_JSON, ZONES_JSON, CHAR_JSON};
 
     while(state.running)
     {

@@ -1,0 +1,13 @@
+{
+  "sprite":"player",
+
+  "width":32,
+  "height":48,
+
+  "decl":[
+    {"start": {"x": 0, "y":   0}, "center": {"x": 16", y":  45}},
+    {"start": {"x": 0, "y":  96}, "center": {"x": 14", y": 141}},
+    {"start": {"x": 0, "y": 144}, "center": {"x": 16", y": 189}},
+    {"start": {"x": 0, "y":  48}, "center": {"x": 18", y":  93}}
+  ]
+}
