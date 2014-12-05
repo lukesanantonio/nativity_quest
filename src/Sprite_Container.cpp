@@ -53,8 +53,9 @@ namespace game
         // Check the validity of each provided object.
         if(!has_json_members(*iter, {"id", "str", "file"}))
         {
-          throw Bad_Json{"Element " + std::to_string(elem) + " is an invalid" +
-                         " asset object"};
+          throw Bad_Asset{filename, "Element " + std::to_string(elem) +
+                          " is an invalid " +
+                          "asset object"};
         }
 
         // Get the individual members.

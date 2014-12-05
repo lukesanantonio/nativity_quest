@@ -6,14 +6,12 @@
 #include <functional>
 #include <string>
 #include <vector>
+
+#include "except.h"
+
 #include "rapidjson/document.h"
 namespace game
 {
-  struct Bad_Json
-  {
-    std::string diagnostic;
-  };
-
   rapidjson::Document parse_json(std::string const& filename);
 
   bool has_json_members(rapidjson::Value const&,

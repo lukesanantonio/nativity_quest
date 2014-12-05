@@ -36,7 +36,7 @@ namespace game
 
     if(doc.HasParseError())
     {
-      throw Bad_Json{"Error code: " + std::to_string(doc.GetParseError())};
+      throw Bad_Asset{"Error code: " + std::to_string(doc.GetParseError())};
     }
 
     return doc;
