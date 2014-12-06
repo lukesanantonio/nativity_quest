@@ -114,6 +114,7 @@ namespace game
 
         // Move the player.
         player.pos += move_delta;
+        unfog(player, 20);
         // Mark some distance traveled.
         data.delta -= move_delta;
 
@@ -286,6 +287,10 @@ namespace game
     SDL_RenderCopyEx(g.renderer, char_sprite->texture(g.renderer),
                      &char_src, &char_dest,
                      angle / PI * 180, &char_center, SDL_FLIP_NONE);
+
+    // Render the fog of war of the current player.
+    SDL_RenderCopy(g.renderer, player.fog.texture(g.renderer),
+                   &viewport_src, NULL);
 
     // Render the mini map.
     render_as_minimap(g, sprites, *turn.map, {5,5});

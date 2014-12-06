@@ -25,8 +25,8 @@ namespace game
   {
     Map(std::string const& zone_json, Item_Parser const&);
 
-    std::array<Player, 6> players;
     Zone_Parser zones;
+    std::array<Player, 6> players;
 
     double scale; // screen pixels / map pixel
     double mini_scale; // screen pixels / map pixel
