@@ -5,22 +5,21 @@
 #include "Player.h"
 
 #include "util/pi.h"
-
 namespace game
 {
-  Player::Player(Vec<int> extents) noexcept
+  void reset_fog(Player& p, Vec<int> extents) noexcept
   {
-    fog.reset(SDL_CreateRGBSurface(0, extents.x, extents.y,
-                                   32,
-                                   0xff000000,
-                                   0x00ff0000,
-                                   0x0000ff00,
-                                   0x000000ff));
-    if(fog.surface())
+    p.fog.reset(SDL_CreateRGBSurface(0, extents.x, extents.y,
+                                     32,
+                                     0xff000000,
+                                     0x00ff0000,
+                                     0x0000ff00,
+                                     0x000000ff));
+    if(p.fog.surface())
     {
-      auto pixel = (uint8_t*) fog.surface()->pixels;
-      const auto bpp = fog.surface()->format->BytesPerPixel;
-      for(int i = 0; i < fog.surface()->pitch * extents.y / bpp; ++i)
+      auto pixel = (uint8_t*) p.fog.surface()->pixels;
+      const auto bpp = p.fog.surface()->format->BytesPerPixel;
+      for(int i = 0; i < p.fog.surface()->pitch * extents.y / bpp; ++i)
       {
         *(uint32_t*) pixel = 0x000000ff;
         pixel += bpp;
@@ -28,7 +27,7 @@ namespace game
     }
   }
 
-  void unfog(Player& p, int radius) noexcept
+  void unfog(Player& p) noexcept
   {
     // Sketch a the border of a circle than do a flood fill.
     if(!p.fog.surface()) return;
@@ -38,9 +37,9 @@ namespace game
 
     auto clear_color = 0x00000000;
 
-    auto right = Vec<double>{radius, 0};
+    auto right = Vec<double>{p.view_radius, 0};
 
-    auto end_iter = int(std::round(2 * PI * radius));
+    auto end_iter = int(std::round(2 * PI * p.view_radius));
     for(int iter = 0; iter < end_iter; ++iter)
     {
       auto endpt = rotate(right, (2 * PI / end_iter) * iter);

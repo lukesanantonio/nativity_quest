@@ -15,15 +15,15 @@ namespace game
 {
   struct Player
   {
-    explicit Player(Vec<int> extents) noexcept;
-
     // Position on the map.
     Vec<double> pos;
 
     std::array<Item, 6> inventory;
 
+    double view_radius = 55.0;
     Sprite_Impl fog;
   };
 
-  void unfog(Player& p, int radius) noexcept;
+  void reset_fog(Player&, Vec<int> extents) noexcept;
+  void unfog(Player&) noexcept;
 }

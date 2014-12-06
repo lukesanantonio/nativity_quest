@@ -23,6 +23,12 @@ namespace game
     zone_label.text_height(35);
     zone_label.text_color({0x00, 0x00, 0x00, 0xff});
 
+    for(auto& player : map->players)
+    {
+      reset_fog(player, map->zones.get_map_extents());
+      player.view_radius = 55.0;
+    }
+
     map->players[player].pos = {500, 0};
     map->scale = 3.5;
     map->mini_scale = .25;
@@ -114,7 +120,7 @@ namespace game
 
         // Move the player.
         player.pos += move_delta;
-        unfog(player, 20);
+        unfog(player);
         // Mark some distance traveled.
         data.delta -= move_delta;
 
