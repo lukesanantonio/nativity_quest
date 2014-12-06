@@ -40,6 +40,8 @@ namespace game
     Zone get_zone(Vec<int> pos) const noexcept;
 
     inline std::string map_asset() const noexcept;
+
+    inline Vec<int> get_map_extents() const noexcept;
   private:
     std::vector<Zone> zones_;
 
@@ -51,6 +53,10 @@ namespace game
   inline std::string Zone_Parser::map_asset() const noexcept
   {
     return map_asset_;
+  }
+  inline Vec<int> Zone_Parser::get_map_extents() const noexcept
+  {
+    return {zone_decl_->w, zone_decl_->h};
   }
 
   namespace no
