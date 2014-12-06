@@ -110,8 +110,7 @@ namespace game
       auto zone = Zone_Impl{"Unknown", no::item, 0, false, 0, 0.0};
 
       // Set the str.
-      zone.str.assign((*iter)["str"].GetString(),
-                      (*iter)["str"].GetStringLength());
+      zone.str.assign((*iter)["str"].GetString());
 
       // Set the color
       zone.color = (*iter)["color"].GetInt();
