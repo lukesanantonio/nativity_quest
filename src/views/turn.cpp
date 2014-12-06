@@ -6,8 +6,9 @@
 
 #include "../render.h"
 
+#include "../util/pi.h"
+
 #include <cmath>
-#define PI 3.1415926535
 
 namespace game
 {
