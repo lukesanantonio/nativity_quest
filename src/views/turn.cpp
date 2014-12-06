@@ -21,7 +21,7 @@ namespace game
                          character{char_file}
   {
     zone_label.text_height(35);
-    zone_label.text_color({0x00, 0x00, 0x00, 0xff});
+    zone_label.text_color({0x88, 0x88, 0x88, 0xff});
 
     for(auto& player : map->players)
     {
@@ -120,7 +120,10 @@ namespace game
 
         // Move the player.
         player.pos += move_delta;
+
         unfog(player);
+        turn.update_zone();
+
         // Mark some distance traveled.
         data.delta -= move_delta;
 
@@ -300,5 +303,16 @@ namespace game
 
     // Render the mini map.
     render_as_minimap(g, sprites, *turn.map, {5,5});
+
+    // Render the zone text.
+    turn.zone_label.font_face(&g.font.face);
+    turn.zone_label.rasterizer(&g.font.raster);
+
+    auto label_pos = turn.zone_label.position();
+    label_pos.x = g.get_width() - turn.zone_label.surface_width() - 10;
+    label_pos.y = 10;
+    turn.zone_label.position(label_pos);
+
+    turn.zone_label.render(g.renderer);
   }
 }
