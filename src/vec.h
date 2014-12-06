@@ -45,6 +45,18 @@ namespace game
     return result;
   }
 
+  // fun stuff
+  template <typename P, typename Angle_T>
+  inline auto rotate(Vec<P> const& vec, Angle_T angle) noexcept -> Vec<P>
+  {
+    auto ret = Vec<P>{};
+
+    ret.x = (vec.x * std::cos(angle)) - (vec.y * std::sin(angle));
+    ret.y = (vec.x * std::sin(angle)) + (vec.y * std::cos(angle));
+
+    return ret;
+  }
+
   // addition
   template <typename P1, typename P2> inline auto
   operator+(Vec<P1> const& lhs, Vec<P2> const& rhs) noexcept -> decltype(auto)
