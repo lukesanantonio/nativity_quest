@@ -11,10 +11,22 @@
 #include "util/json.h"
 namespace game
 {
+  Sprite_Impl::Sprite_Impl(SDL_Surface* srf) noexcept
+                           : id{0}, str{""}
+  {
+    init_cache();
+    reset(srf);
+  }
   Sprite_Impl::Sprite_Impl(int id,
                            std::string const& str,
                            std::string const& sprite_filename) noexcept
                            : id(id), str(str)
+  {
+    init_cache();
+    reset(IMG_Load(sprite_filename.c_str()));
+  }
+
+  void Sprite_Impl::init_cache() noexcept
   {
     img_.gen_func([](auto ptr, auto surface, auto renderer) -> Texture_Ptr
     {
@@ -22,8 +34,11 @@ namespace game
       return
       Texture_Ptr{SDL_CreateTextureFromSurface(renderer, surface.get())};
     });
+  }
 
-    img_.grab_dependency<0>().reset(IMG_Load(sprite_filename.c_str()));
+  void Sprite_Impl::reset(SDL_Surface* srf) noexcept
+  {
+    img_.grab_dependency<0>().reset(srf);
     img_.invalidate();
   }
 

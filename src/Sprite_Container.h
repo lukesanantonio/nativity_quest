@@ -16,14 +16,19 @@ namespace game
 {
   struct Sprite_Impl
   {
+    Sprite_Impl(SDL_Surface* srf = nullptr) noexcept;
     Sprite_Impl(int, std::string const&, std::string const&) noexcept;
 
     int id;
     std::string str;
 
+    void reset(SDL_Surface* srf) noexcept;
+
     SDL_Surface* surface() const noexcept;
     SDL_Texture* texture(SDL_Renderer*) const noexcept;
   private:
+    void init_cache() noexcept;
+
     mutable pong::Cache_With_Deleter<SDL_Texture, Texture_Deleter,
                                      Shared_Surface_Ptr, SDL_Renderer*> img_;
   };
