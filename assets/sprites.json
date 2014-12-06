@@ -1,4 +1,5 @@
 [
   {"id": 1, "str":"player", "file":"assets/char.png"},
+  {"id": 2, "str":"chest", "file":"assets/chest.png"},
   {"id": 3, "str":"map", "file":"assets/map.png"}
 ]
