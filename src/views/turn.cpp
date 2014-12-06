@@ -297,6 +297,28 @@ namespace game
                      &char_src, &char_dest,
                      angle / PI * 180, &char_center, SDL_FLIP_NONE);
 
+    // Render any chests.
+    auto chest_sprite = sprites.get_sprite("chest");
+
+    for(auto const& chest : turn.map->chests)
+    {
+      auto chest_extent =
+              Vec<int>{chest_sprite->surface()->w, chest_sprite->surface()->h};
+
+      SDL_Rect chest_dest;
+      chest_dest.x = chest.pos.x - turn.map_corner.x - chest_extent.x / 2;
+      chest_dest.y = chest.pos.y - turn.map_corner.y - chest_extent.y / 2;
+
+      // Scale to the viewport
+      chest_dest.x *= turn.map->scale;
+      chest_dest.y *= turn.map->scale;
+
+      chest_dest.w = chest_sprite->surface()->w * turn.map->scale;
+      chest_dest.h = chest_sprite->surface()->h * turn.map->scale;
+      SDL_RenderCopy(g.renderer, chest_sprite->texture(g.renderer),
+                     NULL, &chest_dest);
+    }
+
     // Render the fog of war of the current player.
     SDL_RenderCopy(g.renderer, player.fog.texture(g.renderer),
                    &viewport_src, NULL);

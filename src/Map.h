@@ -16,6 +16,11 @@ namespace game
 
   using player_id = short;
 
+  struct Chest
+  {
+    Vec<int> pos;
+  };
+
   /*!
    * \brief Represents a map image separated into zones housing 6 players.
    *
@@ -30,5 +35,7 @@ namespace game
 
     double scale; // screen pixels / map pixel
     double mini_scale; // screen pixels / map pixel
+
+    std::vector<Chest> chests;
   };
 }
