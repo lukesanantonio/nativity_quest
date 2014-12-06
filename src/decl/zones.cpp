@@ -27,6 +27,7 @@ namespace game
       boost::optional<Item> required_item;
       boost::optional<short> speed_cost;
       boost::optional<bool> important;
+      boost::optional<double> spawn_mod;
     };
 
     Zone_Class parse_class(Item_Parser const& items,
@@ -55,6 +56,11 @@ namespace game
         c.important = val.GetBool();
       });
 
+      if_has_member(val, "item_spawn_modifier", [&c](auto const& val)
+      {
+        c.spawn_mod = val.GetDouble();
+      });
+
       return c;
     }
 
@@ -63,6 +69,7 @@ namespace game
       if(cl.required_item) zone.required_item = cl.required_item.value();
       if(cl.speed_cost) zone.speed_cost = cl.speed_cost.value();
       if(cl.important) zone.important = cl.important.value();
+      if(cl.spawn_mod) zone.item_spawn_modifier = cl.spawn_mod.value();
     }
   }
   Zone_Parser::Zone_Parser(std::string const& json, Item_Parser const& items)
@@ -100,7 +107,7 @@ namespace game
       }
 
       // Set defaults
-      auto zone = Zone_Impl{"Unknown", no::item, 0, false, 0};
+      auto zone = Zone_Impl{"Unknown", no::item, 0, false, 0, 0.0};
 
       // Set the str.
       zone.str.assign((*iter)["str"].GetString(),

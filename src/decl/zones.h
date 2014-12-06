@@ -29,6 +29,7 @@ namespace game
     short speed_cost;
     bool important;
     short color;
+    double item_spawn_modifier;
   };
 
   using Zone = std::shared_ptr<const Zone_Impl>;

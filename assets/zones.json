@@ -3,8 +3,10 @@
   "decl":"assets/zones.png",
 
   "classes": [
-    { "str":"Water", "required_item":"Boat", "speed_cost":2 },
-    { "str":"Mountains", "required_item":"Rope", "speed_cost":2 },
+    { "str":"Water", "required_item":"Boat", "speed_cost":2,
+      "item_spawn_modifier":0.1 },
+    { "str":"Mountains", "required_item":"Rope", "speed_cost":2,
+      "item_spawn_modifier":0.6 },
     { "str":"Win", "important":true }
   ],
 
