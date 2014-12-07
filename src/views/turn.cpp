@@ -340,8 +340,11 @@ namespace game
     }
 
     // Render the fog of war of the current player.
-    SDL_RenderCopy(g.renderer, player.fog.texture(g.renderer),
-                   &viewport_src, NULL);
+    if(player.fog.surface())
+    {
+      SDL_RenderCopy(g.renderer, player.fog.texture(g.renderer),
+                     &viewport_src, NULL);
+    }
 
     // Render the mini map.
     render_as_minimap(g, sprites, *turn.map, {5,5});
