@@ -100,6 +100,26 @@ namespace game
 
       Turn_State operator()(Waiting_Data& data) const noexcept
       {
+        auto& player = turn.map->players[turn.player];
+        while(true)
+        {
+          using std::begin; using std::end;
+          auto chest_find = std::find_if(begin(turn.map->chests),
+                                         end(turn.map->chests),
+          [&player](auto const& chest)
+          {
+            auto len = length(player.pos - Vec<double>{chest.pos});
+            return len < player.view_radius;
+          });
+
+          if(chest_find == end(turn.map->chests))
+          {
+            break;
+          }
+
+          turn.map->chests.erase(chest_find);
+        }
+
         return data;
       }
       Turn_State operator()(Moving_Data& data) const noexcept
