@@ -108,7 +108,7 @@ namespace game
                                          end(turn.map->chests),
           [&player](auto const& chest)
           {
-            auto len = length(player.pos - Vec<double>{chest.pos});
+            auto len = length(player.pos - Vec<double>{chest->pos});
             return len < player.view_radius;
           });
 
@@ -326,8 +326,8 @@ namespace game
               Vec<int>{chest_sprite->surface()->w, chest_sprite->surface()->h};
 
       SDL_Rect chest_dest;
-      chest_dest.x = chest.pos.x - turn.map_corner.x - chest_extent.x / 2;
-      chest_dest.y = chest.pos.y - turn.map_corner.y - chest_extent.y / 2;
+      chest_dest.x = chest->pos.x - turn.map_corner.x - chest_extent.x / 2;
+      chest_dest.y = chest->pos.y - turn.map_corner.y - chest_extent.y / 2;
 
       // Scale to the viewport
       chest_dest.x *= turn.map->scale;

@@ -16,10 +16,13 @@ namespace game
 
   using player_id = short;
 
-  struct Chest
+  struct Chest_Impl
   {
+    bool active;
     Vec<int> pos;
   };
+
+  using Chest = std::shared_ptr<const Chest_Impl>;
 
   /*!
    * \brief Represents a map image separated into zones housing 6 players.
