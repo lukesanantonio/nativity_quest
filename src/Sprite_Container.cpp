@@ -84,7 +84,7 @@ namespace game
           // Add this sprite!
           sprites_.push_back({std::make_shared<Sprite_Impl>(id, str, f)});
         }
-        if(has_json_members(*iter, {"animation"}))
+        else if(has_json_members(*iter, {"animation"}))
         {
           auto anim_sprites = std::vector<Sprite>{};
 
