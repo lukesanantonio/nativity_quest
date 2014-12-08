@@ -125,7 +125,11 @@ namespace game
                                        end(turn.map->chests),
         [&player](auto const& chest)
         {
-          auto len = length(player.pos - Vec<double>{chest->pos});
+          // If the chest isn't visible, don't allow it to be opened/found.
+          if(!chest.active) return false;
+
+          // Check if it's a suitable distance.
+          auto len = length(player.pos - Vec<double>{chest.pos});
           return len < player.view_radius;
         });
 
@@ -344,12 +348,16 @@ namespace game
 
     for(auto const& chest : turn.map->chests)
     {
+      // Only render active chests, others have been opened and shouldn't be
+      // shown, TODO make an opened chest sprite.
+      if(!chest.active) continue;
+
       auto chest_extent =
               Vec<int>{chest_sprite->surface()->w, chest_sprite->surface()->h};
 
       SDL_Rect chest_dest;
-      chest_dest.x = chest->pos.x - turn.map_corner.x - chest_extent.x / 2;
-      chest_dest.y = chest->pos.y - turn.map_corner.y - chest_extent.y / 2;
+      chest_dest.x = chest.pos.x - turn.map_corner.x - chest_extent.x / 2;
+      chest_dest.y = chest.pos.y - turn.map_corner.y - chest_extent.y / 2;
 
       // Scale to the viewport
       chest_dest.x *= turn.map->scale;
