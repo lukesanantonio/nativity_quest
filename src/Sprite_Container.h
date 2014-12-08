@@ -47,8 +47,8 @@ namespace game
   {
     Sprite_Container(std::string const& filename) noexcept;
 
-    Sprite get_sprite(sprite_id id) const noexcept;
+    Sprite get_sprite(sprite_id id, int frame = 0) const noexcept;
   private:
-    std::vector<Sprite> sprites_;
+    std::vector<std::vector<Sprite> > sprites_;
   };
 }

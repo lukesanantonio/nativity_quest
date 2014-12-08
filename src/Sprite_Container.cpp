@@ -66,32 +66,60 @@ namespace game
       for(; iter != doc.End(); ++elem, ++iter)
       {
         // Check the validity of each provided object.
-        if(!has_json_members(*iter, {"id", "str", "file"}))
+        if(!has_json_members(*iter, {"id", "str"}))
         {
           throw Bad_Asset{filename, "Element " + std::to_string(elem) +
                           " is an invalid " +
                           "asset object"};
         }
 
-        // Get the individual members.
+        // Get the common members.
         auto id = int{(*iter)["id"].GetInt()};
         auto str = std::string{(*iter)["str"].GetString()};
-        auto file = std::string{(*iter)["file"].GetString()};
 
-        // Add this sprite!
-        sprites_.emplace_back(std::make_shared<Sprite_Impl>(id, str, file));
+        if(has_json_members(*iter, {"file"}))
+        {
+          auto f = std::string{(*iter)["file"].GetString()};
+
+          // Add this sprite!
+          sprites_.push_back({std::make_shared<Sprite_Impl>(id, str, f)});
+        }
+        if(has_json_members(*iter, {"animation"}))
+        {
+          auto anim_sprites = std::vector<Sprite>{};
+
+          auto& anim_doc = (*iter)["animation"];
+          for(auto anim_iter = anim_doc.Begin();
+              anim_iter != anim_doc.End();
+              ++anim_iter)
+          {
+            auto f = std::string{anim_iter->GetString()};
+            anim_sprites.emplace_back(std::make_shared<Sprite_Impl>(id,str,f));
+          }
+
+          sprites_.emplace_back(std::move(anim_sprites));
+        }
+        else
+        {
+          throw Bad_Asset{filename, "Element " + std::to_string(elem) +
+                                    " is neither a sprite or an animation"};
+        }
+
       }
     }
 
     // Set up a color key for each sprite.
-    for(auto sprite : sprites_)
+    for(auto const& sprite_vec : sprites_)
     {
-      auto sf = sprite->surface();
-      SDL_SetColorKey(sf, SDL_TRUE, SDL_MapRGB(sf->format, 0xff, 0x00, 0xff));
+      for(auto sprite : sprite_vec)
+      {
+        auto sf = sprite->surface();
+        SDL_SetColorKey(sf, SDL_TRUE, SDL_MapRGB(sf->format, 0xff, 0x00, 0xff));
+      }
     }
   }
 
-  Sprite Sprite_Container::get_sprite(sprite_id id) const noexcept
+  Sprite Sprite_Container::get_sprite(sprite_id id, int frame) const noexcept
   {
     struct Find_Visitor : boost::static_visitor<bool>
     {
@@ -110,16 +138,18 @@ namespace game
     };
 
     using std::begin; using std::end;
-    auto sprite_find = std::find_if(begin(sprites_), end(sprites_),
-    [id](auto sprite) -> bool
+    auto sprite_vec_find = std::find_if(begin(sprites_), end(sprites_),
+    [id](auto const& sprite_vec) -> bool
     {
-      return boost::apply_visitor(Find_Visitor{sprite}, id);
+      if(sprite_vec.empty()) return false;
+
+      return boost::apply_visitor(Find_Visitor{sprite_vec[0]}, id);
     });
-    if(sprite_find == end(sprites_))
+    if(sprite_vec_find == end(sprites_))
     {
       throw Unknown_Sprite_Error{id};
     }
 
-    return *sprite_find;
+    return (*sprite_vec_find)[frame];
   }
 }
