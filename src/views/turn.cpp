@@ -110,6 +110,7 @@ namespace game
 
       Turn_State operator()(Waiting_Data& data) const noexcept;
       Turn_State operator()(Moving_Data& data) const noexcept;
+      Turn_State operator()(Uncrate_Data& data) const noexcept;
 
       Turn_Data& turn;
     };
@@ -171,6 +172,11 @@ namespace game
         return Waiting_Data{};
       }
 
+      return data;
+    }
+    Turn_State Step_Visitor::operator()(Uncrate_Data& data) const noexcept
+    {
+      ++data.anim_frame;
       return data;
     }
   }

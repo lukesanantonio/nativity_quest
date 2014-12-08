@@ -25,8 +25,12 @@ namespace game
   {
     Vec<double> delta;
   };
+  struct Uncrate_Data
+  {
+    int anim_frame = 0;
+  };
 
-  using Turn_State = boost::variant<Waiting_Data, Moving_Data>;
+  using Turn_State = boost::variant<Waiting_Data, Moving_Data, Uncrate_Data>;
 
   struct Turn_Data
   {
