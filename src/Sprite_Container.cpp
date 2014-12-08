@@ -54,7 +54,7 @@ namespace game
   }
 
   // Sprite_Container
-  Sprite_Container::Sprite_Container(std::string const& filename) noexcept
+  Sprite_Container::Sprite_Container(std::string const& filename)
   {
     // Get the DOM (is that what it's called?)
     auto doc = parse_json(filename);

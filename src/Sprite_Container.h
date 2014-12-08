@@ -45,7 +45,7 @@ namespace game
   // passed around.
   struct Sprite_Container
   {
-    Sprite_Container(std::string const& filename) noexcept;
+    Sprite_Container(std::string const& filename);
 
     Sprite get_sprite(sprite_id id, int frame = 0) const noexcept;
   private:
