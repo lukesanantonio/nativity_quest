@@ -49,125 +49,141 @@ namespace game
     if(++player == map->players.size()) player = 0;
   }
 
-  void handle_event_state(Turn_Data& turn, SDL_Event const& event) noexcept
+  namespace
   {
-    struct Turn_State_Visitor : boost::static_visitor<Turn_State>
+    struct Event_Visitor : boost::static_visitor<Turn_State>
     {
-      Turn_State_Visitor(Turn_Data& turn, SDL_Event const& event) noexcept
-                         : turn(turn), event(event) {}
+      inline Event_Visitor(Turn_Data& turn, SDL_Event const& event) noexcept
+                          : turn(turn), event(event) {}
 
-      Turn_State operator()(Waiting_Data const& data) const noexcept
-      {
-        if(event.type == SDL_MOUSEBUTTONDOWN)
-        {
-          if(event.button.button == SDL_BUTTON_LEFT)
-          {
-            Moving_Data md;
+      Turn_State operator()(Waiting_Data const& data) const noexcept;
 
-            // Get the mouse in screen coordinates.
-            auto mouse = Vec<int>{event.button.x, event.button.y};
-
-            // Use the map scale and current top-left corner to calculate the
-            // map coordinates.
-            auto map_coord = (mouse / turn.map->scale) + turn.map_corner;
-
-            // Calculate our delta movement.
-            md.delta = map_coord - turn.map->players[turn.player].pos;
-
-            return md;
-          }
-        }
-        return data;
-      }
-      Turn_State operator()(Moving_Data const& md) const noexcept
-      {
-        return md;
-      }
+      template <typename Data_T>
+      Turn_State operator()(Data_T const& d) const noexcept;
 
       Turn_Data& turn;
       SDL_Event const& event;
     };
 
-    turn.state = boost::apply_visitor(Turn_State_Visitor{turn, event},
+    Turn_State
+    Event_Visitor::operator()(Waiting_Data const& data) const noexcept
+    {
+      if(event.type == SDL_MOUSEBUTTONDOWN)
+      {
+        if(event.button.button == SDL_BUTTON_LEFT)
+        {
+          Moving_Data md;
+
+          // Get the mouse in screen coordinates.
+          auto mouse = Vec<int>{event.button.x, event.button.y};
+
+          // Use the map scale and current top-left corner to calculate the
+          // map coordinates.
+          auto map_coord = (mouse / turn.map->scale) + turn.map_corner;
+
+          // Calculate our delta movement.
+          md.delta = map_coord - turn.map->players[turn.player].pos;
+
+          return md;
+        }
+      }
+      return data;
+    }
+    template <typename Data_T>
+    Turn_State Event_Visitor::operator()(Data_T const& d) const noexcept
+    {
+      return d;
+    }
+  }
+
+  void handle_event_state(Turn_Data& turn, SDL_Event const& event) noexcept
+  {
+    turn.state = boost::apply_visitor(Event_Visitor{turn, event},
                                       turn.state);
   }
 
-  void step_state(Turn_Data& turn_data) noexcept
+  namespace
   {
-    struct Turn_State_Visitor : boost::static_visitor<Turn_State>
+    struct Step_Visitor : boost::static_visitor<Turn_State>
     {
-      Turn_State_Visitor(Turn_Data& td) noexcept : turn(td) {}
+      Step_Visitor(Turn_Data& td) noexcept : turn(td) {}
 
-      Turn_State operator()(Waiting_Data& data) const noexcept
-      {
-        auto& player = turn.map->players[turn.player];
-        while(true)
-        {
-          using std::begin; using std::end;
-          auto chest_find = std::find_if(begin(turn.map->chests),
-                                         end(turn.map->chests),
-          [&player](auto const& chest)
-          {
-            auto len = length(player.pos - Vec<double>{chest->pos});
-            return len < player.view_radius;
-          });
-
-          if(chest_find == end(turn.map->chests))
-          {
-            break;
-          }
-
-          turn.map->chests.erase(chest_find);
-        }
-
-        return data;
-      }
-      Turn_State operator()(Moving_Data& data) const noexcept
-      {
-        // Player movement!
-
-        auto& player = turn.map->players[turn.player];
-
-        // Find out the distance we have yet to travel.
-        auto delta_len = length(data.delta);
-
-        auto max_len = 1.0;
-
-        // Isolate the direction.
-        auto unit_delta = normalize<>(data.delta);
-        // How much do we move this step?
-        auto move_delta = unit_delta * std::min(max_len, delta_len);
-
-        // Move the player.
-        player.pos += move_delta;
-
-        unfog(player);
-        turn.update_zone();
-
-        // Mark some distance traveled.
-        data.delta -= move_delta;
-
-        // If we have less than the max units per step, it means we just
-        // completed that and we can become static.
-        if(delta_len < max_len)
-        {
-          //turn.next_player();
-          return Waiting_Data{};
-        }
-
-        return data;
-      }
+      Turn_State operator()(Waiting_Data& data) const noexcept;
+      Turn_State operator()(Moving_Data& data) const noexcept;
 
       Turn_Data& turn;
     };
 
-    turn_data.state = boost::apply_visitor(Turn_State_Visitor{turn_data},
+    Turn_State Step_Visitor::operator()(Waiting_Data& data) const noexcept
+    {
+      auto& player = turn.map->players[turn.player];
+      while(true)
+      {
+        using std::begin; using std::end;
+        auto chest_find = std::find_if(begin(turn.map->chests),
+                                       end(turn.map->chests),
+        [&player](auto const& chest)
+        {
+          auto len = length(player.pos - Vec<double>{chest->pos});
+          return len < player.view_radius;
+        });
+
+        if(chest_find == end(turn.map->chests))
+        {
+          break;
+        }
+
+        turn.map->chests.erase(chest_find);
+      }
+
+      return data;
+    }
+    Turn_State Step_Visitor::operator()(Moving_Data& data) const noexcept
+    {
+      // Player movement!
+
+      auto& player = turn.map->players[turn.player];
+
+      // Find out the distance we have yet to travel.
+      auto delta_len = length(data.delta);
+
+      auto max_len = 1.0;
+
+      // Isolate the direction.
+      auto unit_delta = normalize<>(data.delta);
+      // How much do we move this step?
+      auto move_delta = unit_delta * std::min(max_len, delta_len);
+
+      // Move the player.
+      player.pos += move_delta;
+
+      unfog(player);
+      turn.update_zone();
+
+      // Mark some distance traveled.
+      data.delta -= move_delta;
+
+      // If we have less than the max units per step, it means we just
+      // completed that and we can become static.
+      if(delta_len < max_len)
+      {
+        //turn.next_player();
+        return Waiting_Data{};
+      }
+
+      return data;
+    }
+  }
+
+  void step_state(Turn_Data& turn_data) noexcept
+  {
+    turn_data.state = boost::apply_visitor(Step_Visitor{turn_data},
                                            turn_data.state);
   }
 
   namespace
   {
-    struct Delta_Turn_State_Visitor : boost::static_visitor<Vec<double> >
+    struct Delta_Visitor : boost::static_visitor<Vec<double> >
     {
       template <typename T>
       Vec<double> operator()(T const&) const noexcept
@@ -184,7 +200,7 @@ namespace game
 
   Vec<double> moving_delta(Turn_State const& data) noexcept
   {
-    return boost::apply_visitor(Delta_Turn_State_Visitor{}, data);
+    return boost::apply_visitor(Delta_Visitor{}, data);
   }
 
   void render_state(Graphics_Desc& g, Sprite_Container& sprites,
