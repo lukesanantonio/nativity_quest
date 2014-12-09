@@ -19,6 +19,13 @@ namespace game
     T y;
   };
 
+  // comparison operator
+  template <typename P1, typename P2>
+  inline auto operator==(Vec<P1> const& p1, Vec<P2> const& p2) noexcept -> bool
+  {
+    return p1.x == p2.x && p1.y == p2.y;
+  }
+
   template <typename ret_t = double, typename P>
   inline ret_t length(Vec<P> const& vec) noexcept
   {
