@@ -138,7 +138,7 @@ namespace game
           break;
         }
 
-        turn.map->chests.erase(chest_find);
+        return Uncrate_Data{*chest_find, Waiting_Data{}};
       }
 
       return data;
@@ -180,7 +180,28 @@ namespace game
     }
     Turn_State Step_Visitor::operator()(Uncrate_Data& data) const noexcept
     {
-      ++data.anim_frame;
+      // TODO Get these constants from json or something.
+      constexpr auto max_frame = 4;
+      constexpr auto frames_between = 45;
+      constexpr auto frames_end = 90;
+
+      if(data.anim_frame == max_frame)
+      {
+        if(++data.intermediate_counter == frames_end)
+        {
+          data.chest.active = false;
+          return data.after_state;
+        }
+      }
+      else if(++data.intermediate_counter == frames_between)
+      {
+        ++data.anim_frame;
+        data.intermediate_counter = 0;
+      }
+      else
+      {
+        ++data.intermediate_counter;
+      }
       return data;
     }
   }
@@ -389,5 +410,30 @@ namespace game
     turn.zone_label.position(label_pos);
 
     turn.zone_label.render(g.renderer);
+
+    // If we are uncrating something currently.
+    if(turn.state.which() == 2)
+    {
+      Uncrate_Data const& uncrate = boost::get<Uncrate_Data>(turn.state);
+
+      // Render the large crate in the center of the screen.
+      Sprite chest_spr =
+        sprites.get_sprite("chest",
+                           uncrate.anim_frame < 4 ? uncrate.anim_frame : 3);
+
+      // Center the large chest.
+      SDL_Rect chest_dest;
+      chest_dest.w = g.get_width() / 2;
+      chest_dest.h = g.get_height() / 2;
+      chest_dest.x = g.get_width() / 2 - chest_dest.w / 2;
+      chest_dest.y = g.get_height() / 2 - chest_dest.h / 2;
+      SDL_RenderCopy(g.renderer, chest_spr->texture(g.renderer),
+                     NULL, &chest_dest);
+
+      if(uncrate.anim_frame == 4)
+      {
+        // Render the item atop everything just about as big.
+      }
+    }
   }
 }

@@ -25,12 +25,23 @@ namespace game
   {
     Vec<double> delta;
   };
+
+  struct Uncrate_Data;
+
+  using Turn_State = boost::variant<Waiting_Data, Moving_Data,
+                                    boost::recursive_wrapper<Uncrate_Data> >;
+
   struct Uncrate_Data
   {
+    Chest& chest;
+
+    Turn_State after_state;
+
     int anim_frame = 0;
+    int intermediate_counter = 0;
+
   };
 
-  using Turn_State = boost::variant<Waiting_Data, Moving_Data, Uncrate_Data>;
 
   struct Turn_Data
   {
