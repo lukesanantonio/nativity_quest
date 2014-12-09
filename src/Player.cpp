@@ -15,11 +15,13 @@ namespace game
                                      0x00ff0000,
                                      0x0000ff00,
                                      0x000000ff));
-    if(p.fog.surface())
+
+    auto surf = p.fog.surface();
+    if(surf)
     {
-      auto pixel = (uint8_t*) p.fog.surface()->pixels;
-      const auto bpp = p.fog.surface()->format->BytesPerPixel;
-      for(int i = 0; i < p.fog.surface()->pitch * extents.y / bpp; ++i)
+      auto pixel = (uint8_t*) surf->pixels;
+      const auto bpp = surf->format->BytesPerPixel;
+      for(int i = 0; i < surf->pitch * extents.y / bpp; ++i)
       {
         *(uint32_t*) pixel = 0x000000ff;
         pixel += bpp;
@@ -35,14 +37,24 @@ namespace game
     SDL_Surface* fog = p.fog.surface();
     p.fog.texture(nullptr);
 
-    constexpr auto clear_color = 0x00000000;
+    // This function clears the specified pixel of the fog surface.
+    auto clear_pixel = [fog, &p](Vec<int> pt)
+    {
+      constexpr auto clear_color = 0x00000000;
+
+      auto pixel_byte_ptr = (uint8_t*) fog->pixels;
+      pixel_byte_ptr += fog->pitch * int(pt.y + p.pos.y);
+      pixel_byte_ptr += fog->format->BytesPerPixel * int(pt.x + p.pos.x);
+
+      uint32_t* pixel_ptr = (uint32_t*) pixel_byte_ptr;
+      *pixel_ptr = clear_color;
+    };
+
     const auto right_vec = Vec<double>{p.view_radius, 0};
 
-    std::vector<Vec<int> > pts;
-
-    // Push the player position (or at least is the position of the player
-    // relative to the current player position).
-    pts.push_back({0,0});
+    // Clear the player position (relative to player, so 0,0 works).
+    auto last_pt = Vec<int>{0,0};
+    clear_pixel(last_pt);
 
     // Circumference of the field of view.
     auto circum = int(std::round(2 * PI * p.view_radius));
@@ -50,12 +62,13 @@ namespace game
     {
       auto endpt = rotate<double>(right_vec, (2 * PI / circum) * rot_step);
 
-      // Push the endpoint or border point. Since we already pushed the player
-      // position we know that at the very least, the endpoints of the circle
-      // (center + border) will be changed to a clear color. All of the others
-      // in between will be easier to obtain now that we know we don't have to
-      // worry about the extremes.
-      pts.push_back(endpt);
+      // Since we already cleared the player position we know that at the very
+      // least, the endpoints of the circle (center + border) will be changed
+      // to the correct color. All of the other points in between will be
+      // easier to get to now that we know we don't have to worry about the
+      // extremes.
+      clear_pixel(endpt);
+      last_pt = endpt;
 
       auto endpt_length = length(endpt);
       for(auto ray_len = 0.0; ray_len < endpt_length;)
@@ -69,23 +82,12 @@ namespace game
 
         // Only add the point if it wasn't added last iteration, since that
         // means we haven't actually moved pixels at all.
-        if(pts.back() == inter_pt) continue;
+        if(last_pt == inter_pt) continue;
 
-        pts.push_back(inter_pt);
-
+        // Clear the pixel and record the point last cleared.
+        clear_pixel(inter_pt);
+        last_pt = inter_pt;
       }
-    }
-
-    // A flood fill would have better results but this works too, sorta.
-    // For every point on the circle, set to a clear color.
-    for(auto const& clear_pt : pts)
-    {
-      auto pixel_byte_ptr = (uint8_t*) fog->pixels;
-      pixel_byte_ptr += fog->pitch * int(clear_pt.y + p.pos.y);
-      pixel_byte_ptr += fog->format->BytesPerPixel * int(clear_pt.x + p.pos.x);
-
-      uint32_t* pixel_ptr = (uint32_t*) pixel_byte_ptr;
-      *pixel_ptr = clear_color;
     }
   }
 }
