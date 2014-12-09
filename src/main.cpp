@@ -47,7 +47,7 @@ int main(int argc, char** argv)
       // Everything updates 60 times per second (16 ms/frame).
       if(!timer.has_been(std::chrono::milliseconds(16)))
       {
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
         continue;
       }
 
