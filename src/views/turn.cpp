@@ -29,7 +29,9 @@ namespace game
       player.view_radius = 55.0;
     }
 
-    map->players[player].pos = {500, 0};
+    map->players[player].pos = {500, 500};
+    unfog(map->players[player]);
+
     map->scale = 3.5;
     map->mini_scale = .25;
 
