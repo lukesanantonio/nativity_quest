@@ -26,7 +26,7 @@ namespace game
     for(auto& player : map->players)
     {
       reset_fog(player, map->zones.get_map_extents());
-      player.view_radius = 55.0;
+      player.view_radius = 75.0;
     }
 
     map->players[player].pos = {500, 500};
