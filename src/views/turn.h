@@ -63,9 +63,6 @@ namespace game
 
     Character_Parser character;
 
-    void update_zone() noexcept;
-    void next_player() noexcept;
-
     bool render_active_player_path = true;
   };
 

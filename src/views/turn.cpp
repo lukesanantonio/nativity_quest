@@ -12,6 +12,24 @@
 
 namespace game
 {
+  namespace
+  {
+    Zone update_zone(Turn_Data& turn) noexcept
+    {
+      auto& active_player = turn.map->players[turn.player];
+
+      auto zone = turn.map->zones.get_zone(Vec<int>{active_player.pos});
+      turn.zone_label.data(zone ? zone->str : "Unknown");
+
+      return zone;
+    }
+
+    void next_player(Turn_Data& turn) noexcept
+    {
+      if(++turn.player == turn.map->players.size()) turn.player = 0;
+    }
+  }
+
   Turn_Data::Turn_Data(std::string const& items_file,
                        std::string const& zones_file,
                        std::string const& char_file)
@@ -35,20 +53,7 @@ namespace game
     map->scale = 3.5;
     map->mini_scale = .25;
 
-    update_zone();
-  }
-
-  void Turn_Data::update_zone() noexcept
-  {
-    auto& active_player = map->players[player];
-
-    auto zone = map->zones.get_zone(Vec<int>{active_player.pos});
-    zone_label.data(zone ? zone->str : "Unknown");
-  }
-
-  void Turn_Data::next_player() noexcept
-  {
-    if(++player == map->players.size()) player = 0;
+    update_zone(*this);
   }
 
   namespace
@@ -178,7 +183,7 @@ namespace game
       player.pos += move_delta;
 
       unfog(player);
-      turn.update_zone();
+      update_zone(turn);
 
       // Mark some distance traveled.
       data.delta -= move_delta;
