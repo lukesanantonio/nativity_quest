@@ -106,6 +106,19 @@ namespace game
 
   namespace
   {
+    template <typename C>
+    auto find_inventory_space(C& container) noexcept -> decltype(auto)
+    {
+      using std::begin; using std::end;
+      auto no_item_find = std::find_if(begin(container), end(container),
+      [](auto const& i)
+      {
+        return i == no::item;
+      });
+
+      return no_item_find;
+    }
+
     struct Step_Visitor : boost::static_visitor<Turn_State>
     {
       Step_Visitor(Turn_Data& td) noexcept : turn(td) {}
@@ -192,6 +205,15 @@ namespace game
         if(++data.intermediate_counter == frames_end)
         {
           data.chest.active = false;
+
+          Player& player = turn.map->players[turn.player];
+          auto inventory = find_inventory_space(player.inventory);
+          if(inventory != std::end(player.inventory))
+          {
+            // Inventory not full!
+            *inventory = data.chest.item;
+          }
+
           return data.after_state;
         }
       }
@@ -435,6 +457,19 @@ namespace game
       if(uncrate.anim_frame == 4)
       {
         // Render the item atop everything just about as big.
+        Sprite item_spritesheet =
+                              sprites.get_sprite(turn.items.get_spritesheet());
+
+        SDL_Rect item_src;
+        item_src.w = turn.items.get_sprite_extents().x;
+        item_src.h = turn.items.get_sprite_extents().y;
+
+        Item uncovered_item = uncrate.chest.item;
+        item_src.x = uncovered_item->pos.x * item_src.w;
+        item_src.y = uncovered_item->pos.y * item_src.h;
+
+        SDL_RenderCopy(g.renderer, item_spritesheet->texture(g.renderer),
+                       &item_src, &chest_dest);
       }
     }
   }

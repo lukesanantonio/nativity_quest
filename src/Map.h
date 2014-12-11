@@ -18,6 +18,7 @@ namespace game
 
   struct Chest
   {
+    Item item;
     bool active;
     Vec<int> pos;
   };
