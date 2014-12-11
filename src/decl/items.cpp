@@ -26,14 +26,13 @@ namespace game
     spritesheet_.assign(d["spritesheet"].GetString(),
                         d["spritesheet"].GetStringLength());
 
+    sprite_extents_.x = d["sprite_width"].GetInt();
+    sprite_extents_.y = d["sprite_height"].GetInt();
+
     for(auto iter = d["items"].Begin(); iter != d["items"].End(); ++iter)
     {
       items_.push_back(std::make_shared<Item_Impl>(parse_item(*iter)));
     }
-  }
-  std::string Item_Parser::get_spritesheet_filename() const noexcept
-  {
-    return spritesheet_;
   }
   Item Item_Parser::get_item(std::string const& str) const noexcept
   {

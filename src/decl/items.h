@@ -13,7 +13,7 @@ namespace game
   struct Item_Impl
   {
     std::string str;
-    Vec<int> sprite_position;
+    Vec<int> pos;
   };
 
   using Item = std::shared_ptr<const Item_Impl>;
@@ -22,13 +22,27 @@ namespace game
   {
     explicit Item_Parser(std::string const& filename);
 
-    std::string get_spritesheet_filename() const noexcept;
     Item get_item(std::string const& str) const noexcept;
+
+    inline std::string get_spritesheet() const noexcept;
+    inline Vec<int> get_sprite_extents() const noexcept;
 
   private:
     std::string spritesheet_;
+
+    Vec<int> sprite_extents_;
+
     std::vector<Item> items_;
   };
+
+  inline std::string Item_Parser::get_spritesheet() const noexcept
+  {
+    return this->spritesheet_;
+  }
+  inline Vec<int> Item_Parser::get_sprite_extents() const noexcept
+  {
+    return this->sprite_extents_;
+  }
 
   namespace no
   {
