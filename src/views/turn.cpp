@@ -47,7 +47,7 @@ namespace game
       player.view_radius = 75.0;
     }
 
-    map->players[player].pos = {500, 500};
+    map->players[player].pos = {500, 10};
     unfog(map->players[player]);
 
     map->scale = 3.5;
@@ -182,8 +182,32 @@ namespace game
       // Move the player.
       player.pos += move_delta;
 
+      auto cur_zone = update_zone(turn);
+
+      // Check to make sure we can be in this zone.
+      if(cur_zone->required_item != no::item)
+      {
+        using std::begin; using std::end;
+        auto item_find =
+          std::find_if(begin(player.inventory), end(player.inventory),
+          [&cur_zone](auto const& item)
+          {
+            return cur_zone->required_item == item;
+          });
+
+        // We don't have the required item.
+        if(item_find == end(player.inventory))
+        {
+          // Cancel the movement.
+          player.pos -= move_delta;
+          update_zone(turn);
+          return Waiting_Data{};
+        }
+      }
+
+      // We can continue.
+
       unfog(player);
-      update_zone(turn);
 
       // Mark some distance traveled.
       data.delta -= move_delta;
