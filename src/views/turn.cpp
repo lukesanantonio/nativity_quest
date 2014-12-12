@@ -19,7 +19,7 @@ namespace game
       auto& active_player = turn.map->players[turn.player];
 
       auto zone = turn.map->zones.get_zone(Vec<int>{active_player.pos});
-      turn.zone_label.data(zone ? zone->str : "Unknown");
+      turn.zone_label.str(zone ? zone->str : "Unknown");
 
       return zone;
     }
@@ -39,7 +39,7 @@ namespace game
                          character{char_file}
   {
     zone_label.text_height(35);
-    zone_label.text_color({0x88, 0x88, 0x88, 0xff});
+    zone_label.color({0x88, 0x88, 0x88, 0xff});
 
     for(auto& player : map->players)
     {
@@ -499,15 +499,12 @@ namespace game
     render_as_minimap(g, sprites, *turn.map, {5,5});
 
     // Render the zone text.
-    turn.zone_label.font_face(&g.font.face);
-    turn.zone_label.rasterizer(&g.font.raster);
-
     auto label_pos = turn.zone_label.position();
-    label_pos.x = g.get_width() - turn.zone_label.surface_width() - 10;
+    label_pos.x = g.get_width() - turn.zone_label.surface_extents(g).x - 5;
     label_pos.y = 10;
     turn.zone_label.position(label_pos);
 
-    turn.zone_label.render(g.renderer);
+    turn.zone_label.render(g);
 
     // If we are uncrating something currently.
     if(turn.state.which() == 2)

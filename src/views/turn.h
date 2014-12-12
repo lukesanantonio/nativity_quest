@@ -65,7 +65,7 @@ namespace game
     Item_Parser items;
     std::shared_ptr<Map> map;
 
-    pong::Label<std::string> zone_label;
+    Managed_Label zone_label;
 
     player_id player;
     Turn_State state;
