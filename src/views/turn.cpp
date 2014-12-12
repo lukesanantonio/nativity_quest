@@ -65,6 +65,8 @@ namespace game
 
       Turn_State operator()(Waiting_Data const& data) const noexcept;
 
+      Turn_State operator()(Discard_Item_Data& data) const noexcept;
+
       template <typename Data_T>
       Turn_State operator()(Data_T const& d) const noexcept;
 
@@ -94,6 +96,37 @@ namespace game
           return md;
         }
       }
+      return data;
+    }
+    Turn_State
+    Event_Visitor::operator()(Discard_Item_Data& data) const noexcept
+    {
+      if(event.type == SDL_KEYDOWN)
+      {
+        if(event.key.keysym.scancode == SDL_SCANCODE_W &&
+           data.selected_item != 6)
+        {
+          data.selected_item = std::max(0, data.selected_item - 3);
+        }
+        if(event.key.keysym.scancode == SDL_SCANCODE_A)
+        {
+          data.selected_item = std::min(5, data.selected_item + 3);
+        }
+        if(event.key.keysym.scancode == SDL_SCANCODE_S)
+        {
+          data.selected_item = std::max(0, data.selected_item - 1);
+        }
+        if(event.key.keysym.scancode == SDL_SCANCODE_D)
+        {
+          data.selected_item = std::min(6, data.selected_item + 1);
+        }
+        if(event.key.keysym.scancode == SDL_SCANCODE_RETURN)
+        {
+          // Do the thing TODO
+          return data.after_state;
+        }
+      }
+
       return data;
     }
     template <typename Data_T>
@@ -131,6 +164,9 @@ namespace game
       Turn_State operator()(Waiting_Data& data) const noexcept;
       Turn_State operator()(Moving_Data& data) const noexcept;
       Turn_State operator()(Uncrate_Data& data) const noexcept;
+
+      template <typename Data>
+      Turn_State operator()(Data const& data) const noexcept;
 
       Turn_Data& turn;
     };
@@ -242,6 +278,10 @@ namespace game
             // Inventory not full!
             *inventory = data.chest.item;
           }
+          else
+          {
+            return Discard_Item_Data{data.chest.item, Waiting_Data{}, 0};
+          }
 
           return data.after_state;
         }
@@ -255,6 +295,11 @@ namespace game
       {
         ++data.intermediate_counter;
       }
+      return data;
+    }
+    template <typename Data>
+    Turn_State Step_Visitor::operator()(Data const& data) const noexcept
+    {
       return data;
     }
   }

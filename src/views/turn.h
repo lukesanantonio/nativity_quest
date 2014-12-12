@@ -28,8 +28,12 @@ namespace game
 
   struct Uncrate_Data;
 
-  using Turn_State = boost::variant<Waiting_Data, Moving_Data,
-                                    boost::recursive_wrapper<Uncrate_Data> >;
+  struct Discard_Item_Data;
+
+  using Turn_State =
+    boost::variant<Waiting_Data, Moving_Data,
+                   boost::recursive_wrapper<Uncrate_Data>,
+                   boost::recursive_wrapper<Discard_Item_Data> >;
 
   struct Uncrate_Data
   {
@@ -40,6 +44,14 @@ namespace game
     int anim_frame = 0;
     int intermediate_counter = 0;
 
+  };
+
+  struct Discard_Item_Data
+  {
+    Item new_item;
+    Turn_State after_state;
+
+    short selected_item = 0;
   };
 
 
