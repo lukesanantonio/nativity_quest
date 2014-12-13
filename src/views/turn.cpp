@@ -101,39 +101,11 @@ namespace game
     Turn_State
     Event_Visitor::operator()(Discard_Item_Data& data) const noexcept
     {
-      if(event.type == SDL_KEYDOWN)
+      data.label_view.handle_event(event);
+      if(data.label_view.control().done)
       {
-        if(event.key.keysym.scancode == SDL_SCANCODE_W &&
-           3 <= data.selected_item && data.selected_item <= 5)
-        {
-          data.selected_item -= 3;
-        }
-        if(event.key.keysym.scancode == SDL_SCANCODE_S &&
-           0 <= data.selected_item && data.selected_item <= 2)
-        {
-          data.selected_item += 3;
-        }
-        if(event.key.keysym.scancode == SDL_SCANCODE_A &&
-           1 <= data.selected_item && data.selected_item <= 6)
-        {
-          data.selected_item -= 1;
-        }
-        if(event.key.keysym.scancode == SDL_SCANCODE_D &&
-           0 <= data.selected_item && data.selected_item <= 5)
-        {
-          data.selected_item += 1;
-        }
-        if(event.key.keysym.scancode == SDL_SCANCODE_RETURN)
-        {
-          if(data.selected_item < 6)
-          {
-            auto& player = turn.map->players[turn.player];
-            player.inventory[data.selected_item] = data.new_item;
-          }
-          return data.after_state;
-        }
+        return data.after_state;
       }
-
       return data;
     }
     template <typename Data_T>
@@ -287,20 +259,20 @@ namespace game
           }
           else
           {
-            Discard_Item_Data discard_data;
+            auto player = turn.map->players[turn.player];
+            Discard_Item_Data discard_data{player};
 
             discard_data.new_item = data.chest.item;
             discard_data.after_state = Waiting_Data{};
-            discard_data.selected_item = 6;
 
-            auto const& inventory = turn.map->players[turn.player].inventory;
-            for(int i = 0; i < inventory.size(); ++i)
+            for(int i = 0; i < player.inventory.size(); ++i)
             {
-              discard_data.labels[i].str(inventory[i]->str);
+              discard_data.label_view.add_label(player.inventory[i]->str);
             }
-            discard_data.labels[6].str("Discard");
 
-            for(auto& label : discard_data.labels)
+            discard_data.label_view.add_label("Discard");
+
+            for(auto& label : discard_data.label_view.labels())
             {
               label.text_height(40);
               label.color({0x00, 0x00, 0x00, 0xff});
@@ -569,54 +541,13 @@ namespace game
                        &item_src, &chest_dest);
       }
     }
+
     else if(turn.state.which() == 3)
     {
       auto& discard = boost::get<Discard_Item_Data>(turn.state);
-
-      SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
-
-      SDL_Rect discard_back;
-      discard_back.x = 0;
-      discard_back.w = g.get_width();
-
-      discard_back.h = g.get_height() / 5;
-      discard_back.y = g.get_height() - discard_back.h;
-      SDL_RenderFillRect(g.renderer, &discard_back);
-
-      auto cur_pos = Vec<int>{};
-
-      // Render all the labels.
-      for(int i = 0; i < discard.labels.size(); ++i)
-      {
-        discard.labels[i].position({cur_pos.x + discard_back.x + 10,
-                                    cur_pos.y + discard_back.y + 10});
-
-        cur_pos.x += discard_back.w / 4;
-
-        if(i == 2)
-        {
-          cur_pos.y = discard_back.h / 2;
-          cur_pos.x = 0;
-        }
-
-        discard.labels[i].render(g);
-
-        // If this is the selected item, put a little arrow next to it or color
-        // or something.
-        if(discard.selected_item == i)
-        {
-          SDL_Rect marker;
-          marker.w = 5;
-          marker.h = 5;
-
-          auto const& label_pos = discard.labels[i].position();
-          marker.x = label_pos.x - 5 - marker.w;
-          marker.y = label_pos.y - 5 - marker.h;
-          SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
-          SDL_RenderFillRect(g.renderer, &marker);
-        }
-
-      }
+      discard.label_view.vol({{0, g.get_height() - 200}, g.get_width(), 200});
+      discard.label_view.layout();
+      discard.label_view.render(g);
     }
   }
 }

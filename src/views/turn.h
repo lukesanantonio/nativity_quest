@@ -11,6 +11,9 @@
 #include "../Map.h"
 #include "../Sprite_Container.h"
 
+#include "../Label_View.h"
+#include "../Discard_Item_Control.h"
+
 #include "../decl/char.h"
 
 #include "pong/render/widgets/Label.h"
@@ -48,12 +51,13 @@ namespace game
 
   struct Discard_Item_Data
   {
+    Discard_Item_Data(Player& p) noexcept
+                      : label_view(Volume<int>{}, Discard_Item_Control{p}) {}
+
+    Label_View<Discard_Item_Control> label_view;
+
     Item new_item;
     Turn_State after_state;
-
-    short selected_item = 0;
-
-    std::array<Managed_Label, 7> labels;
   };
 
 
