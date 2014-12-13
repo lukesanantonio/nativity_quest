@@ -104,25 +104,32 @@ namespace game
       if(event.type == SDL_KEYDOWN)
       {
         if(event.key.keysym.scancode == SDL_SCANCODE_W &&
-           data.selected_item != 6)
+           3 <= data.selected_item && data.selected_item <= 5)
         {
-          data.selected_item = std::max(0, data.selected_item - 3);
+          data.selected_item -= 3;
         }
-        if(event.key.keysym.scancode == SDL_SCANCODE_A)
+        if(event.key.keysym.scancode == SDL_SCANCODE_S &&
+           0 <= data.selected_item && data.selected_item <= 2)
         {
-          data.selected_item = std::min(5, data.selected_item + 3);
+          data.selected_item += 3;
         }
-        if(event.key.keysym.scancode == SDL_SCANCODE_S)
+        if(event.key.keysym.scancode == SDL_SCANCODE_A &&
+           1 <= data.selected_item && data.selected_item <= 6)
         {
-          data.selected_item = std::max(0, data.selected_item - 1);
+          data.selected_item -= 1;
         }
-        if(event.key.keysym.scancode == SDL_SCANCODE_D)
+        if(event.key.keysym.scancode == SDL_SCANCODE_D &&
+           0 <= data.selected_item && data.selected_item <= 5)
         {
-          data.selected_item = std::min(6, data.selected_item + 1);
+          data.selected_item += 1;
         }
         if(event.key.keysym.scancode == SDL_SCANCODE_RETURN)
         {
-          // Do the thing TODO
+          if(data.selected_item < 6)
+          {
+            auto& player = turn.map->players[turn.player];
+            player.inventory[data.selected_item] = data.new_item;
+          }
           return data.after_state;
         }
       }
@@ -280,7 +287,26 @@ namespace game
           }
           else
           {
-            return Discard_Item_Data{data.chest.item, Waiting_Data{}, 0};
+            Discard_Item_Data discard_data;
+
+            discard_data.new_item = data.chest.item;
+            discard_data.after_state = Waiting_Data{};
+            discard_data.selected_item = 6;
+
+            auto const& inventory = turn.map->players[turn.player].inventory;
+            for(int i = 0; i < inventory.size(); ++i)
+            {
+              discard_data.labels[i].str(inventory[i]->str);
+            }
+            discard_data.labels[6].str("Discard");
+
+            for(auto& label : discard_data.labels)
+            {
+              label.text_height(40);
+              label.color({0x00, 0x00, 0x00, 0xff});
+            }
+
+            return discard_data;
           }
 
           return data.after_state;
@@ -541,6 +567,55 @@ namespace game
 
         SDL_RenderCopy(g.renderer, item_spritesheet->texture(g.renderer),
                        &item_src, &chest_dest);
+      }
+    }
+    else if(turn.state.which() == 3)
+    {
+      auto& discard = boost::get<Discard_Item_Data>(turn.state);
+
+      SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
+
+      SDL_Rect discard_back;
+      discard_back.x = 0;
+      discard_back.w = g.get_width();
+
+      discard_back.h = g.get_height() / 5;
+      discard_back.y = g.get_height() - discard_back.h;
+      SDL_RenderFillRect(g.renderer, &discard_back);
+
+      auto cur_pos = Vec<int>{};
+
+      // Render all the labels.
+      for(int i = 0; i < discard.labels.size(); ++i)
+      {
+        discard.labels[i].position({cur_pos.x + discard_back.x + 10,
+                                    cur_pos.y + discard_back.y + 10});
+
+        cur_pos.x += discard_back.w / 4;
+
+        if(i == 2)
+        {
+          cur_pos.y = discard_back.h / 2;
+          cur_pos.x = 0;
+        }
+
+        discard.labels[i].render(g);
+
+        // If this is the selected item, put a little arrow next to it or color
+        // or something.
+        if(discard.selected_item == i)
+        {
+          SDL_Rect marker;
+          marker.w = 5;
+          marker.h = 5;
+
+          auto const& label_pos = discard.labels[i].position();
+          marker.x = label_pos.x - 5 - marker.w;
+          marker.y = label_pos.y - 5 - marker.h;
+          SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
+          SDL_RenderFillRect(g.renderer, &marker);
+        }
+
       }
     }
   }

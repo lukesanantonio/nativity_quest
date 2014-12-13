@@ -52,6 +52,8 @@ namespace game
     Turn_State after_state;
 
     short selected_item = 0;
+
+    std::array<Managed_Label, 7> labels;
   };
 
 
