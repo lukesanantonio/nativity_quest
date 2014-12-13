@@ -41,7 +41,7 @@ namespace game
       update(*this, g.label(id_.value()));
     }
   }
-  void Managed_Label::render(Graphics_Desc& g) noexcept
+  void Managed_Label::render(Graphics_Desc& g) const noexcept
   {
     generate_(g);
 

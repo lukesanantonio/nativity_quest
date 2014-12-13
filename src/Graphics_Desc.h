@@ -118,7 +118,7 @@ namespace game
     inline pong::Label_Mode mode() const noexcept;
     inline void mode(pong::Label_Mode mode) noexcept;
 
-    void render(Graphics_Desc& g) noexcept;
+    void render(Graphics_Desc& g) const noexcept;
 
     inline Vec<int> surface_extents(Graphics_Desc& g) const noexcept;
   private:
