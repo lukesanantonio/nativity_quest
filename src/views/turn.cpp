@@ -88,7 +88,8 @@ namespace game
 
           for(auto const& item : turn.map->players[turn.player].inventory)
           {
-            invent.label_view.add_label(item->str);
+            if(item != no::item) invent.label_view.add_label(item->str);
+            else invent.label_view.add_label("No item");
           }
 
           for(auto& label : invent.label_view.labels())
