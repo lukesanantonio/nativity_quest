@@ -7,23 +7,17 @@
 #include "Graphics_Desc.h"
 namespace game
 {
-  template <class Input, class Layout>
+  template <class Control>
   struct Label_View
   {
     explicit Label_View(Volume<int> const& vol = Volume<int>{},
-                            Input i = Input{},
-                            Layout l = Layout{}) noexcept
-                            : vol_(vol),
-                              input_(std::move(i)),
-                              layout_(std::move(l)) {}
+                        Control c = Control{}) noexcept
+                        : vol_(vol), control_(std::move(c)) {}
 
     inline void handle_event(SDL_Event const&) noexcept;
 
-    inline Input& input() noexcept;
-    inline Input const& input() const noexcept;
-
-    inline Layout& layout() noexcept;
-    inline Layout const& layout() const noexcept;
+    inline Control& control() noexcept;
+    inline Control const& control() const noexcept;
 
     inline Volume<int> const& vol() noexcept;
     inline void vol(Volume<int> vol) noexcept;
@@ -36,85 +30,81 @@ namespace game
 
     inline void remove_label(std::vector<Managed_Label>::iterator) noexcept;
 
+    inline void layout() noexcept;
     void render(Graphics_Desc& g) const noexcept;
   private:
     Volume<int> vol_;
 
-    Input input_;
-    Layout layout_;
+    Control control_;
 
     std::vector<Managed_Label> labels_;
   };
 
-  template <class Input, class Layout> inline void Label_View<Input, Layout>::
+  template <class Control> inline void Label_View<Control>::
   handle_event(SDL_Event const& event) noexcept
   {
-    input_.handle_event(event);
+    control_.handle_event(event);
   }
 
-  template <class Input, class Layout>
-  inline Input& Label_View<Input, Layout>::input() noexcept
+  template <class Control>
+  inline Control& Label_View<Control>::control() noexcept
   {
-    return input_;
+    return control_;
   }
-  template <class Input, class Layout>
-  inline Input const& Label_View<Input, Layout>::input() const noexcept
+  template <class Control>
+  inline Control const& Label_View<Control>::control() const noexcept
   {
-    return input_;
-  }
-  template <class Input, class Layout>
-  inline Layout& Label_View<Input, Layout>::layout() noexcept
-  {
-    return layout_;
-  }
-  template <class Input, class Layout>
-  inline Layout const& Label_View<Input, Layout>::layout() const noexcept
-  {
-    return layout_;
+    return control_;
   }
 
-  template <class Input, class Layout>
-  inline Volume<int> const& Label_View<Input, Layout>::vol() noexcept
+  template <class Control>
+  inline Volume<int> const& Label_View<Control>::vol() noexcept
   {
     return vol_;
   }
-  template <class Input, class Layout> inline void Label_View<Input, Layout>::
+  template <class Control> inline void Label_View<Control>::
   vol(Volume<int> vol) noexcept
   {
     vol_ = vol;
   }
-  template <class Input, class Layout> inline void Label_View<Input, Layout>::
+  template <class Control> inline void Label_View<Control>::
   add_label(std::string const& str) noexcept
   {
     Managed_Label l;
     l.str(str);
     labels_.push_back(l);
   }
-  template <class Input, class Layout> inline void Label_View<Input, Layout>::
+  template <class Control> inline void Label_View<Control>::
   add_label(Managed_Label const& l) noexcept
   {
     labels_.push_back(l);
   }
 
-  template <class Input, class Layout> inline std::vector<Managed_Label> const&
-  Label_View<Input, Layout>::labels() const noexcept
+  template <class Control> inline std::vector<Managed_Label> const&
+  Label_View<Control>::labels() const noexcept
   {
     return labels_;
   }
-  template <class Input, class Layout> inline std::vector<Managed_Label>&
-  Label_View<Input, Layout>::labels() noexcept
+  template <class Control> inline std::vector<Managed_Label>&
+  Label_View<Control>::labels() noexcept
   {
     return labels_;
   }
 
-  template <class Input, class Layout> inline void Label_View<Input, Layout>::
+  template <class Control> inline void Label_View<Control>::
   remove_label(std::vector<Managed_Label>::iterator i) noexcept
   {
     labels_.erase(i);
   }
 
-  template <class Input, class Layout>
-  void Label_View<Input, Layout>::render(Graphics_Desc& g) const noexcept
+  template <class Control>
+  inline void Label_View<Control>::layout() noexcept
+  {
+    control_.layout(*this);
+  }
+
+  template <class Control>
+  void Label_View<Control>::render(Graphics_Desc& g) const noexcept
   {
     // Color, hardcoded for now.
     SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
@@ -127,15 +117,12 @@ namespace game
     vol_rect.h = vol_.height;
     SDL_RenderFillRect(g.renderer, &vol_rect);
 
-    // Layout each inventory item
-    layout_.layout(*this);
-
     for(auto const& label : labels_)
     {
       label.render(g);
     }
 
     // Render anything the input controller wants.
-    input_.render(g, *this);
+    control_.render(g, *this);
   }
 }
