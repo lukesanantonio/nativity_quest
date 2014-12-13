@@ -94,7 +94,7 @@ namespace game
 
           for(auto& label : invent.label_view.labels())
           {
-            label.text_height(20);
+            label.text_height(25);
             label.color({0x00, 0x00, 0x00, 0x00});
           }
 
@@ -310,7 +310,7 @@ namespace game
 
             for(auto& label : discard_data.label_view.labels())
             {
-              label.text_height(40);
+              label.text_height(25);
               label.color({0x00, 0x00, 0x00, 0xff});
             }
 
@@ -581,7 +581,7 @@ namespace game
     else if(turn.state.which() == 3)
     {
       auto& discard = boost::get<Discard_Item_Data>(turn.state);
-      discard.label_view.vol({{0, g.get_height() - 200}, g.get_width(), 200});
+      discard.label_view.vol({{0, g.get_height() - 100}, g.get_width(), 100});
       discard.label_view.layout();
       discard.label_view.render(g);
     }
