@@ -14,7 +14,8 @@ namespace game
     Discard_Item_Control(Player& p) noexcept : player(p) {}
 
     void handle_event(SDL_Event const& event) noexcept;
-    void layout(Label_View<Discard_Item_Control>& view) noexcept;
+    void layout(Label_View<Discard_Item_Control>& view,
+                Graphics_Desc& g) noexcept;
     void render(Graphics_Desc& g,
                 Label_View<Discard_Item_Control> const& view) const noexcept;
 

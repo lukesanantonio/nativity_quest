@@ -30,7 +30,7 @@ namespace game
 
     inline void remove_label(std::vector<Managed_Label>::iterator) noexcept;
 
-    inline void layout() noexcept;
+    inline void layout(Graphics_Desc& g) noexcept;
     void render(Graphics_Desc& g) const noexcept;
   private:
     Volume<int> vol_;
@@ -98,9 +98,9 @@ namespace game
   }
 
   template <class Control>
-  inline void Label_View<Control>::layout() noexcept
+  inline void Label_View<Control>::layout(Graphics_Desc& g) noexcept
   {
-    control_.layout(*this);
+    control_.layout(*this, g);
   }
 
   template <class Control>

@@ -37,23 +37,26 @@ namespace game
     }
   }
   void
-  Discard_Item_Control::layout(Label_View<Discard_Item_Control>& view) noexcept
+  Discard_Item_Control::layout(Label_View<Discard_Item_Control>& view,
+                               Graphics_Desc& g) noexcept
   {
     auto vol = view.vol();
 
-    auto cur_pos = Vec<int>{0,0};
+    auto start = Vec<int>{vol.width / 4 / 2, 15};
+    auto cur_pos = start;
 
     int i = 0;
     for(auto& label : view.labels())
     {
-      label.position({cur_pos.x + vol.pos.x, cur_pos.y + vol.pos.y});
+      label.position({cur_pos.x + vol.pos.x - (label.surface_extents(g).x / 2),
+                      cur_pos.y + vol.pos.y});
 
       cur_pos.x += vol.width / 4;
 
       if(i == 2)
       {
         cur_pos.y += vol.height / 2;
-        cur_pos.x = 0;
+        cur_pos.x = start.x;
       }
 
       ++i;

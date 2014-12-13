@@ -582,7 +582,7 @@ namespace game
     {
       auto& discard = boost::get<Discard_Item_Data>(turn.state);
       discard.label_view.vol({{0, g.get_height() - 100}, g.get_width(), 100});
-      discard.label_view.layout();
+      discard.label_view.layout(g);
       discard.label_view.render(g);
     }
 
@@ -591,7 +591,7 @@ namespace game
       auto& invent = boost::get<Inventory_View_Data>(turn.state);
 
       invent.label_view.vol({{0, g.get_height() - 100}, g.get_width(), 100});
-      invent.label_view.layout();
+      invent.label_view.layout(g);
       invent.label_view.render(g);
     }
   }
