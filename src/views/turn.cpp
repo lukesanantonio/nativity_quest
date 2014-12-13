@@ -67,6 +67,8 @@ namespace game
 
       Turn_State operator()(Discard_Item_Data& data) const noexcept;
 
+      Turn_State operator()(Inventory_View_Data const& data) const noexcept;
+
       template <typename Data_T>
       Turn_State operator()(Data_T const& d) const noexcept;
 
@@ -77,6 +79,27 @@ namespace game
     Turn_State
     Event_Visitor::operator()(Waiting_Data const& data) const noexcept
     {
+      if(event.type == SDL_KEYDOWN)
+      {
+        if(event.key.keysym.scancode == SDL_SCANCODE_I)
+        {
+          auto invent = Inventory_View_Data{};
+          invent.after_state = Waiting_Data{};
+
+          for(auto const& item : turn.map->players[turn.player].inventory)
+          {
+            invent.label_view.add_label(item->str);
+          }
+
+          for(auto& label : invent.label_view.labels())
+          {
+            label.text_height(20);
+            label.color({0x00, 0x00, 0x00, 0x00});
+          }
+
+          return invent;
+        }
+      }
       if(event.type == SDL_MOUSEBUTTONDOWN)
       {
         if(event.button.button == SDL_BUTTON_LEFT)
@@ -105,6 +128,18 @@ namespace game
       if(data.label_view.control().done)
       {
         return data.after_state;
+      }
+      return data;
+    }
+    Turn_State
+    Event_Visitor::operator()(Inventory_View_Data const& data) const noexcept
+    {
+      if(event.type == SDL_KEYUP)
+      {
+        if(event.key.keysym.scancode == SDL_SCANCODE_I)
+        {
+          return data.after_state;
+        }
       }
       return data;
     }
@@ -548,6 +583,15 @@ namespace game
       discard.label_view.vol({{0, g.get_height() - 200}, g.get_width(), 200});
       discard.label_view.layout();
       discard.label_view.render(g);
+    }
+
+    else if(turn.state.which() == 4)
+    {
+      auto& invent = boost::get<Inventory_View_Data>(turn.state);
+
+      invent.label_view.vol({{0, g.get_height() - 100}, g.get_width(), 100});
+      invent.label_view.layout();
+      invent.label_view.render(g);
     }
   }
 }
