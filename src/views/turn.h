@@ -36,11 +36,14 @@ namespace game
 
   struct Inventory_View_Data;
 
+  struct Combat_Data;
+
   using Turn_State =
     boost::variant<Waiting_Data, Moving_Data,
                    boost::recursive_wrapper<Uncrate_Data>,
                    boost::recursive_wrapper<Discard_Item_Data>,
-                   boost::recursive_wrapper<Inventory_View_Data> >;
+                   boost::recursive_wrapper<Inventory_View_Data>,
+                   boost::recursive_wrapper<Combat_Data> >;
 
   struct Uncrate_Data
   {
@@ -70,6 +73,11 @@ namespace game
 
     Turn_State after_state;
     Label_View<Vanilla_Control> label_view;
+  };
+
+  struct Combat_Data
+  {
+    Turn_State after_state;
   };
 
   struct Turn_Data

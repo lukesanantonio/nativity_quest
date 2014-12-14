@@ -7,7 +7,6 @@
 
 #include "Player.h"
 
-#include "views/combat.h"
 #include "views/menu.h"
 #include "views/trade.h"
 #include "views/turn.h"
@@ -19,7 +18,6 @@ namespace game
   {
     Menu,
     Turn,
-    Combat,
     Trade
   };
 
@@ -32,7 +30,6 @@ namespace game
     View type;
     boost::variant<Menu_Data,
                    Turn_Data,
-                   Combat_Data,
                    Trade_Data> state_data;
   };
 }

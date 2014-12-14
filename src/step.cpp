@@ -26,11 +26,6 @@ namespace game
         handle_event_state(boost::get<Turn_Data>(s.state_data), event);
         break;
       }
-      case View::Combat:
-      {
-        handle_event_state(boost::get<Combat_Data>(s.state_data), event);
-        break;
-      }
       case View::Trade:
       {
         handle_event_state(boost::get<Trade_Data>(s.state_data), event);
@@ -50,11 +45,6 @@ namespace game
       case View::Turn:
       {
         step_state(boost::get<Turn_Data>(s.state_data));
-        break;
-      }
-      case View::Combat:
-      {
-        step_state(boost::get<Combat_Data>(s.state_data));
         break;
       }
       case View::Trade:
@@ -77,11 +67,6 @@ namespace game
       case View::Turn:
       {
         render_state(g, a, boost::get<Turn_Data>(s.state_data));
-        break;
-      }
-      case View::Combat:
-      {
-        render_state(g, a, boost::get<Combat_Data>(s.state_data));
         break;
       }
       case View::Trade:
