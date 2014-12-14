@@ -5,6 +5,7 @@
 #pragma once
 #include "volume.h"
 #include "Graphics_Desc.h"
+#include "Sprite_Container.h"
 namespace game
 {
   template <class Control>
@@ -31,7 +32,7 @@ namespace game
     inline void remove_label(std::vector<Managed_Label>::iterator) noexcept;
 
     inline void layout(Graphics_Desc& g) noexcept;
-    void render(Graphics_Desc& g) const noexcept;
+    void render(Graphics_Desc& g, Sprite_Container&) const noexcept;
   private:
     Volume<int> vol_;
 
@@ -104,7 +105,8 @@ namespace game
   }
 
   template <class Control>
-  void Label_View<Control>::render(Graphics_Desc& g) const noexcept
+  void Label_View<Control>::render(Graphics_Desc& g,
+                                   Sprite_Container& sprites) const noexcept
   {
     // Color, hardcoded for now.
     SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
@@ -123,6 +125,6 @@ namespace game
     }
 
     // Render anything the input controller wants.
-    control_.render(g, *this);
+    control_.render(g, *this, sprites);
   }
 }

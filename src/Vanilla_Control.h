@@ -12,7 +12,7 @@ namespace game
   {
     void handle_event(SDL_Event const& event) noexcept {}
     void layout(Label_View<Vanilla_Control>& view, Graphics_Desc& g) noexcept;
-    void render(Graphics_Desc& g,
-                Label_View<Vanilla_Control> const& view) const noexcept {}
+    void render(Graphics_Desc&, Label_View<Vanilla_Control> const&,
+                Sprite_Container&) const noexcept {}
   };
 }

@@ -295,10 +295,10 @@ namespace game
           }
           else
           {
-            auto player = turn.map->players[turn.player];
-            Discard_Item_Data discard_data{player};
+            auto& player = turn.map->players[turn.player];
+            Discard_Item_Data discard_data{player, turn.items};
 
-            discard_data.new_item = data.chest.item;
+            discard_data.label_view.control().new_item = data.chest.item;
             discard_data.after_state = Waiting_Data{};
 
             for(int i = 0; i < player.inventory.size(); ++i)
@@ -583,7 +583,15 @@ namespace game
       auto& discard = boost::get<Discard_Item_Data>(turn.state);
       discard.label_view.vol({{0, g.get_height() - 100}, g.get_width(), 100});
       discard.label_view.layout(g);
-      discard.label_view.render(g);
+
+      Volume<int> chest_dest;
+      chest_dest.width = g.get_width() / 2;
+      chest_dest.height = g.get_height() / 2;
+      chest_dest.pos.x = g.get_width() / 2 - chest_dest.width / 2;
+      chest_dest.pos.y = g.get_height() / 2 - chest_dest.height / 2;
+
+      discard.label_view.control().item_volume = chest_dest;
+      discard.label_view.render(g, sprites);
     }
 
     else if(turn.state.which() == 4)
@@ -592,7 +600,7 @@ namespace game
 
       invent.label_view.vol({{0, g.get_height() - 100}, g.get_width(), 100});
       invent.label_view.layout(g);
-      invent.label_view.render(g);
+      invent.label_view.render(g, sprites);
     }
   }
 }

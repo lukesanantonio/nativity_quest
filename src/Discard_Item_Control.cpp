@@ -63,7 +63,8 @@ namespace game
     }
   }
   void Discard_Item_Control::render(Graphics_Desc& g,
-                   Label_View<Discard_Item_Control> const& view) const noexcept
+                   Label_View<Discard_Item_Control> const& view,
+                   Sprite_Container& sprites) const noexcept
   {
     auto selected_label_pos = view.labels()[selected].position();
 
@@ -76,6 +77,34 @@ namespace game
 
     SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
     SDL_RenderFillRect(g.renderer, &marker);
+
+    // Render the item.
+    SDL_Rect item_dest;
+    item_dest.x = item_volume.pos.x;
+    item_dest.y = item_volume.pos.y;
+    item_dest.w = item_volume.width;
+    item_dest.h = item_volume.height;
+
+    Item item;
+    if(selected < 6)
+    {
+      item = player.inventory[selected];
+    }
+    else
+    {
+      item = new_item;
+    }
+
+    auto spritesheet = sprites.get_sprite(items.get_spritesheet());
+
+    SDL_Rect item_src;
+    item_src.w = items.get_sprite_extents().x;
+    item_src.h = items.get_sprite_extents().y;
+    item_src.x = item->pos.x * item_src.w;
+    item_src.y = item->pos.y * item_src.h;
+
+    SDL_RenderCopy(g.renderer, spritesheet->texture(g.renderer),
+                   &item_src, &item_dest);
   }
 }
 

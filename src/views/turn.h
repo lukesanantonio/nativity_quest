@@ -55,12 +55,12 @@ namespace game
 
   struct Discard_Item_Data
   {
-    Discard_Item_Data(Player& p) noexcept
-                      : label_view(Volume<int>{}, Discard_Item_Control{p}) {}
+    Discard_Item_Data(Player& p, Item_Parser const& items) noexcept
+                      : label_view(Volume<int>{},
+                                   Discard_Item_Control{p, items}) {}
 
     Label_View<Discard_Item_Control> label_view;
 
-    Item new_item;
     Turn_State after_state;
   };
 

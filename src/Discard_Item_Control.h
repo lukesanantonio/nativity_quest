@@ -11,15 +11,21 @@ namespace game
 {
   struct Discard_Item_Control
   {
-    Discard_Item_Control(Player& p) noexcept : player(p) {}
+    Discard_Item_Control(Player& p, Item_Parser const& items) noexcept
+                         : player(p), items(items) {}
 
     void handle_event(SDL_Event const& event) noexcept;
     void layout(Label_View<Discard_Item_Control>& view,
                 Graphics_Desc& g) noexcept;
     void render(Graphics_Desc& g,
-                Label_View<Discard_Item_Control> const& view) const noexcept;
+                Label_View<Discard_Item_Control> const& view,
+                Sprite_Container& sprites) const noexcept;
 
     Player& player;
+    Item_Parser const& items;
+
+    Volume<int> item_volume;
+    Item new_item;
 
     int selected = 0;
     bool done = false;
