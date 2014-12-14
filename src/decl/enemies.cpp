@@ -12,16 +12,18 @@ namespace game
 
     for(auto iter = doc.Begin(); iter != doc.End(); ++iter)
     {
-      if(!has_all_members(doc, {"sprite", "name", "power", "life"}))
+      auto const& obj = *iter;
+
+      if(!has_json_members(obj, {"sprite", "name", "power", "life"}))
       {
         throw Bad_Asset{enemy_json, "Bad enemy listing."};
       }
 
-      auto enemy = Enemy_Impl{doc["sprite"].GetString(),
-                              doc["name"].GetString(),
-                              doc["power"].GetInt(), doc["life"].GetInt()};
+      auto enemy = Enemy_Impl{obj["sprite"].GetString(),
+                              obj["name"].GetString(),
+                              obj["power"].GetInt(), obj["life"].GetInt()};
 
-      enemies_.push_back(Enemy{new Enemy_Impl{enemy}});
+      enemies_.push_back(Enemy{new Enemy_Impl(enemy)});
     }
   }
 }

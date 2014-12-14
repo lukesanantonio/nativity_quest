@@ -22,16 +22,20 @@ namespace game
 
   namespace no
   {
-    Enemy enemy;
+    const Enemy enemy;
   }
 
   struct Enemy_Instance
   {
-    Enemy_Instance(Enemy e) noexcept : decl(e), current_line(e.life) {}
+    Enemy_Instance(Enemy e) noexcept : decl(e), current_life(e->life) {}
     Enemy decl;
 
     int current_life;
     Item item;
+
+    bool fighting = true;
+
+    Vec<int> pos;
   };
 
   struct Enemy_Parser
