@@ -4,6 +4,8 @@
  */
 #include "items.h"
 
+#include <algorithm>
+
 #include "../util/except.h"
 #include "../util/json.h"
 namespace game
