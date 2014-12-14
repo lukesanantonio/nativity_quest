@@ -22,6 +22,7 @@
 #define CHAR_JSON "assets/char.json"
 #define ITEMS_JSON "assets/items.json"
 #define ZONES_JSON "assets/zones.json"
+#define ENEMIES_JSON "assets/enemies.json"
 
 #define FONT_FILE "/usr/share/fonts/TTF/DejaVuSans.ttf"
 
@@ -38,7 +39,8 @@ int main(int argc, char** argv)
     game::State state;
     state.running = true;
     state.type = game::View::Turn;
-    state.state_data = game::Turn_Data{ITEMS_JSON, ZONES_JSON, CHAR_JSON};
+    state.state_data = game::Turn_Data{ITEMS_JSON, ZONES_JSON,
+                                       CHAR_JSON, ENEMIES_JSON};
 
     pong::Timer<> timer;
 

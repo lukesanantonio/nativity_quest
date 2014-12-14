@@ -14,8 +14,10 @@
 #include "../Label_View.h"
 #include "../Discard_Item_Control.h"
 #include "../Vanilla_Control.h"
+#include "../Combat_Control.h"
 
 #include "../decl/char.h"
+#include "../decl/enemies.h"
 
 #include "pong/render/widgets/Label.h"
 
@@ -78,13 +80,16 @@ namespace game
   struct Combat_Data
   {
     Turn_State after_state;
+
+    Label_View<Combat_Control> label_view;
   };
 
   struct Turn_Data
   {
     Turn_Data(std::string const& items_file,
               std::string const& zones_file,
-              std::string const& char_file);
+              std::string const& char_file,
+              std::string const& enemies_file);
 
 
     Item_Parser items;

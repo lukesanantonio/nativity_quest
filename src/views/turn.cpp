@@ -32,9 +32,10 @@ namespace game
 
   Turn_Data::Turn_Data(std::string const& items_file,
                        std::string const& zones_file,
-                       std::string const& char_file)
+                       std::string const& char_file,
+                       std::string const& e_file)
                        : items(items_file),
-                         map{std::make_shared<Map>(zones_file, items)},
+                         map{std::make_shared<Map>(zones_file, items, e_file)},
                          player(0), state(Waiting_Data{}), map_corner{},
                          character{char_file}
   {
@@ -68,6 +69,8 @@ namespace game
       Turn_State operator()(Discard_Item_Data& data) const noexcept;
 
       Turn_State operator()(Inventory_View_Data const& data) const noexcept;
+
+      Turn_State operator()(Combat_Data& data) const noexcept;
 
       template <typename Data_T>
       Turn_State operator()(Data_T const& d) const noexcept;
@@ -150,6 +153,17 @@ namespace game
       }
       return data;
     }
+    Turn_State
+    Event_Visitor::operator()(Combat_Data& data) const noexcept
+    {
+      data.label_view.handle_event(event);
+      if(data.label_view.control().run)
+      {
+        data.label_view.control().enemy.fighting = false;
+        return data.after_state;
+      }
+      return data;
+    }
     template <typename Data_T>
     Turn_State Event_Visitor::operator()(Data_T const& d) const noexcept
     {
@@ -185,6 +199,7 @@ namespace game
       Turn_State operator()(Waiting_Data& data) const noexcept;
       Turn_State operator()(Moving_Data& data) const noexcept;
       Turn_State operator()(Uncrate_Data& data) const noexcept;
+      Turn_State operator()(Combat_Data& data) const noexcept;
 
       template <typename Data>
       Turn_State operator()(Data const& data) const noexcept;
@@ -195,9 +210,43 @@ namespace game
     Turn_State Step_Visitor::operator()(Waiting_Data& data) const noexcept
     {
       auto& player = turn.map->players[turn.player];
-      while(true)
+
+      using std::begin; using std::end;
+
+      // Check for any enemies in our view
       {
-        using std::begin; using std::end;
+        auto enemy_find = std::find_if(begin(turn.map->enemies),
+                                       end(turn.map->enemies),
+        [&player](auto const& enemy)
+        {
+          if(!enemy.fighting) return false;
+
+          // Check if they are a reasonable distance.
+          auto len = length(player.pos - Vec<double>{enemy.pos});
+          return len < player.view_radius;
+        });
+
+        if(enemy_find != end(turn.map->enemies))
+        {
+          auto combat = Combat_Data{Waiting_Data{},
+                                    Label_View<Combat_Control>{Volume<int>{},
+                                                               *enemy_find}};
+
+          combat.label_view.add_label("Attack");
+          combat.label_view.add_label("Run");
+
+          for(auto& label : combat.label_view.labels())
+          {
+            label.text_height(40);
+            label.color({0x00, 0x00, 0x00, 0xff});
+          }
+
+          return combat;
+        }
+      }
+
+      // If we cleared the area of enemies, check for chests.
+      {
         auto chest_find = std::find_if(begin(turn.map->chests),
                                        end(turn.map->chests),
         [&player](auto const& chest)
@@ -210,12 +259,10 @@ namespace game
           return len < player.view_radius;
         });
 
-        if(chest_find == end(turn.map->chests))
+        if(chest_find != end(turn.map->chests))
         {
-          break;
+          return Uncrate_Data{*chest_find, Waiting_Data{}};
         }
-
-        return Uncrate_Data{*chest_find, Waiting_Data{}};
       }
 
       return data;
@@ -335,6 +382,10 @@ namespace game
       {
         ++data.intermediate_counter;
       }
+      return data;
+    }
+    Turn_State Step_Visitor::operator()(Combat_Data& data) const noexcept
+    {
       return data;
     }
     template <typename Data>
@@ -528,6 +579,42 @@ namespace game
                      NULL, &chest_dest);
     }
 
+    for(auto const& enemy : turn.map->enemies)
+    {
+      auto enemy_extents = Vec<int>{15, 15};
+
+      // Render fighting enemies red and non-fighting enemies yellow.
+      SDL_Rect enemy_dest;
+      enemy_dest.x = enemy.pos.x - turn.map_corner.x - enemy_extents.x / 2;
+      enemy_dest.y = enemy.pos.y - turn.map_corner.y - enemy_extents.y / 2;
+
+      // Scale to the viewport
+      enemy_dest.x *= turn.map->scale;
+      enemy_dest.y *= turn.map->scale;
+
+      enemy_dest.w = enemy_extents.x;
+      enemy_dest.h = enemy_extents.y;
+
+      if(enemy.fighting)
+      {
+        SDL_SetRenderDrawColor(g.renderer, 0xff, 0x00, 0x00, 0xff);
+      }
+      else
+      {
+        SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0x00, 0xff);
+      }
+
+      SDL_RenderFillRect(g.renderer, &enemy_dest);
+
+      --enemy_dest.x;
+      --enemy_dest.y;
+      enemy_dest.w += 2;
+      enemy_dest.h += 2;
+
+      SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
+      SDL_RenderDrawRect(g.renderer, &enemy_dest);
+    }
+
     // Render the fog of war of the current player.
     if(player.fog.surface())
     {
@@ -607,6 +694,14 @@ namespace game
       invent.label_view.vol({{0, g.get_height() - 100}, g.get_width(), 100});
       invent.label_view.layout(g);
       invent.label_view.render(g, sprites);
+    }
+    else if(turn.state.which() == 5)
+    {
+      auto& combat = boost::get<Combat_Data>(turn.state);
+
+      combat.label_view.vol({{0, g.get_height() - 100}, g.get_width(), 100});
+      combat.label_view.layout(g);
+      combat.label_view.render(g, sprites);
     }
   }
 }

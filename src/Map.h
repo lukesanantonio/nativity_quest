@@ -10,6 +10,7 @@
 
 #include "Player.h"
 #include "decl/zones.h"
+#include "decl/enemies.h"
 namespace game
 {
   struct Item_Parser;
@@ -30,7 +31,8 @@ namespace game
    */
   struct Map
   {
-    Map(std::string const& zone_json, Item_Parser const&);
+    Map(std::string const& zone_json, Item_Parser const&,
+        std::string const& enemy_json);
 
     Zone_Parser zones;
     std::array<Player, 6> players;
@@ -39,5 +41,9 @@ namespace game
     double mini_scale; // screen pixels / map pixel
 
     std::vector<Chest> chests;
+
+    Enemy_Parser enemy_decl;
+
+    std::vector<Enemy_Instance> enemies;
   };
 }
