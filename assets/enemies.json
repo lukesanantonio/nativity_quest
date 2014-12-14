@@ -1,0 +1,8 @@
+[
+  {"sprite":"mongrel", "name":"Mongrel", "power": 5, "life": 5],
+  {"sprite":"boa", "name":"Boa", "power": 5, "life": 5],
+  {"sprite":"giant", "name":"Giant", "power": 5, "life": 5],
+  {"sprite":"soldier", "name":"Roman Soldier", "power": 5, "life": 5],
+  {"sprite":"creeper", "name":"Creeper", "power": 5, "life": 5],
+  {"sprite":"boar", "name":"Scary Looking Boor", "power": 5, "life": 5]
+]
