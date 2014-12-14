@@ -128,6 +128,12 @@ namespace game
       data.label_view.handle_event(event);
       if(data.label_view.control().done)
       {
+        auto selected = data.label_view.control().selected;
+        if(selected < 6)
+        {
+          auto& item = turn.map->players[turn.player].inventory[selected];
+          item = data.label_view.control().new_item;
+        }
         return data.after_state;
       }
       return data;
