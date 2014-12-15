@@ -6,5 +6,14 @@
                                          "assets/chestopen.png"]},
 
   {"id": 3, "str":"map", "file":"assets/map.png"},
-  {"id": 4, "str":"items", "file":"assets/items.png"}
+
+  {"id": 4, "str":"items", "file":"assets/items.png"},
+
+  {"id": 5, "str":"worf", "file":"assets/enemies/worlf.png"},
+  {"id": 6, "str":"snake", "file":"assets/enemies/snake.png"},
+  {"id": 7, "str":"creeper", "file":"assets/enemies/worm.png"},
+  {"id": 8, "str":"soldier", "file":"assets/enemies/soldier.png"},
+  {"id": 9, "str":"future", "file":"assets/enemies/hmpf.png"},
+  {"id": 10, "str":"giant", "file":"assets/enemies/bigboi.png"},
+
 ]

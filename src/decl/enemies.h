@@ -12,7 +12,8 @@ namespace game
   struct Enemy_Impl
   {
     std::string sprite;
-    std::string name;
+    std::string id;
+    std::string str;
 
     int power;
     int life;
@@ -52,7 +53,7 @@ namespace game
     auto e_find = std::find_if(begin(enemies_), end(enemies_),
     [&str](auto const& enemy)
     {
-      return str == enemy->name;
+      return str == enemy->id;
     });
 
     if(e_find == end(enemies_))

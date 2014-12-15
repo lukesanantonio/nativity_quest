@@ -1,8 +1,49 @@
 [
-  {"sprite":"mongrel", "name":"Mongrel", "power": 5, "life": 5},
-  {"sprite":"boa", "name":"Boa", "power": 5, "life": 5},
-  {"sprite":"giant", "name":"Giant", "power": 5, "life": 5},
-  {"sprite":"soldier", "name":"Roman Soldier", "power": 5, "life": 5},
-  {"sprite":"creeper", "name":"Creeper", "power": 5, "life": 5},
-  {"sprite":"boar", "name":"Scary Looking Boor", "power": 5, "life": 5}
+  {
+    "sprite": "worf",
+    "id": "wolf",
+    "str": "Wild Mongrel",
+    "power": 5,
+    "life": 5
+  },
+
+  {
+    "sprite": "snake",
+    "id": "snake",
+    "str": "Mire Boa",
+    "power": 5,
+    "life": 5
+  },
+
+  {
+    "sprite": "creeper",
+    "id": "creeper",
+    "str": "Blind Creeper",
+    "power": 5,
+    "life": 5
+  },
+
+  {
+    "sprite": "soldier",
+    "id": "soldier",
+    "str": "Roman Soldier",
+    "power": 5,
+    "life": 5
+  },
+
+  {
+    "sprite": "giant",
+    "id": "giant",
+    "str": "Giant",
+    "power": 5,
+    "life": 5
+  },
+
+  {
+    "sprite": "future",
+    "id": "myrr",
+    "str": "Myrr",
+    "power": 5,
+    "life": 5
+  }
 ]

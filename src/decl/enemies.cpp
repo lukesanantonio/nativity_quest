@@ -14,14 +14,16 @@ namespace game
     {
       auto const& obj = *iter;
 
-      if(!has_json_members(obj, {"sprite", "name", "power", "life"}))
+      if(!has_json_members(obj, {"sprite", "id", "str", "power", "life"}))
       {
         throw Bad_Asset{enemy_json, "Bad enemy listing."};
       }
 
       auto enemy = Enemy_Impl{obj["sprite"].GetString(),
-                              obj["name"].GetString(),
-                              obj["power"].GetInt(), obj["life"].GetInt()};
+                              obj["id"].GetString(),
+                              obj["str"].GetString(),
+                              obj["power"].GetInt(),
+                              obj["life"].GetInt()};
 
       enemies_.push_back(Enemy{new Enemy_Impl(enemy)});
     }
