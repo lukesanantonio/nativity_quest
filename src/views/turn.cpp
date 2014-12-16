@@ -626,13 +626,16 @@ namespace game
     // Render the mini map.
     render_as_minimap(g, sprites, *turn.map, {5,5});
 
-    // Render the zone text.
-    auto label_pos = turn.zone_label.position();
-    label_pos.x = g.get_width() - turn.zone_label.surface_extents(g).x - 5;
-    label_pos.y = 10;
-    turn.zone_label.position(label_pos);
+    if(turn.state.which() != 5)
+    {
+      // Render the zone text.
+      auto label_pos = turn.zone_label.position();
+      label_pos.x = g.get_width() - turn.zone_label.surface_extents(g).x - 5;
+      label_pos.y = 10;
+      turn.zone_label.position(label_pos);
 
-    turn.zone_label.render(g);
+      turn.zone_label.render(g);
+    }
 
     // If we are uncrating something currently.
     if(turn.state.which() == 2)
