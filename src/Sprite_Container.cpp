@@ -95,6 +95,11 @@ namespace game
           {
             auto f = std::string{anim_iter->GetString()};
             anim_sprites.emplace_back(std::make_shared<Sprite_Impl>(id,str,f));
+
+            if(!anim_sprites.back()->surface())
+            {
+              throw Bad_Asset{filename, "Failed to load '" + str + "'"};
+            }
           }
 
           sprites_.emplace_back(std::move(anim_sprites));
