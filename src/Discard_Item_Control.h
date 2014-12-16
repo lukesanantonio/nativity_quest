@@ -14,9 +14,14 @@ namespace game
     Discard_Item_Control(Player& p, Item_Parser const& items) noexcept
                          : player(p), items(items) {}
 
+
     void handle_event(SDL_Event const& event) noexcept;
     void layout(Label_View<Discard_Item_Control>& view,
                 Graphics_Desc& g) noexcept;
+
+    void pre_render(Graphics_Desc&, Label_View<Discard_Item_Control> const&,
+                    Sprite_Container&) const noexcept {}
+
     void render(Graphics_Desc& g,
                 Label_View<Discard_Item_Control> const& view,
                 Sprite_Container& sprites) const noexcept;

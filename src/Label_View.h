@@ -108,6 +108,8 @@ namespace game
   void Label_View<Control>::render(Graphics_Desc& g,
                                    Sprite_Container& sprites) const noexcept
   {
+    control_.pre_render(g, *this, sprites);
+
     // Color, hardcoded for now.
     SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
 
