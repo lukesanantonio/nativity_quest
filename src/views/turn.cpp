@@ -229,8 +229,8 @@ namespace game
         if(enemy_find != end(turn.map->enemies))
         {
           auto combat = Combat_Data{Waiting_Data{},
-                                    Label_View<Combat_Control>{Volume<int>{},
-                                                               *enemy_find}};
+            Label_View<Combat_Control>{Volume<int>{},
+                                       Combat_Control{player, *enemy_find}}};
 
           combat.label_view.add_label("Attack");
           combat.label_view.add_label("Run");
@@ -699,7 +699,8 @@ namespace game
     {
       auto& combat = boost::get<Combat_Data>(turn.state);
 
-      combat.label_view.vol({{0, g.get_height() - 100}, g.get_width(), 100});
+      combat.label_view.vol({{300, g.get_height() - 100},
+                             g.get_width() - 300, 100});
       combat.label_view.layout(g);
       combat.label_view.render(g, sprites);
     }

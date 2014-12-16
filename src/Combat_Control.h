@@ -13,7 +13,8 @@ namespace game
 {
   struct Combat_Control
   {
-    Combat_Control(Enemy_Instance& enemy) noexcept : enemy(enemy) {}
+    Combat_Control(Player& player, Enemy_Instance& enemy) noexcept
+                   : player(player), enemy(enemy) {}
 
     void handle_event(SDL_Event const& event) noexcept;
     void layout(Label_View<Combat_Control>& view,
@@ -25,6 +26,7 @@ namespace game
     int selected = 0;
     bool run = false;
 
+    Player& player;
     Enemy_Instance& enemy;
   };
 }

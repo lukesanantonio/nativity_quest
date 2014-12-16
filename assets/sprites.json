@@ -16,4 +16,5 @@
   {"id": 9, "str":"future", "file":"assets/enemies/hmpf.png"},
   {"id": 10, "str":"giant", "file":"assets/enemies/bigboi.png"},
 
+  {"id": 11, "str":"player_back", "file":"assets/char_back.png"}
 ]

@@ -43,6 +43,37 @@ namespace game
       ++i;
     }
   }
+
+  void render_with_border(Graphics_Desc& g, SDL_Rect rect)
+  {
+    SDL_RenderFillRect(g.renderer, &rect);
+
+    --rect.x;
+    --rect.y;
+    rect.w += 2;
+    rect.h += 2;
+
+    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
+    SDL_RenderDrawRect(g.renderer, &rect);
+  }
+
+  void render_health(Graphics_Desc& g, SDL_Rect box,
+                     int life, int max) noexcept
+  {
+    SDL_Rect bar;
+    bar.w = box.w  - 50;
+    bar.h = 15;
+    bar.x = box.x + box.w / 2 - bar.w / 2;
+    bar.y = box.y + box.h / 2 - bar.h / 2;
+
+    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x77, 0x00, 0xff);
+    render_with_border(g, bar);
+
+    SDL_SetRenderDrawColor(g.renderer, 0x00, 0xff, 0x00, 0xff);
+    bar.w = bar.w / max * life;
+    SDL_RenderFillRect(g.renderer, &bar);
+  }
+
   void Combat_Control::render(Graphics_Desc& g,
                               Label_View<Combat_Control> const& view,
                               Sprite_Container& sprites) const noexcept
@@ -58,5 +89,50 @@ namespace game
 
     SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
     SDL_RenderFillRect(g.renderer, &marker);
+
+    // Render the enemy and a healthbar.
+    auto enemy_sprite = sprites.get_sprite(enemy.decl->sprite);
+
+    SDL_Rect dest;
+    dest.y = 0;
+    dest.x = g.get_width() / 2;
+    dest.w = g.get_width() / 2;
+    dest.h = g.get_height() / 2 - 75;
+
+    SDL_RenderCopy(g.renderer, enemy_sprite->texture(g.renderer), NULL, &dest);
+
+    SDL_Rect health_box;
+
+    health_box.x = dest.x;
+    health_box.w = dest.w;
+    health_box.h = 50;
+    health_box.y = dest.y + dest.h - health_box.h;
+
+    SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
+    render_with_border(g, health_box);
+    render_health(g, health_box, enemy.current_life, enemy.decl->life);
+
+    // Render the player.
+    auto player_sprite = sprites.get_sprite("player_back");
+
+    SDL_Rect player_dest;
+    player_dest.w = g.get_width() / 2;
+    player_dest.x = 0;
+
+    player_dest.h = g.get_height() / 2;
+    player_dest.y = g.get_height() - player_dest.h;
+
+    SDL_RenderCopy(g.renderer, player_sprite->texture(g.renderer),
+                   NULL, &player_dest);
+
+    // Render the player health.
+    health_box.x = player_dest.x + player_dest.w;
+    health_box.y = view.vol().pos.y - health_box.h - 5;
+
+    SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
+    render_with_border(g, health_box);
+
+    // Render the health bar.
+    render_health(g, health_box, player.life, player.max_life);
   }
 }
