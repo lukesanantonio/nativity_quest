@@ -66,6 +66,8 @@ namespace game
       SDL_DestroyWindow(window);
       throw Bad_Renderer{};
     }
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
   }
   Graphics_Desc::~Graphics_Desc() noexcept
   {
