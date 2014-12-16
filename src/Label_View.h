@@ -20,7 +20,7 @@ namespace game
     inline Control& control() noexcept;
     inline Control const& control() const noexcept;
 
-    inline Volume<int> const& vol() noexcept;
+    inline Volume<int> const& vol() const noexcept;
     inline void vol(Volume<int> vol) noexcept;
 
     inline void add_label(std::string const&) noexcept;
@@ -59,7 +59,7 @@ namespace game
   }
 
   template <class Control>
-  inline Volume<int> const& Label_View<Control>::vol() noexcept
+  inline Volume<int> const& Label_View<Control>::vol() const noexcept
   {
     return vol_;
   }
