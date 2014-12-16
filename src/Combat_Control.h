@@ -11,6 +11,22 @@
 #include "decl/enemies.h"
 namespace game
 {
+  enum class Fight_State
+  {
+    Enemy_Won,
+    Player_Won,
+    Player_Turn,
+    Enemy_Turn,
+    Running
+  };
+
+  enum class Combat_Anim_State
+  {
+    Player_Life,
+    Enemy_Life,
+    None
+  };
+
   struct Combat_Control
   {
     Combat_Control(Player& player, Enemy_Instance& enemy) noexcept
@@ -24,10 +40,15 @@ namespace game
                 Sprite_Container& sprites) const noexcept;
 
     int selected = 0;
-    bool run = false;
 
     Player& player;
     Enemy_Instance& enemy;
+
+    Fight_State state = Fight_State::Player_Turn;
+
+    void step() noexcept;
+
+    mutable Combat_Anim_State anim = Combat_Anim_State::None;
+    mutable int anim_step;
   };
 }
-

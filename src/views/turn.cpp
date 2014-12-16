@@ -157,7 +157,7 @@ namespace game
     Event_Visitor::operator()(Combat_Data& data) const noexcept
     {
       data.label_view.handle_event(event);
-      if(data.label_view.control().run)
+      if(data.label_view.control().state == Fight_State::Running)
       {
         data.label_view.control().enemy.fighting = false;
         return data.after_state;
@@ -386,6 +386,7 @@ namespace game
     }
     Turn_State Step_Visitor::operator()(Combat_Data& data) const noexcept
     {
+      data.label_view.control().step();
       return data;
     }
     template <typename Data>

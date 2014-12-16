@@ -7,6 +7,9 @@ namespace game
 {
   void Combat_Control::handle_event(SDL_Event const& event) noexcept
   {
+    if(state != Fight_State::Player_Turn ||
+       anim != Combat_Anim_State::None) return;
+
     // TODO Fix copied code and put it somewhere (from Discard_Item_Control).
     if(event.type == SDL_KEYDOWN)
     {
@@ -20,7 +23,14 @@ namespace game
       }
       if(event.key.keysym.scancode == SDL_SCANCODE_RETURN)
       {
-        if(selected == 1) run = true;
+        if(selected == 0)
+        {
+          --enemy.current_life;
+          anim = Combat_Anim_State::Enemy_Life;
+          anim_step = 0;
+          state = Fight_State::Enemy_Turn;
+        }
+        if(selected == 1) state = Fight_State::Running;
       }
     }
   }
@@ -57,8 +67,8 @@ namespace game
     SDL_RenderDrawRect(g.renderer, &rect);
   }
 
-  void render_health(Graphics_Desc& g, SDL_Rect box,
-                     int life, int max) noexcept
+  bool render_health(Graphics_Desc& g, SDL_Rect box,
+                     int life, int max, int life_step) noexcept
   {
     SDL_Rect bar;
     bar.w = box.w  - 50;
@@ -70,8 +80,28 @@ namespace game
     render_with_border(g, bar);
 
     SDL_SetRenderDrawColor(g.renderer, 0x00, 0xff, 0x00, 0xff);
-    bar.w = bar.w / max * life;
+
+    bool ret = false;
+
+    if(life_step == -1)
+    {
+      bar.w = bar.w / max * life;
+    }
+    else
+    {
+      auto segment_width = bar.w / max;
+
+      bar.w = segment_width * (life + 1);
+      if(segment_width <= life_step)
+      {
+        bar.w -= segment_width;
+        ret = true;
+      }
+      else bar.w -= life_step;
+    }
+
     SDL_RenderFillRect(g.renderer, &bar);
+    return ret;
   }
 
   void Combat_Control::render(Graphics_Desc& g,
@@ -110,7 +140,18 @@ namespace game
 
     SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
     render_with_border(g, health_box);
-    render_health(g, health_box, enemy.current_life, enemy.decl->life);
+
+    int life_step = -1;
+    if(anim == Combat_Anim_State::Enemy_Life)
+    {
+      life_step = anim_step;
+    }
+    if(render_health(g, health_box, enemy.current_life, enemy.decl->life,
+                     life_step))
+    {
+      anim = Combat_Anim_State::None;
+      anim_step = 0;
+    }
 
     // Render the player.
     auto player_sprite = sprites.get_sprite("player_back");
@@ -133,6 +174,32 @@ namespace game
     render_with_border(g, health_box);
 
     // Render the health bar.
-    render_health(g, health_box, player.life, player.max_life);
+    life_step = -1;
+    if(anim == Combat_Anim_State::Player_Life)
+    {
+      life_step = anim_step;
+    }
+    if(render_health(g, health_box, player.life, player.max_life, life_step))
+    {
+      anim = Combat_Anim_State::None;
+      anim_step = 0;
+    }
+  }
+
+  void Combat_Control::step() noexcept
+  {
+    if(anim == Combat_Anim_State::Player_Life ||
+       anim == Combat_Anim_State::Enemy_Life)
+    {
+      anim_step += 3;
+    }
+
+    if(state == Fight_State::Enemy_Turn && anim == Combat_Anim_State::None)
+    {
+      --player.life;
+      state = Fight_State::Player_Turn;
+      anim = Combat_Anim_State::Player_Life;
+      anim_step = 0;
+    }
   }
 }
