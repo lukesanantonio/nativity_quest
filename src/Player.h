@@ -22,6 +22,9 @@ namespace game
 
     double view_radius = 55.0;
     Sprite_Impl fog;
+
+    int life = 10;
+    int max_life = 10;
   };
 
   void reset_fog(Player&, Vec<int> extents) noexcept;
