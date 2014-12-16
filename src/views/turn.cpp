@@ -213,6 +213,18 @@ namespace game
 
       using std::begin; using std::end;
 
+      // Remove any dead enemies.
+      {
+        auto new_end = std::remove_if(begin(turn.map->enemies),
+                                      end(turn.map->enemies),
+        [](auto const& enemy)
+        {
+          return enemy.current_life == 0;
+        });
+
+        turn.map->enemies.erase(new_end, end(turn.map->enemies));
+      }
+
       // Check for any enemies in our view
       {
         auto enemy_find = std::find_if(begin(turn.map->enemies),
@@ -387,6 +399,11 @@ namespace game
     Turn_State Step_Visitor::operator()(Combat_Data& data) const noexcept
     {
       data.label_view.control().step();
+      if(data.label_view.control().state == Fight_State::Player_Won ||
+         data.label_view.control().state == Fight_State::Enemy_Won)
+      {
+        return data.after_state;
+      }
       return data;
     }
     template <typename Data>

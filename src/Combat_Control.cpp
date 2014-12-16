@@ -188,18 +188,35 @@ namespace game
 
   void Combat_Control::step() noexcept
   {
+    if(state == Fight_State::Enemy_Won || state == Fight_State::Player_Won)
+    {
+      return;
+    }
+
     if(anim == Combat_Anim_State::Player_Life ||
        anim == Combat_Anim_State::Enemy_Life)
     {
       anim_step += 3;
     }
 
-    if(state == Fight_State::Enemy_Turn && anim == Combat_Anim_State::None)
+    // If we are currently in an animation we can't do anything else, really.
+    if(anim != Combat_Anim_State::None) return;
+
+    if(state == Fight_State::Enemy_Turn)
     {
       --player.life;
       state = Fight_State::Player_Turn;
       anim = Combat_Anim_State::Player_Life;
       anim_step = 0;
+    }
+
+    if(enemy.current_life == 0)
+    {
+      state = Fight_State::Player_Won;
+    }
+    if(player.life == 0)
+    {
+      state = Fight_State::Enemy_Won;
     }
   }
 }
