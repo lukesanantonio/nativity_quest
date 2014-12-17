@@ -51,7 +51,6 @@ namespace game
     {
       reset_fog(player, map->zones.get_map_extents());
       player.pos = {500, 0};
-      player.view_radius = 75.0;
       unfog(player);
     }
 

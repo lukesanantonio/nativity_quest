@@ -20,7 +20,7 @@ namespace game
 
     std::array<Item, 6> inventory;
 
-    double view_radius = 55.0;
+    double view_radius = 100.0;
     Sprite_Impl fog;
 
     int life = 10;
