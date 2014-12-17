@@ -27,9 +27,11 @@ namespace game
       return zone;
     }
 
-    void next_player(Turn_Data& turn) noexcept
+    player_id next_player(Turn_Data const& turn) noexcept
     {
-      if(++turn.player == turn.map->players.size()) turn.player = 0;
+      auto cur_player = turn.player;
+      if(++cur_player == turn.map->players.size()) return 0;
+      return cur_player;
     }
   }
 
