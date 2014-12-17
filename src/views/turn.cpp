@@ -4,6 +4,8 @@
  */
 #include "turn.h"
 
+#include "../State.h"
+
 #include "../render.h"
 
 #include "../util/pi.h"
@@ -61,8 +63,9 @@ namespace game
   {
     struct Event_Visitor : boost::static_visitor<Turn_State>
     {
-      inline Event_Visitor(Turn_Data& turn, SDL_Event const& event) noexcept
-                          : turn(turn), event(event) {}
+      inline Event_Visitor(State& s, Turn_Data& turn,
+                           SDL_Event const& event) noexcept
+                           : state(s), turn(turn), event(event) {}
 
       Turn_State operator()(Waiting_Data const& data) const noexcept;
 
@@ -75,6 +78,7 @@ namespace game
       template <typename Data_T>
       Turn_State operator()(Data_T const& d) const noexcept;
 
+      State& state;
       Turn_Data& turn;
       SDL_Event const& event;
     };
@@ -171,9 +175,10 @@ namespace game
     }
   }
 
-  void handle_event_state(Turn_Data& turn, SDL_Event const& event) noexcept
+  void handle_event_state(State& s, Turn_Data& turn,
+                          SDL_Event const& event) noexcept
   {
-    turn.state = boost::apply_visitor(Event_Visitor{turn, event},
+    turn.state = boost::apply_visitor(Event_Visitor{s, turn, event},
                                       turn.state);
   }
 
@@ -194,7 +199,7 @@ namespace game
 
     struct Step_Visitor : boost::static_visitor<Turn_State>
     {
-      Step_Visitor(Turn_Data& td) noexcept : turn(td) {}
+      Step_Visitor(State& s, Turn_Data& td) noexcept : state(s), turn(td) {}
 
       Turn_State operator()(Waiting_Data& data) const noexcept;
       Turn_State operator()(Moving_Data& data) const noexcept;
@@ -204,6 +209,7 @@ namespace game
       template <typename Data>
       Turn_State operator()(Data const& data) const noexcept;
 
+      State& state;
       Turn_Data& turn;
     };
 
@@ -413,9 +419,9 @@ namespace game
     }
   }
 
-  void step_state(Turn_Data& turn_data) noexcept
+  void step_state(State& s, Turn_Data& turn_data) noexcept
   {
-    turn_data.state = boost::apply_visitor(Step_Visitor{turn_data},
+    turn_data.state = boost::apply_visitor(Step_Visitor{s, turn_data},
                                            turn_data.state);
   }
 
@@ -441,7 +447,7 @@ namespace game
     return boost::apply_visitor(Delta_Visitor{}, data);
   }
 
-  void render_state(Graphics_Desc& g, Sprite_Container& sprites,
+  void render_state(State& s, Graphics_Desc& g, Sprite_Container& sprites,
                     Turn_Data& turn) noexcept
   {
     Player& player = turn.map->players[turn.player];

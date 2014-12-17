@@ -108,7 +108,10 @@ namespace game
     bool render_active_player_path = true;
   };
 
-  void handle_event_state(Turn_Data&, SDL_Event const&) noexcept;
-  void step_state(Turn_Data&) noexcept;
-  void render_state(Graphics_Desc&, Sprite_Container&, Turn_Data&) noexcept;
+  struct State;
+
+  void handle_event_state(State& s, Turn_Data&, SDL_Event const&) noexcept;
+  void step_state(State& s, Turn_Data&) noexcept;
+  void render_state(State& s, Graphics_Desc&,
+                    Sprite_Container&, Turn_Data&) noexcept;
 }

@@ -18,7 +18,7 @@ namespace game
     {
       case View::Turn:
       {
-        handle_event_state(boost::get<Turn_Data>(s.state_data), event);
+        handle_event_state(s, boost::get<Turn_Data>(s.state_data), event);
         break;
       }
     }
@@ -29,7 +29,7 @@ namespace game
     {
       case View::Turn:
       {
-        step_state(boost::get<Turn_Data>(s.state_data));
+        step_state(s, boost::get<Turn_Data>(s.state_data));
         break;
       }
     }
@@ -41,7 +41,7 @@ namespace game
     {
       case View::Turn:
       {
-        render_state(g, a, boost::get<Turn_Data>(s.state_data));
+        render_state(s, g, a, boost::get<Turn_Data>(s.state_data));
         break;
       }
     }
