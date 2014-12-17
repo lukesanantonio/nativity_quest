@@ -21,6 +21,8 @@ namespace game
   {
     bool running = false;
 
+    Vec<int> window_extents;
+
     View type;
     boost::variant<game::Turn_Data> state_data;
   };
