@@ -208,6 +208,7 @@ namespace game
       Turn_State operator()(Moving_Data& data) const noexcept;
       Turn_State operator()(Uncrate_Data& data) const noexcept;
       Turn_State operator()(Combat_Data& data) const noexcept;
+      Turn_State operator()(Change_View_Data& data) const noexcept;
 
       template <typename Data>
       Turn_State operator()(Data const& data) const noexcept;
@@ -341,8 +342,13 @@ namespace game
       // completed that and we can become static.
       if(delta_len < max_len)
       {
-        //turn.next_player();
-        return Waiting_Data{};
+        auto pt = turn.map->players[next_player(turn)].pos;
+
+        auto vp_src = view_pt(state.window_extents, turn.map->extents,
+                              Vec<int>{pt}, turn.map->scale);
+
+        auto delta = vp_src.pos - turn.map_corner;
+        return Change_View_Data{delta};
       }
 
       return data;
@@ -412,6 +418,26 @@ namespace game
          data.label_view.control().state == Fight_State::Enemy_Won)
       {
         return data.after_state;
+      }
+      return data;
+    }
+    Turn_State Step_Visitor::operator()(Change_View_Data& data) const noexcept
+    {
+      constexpr auto max_speed = 6.0;
+
+      auto unit_delta = normalize(data.delta);
+      auto move_delta =
+                Vec<int>{unit_delta * std::min(length(data.delta), max_speed)};
+
+      turn.map_corner += move_delta;
+
+      auto before_delta = data.delta;
+      data.delta -= move_delta;
+
+      if(before_delta == data.delta)
+      {
+        turn.player = next_player(turn);
+        return Waiting_Data{};
       }
       return data;
     }

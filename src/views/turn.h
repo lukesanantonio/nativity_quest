@@ -40,12 +40,18 @@ namespace game
 
   struct Combat_Data;
 
+  struct Change_View_Data
+  {
+    Vec<int> delta;
+  };
+
   using Turn_State =
     boost::variant<Waiting_Data, Moving_Data,
                    boost::recursive_wrapper<Uncrate_Data>,
                    boost::recursive_wrapper<Discard_Item_Data>,
                    boost::recursive_wrapper<Inventory_View_Data>,
-                   boost::recursive_wrapper<Combat_Data> >;
+                   boost::recursive_wrapper<Combat_Data>,
+                   Change_View_Data>;
 
   struct Uncrate_Data
   {
