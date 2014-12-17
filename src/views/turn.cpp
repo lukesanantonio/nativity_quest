@@ -479,7 +479,8 @@ namespace game
   void render_state(State& s, Graphics_Desc& g, Sprite_Container& sprites,
                     Turn_Data& turn) noexcept
   {
-    Player& player = turn.map->players[turn.player];
+    Player& player = turn.state.which() != 6 ? turn.map->players[turn.player] :
+                     turn.map->players[next_player(turn)];
 
     // Recalculate the map corner.
     const auto viewport_width = int(g.get_width() / turn.map->scale);
@@ -491,6 +492,16 @@ namespace game
       view_pt({g.get_width(), g.get_height()},
               {map_sprite->surface()->w, map_sprite->surface()->h},
               player.pos, turn.map->scale);
+
+    // Only modify these if we are not currently animating the change between
+    // players.
+    if(turn.state.which() != 6)
+    {
+      // These are our calculated corners!
+      turn.map_corner = viewport_src.pos;
+    }
+
+    viewport_src.pos = turn.map_corner;
 
     // Render the full map.
     auto viewport_src_rect = to_rect(viewport_src);
@@ -643,9 +654,10 @@ namespace game
     }
 
     // Render the fog of war of the current player.
+
     if(player.fog.surface())
     {
-      SDL_RenderCopy(g.renderer, fog_player->fog.texture(g.renderer),
+      SDL_RenderCopy(g.renderer, player.fog.texture(g.renderer),
                      &viewport_src_rect, NULL);
     }
 
