@@ -468,11 +468,12 @@ namespace game
         return data.delta;
       }
     };
-  }
 
-  Vec<double> moving_delta(Turn_State const& data) noexcept
-  {
-    return boost::apply_visitor(Delta_Visitor{}, data);
+    Vec<double> moving_delta(Turn_State const& data) noexcept
+    {
+      return boost::apply_visitor(Delta_Visitor{}, data);
+    }
+
   }
 
   void render_state(State& s, Graphics_Desc& g, Sprite_Container& sprites,
