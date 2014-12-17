@@ -39,6 +39,13 @@ int main(int argc, char** argv)
     game::State state{true, {g.get_width(), g.get_height()}, game::View::Turn,
                       game::Turn_Data{ITEMS_JSON, ZONES_JSON, CHAR_JSON,
                                       ENEMIES_JSON} };
+    {
+      auto& turn = boost::get<game::Turn_Data>(state.state_data);
+
+      auto map_sprite = sprites.get_sprite(turn.map->zones.map_asset());
+      turn.map->extents = {map_sprite->surface()->w, map_sprite->surface()->h};
+    }
+
     pong::Timer<> timer;
 
     while(state.running)

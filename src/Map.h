@@ -34,6 +34,8 @@ namespace game
     Map(std::string const& zone_json, Item_Parser const&,
         std::string const& enemy_json);
 
+    Vec<int> extents;
+
     Zone_Parser zones;
     std::array<Player, 6> players;
 
