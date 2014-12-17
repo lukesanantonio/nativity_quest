@@ -5,6 +5,7 @@
 #pragma once
 
 #include "vec.h"
+#include <algorithm>
 
 namespace game
 {
@@ -15,4 +16,40 @@ namespace game
     T width;
     T height;
   };
+
+  template <typename T>
+  Volume<T> view_pt(Vec<T> const& vp_extents, Vec<T> const& map_extents,
+                    Vec<T> const& pt, double map_scale) noexcept
+  {
+    Volume<T> vol;
+
+    auto const vp_width = T(vp_extents.x / map_scale);
+    auto const vp_height = T(vp_extents.y / map_scale);
+
+    // Find the coordinates of the top-left corner of a viewport that results
+    // in the player being centered on it.
+    // However, don't allow the corner to go behind (0,0).
+    vol.pos.x = std::max(T(0), pt.x - vp_width / 2);
+    vol.pos.y = std::max(T(0), pt.y - vp_height / 2);
+
+    // The width and height of the viewport are always no greater than the
+    // calculated values above (using the map scale and screen size). They will
+    // be smaller when the max width would result in a src rectangle that went
+    // beyond the map image's bounds.
+    vol.width = std::min(vp_width, map_extents.x - vol.pos.x);
+    vol.height = std::min(vp_height, map_extents.y - vol.pos.y);
+
+    // Adjust the viewport corners to give the possibly shortened width and
+    // height room to be the max.
+    vol.pos.x -= vp_width - vol.width;
+    vol.pos.y -= vp_height - vol.height;
+
+    // The viewport should always have the calculated width. We know this won't
+    // go beyond the map image's bounds because we already adjusted the x and y
+    // values accordingly.
+    vol.width = vp_width;
+    vol.height = vp_height;
+
+    return vol;
+  }
 }
