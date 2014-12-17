@@ -9,6 +9,7 @@
 #include "../render.h"
 
 #include "../util/pi.h"
+#include "../util/rect.h"
 
 #include <cmath>
 
@@ -458,41 +459,15 @@ namespace game
 
     auto map_sprite = sprites.get_sprite(turn.map->zones.map_asset());
 
-    SDL_Rect viewport_src;
-
-    // Find the coordinates of the top-left corner of a viewport that results
-    // in the player being centered on it.
-    // However, don't allow the corner to go behind (0,0).
-    viewport_src.x = std::max(0.0, player.pos.x - viewport_width / 2);
-    viewport_src.y = std::max(0.0, player.pos.y - viewport_height / 2);
-
-    // The width and height of the viewport are always no greater than the
-    // calculated values above (using the map scale and screen size). They will
-    // be smaller when the max width would result in a src rectangle that went
-    // beyond the map image's bounds.
-    viewport_src.w =
-           std::min(viewport_width, map_sprite->surface()->w - viewport_src.x);
-    viewport_src.h =
-          std::min(viewport_height, map_sprite->surface()->h - viewport_src.y);
-
-    // Adjust the viewport corners to give the possibly shortened width and
-    // height room to be the max.
-    viewport_src.x -= viewport_width - viewport_src.w;
-    viewport_src.y -= viewport_width - viewport_src.h;
-
-    // The viewport should always have the calculated width. We know this won't
-    // go beyond the map image's bounds because we already adjusted the x and y
-    // values accordingly.
-    viewport_src.w = viewport_width;
-    viewport_src.h = viewport_height;
-
-    // These are our calculated corners!
-    turn.map_corner.x = viewport_src.x;
-    turn.map_corner.y = viewport_src.y;
+    auto viewport_src =
+      view_pt({g.get_width(), g.get_height()},
+              {map_sprite->surface()->w, map_sprite->surface()->h},
+              player.pos, turn.map->scale);
 
     // Render the full map.
+    auto viewport_src_rect = to_rect(viewport_src);
     SDL_RenderCopy(g.renderer, map_sprite->texture(g.renderer),
-                   &viewport_src, NULL);
+                   &viewport_src_rect, NULL);
 
     // Figure out where the player will be on-screen.
     auto player_scr_coord = (player.pos - turn.map_corner) * turn.map->scale;
@@ -642,8 +617,8 @@ namespace game
     // Render the fog of war of the current player.
     if(player.fog.surface())
     {
-      SDL_RenderCopy(g.renderer, player.fog.texture(g.renderer),
-                     &viewport_src, NULL);
+      SDL_RenderCopy(g.renderer, fog_player->fog.texture(g.renderer),
+                     &viewport_src_rect, NULL);
     }
 
     // Render the mini map.
