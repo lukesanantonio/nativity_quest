@@ -40,11 +40,17 @@ namespace game
     // This function clears the specified pixel of the fog surface.
     auto clear_pixel = [fog, &p](Vec<int> pt)
     {
+      pt.x += p.pos.x;
+      pt.y += p.pos.y;
+
+      if(pt.x < 0 || fog->w < pt.x) return;
+      if(pt.y < 0 || fog->h < pt.y) return;
+
       constexpr auto clear_color = 0x00000000;
 
       auto pixel_byte_ptr = (uint8_t*) fog->pixels;
-      pixel_byte_ptr += fog->pitch * int(pt.y + p.pos.y);
-      pixel_byte_ptr += fog->format->BytesPerPixel * int(pt.x + p.pos.x);
+      pixel_byte_ptr += fog->pitch * int(pt.y);
+      pixel_byte_ptr += fog->format->BytesPerPixel * int(pt.x);
 
       uint32_t* pixel_ptr = (uint32_t*) pixel_byte_ptr;
       *pixel_ptr = clear_color;
