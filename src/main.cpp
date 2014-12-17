@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 
     game::Sprite_Container sprites(SPRITES_JSON);
 
-    game::State state{true, {g.get_width(), g.get_height()}, game::View::Turn,
+    game::State state{true, game::View::Turn,
                       game::Turn_Data{ITEMS_JSON, ZONES_JSON, CHAR_JSON,
                                       ENEMIES_JSON} };
     pong::Timer<> timer;

@@ -47,11 +47,11 @@ namespace game
     for(auto& player : map->players)
     {
       reset_fog(player, map->zones.get_map_extents());
+      player.pos = {500, 0};
       player.view_radius = 75.0;
+      unfog(player);
     }
 
-    map->players[player].pos = {500, 10};
-    unfog(map->players[player]);
 
     map->scale = 3.5;
     map->mini_scale = .25;
