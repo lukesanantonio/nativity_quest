@@ -111,7 +111,7 @@ namespace game
 
     Character_Parser character;
 
-    bool render_active_player_path = true;
+    bool render_active_player_path = false;
   };
 
   Turn_State change_player(Turn_Data& turn) noexcept;
