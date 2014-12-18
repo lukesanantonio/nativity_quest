@@ -25,6 +25,11 @@ namespace game
 
     int life = 10;
     int max_life = 10;
+
+    double moved;
+    double max_movement;
+
+    bool done = false;
   };
 
   void reset_fog(Player&, Vec<int> extents) noexcept;

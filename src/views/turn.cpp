@@ -35,9 +35,13 @@ namespace game
     }
   }
 
-  Turn_State change_player(State& s, Turn_Data& turn) noexcept
+  Turn_State change_player(State& state, Turn_Data& turn) noexcept
   {
-    auto pt = turn.map->players[next_player(turn)].pos;
+    auto& player = turn.map->players[next_player(turn)];
+    player.moved = 0;
+    player.done = false;
+
+    auto pt = player.pos;
 
     auto vp_src = view_pt(state.window_extents, turn.map->extents,
                           Vec<int>{pt}, turn.map->scale);
@@ -62,6 +66,8 @@ namespace game
     {
       reset_fog(player, map->zones.get_map_extents());
       player.pos = {500, 0};
+      player.moved = 0;
+      player.max_movement = 100;
       unfog(player);
     }
 
@@ -119,6 +125,10 @@ namespace game
           }
 
           return invent;
+        }
+        if(event.key.keysym.scancode == SDL_SCANCODE_RETURN)
+        {
+          turn.map->players[turn.player].done = true;
         }
       }
       if(event.type == SDL_MOUSEBUTTONDOWN)
@@ -297,6 +307,12 @@ namespace game
         }
       }
 
+      // Now that we dealt with everything, can we switch players?
+      if(player.done)
+      {
+        return change_player(state, turn);
+      }
+
       return data;
     }
     Turn_State Step_Visitor::operator()(Moving_Data& data) const noexcept
@@ -308,12 +324,16 @@ namespace game
       // Find out the distance we have yet to travel.
       auto delta_len = length(data.delta);
 
-      auto max_len = 1.0;
+      // Max step size for the player.
+      auto max_speed = 1.0;
 
       // Isolate the direction.
       auto unit_delta = normalize<>(data.delta);
       // How much do we move this step?
-      auto move_delta = unit_delta * std::min(max_len, delta_len);
+      auto move_length =
+        std::min(max_speed,
+                 std::min(player.max_movement - player.moved, delta_len));
+      auto move_delta = unit_delta * move_length;
 
       // Move the player.
       player.pos += move_delta;
@@ -337,7 +357,7 @@ namespace game
           // Cancel the movement.
           player.pos -= move_delta;
           update_zone(turn);
-          return change_player(state, turn);
+          return Waiting_Data{};
         }
       }
 
@@ -347,12 +367,13 @@ namespace game
 
       // Mark some distance traveled.
       data.delta -= move_delta;
+      player.moved += move_length;
 
       // If we have less than the max units per step, it means we just
       // completed that and we can become static.
-      if(delta_len < max_len)
+      if(delta_len < max_speed || player.max_movement <= player.moved)
       {
-        return change_player(state, turn);
+        return Waiting_Data{};
       }
 
       return data;
