@@ -68,6 +68,8 @@ namespace game
       player.pos = {500, 0};
       player.moved = 0;
       player.max_movement = 100;
+      player.entity_data.max_life = 10;
+      reset_life(player.entity_data);
       unfog(player);
     }
 
@@ -249,7 +251,7 @@ namespace game
                                       end(turn.map->enemies),
         [](auto const& enemy)
         {
-          return enemy.current_life == 0;
+          return enemy.entity_data.cur_life == 0;
         });
 
         turn.map->enemies.erase(new_end, end(turn.map->enemies));

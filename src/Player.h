@@ -11,6 +11,8 @@
 
 #include "Sprite_Container.h"
 
+#include "Entity_Data.h"
+
 namespace game
 {
   struct Player
@@ -23,8 +25,7 @@ namespace game
     double view_radius = 100.0;
     Sprite_Impl fog;
 
-    int life = 10;
-    int max_life = 10;
+    Entity_Data entity_data;
 
     double moved;
     double max_movement;

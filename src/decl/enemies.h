@@ -7,6 +7,8 @@
 #include <memory>
 
 #include "items.h"
+
+#include "../Entity_Data.h"
 namespace game
 {
   struct Enemy_Impl
@@ -15,7 +17,7 @@ namespace game
     std::string id;
     std::string str;
 
-    int power;
+    int defense;
     int life;
   };
 
@@ -28,10 +30,12 @@ namespace game
 
   struct Enemy_Instance
   {
-    Enemy_Instance(Enemy e) noexcept : decl(e), current_life(e->life) {}
+    Enemy_Instance(Enemy e) noexcept
+                   : decl(e), entity_data{e->life, e->life, e->defense} {}
     Enemy decl;
 
-    int current_life;
+    Entity_Data entity_data;
+
     Item item;
 
     bool fighting = true;

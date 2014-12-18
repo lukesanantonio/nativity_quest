@@ -3,47 +3,47 @@
     "sprite": "worf",
     "id": "wolf",
     "str": "Wild Mongrel",
-    "power": 5,
-    "life": 5
+    "defense": 0,
+    "life": 2
   },
 
   {
     "sprite": "snake",
     "id": "snake",
     "str": "Mire Boa",
-    "power": 5,
-    "life": 5
+    "defense": 0,
+    "life": 3
   },
 
   {
     "sprite": "creeper",
     "id": "creeper",
     "str": "Blind Creeper",
-    "power": 5,
-    "life": 5
+    "defense": 1,
+    "life": 4
   },
 
   {
     "sprite": "soldier",
     "id": "soldier",
     "str": "Roman Soldier",
-    "power": 5,
-    "life": 5
+    "defense": 3,
+    "life": 3
   },
 
   {
     "sprite": "giant",
     "id": "giant",
     "str": "Giant",
-    "power": 5,
-    "life": 5
+    "defense": 0,
+    "life": 7
   },
 
   {
     "sprite": "future",
     "id": "myrr",
     "str": "Myrr",
-    "power": 5,
-    "life": 5
+    "defense": 2,
+    "life": 10
   }
 ]

@@ -25,7 +25,7 @@ namespace game
       {
         if(selected == 0)
         {
-          --enemy.current_life;
+          --enemy.entity_data.cur_life;
           anim = Combat_Anim_State::Enemy_Life;
           anim_step = 0;
           state = Fight_State::Enemy_Turn;
@@ -146,8 +146,8 @@ namespace game
     {
       life_step = anim_step;
     }
-    if(render_health(g, health_box, enemy.current_life, enemy.decl->life,
-                     life_step))
+    if(render_health(g, health_box, enemy.entity_data.cur_life,
+                     enemy.decl->life, life_step))
     {
       anim = Combat_Anim_State::None;
       anim_step = 0;
@@ -179,7 +179,8 @@ namespace game
     {
       life_step = anim_step;
     }
-    if(render_health(g, health_box, player.life, player.max_life, life_step))
+    if(render_health(g, health_box, player.entity_data.cur_life,
+                     player.entity_data.max_life, life_step))
     {
       anim = Combat_Anim_State::None;
       anim_step = 0;
@@ -204,17 +205,17 @@ namespace game
 
     if(state == Fight_State::Enemy_Turn)
     {
-      --player.life;
+      --player.entity_data.cur_life;
       state = Fight_State::Player_Turn;
       anim = Combat_Anim_State::Player_Life;
       anim_step = 0;
     }
 
-    if(enemy.current_life == 0)
+    if(enemy.entity_data.cur_life == 0)
     {
       state = Fight_State::Player_Won;
     }
-    if(player.life == 0)
+    if(player.entity_data.cur_life == 0)
     {
       state = Fight_State::Enemy_Won;
     }
