@@ -35,6 +35,17 @@ namespace game
     }
   }
 
+  Turn_State change_player(State& s, Turn_Data& turn) noexcept
+  {
+    auto pt = turn.map->players[next_player(turn)].pos;
+
+    auto vp_src = view_pt(state.window_extents, turn.map->extents,
+                          Vec<int>{pt}, turn.map->scale);
+
+    auto delta = vp_src.pos - turn.map_corner;
+    return Change_View_Data{delta};
+  }
+
   Turn_Data::Turn_Data(std::string const& items_file,
                        std::string const& zones_file,
                        std::string const& char_file,
@@ -326,7 +337,7 @@ namespace game
           // Cancel the movement.
           player.pos -= move_delta;
           update_zone(turn);
-          return Waiting_Data{};
+          return change_player(state, turn);
         }
       }
 
@@ -341,13 +352,7 @@ namespace game
       // completed that and we can become static.
       if(delta_len < max_len)
       {
-        auto pt = turn.map->players[next_player(turn)].pos;
-
-        auto vp_src = view_pt(state.window_extents, turn.map->extents,
-                              Vec<int>{pt}, turn.map->scale);
-
-        auto delta = vp_src.pos - turn.map_corner;
-        return Change_View_Data{delta};
+        return change_player(state, turn);
       }
 
       return data;

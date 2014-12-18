@@ -114,6 +114,8 @@ namespace game
     bool render_active_player_path = true;
   };
 
+  Turn_State change_player(Turn_Data& turn) noexcept;
+
   struct State;
 
   void handle_event_state(State& s, Turn_Data&, SDL_Event const&) noexcept;
