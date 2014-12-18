@@ -539,6 +539,9 @@ namespace game
 
     // Render the path of the player (if applicable).
     auto move = moving_delta(turn.state);
+
+    move = normalize(move) *
+           std::min(player.max_movement - player.moved, length(move));
     if(turn.render_active_player_path)
     {
 
