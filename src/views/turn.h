@@ -45,13 +45,19 @@ namespace game
     Vec<int> delta;
   };
 
+  struct Winning_Data
+  {
+    Managed_Label label;
+  };
+
   using Turn_State =
     boost::variant<Waiting_Data, Moving_Data,
                    boost::recursive_wrapper<Uncrate_Data>,
                    boost::recursive_wrapper<Discard_Item_Data>,
                    boost::recursive_wrapper<Inventory_View_Data>,
                    boost::recursive_wrapper<Combat_Data>,
-                   Change_View_Data>;
+                   Change_View_Data,
+                   Winning_Data>;
 
   struct Uncrate_Data
   {

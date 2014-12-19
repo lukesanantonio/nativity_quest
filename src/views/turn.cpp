@@ -310,6 +310,17 @@ namespace game
         }
       }
 
+      // Can it be? Have we reached Bethlehem?
+      if(turn.map->zones.get_zone(player.pos)->important)
+      {
+        // This player just won the game!
+        auto win = Winning_Data{};
+        win.label.str("You have won the game!");
+        win.label.text_height(50);
+        win.label.color({0xff, 0xff, 0xff, 0xff});
+        return win;
+      }
+
       // Now that we dealt with everything, can we switch players?
       if(player.done)
       {
@@ -777,6 +788,16 @@ namespace game
                              g.get_width() - 300, 100});
       combat.label_view.layout(g);
       combat.label_view.render(g, sprites);
+    }
+    else if(turn.state.which() == 7)
+    {
+      auto& win = boost::get<Winning_Data>(turn.state);
+
+      win.label.position(
+        {g.get_width() / 2 - win.label.surface_extents(g).x / 2,
+         g.get_height() / 2 - win.label.surface_extents(g).y / 2});
+
+      win.label.render(g);
     }
   }
 }
