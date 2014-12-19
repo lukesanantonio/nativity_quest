@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 #include "Combat_Control.h"
+#include "decl/combat.h"
 namespace game
 {
   void Combat_Control::handle_event(SDL_Event const& event) noexcept
@@ -25,7 +26,7 @@ namespace game
       {
         if(selected == 0)
         {
-          --enemy.entity_data.cur_life;
+          last_damage = apply_damage(enemy.entity_data, damage());
           anim = Combat_Anim_State::Enemy_Life;
           anim_step = 0;
           state = Fight_State::Enemy_Turn;
@@ -68,7 +69,8 @@ namespace game
   }
 
   bool render_health(Graphics_Desc& g, SDL_Rect box,
-                     int life, int max, int life_step) noexcept
+                     int life, int max, int change_size,
+                     int life_step) noexcept
   {
     SDL_Rect bar;
     bar.w = box.w  - 50;
@@ -85,16 +87,16 @@ namespace game
 
     if(life_step == -1)
     {
-      bar.w = bar.w / max * life;
+      if(max != life) bar.w = bar.w / max * life;
     }
     else
     {
       auto segment_width = bar.w / max;
 
-      bar.w = segment_width * (life + 1);
-      if(segment_width <= life_step)
+      bar.w = segment_width * (life + change_size);
+      if(segment_width * change_size <= life_step)
       {
-        bar.w -= segment_width;
+        bar.w -= segment_width * change_size;
         ret = true;
       }
       else bar.w -= life_step;
@@ -147,7 +149,7 @@ namespace game
       life_step = anim_step;
     }
     if(render_health(g, health_box, enemy.entity_data.cur_life,
-                     enemy.decl->life, life_step))
+                     enemy.entity_data.max_life, last_damage, life_step))
     {
       anim = Combat_Anim_State::None;
       anim_step = 0;
@@ -180,7 +182,7 @@ namespace game
       life_step = anim_step;
     }
     if(render_health(g, health_box, player.entity_data.cur_life,
-                     player.entity_data.max_life, life_step))
+                     player.entity_data.max_life, last_damage, life_step))
     {
       anim = Combat_Anim_State::None;
       anim_step = 0;
@@ -205,7 +207,7 @@ namespace game
 
     if(state == Fight_State::Enemy_Turn)
     {
-      --player.entity_data.cur_life;
+      last_damage = apply_damage(player.entity_data, damage());
       state = Fight_State::Player_Turn;
       anim = Combat_Anim_State::Player_Life;
       anim_step = 0;

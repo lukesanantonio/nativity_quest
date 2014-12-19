@@ -17,4 +17,14 @@ namespace game
   {
     et.cur_life = et.max_life;
   }
+
+  inline int apply_damage(Entity_Data& et, int damage) noexcept
+  {
+    auto normalized_damage = std::max(0, damage - et.defense);
+    normalized_damage = std::min(et.cur_life, normalized_damage);
+
+    et.cur_life = std::max(0, et.cur_life - normalized_damage);
+
+    return normalized_damage;
+  }
 }

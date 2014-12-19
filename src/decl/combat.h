@@ -6,5 +6,5 @@
 namespace game
 {
   struct Invalid_Power_Level {};
-  short damage(short power);
+  short damage() noexcept;
 }

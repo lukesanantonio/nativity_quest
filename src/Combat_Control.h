@@ -52,6 +52,7 @@ namespace game
     void step() noexcept;
 
     mutable Combat_Anim_State anim = Combat_Anim_State::None;
+    mutable int last_damage;
     mutable int anim_step;
   };
 }
