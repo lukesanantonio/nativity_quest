@@ -476,6 +476,7 @@ namespace game
       if(before_delta == data.delta)
       {
         turn.player = next_player(turn);
+        update_zone(turn);
         return Waiting_Data{};
       }
       return data;
