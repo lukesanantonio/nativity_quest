@@ -5,7 +5,7 @@
 #include "turn.h"
 
 #include "../State.h"
-
+#include "../effects.h"
 #include "../render.h"
 
 #include "../util/pi.h"
@@ -160,7 +160,11 @@ namespace game
     Event_Visitor::operator()(Discard_Item_Data& data) const noexcept
     {
       data.label_view.handle_event(event);
-      if(data.label_view.control().done)
+
+      auto selected = data.label_view.control().selected;
+      auto selected_item = turn.map->players[turn.player].inventory[selected];
+      if(data.label_view.control().done &&
+         !is_locked_item(turn.items, selected_item))
       {
         auto selected = data.label_view.control().selected;
         if(selected < 6)
@@ -170,6 +174,7 @@ namespace game
         }
         return data.after_state;
       }
+      data.label_view.control().done = false;
       return data;
     }
     Turn_State

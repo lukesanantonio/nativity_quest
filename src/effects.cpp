@@ -112,4 +112,32 @@ namespace game
       return 1;
     }
   }
+  bool is_locked_item(Item_Parser& items, Item item) noexcept
+  {
+    static Item_Parser* items_ptr;
+    static Item wool;
+    static Item starlight;
+    static Item gold;
+    static Item gemstones;
+    static Item myrrh;
+    static Item incense;
+    if(items_ptr != &items)
+    {
+      items_ptr = &items;
+      wool = items_ptr->get_item("Wool");
+      starlight = items_ptr->get_item("Starlight");
+      gold = items_ptr->get_item("Gold");
+      gemstones = items_ptr->get_item("Gemstones");
+      myrrh = items_ptr->get_item("Myrrh");
+      incense = items_ptr->get_item("Incense");
+    }
+
+    if(item == wool || item == starlight || item == gold ||
+       item == gemstones || item == myrrh || item == incense)
+    {
+      return true;
+    }
+
+    return false;
+  }
 }
