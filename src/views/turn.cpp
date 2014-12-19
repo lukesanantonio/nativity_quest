@@ -70,6 +70,7 @@ namespace game
       player.moved = 0;
       player.max_movement = 100;
       player.entity_data.max_life = 10;
+      player.item_parser = &items;
       reset_life(player.entity_data);
       unfog(player);
     }
@@ -436,6 +437,7 @@ namespace game
             return discard_data;
           }
 
+          unfog(turn.map->players[turn.player]);
           return data.after_state;
         }
       }

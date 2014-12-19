@@ -22,7 +22,7 @@ namespace game
 
     std::array<Item, 6> inventory;
 
-    double view_radius = 100.0;
+    double view_radius = 85.0;
     Sprite_Impl fog;
 
     Entity_Data entity_data;
@@ -31,6 +31,8 @@ namespace game
     double max_movement;
 
     bool done = false;
+
+    Item_Parser* item_parser;
   };
 
   void reset_fog(Player&, Vec<int> extents) noexcept;

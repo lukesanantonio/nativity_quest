@@ -5,6 +5,8 @@
 #include "Player.h"
 
 #include "util/pi.h"
+
+#include "effects.h"
 namespace game
 {
   void reset_fog(Player& p, Vec<int> extents) noexcept
@@ -78,9 +80,11 @@ namespace game
     static auto view_radius = 0;
     static auto pixels = std::vector<Vec<int> >{};
 
-    if(view_radius != p.view_radius)
+    auto player_view_radius = get_view_radius(p, *p.item_parser);
+
+    if(view_radius != player_view_radius)
     {
-      view_radius = p.view_radius;
+      view_radius = player_view_radius;
       pixels = gen_pixels(view_radius);
     }
 
