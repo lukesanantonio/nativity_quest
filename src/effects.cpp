@@ -6,14 +6,14 @@
 #include "decl/items.h"
 namespace game
 {
-  double get_view_radius(Player& p, Item_Parser& items) noexcept
+  double get_view_radius(Player& p) noexcept
   {
     // Get the torch item.
     static Item_Parser* items_ptr;
     static Item torch;
-    if(items_ptr != &items)
+    if(items_ptr != p.item_parser)
     {
-      items_ptr = &items;
+      items_ptr = p.item_parser;
       torch = items_ptr->get_item("Torch");
     }
 

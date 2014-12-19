@@ -80,7 +80,7 @@ namespace game
     static auto view_radius = 0;
     static auto pixels = std::vector<Vec<int> >{};
 
-    auto player_view_radius = get_view_radius(p, *p.item_parser);
+    auto player_view_radius = get_view_radius(p);
 
     if(view_radius != player_view_radius)
     {

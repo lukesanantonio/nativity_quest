@@ -6,5 +6,5 @@
 namespace game
 {
   struct Player; struct Item_Parser;
-  double get_view_radius(Player& p, Item_Parser& items) noexcept;
+  double get_view_radius(Player& p) noexcept;
 }
