@@ -4,6 +4,7 @@
  */
 #include "Combat_Control.h"
 #include "decl/combat.h"
+#include "effects.h"
 namespace game
 {
   void Combat_Control::handle_event(SDL_Event const& event) noexcept
@@ -207,7 +208,8 @@ namespace game
 
     if(state == Fight_State::Enemy_Turn)
     {
-      last_damage = apply_damage(player.entity_data, damage());
+      last_damage = apply_damage(player.entity_data, damage(),
+                                 get_additional_defense(player));
       state = Fight_State::Player_Turn;
       anim = Combat_Anim_State::Player_Life;
       anim_step = 0;
