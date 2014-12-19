@@ -27,7 +27,8 @@ namespace game
       {
         if(selected == 0)
         {
-          last_damage = apply_damage(enemy.entity_data, damage());
+          last_damage = apply_damage(enemy.entity_data, damage() +
+                                     get_additional_damage(player));
           anim = Combat_Anim_State::Enemy_Life;
           anim_step = 0;
           state = Fight_State::Enemy_Turn;
