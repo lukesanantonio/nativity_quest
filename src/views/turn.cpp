@@ -61,6 +61,7 @@ namespace game
   {
     zone_label.text_height(35);
     zone_label.color({0x88, 0x88, 0x88, 0xff});
+    zone_label.mode(pong::Label_Mode::Bitmap);
 
     for(auto& player : map->players)
     {
