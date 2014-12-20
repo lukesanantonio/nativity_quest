@@ -34,6 +34,34 @@ namespace game
       return p.view_radius + 40;
     }
   }
+  double get_max_movement(Player& p) noexcept
+  {
+    // Get the torch item.
+    static Item_Parser* items_ptr;
+    static Item canteen;
+    if(items_ptr != p.item_parser)
+    {
+      items_ptr = p.item_parser;
+      canteen = items_ptr->get_item("Canteen");
+    }
+
+    // Find a canteen in the player's inventory
+    using std::begin; using std::end;
+    auto item_find = std::find_if(begin(p.inventory), end(p.inventory),
+    [&](Item item)
+    {
+      return item == canteen;
+    });
+
+    if(item_find == end(p.inventory))
+    {
+      return p.max_movement;
+    }
+    else
+    {
+      return p.max_movement + 50.0;
+    }
+  }
   int get_additional_defense(Player& p) noexcept
   {
     static Item_Parser* items_ptr;

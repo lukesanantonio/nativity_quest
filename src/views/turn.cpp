@@ -498,7 +498,7 @@ namespace game
       // Max step size for the player.
       auto max_speed = 1.0;
 
-      auto max_movement = player.max_movement +
+      auto max_movement = get_max_movement(player) +
                           (player.turns_of_haste != 0 ? 100.0 : 0.0);
 
       // Isolate the direction.

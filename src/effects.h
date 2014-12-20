@@ -8,6 +8,7 @@ namespace game
 {
   struct Player;
   double get_view_radius(Player& p) noexcept;
+  double get_max_movement(Player& p) noexcept;
 
   int get_additional_defense(Player& p) noexcept;
   int get_additional_damage(Player& p) noexcept;
