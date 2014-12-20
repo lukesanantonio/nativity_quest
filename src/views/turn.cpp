@@ -117,6 +117,8 @@ namespace game
         if(event.key.keysym.scancode == SDL_SCANCODE_I)
         {
           auto invent = Inventory_View_Data{};
+          invent.label_view.control().health_player =
+                                               &turn.map->players[turn.player];
           invent.after_state = Waiting_Data{};
 
           for(auto const& item : turn.map->players[turn.player].inventory)
