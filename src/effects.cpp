@@ -46,26 +46,19 @@ namespace game
       cloak = items_ptr->get_item("Cloak of Protection");
     }
 
-    // Find a torch in the player's inventory
-    using std::begin; using std::end;
-    auto item_find = std::find_if(begin(p.inventory), end(p.inventory),
-    [&](auto item)
+    int ret = 0;
+    for(auto item : p.inventory)
     {
-      return item == ring || item == cloak;
-    });
-
-    if(item_find == end(p.inventory))
-    {
-      return 0;
+      if(item == ring)
+      {
+        ret += 1;
+      }
+      if(item == cloak)
+      {
+        ret += 2;
+      }
     }
-    else if(*item_find == ring)
-    {
-      return 1;
-    }
-    else
-    {
-      return 2;
-    }
+    return ret;
   }
   int get_additional_damage(Player& p) noexcept
   {
