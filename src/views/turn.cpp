@@ -352,8 +352,6 @@ namespace game
         SDL_GetMouseState(&x, &y);
         num = num ^ x ^ y ^ std::clock();
         num %= 4;
-
-        std::cout << num << std::endl;
         if(num == 0)
         {
           data.label_view.control().enemy.not_fighting = 18;
