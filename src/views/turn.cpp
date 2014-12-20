@@ -44,6 +44,12 @@ namespace game
     player.flare = false;
     player.turns_of_haste = std::max(0, player.turns_of_haste - 1);
 
+    // Make each enemy closer to being active
+    for(auto& enemy : turn.map->enemies)
+    {
+      enemy.not_fighting = std::max(0, enemy.not_fighting - 1);
+    }
+
     auto pt = player.pos;
 
     auto vp_src = view_pt(state.window_extents, turn.map->extents,
@@ -338,7 +344,7 @@ namespace game
       data.label_view.handle_event(event);
       if(data.label_view.control().state == Fight_State::Running)
       {
-        data.label_view.control().enemy.fighting = false;
+        data.label_view.control().enemy.not_fighting = 12;
         return data.after_state;
       }
       return data;
@@ -421,7 +427,7 @@ namespace game
                                        end(turn.map->enemies),
         [&player](auto const& enemy)
         {
-          if(!enemy.fighting) return false;
+          if(enemy.not_fighting) return false;
 
           // Check if they are a reasonable distance.
           auto len = length(player.pos - Vec<double>{enemy.pos});
@@ -834,7 +840,7 @@ namespace game
       enemy_dest.w = enemy_extents.x;
       enemy_dest.h = enemy_extents.y;
 
-      if(enemy.fighting)
+      if(enemy.not_fighting == 0)
       {
         SDL_SetRenderDrawColor(g.renderer, 0xff, 0x00, 0x00, 0xff);
       }

@@ -38,7 +38,7 @@ namespace game
 
     Item item;
 
-    bool fighting = true;
+    int not_fighting = 0;
 
     Vec<int> pos;
   };
