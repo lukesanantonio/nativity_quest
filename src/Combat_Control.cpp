@@ -22,6 +22,9 @@ namespace game
 
   void Combat_Control::handle_event(SDL_Event const& event) noexcept
   {
+    if(state != Fight_State::Player_Turn ||
+       anim != Combat_Anim_State::None) return;
+
     if(in_inventory)
     {
       if(event.type == SDL_KEYDOWN)
@@ -54,9 +57,6 @@ namespace game
       }
       return;
     }
-
-    if(state != Fight_State::Player_Turn ||
-       anim != Combat_Anim_State::None) return;
 
     // TODO Fix copied code and put it somewhere (from Discard_Item_Control).
     if(event.type == SDL_KEYDOWN)
