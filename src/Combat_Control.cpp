@@ -24,6 +24,14 @@ namespace game
   {
     if(in_inventory)
     {
+      if(event.type == SDL_KEYDOWN)
+      {
+        if(event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+        {
+          in_inventory = false;
+          return;
+        }
+      }
       inventory_view.handle_event(event);
       if(inventory_view.control().enter)
       {
