@@ -14,5 +14,6 @@ namespace game
 
   bool is_locked_item(Item_Parser& items, Item item) noexcept;
   bool can_be_used(Item_Parser& items, Item item) noexcept;
+  bool can_be_combat_used(Item_Parser& items, Item item) noexcept;
   void apply_effect(Player& p, Item item) noexcept;
 }

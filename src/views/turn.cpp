@@ -40,6 +40,8 @@ namespace game
     auto& player = turn.map->players[next_player(turn)];
     player.moved = 0;
     player.done = false;
+    player.combat_defense = 0;
+    player.flare = false;
     player.turns_of_haste = std::max(0, player.turns_of_haste - 1);
 
     auto pt = player.pos;

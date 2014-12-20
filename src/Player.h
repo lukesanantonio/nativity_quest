@@ -35,6 +35,9 @@ namespace game
     bool done = false;
 
     Item_Parser* item_parser;
+
+    int combat_defense = 0;
+    bool flare = false;
   };
 
   void reset_fog(Player&, Vec<int> extents) noexcept;

@@ -159,6 +159,25 @@ namespace game
 
     return false;
   }
+  bool can_be_combat_used(Item_Parser& items, Item item) noexcept
+  {
+    static Item_Parser* items_ptr;
+    static Item defense;
+    static Item flare;
+    if(items_ptr != &items)
+    {
+      items_ptr = &items;
+      defense = items_ptr->get_item("Potion of Defense");
+      flare = items_ptr->get_item("Flare");
+    }
+
+    if(item == defense || item == flare)
+    {
+      return true;
+    }
+
+    return false;
+  }
   void apply_effect(Player& p, Item item) noexcept
   {
     if(item == p.item_parser->get_item("Potion of Strength"))
@@ -168,6 +187,14 @@ namespace game
     else if(item == p.item_parser->get_item("Potion of Haste"))
     {
       p.turns_of_haste += 3;
+    }
+    else if(item == p.item_parser->get_item("Potion of Defense"))
+    {
+      p.combat_defense = 2;
+    }
+    else if(item == p.item_parser->get_item("Flare"))
+    {
+      p.flare = true;
     }
   }
 }
