@@ -407,6 +407,13 @@ namespace game
         turn.map->enemies.erase(new_end, end(turn.map->enemies));
       }
 
+      // Respawn ourselves if necessary.
+      if(player.entity_data.cur_life == 0)
+      {
+        player.pos = player.spawn_pt;
+        return change_player(state, turn);
+      }
+
       // Check for any enemies in our view
       {
         auto enemy_find = std::find_if(begin(turn.map->enemies),
