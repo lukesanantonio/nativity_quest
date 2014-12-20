@@ -22,12 +22,12 @@ namespace game
         selected += 3;
       }
       if(event.key.keysym.scancode == SDL_SCANCODE_A &&
-         1 <= selected && selected <= 6)
+         1 <= selected && selected <= 5)
       {
         selected -= 1;
       }
       if(event.key.keysym.scancode == SDL_SCANCODE_D &&
-         0 <= selected && selected <= 5)
+         0 <= selected && selected <= 4)
       {
         selected += 1;
       }
