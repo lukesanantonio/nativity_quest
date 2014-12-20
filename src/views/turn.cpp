@@ -306,11 +306,12 @@ namespace game
                                        Combat_Control{player, *enemy_find}}};
 
           combat.label_view.add_label("Attack");
+          combat.label_view.add_label("Use item");
           combat.label_view.add_label("Run");
 
           for(auto& label : combat.label_view.labels())
           {
-            label.text_height(40);
+            label.text_height(35);
             label.color({0x00, 0x00, 0x00, 0xff});
           }
 

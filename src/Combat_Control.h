@@ -9,6 +9,8 @@
 #include "Player.h"
 
 #include "decl/enemies.h"
+
+#include "Inventory_View_Control.h"
 namespace game
 {
   enum class Fight_State
@@ -29,8 +31,7 @@ namespace game
 
   struct Combat_Control
   {
-    Combat_Control(Player& player, Enemy_Instance& enemy) noexcept
-                   : player(player), enemy(enemy) {}
+    Combat_Control(Player& player, Enemy_Instance& enemy) noexcept;
 
     void handle_event(SDL_Event const& event) noexcept;
     void layout(Label_View<Combat_Control>& view,
@@ -54,5 +55,8 @@ namespace game
     mutable Combat_Anim_State anim = Combat_Anim_State::None;
     mutable int last_damage;
     mutable int anim_step;
+
+    bool in_inventory = false;
+    mutable Label_View<Inventory_View_Control> inventory_view;
   };
 }

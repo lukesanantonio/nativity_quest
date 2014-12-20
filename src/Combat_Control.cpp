@@ -7,8 +7,46 @@
 #include "effects.h"
 namespace game
 {
+  Combat_Control::Combat_Control(Player& player,
+                                 Enemy_Instance& enemy) noexcept
+                                 : player(player), enemy(enemy)
+  {
+    for(auto item : player.inventory)
+    {
+      if(item != no::item) inventory_view.add_label(item->str);
+      else inventory_view.add_label("No item");
+
+      inventory_view.labels().back().text_height(35);
+    }
+  }
+
   void Combat_Control::handle_event(SDL_Event const& event) noexcept
   {
+    if(in_inventory)
+    {
+      inventory_view.handle_event(event);
+      if(inventory_view.control().enter)
+      {
+        auto selected = inventory_view.control().selected;
+
+        if(can_be_combat_used(*player.item_parser, player.inventory[selected]))
+        {
+          apply_effect(player, player.inventory[selected]);
+
+          player.inventory[selected] = no::item;
+          inventory_view.labels()[selected].str("No item");
+
+          if(player.flare)
+          {
+            state = Fight_State::Running;
+          }
+        }
+
+        inventory_view.control().enter = false;
+      }
+      return;
+    }
+
     if(state != Fight_State::Player_Turn ||
        anim != Combat_Anim_State::None) return;
 
@@ -19,7 +57,7 @@ namespace game
       {
         --selected;
       }
-      if(event.key.keysym.scancode == SDL_SCANCODE_D && selected < 1)
+      if(event.key.keysym.scancode == SDL_SCANCODE_D && selected < 2)
       {
         ++selected;
       }
@@ -33,7 +71,11 @@ namespace game
           anim_step = 0;
           state = Fight_State::Enemy_Turn;
         }
-        if(selected == 1) state = Fight_State::Running;
+        if(selected == 1)
+        {
+          in_inventory = true;
+        }
+        if(selected == 2) state = Fight_State::Running;
       }
     }
   }
@@ -42,7 +84,7 @@ namespace game
   {
     auto vol = view.vol();
 
-    auto start = Vec<int>{vol.width / 2 / 2, 15};
+    auto start = Vec<int>{vol.width / 3 / 2, 15};
     auto cur_pos = start;
 
     int i = 0;
@@ -51,7 +93,7 @@ namespace game
       label.position({cur_pos.x + vol.pos.x - (label.surface_extents(g).x / 2),
                       cur_pos.y + vol.pos.y});
 
-      cur_pos.x += vol.width / 2;
+      cur_pos.x += vol.width / 3;
 
       ++i;
     }
@@ -112,17 +154,26 @@ namespace game
                               Label_View<Combat_Control> const& view,
                               Sprite_Container& sprites) const noexcept
   {
-    auto selected_label_pos = view.labels()[selected].position();
+    if(in_inventory)
+    {
+      inventory_view.vol(view.vol());
+      inventory_view.layout(g);
+      inventory_view.render(g, sprites);
+    }
+    else
+    {
+      auto selected_label_pos = view.labels()[selected].position();
 
-    SDL_Rect marker;
-    marker.w = 50;
-    marker.h = view.labels()[selected].surface_extents(g).y;
+      SDL_Rect marker;
+      marker.w = 50;
+      marker.h = view.labels()[selected].surface_extents(g).y;
 
-    marker.x = selected_label_pos.x - 10 - marker.w;
-    marker.y = selected_label_pos.y;
+      marker.x = selected_label_pos.x - 10 - marker.w;
+      marker.y = selected_label_pos.y;
 
-    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
-    SDL_RenderFillRect(g.renderer, &marker);
+      SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
+      SDL_RenderFillRect(g.renderer, &marker);
+    }
 
     // Render the enemy and a healthbar.
     auto enemy_sprite = sprites.get_sprite(enemy.decl->sprite);
@@ -210,7 +261,7 @@ namespace game
     if(state == Fight_State::Enemy_Turn)
     {
       last_damage = apply_damage(player.entity_data, damage(),
-                                 get_additional_defense(player));
+                       get_additional_defense(player) + player.combat_defense);
       state = Fight_State::Player_Turn;
       anim = Combat_Anim_State::Player_Life;
       anim_step = 0;
