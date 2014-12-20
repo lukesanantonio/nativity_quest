@@ -36,7 +36,7 @@
     "id": "giant",
     "str": "Giant",
     "defense": 0,
-    "life": 6
+    "life": 4
   },
 
   {
@@ -44,6 +44,6 @@
     "id": "myrr",
     "str": "Myrr",
     "defense": 2,
-    "life": 7
+    "life": 5
   }
 ]
