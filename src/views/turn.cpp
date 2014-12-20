@@ -69,15 +69,134 @@ namespace game
     for(auto& player : map->players)
     {
       reset_fog(player, map->zones.get_map_extents());
-      player.pos = {500, 0};
       player.moved = 0;
       player.max_movement = 100;
       player.entity_data.max_life = 10;
       player.item_parser = &items;
       reset_life(player.entity_data);
+    }
+
+    // Give each player their locked items.
+    map->players[0].inventory[5] = items.get_item("Wool");
+    map->players[1].inventory[5] = items.get_item("Starlight");
+    map->players[2].inventory[5] = items.get_item("Gold");
+    map->players[3].inventory[5] = items.get_item("Gemstones");
+    map->players[4].inventory[5] = items.get_item("Myrrh");
+    map->players[5].inventory[5] = items.get_item("Incense");
+
+    map->players[0].spawn_pt = {418, 20};
+    map->players[1].spawn_pt = {616, 142};
+    map->players[2].spawn_pt = {728, 328};
+    map->players[3].spawn_pt = {833, 638};
+    map->players[4].spawn_pt = {337, 648};
+    map->players[5].spawn_pt = {76, 499};
+
+    for(auto& player : map->players)
+    {
+      player.pos = player.spawn_pt;
       unfog(player);
     }
 
+    auto& enemies = map->enemies;
+    auto& enemy_decl = map->enemy_decl;
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("soldier")};
+      enemy_instance.pos = {260, 84};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("giant")};
+      enemy_instance.pos = {591, 13};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("wolf")};
+      enemy_instance.pos = {688, 72};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("creeper")};
+      enemy_instance.pos = {867, 47};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("soldier")};
+      enemy_instance.pos = {815, 208};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("creeper")};
+      enemy_instance.pos = {575, 275};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("giant")};
+      enemy_instance.pos = {785, 565};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("soldier")};
+      enemy_instance.pos = {565, 636};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("giant")};
+      enemy_instance.pos = {219, 542};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("creeper")};
+      enemy_instance.pos = {55, 639};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("wolf")};
+      enemy_instance.pos = {263, 355};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("myrr")};
+      enemy_instance.pos = {322, 359};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("creeper")};
+      enemy_instance.pos = {359, 410};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("wolf")};
+      enemy_instance.pos = {461, 351};
+      enemies.push_back(enemy_instance);
+    }
+    {
+      auto enemy_instance = Enemy_Instance{enemy_decl.get_enemy("myrr")};
+      enemy_instance.pos = {274, 195};
+      enemies.push_back(enemy_instance);
+    }
+
+    map->chests.push_back(Chest{items.get_item("Bow"), true, {148, 18}});
+    map->chests.push_back(Chest{items.get_item("Potion of Strength"),
+                                true, {274, 195}});
+    map->chests.push_back(Chest{items.get_item("Torch"), true, {567, 26}});
+    map->chests.push_back(Chest{items.get_item("Boat"), true, {895, 32}});
+    map->chests.push_back(Chest{items.get_item("Dagger"), true, {554, 291}});
+    map->chests.push_back(Chest{items.get_item("Cloak of Protection"),
+                                true, {924, 492}});
+    map->chests.push_back(Chest{items.get_item("Ring of Protection"),
+                                true, {612, 516}});
+    map->chests.push_back(Chest{items.get_item("Canteen"), true, {558, 566}});
+    map->chests.push_back(Chest{items.get_item("Throwing Axe"),
+                                true, {236, 518}});
+    map->chests.push_back(Chest{items.get_item("Rope"), true, {19, 674}});
+    map->chests.push_back(Chest{items.get_item("Longsword"),
+                                true, {416, 349}});
+    map->chests.push_back(Chest{items.get_item("Potion of Defense"),
+                                true, {886, 200}});
+    map->chests.push_back(Chest{items.get_item("Potion of Haste"),
+                                true, {886, 219}});
+    map->chests.push_back(Chest{items.get_item("Flare"),
+                                true, {113, 329}});
 
     map->scale = 3.5;
     map->mini_scale = .25;

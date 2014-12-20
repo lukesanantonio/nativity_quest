@@ -38,6 +38,8 @@ namespace game
 
     int combat_defense = 0;
     bool flare = false;
+
+    Vec<int> spawn_pt;
   };
 
   void reset_fog(Player&, Vec<int> extents) noexcept;
