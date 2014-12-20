@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   {
     pong::Logger log;
 
-    game::Graphics_Desc g{"Tommy's Game", {1000, 1000}, FONT_FILE, &log};
+    game::Graphics_Desc g{"Tommy's Game", {1000, 720}, FONT_FILE, &log};
 
     game::Sprite_Container sprites(SPRITES_JSON);
 

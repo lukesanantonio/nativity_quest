@@ -132,10 +132,11 @@ namespace game
     auto enemy_sprite = sprites.get_sprite(enemy.decl->sprite);
 
     SDL_Rect dest;
+    dest.h = g.get_height() / 2;
+    dest.w = dest.h;
+
+    dest.x = g.get_width() - dest.w;
     dest.y = 0;
-    dest.x = g.get_width() / 2;
-    dest.w = g.get_width() / 2;
-    dest.h = g.get_height() / 2 - 75;
 
     SDL_RenderCopy(g.renderer, enemy_sprite->texture(g.renderer), NULL, &dest);
 
@@ -165,18 +166,18 @@ namespace game
     auto player_sprite = sprites.get_sprite("player_back");
 
     SDL_Rect player_dest;
-    player_dest.w = g.get_width() / 2;
-    player_dest.x = 0;
-
     player_dest.h = g.get_height() / 2;
+    player_dest.w = player_dest.h;
+
+    player_dest.x = 0;
     player_dest.y = g.get_height() - player_dest.h;
 
     SDL_RenderCopy(g.renderer, player_sprite->texture(g.renderer),
                    NULL, &player_dest);
 
     // Render the player health.
-    health_box.x = player_dest.x + player_dest.w;
-    health_box.y = view.vol().pos.y - health_box.h - 5;
+    health_box.x = view.vol().pos.x + view.vol().width - health_box.w;
+    health_box.y = view.vol().pos.y - health_box.h - 1;
 
     SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
     render_with_border(g, health_box);

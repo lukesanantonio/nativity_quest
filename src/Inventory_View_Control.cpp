@@ -70,10 +70,10 @@ namespace game
     auto selected_label_pos = view.labels()[selected].position();
 
     SDL_Rect marker;
-    marker.w = 50;
     marker.h = view.labels()[selected].surface_extents(g).y;
+    marker.w = marker.h;
 
-    marker.x = selected_label_pos.x - 10 - marker.w;
+    marker.x = selected_label_pos.x - 8 - marker.w;
     marker.y = selected_label_pos.y;
 
     SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);

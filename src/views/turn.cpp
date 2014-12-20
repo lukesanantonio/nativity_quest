@@ -935,8 +935,8 @@ namespace game
 
       // Center the large chest.
       SDL_Rect chest_dest;
-      chest_dest.w = g.get_width() / 2;
       chest_dest.h = g.get_height() / 2;
+      chest_dest.w = chest_dest.h;
       chest_dest.x = g.get_width() / 2 - chest_dest.w / 2;
       chest_dest.y = g.get_height() / 2 - chest_dest.h / 2;
       SDL_RenderCopy(g.renderer, chest_spr->texture(g.renderer),
@@ -968,8 +968,8 @@ namespace game
       discard.label_view.layout(g);
 
       Volume<int> chest_dest;
-      chest_dest.width = g.get_width() / 2;
       chest_dest.height = g.get_height() / 2;
+      chest_dest.width = chest_dest.height;
       chest_dest.pos.x = g.get_width() / 2 - chest_dest.width / 2;
       chest_dest.pos.y = g.get_height() / 2 - chest_dest.height / 2;
 
@@ -989,8 +989,8 @@ namespace game
     {
       auto& combat = boost::get<Combat_Data>(turn.state);
 
-      combat.label_view.vol({{300, g.get_height() - 100},
-                             g.get_width() - 300, 100});
+      combat.label_view.vol({{215, g.get_height() - 100},
+                             g.get_width() - 215, 100});
       combat.label_view.layout(g);
       combat.label_view.render(g, sprites);
     }
