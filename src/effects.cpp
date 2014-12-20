@@ -11,28 +11,28 @@ namespace game
     // Get the torch item.
     static Item_Parser* items_ptr;
     static Item torch;
+    static Item flare;
     if(items_ptr != p.item_parser)
     {
       items_ptr = p.item_parser;
       torch = items_ptr->get_item("Torch");
+      flare = items_ptr->get_item("Flare");
     }
 
-    // Find a torch in the player's inventory
-    using std::begin; using std::end;
-    auto torch_find = std::find_if(begin(p.inventory), end(p.inventory),
-    [&](auto item)
+    double more = 0.0;
+    for(auto& item : p.inventory)
     {
-      return item == torch;
-    });
+      if(item == torch)
+      {
+        more = std::max(more, 40.0);
+      }
+      else if(item == flare)
+      {
+        more = std::max(more, 10.0);
+      }
+    }
 
-    if(torch_find == end(p.inventory))
-    {
-      return p.view_radius;
-    }
-    else
-    {
-      return p.view_radius + 40;
-    }
+    return p.view_radius + more;
   }
   double get_max_movement(Player& p) noexcept
   {
