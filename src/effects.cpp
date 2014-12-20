@@ -83,34 +83,28 @@ namespace game
       bow = items_ptr->get_item("Bow");
     }
 
-    // Find a torch in the player's inventory
-    using std::begin; using std::end;
-    auto item_find = std::find_if(begin(p.inventory), end(p.inventory),
-    [&](auto item)
-    {
-      return item == dagger || item == sword || item == axe || item == bow;
-    });
+    int ret = 0;
 
-    if(item_find == end(p.inventory))
+    for(auto item : p.inventory)
     {
-      return 0;
+      if(item == dagger)
+      {
+        ret += 1;
+      }
+      if(item == sword)
+      {
+        ret += 2;
+      }
+      if(item == axe)
+      {
+        ret += 1;
+      }
+      if(item == bow)
+      {
+        ret += 1;
+      }
     }
-    else if(*item_find == dagger)
-    {
-      return 1;
-    }
-    else if(*item_find == sword)
-    {
-      return 2;
-    }
-    else if(*item_find == axe)
-    {
-      return 1;
-    }
-    else // bow
-    {
-      return 1;
-    }
+    return ret;
   }
   bool is_locked_item(Item_Parser& items, Item item) noexcept
   {
