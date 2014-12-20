@@ -986,6 +986,29 @@ namespace game
       invent.label_view.vol({{0, g.get_height() - 100}, g.get_width(), 100});
       invent.label_view.layout(g);
       invent.label_view.render(g, sprites);
+
+      auto selected = invent.label_view.control().selected;
+      auto item = turn.map->players[turn.player].inventory[selected];
+
+      if(item != no::item)
+      {
+        SDL_Rect item_dest;
+        item_dest.h = g.get_height() / 2;
+        item_dest.w = item_dest.h;
+        item_dest.x = g.get_width() / 2 - item_dest.w / 2;
+        item_dest.y = g.get_height() / 2 - item_dest.h / 2;
+
+        auto item_spr = sprites.get_sprite(turn.items.get_spritesheet());
+
+        SDL_Rect item_src;
+        item_src.x = item->pos.x * turn.items.get_sprite_extents().x;
+        item_src.y = item->pos.y * turn.items.get_sprite_extents().y;
+        item_src.w = turn.items.get_sprite_extents().x;
+        item_src.h = turn.items.get_sprite_extents().y;
+
+        SDL_RenderCopy(g.renderer, item_spr->texture(g.renderer),
+                       &item_src, &item_dest);
+      }
     }
     else if(turn.state.which() == 5)
     {
