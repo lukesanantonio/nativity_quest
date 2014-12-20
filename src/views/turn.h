@@ -116,8 +116,6 @@ namespace game
     Vec<int> map_corner;
 
     Character_Parser character;
-
-    bool render_active_player_path = false;
   };
 
   Turn_State change_player(Turn_Data& turn) noexcept;

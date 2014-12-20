@@ -712,22 +712,15 @@ namespace game
     SDL_RenderCopy(g.renderer, map_sprite->texture(g.renderer),
                    &viewport_src_rect, NULL);
 
+    auto additional_sprite = sprites.get_sprite("maplayer");
+    SDL_RenderCopy(g.renderer, additional_sprite->texture(g.renderer),
+                   &viewport_src_rect, NULL);
+
     // Figure out where the player will be on-screen.
     auto player_scr_coord = (player.pos - turn.map_corner) * turn.map->scale;
 
     // Render the path of the player (if applicable).
     auto move = moving_delta(turn.state);
-
-    move = normalize(move) *
-           std::min(player.max_movement - player.moved, length(move));
-    if(turn.render_active_player_path)
-    {
-
-      SDL_SetRenderDrawColor(g.renderer, 0x00, 0x77, 0x00, 0xff);
-      SDL_RenderDrawLine(g.renderer, player_scr_coord.x, player_scr_coord.y,
-                         player_scr_coord.x + (move.x * turn.map->scale),
-                         player_scr_coord.y + (move.y * turn.map->scale));
-    }
 
     // Render the character.
 
