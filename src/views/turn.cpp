@@ -411,6 +411,7 @@ namespace game
       if(player.entity_data.cur_life == 0)
       {
         player.pos = player.spawn_pt;
+        reset_life(player);
         return change_player(state, turn);
       }
 

@@ -216,6 +216,17 @@ namespace game
     // If we are currently in an animation we can't do anything else, really.
     if(anim != Combat_Anim_State::None) return;
 
+    if(enemy.entity_data.cur_life == 0)
+    {
+      state = Fight_State::Player_Won;
+      return;
+    }
+    if(player.entity_data.cur_life == 0)
+    {
+      state = Fight_State::Enemy_Won;
+      return;
+    }
+
     if(state == Fight_State::Enemy_Turn)
     {
       last_damage = apply_damage(player.entity_data, damage(),
@@ -223,15 +234,6 @@ namespace game
       state = Fight_State::Player_Turn;
       anim = Combat_Anim_State::Player_Life;
       anim_step = 0;
-    }
-
-    if(enemy.entity_data.cur_life == 0)
-    {
-      state = Fight_State::Player_Won;
-    }
-    if(player.entity_data.cur_life == 0)
-    {
-      state = Fight_State::Enemy_Won;
     }
   }
 }
