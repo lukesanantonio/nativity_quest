@@ -198,7 +198,7 @@ namespace game
     map->chests.push_back(Chest{items.get_item("Flare"),
                                 true, {113, 329}});
 
-    map->scale = 3.5;
+    map->scale = 4.0;
     map->mini_scale = .25;
 
     update_zone(*this);
