@@ -27,7 +27,7 @@
     "sprite": "soldier",
     "id": "soldier",
     "str": "Roman Soldier",
-    "defense": 3,
+    "defense": 2,
     "life": 3
   },
 
