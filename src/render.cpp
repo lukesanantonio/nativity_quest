@@ -29,4 +29,55 @@ namespace game
     SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0x00);
     SDL_RenderDrawRect(g.renderer, &dest);
   }
+
+  void render_with_border(Graphics_Desc& g, SDL_Rect rect)
+  {
+    SDL_RenderFillRect(g.renderer, &rect);
+
+    --rect.x;
+    --rect.y;
+    rect.w += 2;
+    rect.h += 2;
+
+    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
+    SDL_RenderDrawRect(g.renderer, &rect);
+  }
+
+  bool render_health(Graphics_Desc& g, SDL_Rect box,
+                     int life, int max, int change_size,
+                     int life_step) noexcept
+  {
+    SDL_Rect bar;
+    bar.w = box.w  - 50;
+    bar.h = 15;
+    bar.x = box.x + box.w / 2 - bar.w / 2;
+    bar.y = box.y + box.h / 2 - bar.h / 2;
+
+    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x77, 0x00, 0xff);
+    render_with_border(g, bar);
+
+    SDL_SetRenderDrawColor(g.renderer, 0x00, 0xff, 0x00, 0xff);
+
+    bool ret = false;
+
+    if(life_step == -1)
+    {
+      if(max != life) bar.w = bar.w / max * life;
+    }
+    else
+    {
+      auto segment_width = bar.w / max;
+
+      bar.w = segment_width * (life + change_size);
+      if(segment_width * change_size <= life_step)
+      {
+        bar.w -= segment_width * change_size;
+        ret = true;
+      }
+      else bar.w -= life_step;
+    }
+
+    SDL_RenderFillRect(g.renderer, &bar);
+    return ret;
+  }
 }
