@@ -50,6 +50,8 @@ namespace game
     Managed_Label label;
   };
 
+  struct Flare_Data;
+
   using Turn_State =
     boost::variant<Waiting_Data, Moving_Data,
                    boost::recursive_wrapper<Uncrate_Data>,
@@ -57,7 +59,8 @@ namespace game
                    boost::recursive_wrapper<Inventory_View_Data>,
                    boost::recursive_wrapper<Combat_Data>,
                    Change_View_Data,
-                   Winning_Data>;
+                   Winning_Data,
+                   boost::recursive_wrapper<Flare_Data> >;
 
   struct Uncrate_Data
   {
@@ -94,6 +97,11 @@ namespace game
     Turn_State after_state;
 
     Label_View<Combat_Control> label_view;
+  };
+
+  struct Flare_Data
+  {
+    int steps = 15;
   };
 
   struct Turn_Data

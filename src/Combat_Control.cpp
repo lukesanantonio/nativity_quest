@@ -47,11 +47,6 @@ namespace game
 
           player.inventory[selected] = no::item;
           inventory_view.labels()[selected].str("No item");
-
-          if(player.flare)
-          {
-            state = Fight_State::Running;
-          }
         }
 
         inventory_view.control().enter = false;

@@ -344,8 +344,46 @@ namespace game
       data.label_view.handle_event(event);
       if(data.label_view.control().state == Fight_State::Running)
       {
+        auto num = std::rand();
+
+        // Fucking hell std::rand don't make random numbers?!
+        // We need to improvise.
+        int x = 0, y = 0;
+        SDL_GetMouseState(&x, &y);
+        num = num ^ x ^ y ^ std::clock();
+        num %= 4;
+
+        std::cout << num << std::endl;
+        if(num == 0)
+        {
+          data.label_view.control().enemy.not_fighting = 18;
+          return data.after_state;
+        }
+        else
+        {
+          data.label_view.control().state = Fight_State::Enemy_Turn;
+        }
+      }
+      if(data.label_view.control().player.flare)
+      {
         data.label_view.control().enemy.not_fighting = 12;
-        return data.after_state;
+
+        auto flare = turn.items.get_item("Flare");
+
+        // Remove the flare!
+        auto& invent = data.label_view.control().player.inventory;
+        using std::begin; using std::end;
+        auto flare_find = std::find_if(begin(invent), end(invent),
+        [&flare](Item item)
+        {
+          return item == flare;
+        });
+        if(flare_find != end(invent))
+        {
+          *flare_find = no::item;
+        }
+
+        return Flare_Data{};
       }
       return data;
     }
@@ -387,6 +425,7 @@ namespace game
       Turn_State operator()(Uncrate_Data& data) const noexcept;
       Turn_State operator()(Combat_Data& data) const noexcept;
       Turn_State operator()(Change_View_Data& data) const noexcept;
+      Turn_State operator()(Flare_Data& data) const noexcept;
 
       template <typename Data>
       Turn_State operator()(Data const& data) const noexcept;
@@ -647,6 +686,14 @@ namespace game
       {
         turn.player = next_player(turn);
         update_zone(turn);
+        return Waiting_Data{};
+      }
+      return data;
+    }
+    Turn_State Step_Visitor::operator()(Flare_Data& data) const noexcept
+    {
+      if(--data.steps == 0)
+      {
         return Waiting_Data{};
       }
       return data;
@@ -962,6 +1009,11 @@ namespace game
          g.get_height() / 2 - win.label.surface_extents(g).y / 2});
 
       win.label.render(g);
+    }
+    else if(turn.state.which() == 8)
+    {
+      SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
+      SDL_RenderFillRect(g.renderer, NULL);
     }
   }
 }
