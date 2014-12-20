@@ -520,7 +520,7 @@ namespace game
         auto win = Winning_Data{};
         win.label.str("You have won the game!");
         win.label.text_height(50);
-        win.label.color({0xff, 0xff, 0xff, 0xff});
+        win.label.color({0x00, 0x00, 0x00, 0xff});
         return win;
       }
 
@@ -1007,6 +1007,16 @@ namespace game
       win.label.position(
         {g.get_width() / 2 - win.label.surface_extents(g).x / 2,
          g.get_height() / 2 - win.label.surface_extents(g).y / 2});
+
+      SDL_Rect rect;
+      rect.x = win.label.position().y;
+      rect.y = win.label.position().y;
+
+      auto label_extents = win.label.surface_extents(g);
+      rect.w = label_extents.x;
+      rect.h = label_extents.y;
+      SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
+      SDL_RenderFillRect(g.renderer, &rect);
 
       win.label.render(g);
     }
