@@ -94,7 +94,7 @@ namespace game
 
       Turn_State operator()(Discard_Item_Data& data) const noexcept;
 
-      Turn_State operator()(Inventory_View_Data const& data) const noexcept;
+      Turn_State operator()(Inventory_View_Data& data) const noexcept;
 
       Turn_State operator()(Combat_Data& data) const noexcept;
 
@@ -178,9 +178,26 @@ namespace game
       return data;
     }
     Turn_State
-    Event_Visitor::operator()(Inventory_View_Data const& data) const noexcept
+    Event_Visitor::operator()(Inventory_View_Data& data) const noexcept
     {
-      if(event.type == SDL_KEYUP)
+      data.label_view.handle_event(event);
+
+      if(data.label_view.control().enter)
+      {
+        auto selected = data.label_view.control().selected;
+        auto& player = turn.map->players[turn.player];
+        auto item = player.inventory[selected];
+        if(can_be_used(turn.items, item))
+        {
+          apply_effect(player, item);
+          player.inventory[selected] = no::item;
+          data.label_view.labels()[selected].str("No item");
+        }
+
+        data.label_view.control().enter = false;
+      }
+
+      if(event.type == SDL_KEYDOWN)
       {
         if(event.key.keysym.scancode == SDL_SCANCODE_I)
         {

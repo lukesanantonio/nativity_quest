@@ -140,4 +140,34 @@ namespace game
 
     return false;
   }
+  bool can_be_used(Item_Parser& items, Item item) noexcept
+  {
+    static Item_Parser* items_ptr;
+    static Item health;
+    static Item haste;
+    if(items_ptr != &items)
+    {
+      items_ptr = &items;
+      health = items_ptr->get_item("Potion of Strength");
+      haste = items_ptr->get_item("Potion of Haste");
+    }
+
+    if(item == health || item == haste)
+    {
+      return true;
+    }
+
+    return false;
+  }
+  void apply_effect(Player& p, Item item) noexcept
+  {
+    if(item == p.item_parser->get_item("Potion of Strength"))
+    {
+      reset_life(p.entity_data);
+    }
+    else if(item == p.item_parser->get_item("Potion of Haste"))
+    {
+      p.turns_of_haste = 3;
+    }
+  }
 }

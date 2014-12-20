@@ -30,6 +30,8 @@ namespace game
     double moved;
     double max_movement;
 
+    int turns_of_haste = 0;
+
     bool done = false;
 
     Item_Parser* item_parser;

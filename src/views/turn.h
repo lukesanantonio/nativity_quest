@@ -13,7 +13,7 @@
 
 #include "../Label_View.h"
 #include "../Discard_Item_Control.h"
-#include "../Vanilla_Control.h"
+#include "../Inventory_View_Control.h"
 #include "../Combat_Control.h"
 
 #include "../decl/char.h"
@@ -86,7 +86,7 @@ namespace game
     Inventory_View_Data() noexcept : label_view() {}
 
     Turn_State after_state;
-    Label_View<Vanilla_Control> label_view;
+    Label_View<Inventory_View_Control> label_view;
   };
 
   struct Combat_Data
