@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 #include "Inventory_View_Control.h"
+#include "render.h"
 namespace game
 {
   void Inventory_View_Control::handle_event(SDL_Event const& event) noexcept
@@ -77,5 +78,20 @@ namespace game
 
     SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
     SDL_RenderFillRect(g.renderer, &marker);
+
+    if(health_player)
+    {
+      SDL_Rect box;
+      box.w = view.vol().width;
+      box.x = view.vol().pos.x;
+      box.h = 50;
+      box.y = view.vol().pos.y - box.h;
+
+      SDL_SetRenderDrawColor(g.renderer, 0xff, 0xff, 0xff, 0xff);
+      SDL_RenderFillRect(g.renderer, &box);
+
+      render_health(g, box, health_player->entity_data.cur_life,
+                    health_player->entity_data.max_life, 1, -1);
+    }
   }
 }

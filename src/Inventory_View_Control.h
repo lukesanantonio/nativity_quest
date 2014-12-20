@@ -8,6 +8,8 @@
 #include "Graphics_Desc.h"
 namespace game
 {
+  struct Player;
+
   struct Inventory_View_Control
   {
     void handle_event(SDL_Event const& event) noexcept;
@@ -20,5 +22,7 @@ namespace game
 
     int selected = 0;
     bool enter = false;
+
+    Player* health_player = nullptr;
   };
 }
