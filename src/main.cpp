@@ -28,8 +28,6 @@
 
 int main(int argc, char** argv)
 {
-  std::srand(std::time(NULL));
-
   try
   {
     pong::Logger log;

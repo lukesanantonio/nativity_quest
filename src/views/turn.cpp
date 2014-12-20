@@ -12,6 +12,7 @@
 #include "../util/rect.h"
 
 #include <cmath>
+#include <random>
 
 namespace game
 {
@@ -344,15 +345,10 @@ namespace game
       data.label_view.handle_event(event);
       if(data.label_view.control().state == Fight_State::Running)
       {
-        auto num = std::rand();
+        std::mt19937 prng{std::random_device{}()};
+        std::uniform_int_distribution<int> dist(0, 2);
 
-        // Fucking hell std::rand don't make random numbers?!
-        // We need to improvise.
-        int x = 0, y = 0;
-        SDL_GetMouseState(&x, &y);
-        num = num ^ x ^ y ^ std::clock();
-        num %= 4;
-        if(num == 0)
+        if(dist(prng) == 0)
         {
           data.label_view.control().enemy.not_fighting = 18;
           return data.after_state;
