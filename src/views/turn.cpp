@@ -45,6 +45,8 @@ namespace game
     player.flare = false;
     player.turns_of_haste = std::max(0, player.turns_of_haste - 1);
 
+    regain_health(player.entity_data);
+
     // Make each enemy closer to being active
     for(auto& enemy : turn.map->enemies)
     {

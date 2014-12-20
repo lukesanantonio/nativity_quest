@@ -28,4 +28,9 @@ namespace game
 
     return normalized_damage;
   }
+
+  inline void regain_health(Entity_Data& et, int amount = 1) noexcept
+  {
+    et.cur_life = std::max(et.cur_life + amount, et.max_life);
+  }
 }
