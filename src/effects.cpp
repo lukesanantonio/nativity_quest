@@ -167,7 +167,7 @@ namespace game
     }
     else if(item == p.item_parser->get_item("Potion of Haste"))
     {
-      p.turns_of_haste = 3;
+      p.turns_of_haste += 3;
     }
   }
 }

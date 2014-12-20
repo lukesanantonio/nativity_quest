@@ -40,6 +40,7 @@ namespace game
     auto& player = turn.map->players[next_player(turn)];
     player.moved = 0;
     player.done = false;
+    player.turns_of_haste = std::max(0, player.turns_of_haste - 1);
 
     auto pt = player.pos;
 
@@ -189,7 +190,9 @@ namespace game
         auto item = player.inventory[selected];
         if(can_be_used(turn.items, item))
         {
+          player.item_parser = &turn.items;
           apply_effect(player, item);
+
           player.inventory[selected] = no::item;
           data.label_view.labels()[selected].str("No item");
         }
@@ -364,12 +367,15 @@ namespace game
       // Max step size for the player.
       auto max_speed = 1.0;
 
+      auto max_movement = player.max_movement +
+                          (player.turns_of_haste != 0 ? 100.0 : 0.0);
+
       // Isolate the direction.
       auto unit_delta = normalize<>(data.delta);
       // How much do we move this step?
       auto move_length =
         std::min(max_speed,
-                 std::min(player.max_movement - player.moved, delta_len));
+                 std::min(max_movement - player.moved, delta_len));
       auto move_delta = unit_delta * move_length;
 
       // Move the player.
@@ -400,6 +406,7 @@ namespace game
 
       // We can continue.
 
+      player.item_parser = &turn.items;
       unfog(player);
 
       // Mark some distance traveled.
@@ -408,7 +415,7 @@ namespace game
 
       // If we have less than the max units per step, it means we just
       // completed that and we can become static.
-      if(delta_len < max_speed || player.max_movement <= player.moved)
+      if(delta_len < max_speed || max_movement <= player.moved)
       {
         return Waiting_Data{};
       }
@@ -459,6 +466,7 @@ namespace game
             return discard_data;
           }
 
+          turn.map->players[turn.player].item_parser = &turn.items;
           unfog(turn.map->players[turn.player]);
           return data.after_state;
         }
