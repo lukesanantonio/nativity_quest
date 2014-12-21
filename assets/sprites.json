@@ -1,5 +1,10 @@
 [
-  {"id": 1, "str":"player", "file":"assets/char.png"},
+  {"id": 1, "str":"player", "animation":["assets/char0.png",
+                                         "assets/char1.png",
+                                         "assets/char2.png",
+                                         "assets/char3.png",
+                                         "assets/char4.png",
+                                         "assets/char5.png"]},
   {"id": 2, "str":"chest", "animation": ["assets/chest.png",
                                          "assets/chesthalf.png",
                                          "assets/chesthalfopen.png",
