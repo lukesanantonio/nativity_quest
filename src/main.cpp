@@ -24,7 +24,7 @@
 #define ZONES_JSON "assets/zones.json"
 #define ENEMIES_JSON "assets/enemies.json"
 
-#define FONT_FILE "/usr/share/fonts/TTF/DejaVuSans.ttf"
+#define FONT_FILE "assets/DejaVuSans.ttf"
 
 int main(int argc, char** argv)
 {
