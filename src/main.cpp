@@ -26,6 +26,8 @@
 
 #define FONT_FILE "assets/DejaVuSans.ttf"
 
+#define MENU_JSON "assets/menu.json"
+
 int main(int argc, char** argv)
 {
   try
