@@ -42,6 +42,9 @@ namespace game
     int get_width() const noexcept;
     int get_height() const noexcept;
 
+    inline Vec<int> size() const noexcept
+    { return {get_width(), get_height()}; }
+
     inline label_id add_label() noexcept;
     inline void remove_label(label_id id) noexcept;
 
