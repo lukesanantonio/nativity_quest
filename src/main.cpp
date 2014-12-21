@@ -38,7 +38,9 @@ int main(int argc, char** argv)
 
     game::Sprite_Container sprites(SPRITES_JSON);
 
-    game::State state{true, {g.get_width(), g.get_height()}, game::View::Turn,
+    game::State state{true, {g.get_width(), g.get_height()}, game::View::Menu,
+                      game::Menu_Data{g, MENU_JSON}};
+#if 0
                       game::Turn_Data{ITEMS_JSON, ZONES_JSON, CHAR_JSON,
                                       ENEMIES_JSON} };
     {
@@ -47,6 +49,7 @@ int main(int argc, char** argv)
       auto map_sprite = sprites.get_sprite(turn.map->zones.map_asset());
       turn.map->extents = {map_sprite->surface()->w, map_sprite->surface()->h};
     }
+#endif
 
     pong::Timer<> timer;
 

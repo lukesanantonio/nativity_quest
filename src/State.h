@@ -7,6 +7,7 @@
 
 #include "Player.h"
 
+#include "views/menu.h"
 #include "views/turn.h"
 
 #include <boost/variant.hpp>
@@ -14,7 +15,7 @@ namespace game
 {
   enum class View
   {
-    Turn
+    Turn, Menu
   };
 
   struct State
@@ -24,6 +25,6 @@ namespace game
     Vec<int> window_extents;
 
     View type;
-    boost::variant<game::Turn_Data> state_data;
+    boost::variant<game::Menu_Data, game::Turn_Data> state_data;
   };
 }

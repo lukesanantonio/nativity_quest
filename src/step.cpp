@@ -21,6 +21,11 @@ namespace game
         handle_event_state(s, boost::get<Turn_Data>(s.state_data), event);
         break;
       }
+      case View::Menu:
+      {
+        handle_event_state(s, boost::get<Menu_Data>(s.state_data), event);
+        break;
+      }
     }
   }
   void step(State& s) noexcept
@@ -30,6 +35,11 @@ namespace game
       case View::Turn:
       {
         step_state(s, boost::get<Turn_Data>(s.state_data));
+        break;
+      }
+      case View::Menu:
+      {
+        step_state(s, boost::get<Menu_Data>(s.state_data));
         break;
       }
     }
@@ -42,6 +52,11 @@ namespace game
       case View::Turn:
       {
         render_state(s, g, a, boost::get<Turn_Data>(s.state_data));
+        break;
+      }
+      case View::Menu:
+      {
+        render_state(s, g, a, boost::get<Menu_Data>(s.state_data));
         break;
       }
     }
