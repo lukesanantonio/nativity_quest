@@ -1,0 +1,22 @@
+{
+  "layout": "vertical",
+  "data": [
+    {
+      "type": "text",
+      "text": "Nativity Quest",
+      "aligned": "top"
+    },
+    {
+      "type": "button",
+      "text": "Start game",
+      "event": "on_start",
+      "aligned": "bottom"
+    },
+    {
+      "type": "button",
+      "text": "Quit",
+      "event": "on_quit",
+      "aligned": "bottom"
+    }
+  ]
+}
