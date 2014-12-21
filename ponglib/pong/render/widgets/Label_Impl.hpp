@@ -254,7 +254,7 @@ namespace pong
           }
 
           max_ascent = std::max(max_ascent, glyph.glyph->top);
-          max_descent = std::max(max_descent,
+          max_descent = std::max<int>(max_descent,
                                  glyph.glyph->bitmap.rows - glyph.glyph->top);
         }
         height = max_ascent + max_descent;

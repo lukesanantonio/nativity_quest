@@ -78,7 +78,7 @@ BEGIN_FORMATTER_SCOPE
   dump_tuple_element(Json::Value& json, Tuple_Type const& tup)
   {
     // Dump the value of the active type.
-    using active_t = std::tuple_element_t<N, Tuple_Type>;
+    using active_t = typename std::tuple_element<N, Tuple_Type>::type;
     using formatter_t = find_formatter_t<active_t>;
 
     // Actually do the dump.

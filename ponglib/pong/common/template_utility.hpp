@@ -48,7 +48,7 @@ namespace pong
   template <int N, typename... Params>
   struct pack_element
   {
-    using type = std::tuple_element_t<N, std::tuple<Params...> >;
+    using type = typename std::tuple_element<N, std::tuple<Params...> >::type;
   };
 
   template <int N, typename... Params>

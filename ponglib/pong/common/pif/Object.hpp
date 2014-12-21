@@ -45,7 +45,7 @@ BEGIN_FORMATTER_SCOPE
                       typename Type::properties_tuple& tup)
   {
     // Get the correct parser to use in parsing the current type in question.
-    using active_t = std::tuple_element_t<N, prop_tuple_t<Type> >;
+    using active_t = typename std::tuple_element<N, prop_tuple_t<Type> >::type;
     using formatter_t = find_formatter_t<active_t>;
 
     // Actually parse the current value of the current type.
@@ -92,7 +92,7 @@ BEGIN_FORMATTER_SCOPE
   populate_json(Json::Value& json, Tuple_Type const& tup)
   {
     // Find the correct dumper
-    using active_t = std::tuple_element_t<N, Tuple_Type>;
+    using active_t = typename std::tuple_element<N, Tuple_Type>::type;
     using formatter_t = find_formatter_t<active_t>;
 
     // Do the dump
