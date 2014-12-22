@@ -47,6 +47,8 @@ namespace game
 
   void render(State& s, Graphics_Desc& g, Sprite_Container& a) noexcept
   {
+    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
+    SDL_RenderClear(g.renderer);
     switch(s.type)
     {
       case View::Turn:
