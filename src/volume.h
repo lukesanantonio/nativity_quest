@@ -52,4 +52,15 @@ namespace game
 
     return vol;
   }
+
+  template <typename T, typename P>
+  bool is_in(Volume<T> const& vol, Vec<P> const& pt)
+  {
+    if(vol.pos.x <= pt.x && pt.x <= vol.pos.x + vol.width &&
+       vol.pos.y <= pt.y && pt.y <= vol.pos.y + vol.height)
+    {
+      return true;
+    }
+    return false;
+  }
 }
