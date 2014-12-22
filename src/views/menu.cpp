@@ -9,7 +9,10 @@ namespace game
   Menu_Data::Menu_Data(Graphics_Desc& g, std::string const& menu_json)
                        : model{parse_json(menu_json)},
                          presenter{model},
-                         view{g} {}
+                         view{g}
+  {
+    presenter.present(view);
+  }
 
   Menu_Data::Menu_Data(Menu_Data&& md) noexcept
                        : model{std::move(md.model)},
@@ -24,7 +27,6 @@ namespace game
   void render_state(State& s, Graphics_Desc&,
                     Sprite_Container&, Menu_Data& menu) noexcept
   {
-    menu.presenter.present(menu.view);
     menu.view.render();
   }
 }

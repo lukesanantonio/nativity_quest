@@ -32,6 +32,7 @@ namespace game { namespace ui
     void label(Label const& label) noexcept;
     void box(Box const& box) noexcept;
 
+    void reset() noexcept;
     void render() const noexcept;
 
     inline Vec<int> size() const noexcept
@@ -41,12 +42,7 @@ namespace game { namespace ui
   private:
     Graphics_Desc* g_;
 
-    // Finds or makes a label that can store the text that needs to be
-    // rendered.
-    Label& get_unused_label(std::string const& str) const noexcept;
-    mutable std::vector<std::tuple<Label, bool> > label_cache_;
-
-    // Temporary storage for any volumes that need to be rendered.
-    mutable std::vector<Box> box_cache_;
+    std::vector<Label> label_cache_;
+    std::vector<Box> box_cache_;
   };
 } }
