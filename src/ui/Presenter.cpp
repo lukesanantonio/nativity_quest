@@ -8,6 +8,8 @@ namespace game { namespace ui
 {
   void Presenter::present(View& view) const noexcept
   {
+    buttons_.clear();
+
     struct Text_Visitor : public boost::static_visitor<std::string>
     {
       std::string operator()(Text const& text) const noexcept
@@ -93,8 +95,41 @@ namespace game { namespace ui
     }
   }
 
-  void event_notify(SDL_Event const& event) noexcept {}
+  void Presenter::event_notify(SDL_Event const& event) noexcept
+  {
+    if(event.type != SDL_MOUSEBUTTONDOWN) return;
 
-  void register_handler(std::string const& event,
-                        std::function<void()>) noexcept {}
+    for(auto const& area : buttons_)
+    {
+      auto pt = Vec<int>{event.button.x, event.button.y};
+      if(is_in(area.vol, pt))
+      {
+        using std::begin; using std::end;
+        auto handler_find = std::find_if(begin(events_), end(events_),
+        [&area](auto const& handler)
+        {
+          return handler.event == area.event;
+        });
+
+        if(handler_find != end(events_))
+        {
+          handler_find->handler(pt);
+        }
+      }
+    }
+  }
+
+  void Presenter::use_handler(std::string const& event_str,
+                              event_func_t func) noexcept
+  {
+    using std::begin; using std::end;
+    auto handler_find = std::find_if(begin(events_), end(events_),
+    [&event_str](auto const& handler)
+    {
+      return handler.event == event_str;
+    });
+
+    if(handler_find == end(events_)) events_.push_back({event_str, func});
+    else handler_find->handler = func;
+  }
 } }

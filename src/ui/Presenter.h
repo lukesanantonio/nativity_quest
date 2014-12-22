@@ -15,6 +15,8 @@ namespace game { namespace ui
   // Handles view events and updates it and the model accordingly.
   struct Presenter
   {
+    using event_func_t = std::function<void (Vec<int>)>;
+
     explicit Presenter(Model& model) noexcept : model_(&model) {}
 
     // Default copy/move construction/assignment.
@@ -37,9 +39,24 @@ namespace game { namespace ui
     // Modify the view according to an event relative to the view
     void event_notify(SDL_Event const& event) noexcept;
 
-    void register_handler(std::string const& event,
-                          std::function<void()>) noexcept;
+    void use_handler(std::string const& str, event_func_t func) noexcept;
   private:
     Model* model_;
+
+    struct Click_Area
+    {
+      std::string event;
+      Volume<int> vol;
+    };
+
+    mutable std::vector<Click_Area> buttons_;
+
+    struct Event_Handler
+    {
+      std::string event;
+      event_func_t handler;
+    };
+
+    std::vector<Event_Handler> events_;
   };
 } }
