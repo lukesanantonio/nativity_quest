@@ -99,7 +99,7 @@ namespace game { namespace ui
       rect.w = box.vol.width;
       rect.h = box.vol.height;
 
-      SDL_RenderFillRect(g_->renderer, &rect);
+      SDL_RenderDrawRect(g_->renderer, &rect);
     }
   }
 
