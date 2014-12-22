@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 #include "Presenter.h"
+#include <numeric>
 namespace game { namespace ui
 {
   void Presenter::present(View& view) const noexcept
@@ -21,27 +22,72 @@ namespace game { namespace ui
 
     if(model_->layout() == Layout_Type::Vertical)
     {
-      for(auto& elem : model_->elements())
-      {
-        auto text = boost::apply_visitor(Text_Visitor{}, elem.element);
-        auto text_size = view.text_size(text);
+      auto& elemnts = model_->elements();
 
+      int top_aligned = 0, bottom_aligned = 0;
+      std::tie(top_aligned, bottom_aligned) = std::accumulate(begin(elemnts),
+                                      end(elemnts), std::tuple<int, int>{0, 0},
+      [](auto sum, auto const& elemnt)
+      {
+        if(elemnt.alignment == Alignment_Type::Top)
+        {
+          ++std::get<0>(sum);
+        }
+        if(elemnt.alignment == Alignment_Type::Bottom)
+        {
+          ++std::get<1>(sum);
+        }
+        return sum;
+      });
+
+      int top_aligned_done = 0, bottom_aligned_done = 0;
+
+      // TODO find some sort order to make everything work, for now depend
+      // on the order of the json array.
+      for(auto& elem : elemnts)
+      {
         auto pos = Vec<int>{};
         if(elem.alignment == Alignment_Type::Top)
         {
-          pos.y = 10;
-          pos.x = view.size().x / 2 - text_size.x / 2;
+          auto where = top_aligned - top_aligned_done;
+          ++top_aligned_done;
+
+          // Add top padding.
+          pos.y += 10;
+          // Go down 100 pixels per item.
+          pos.y += 100 * (where - 1);
         }
-        else if(elem.alignment == Alignment_Type::Bottom)
+        if(elem.alignment == Alignment_Type::Bottom)
         {
-          pos.y = view.size().y - 10 - text_size.y;
-          pos.x = view.size().x / 2 - text_size.x / 2;
+          auto where = bottom_aligned - bottom_aligned_done;
+          ++bottom_aligned_done;
+
+          // Add top padding.
+          pos.y = view.size().y - 10;
+          // Go down 100 pixels per item.
+          pos.y -= 100 * (where - 1);
         }
 
-        view.label({text, pos, {0xff, 0xff, 0xff}});
+        auto text = boost::apply_visitor(Text_Visitor{}, elem.element);
+        auto text_size = view.text_size(text);
+
+        pos.x = view.size().x / 2 - text_size.x / 2;
         if(elem.element.which() == 1)
         {
-          view.box({{pos, text_size.x, text_size.y}, {0xee, 0xee, 0xee}});
+          pos.y -= text_size.y;
+
+          auto button = boost::get<Button>(elem.element);
+
+          auto vol = Volume<int>{pos, text_size.x, text_size.y};
+          view.box({vol, {0xff, 0xff, 0xff}});
+
+          buttons_.push_back({button.event, vol});
+        }
+        view.label({text, pos, {0xff, 0xff, 0xff}});
+
+        if(elem.element.which() == 1)
+        {
+          pos.y += text_size.y;
         }
       }
     }
