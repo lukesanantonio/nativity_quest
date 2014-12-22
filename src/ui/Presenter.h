@@ -18,10 +18,10 @@ namespace game { namespace ui
     explicit Presenter(Model& model) noexcept : model_(&model) {}
 
     // Default copy/move construction/assignment.
-    Presenter(Presenter const&) noexcept = default;
+    Presenter(Presenter const&) = default;
     Presenter(Presenter&&) noexcept = default;
 
-    Presenter& operator=(Presenter const&) noexcept = default;
+    Presenter& operator=(Presenter const&) = default;
     Presenter& operator=(Presenter&&) noexcept = default;
 
     // Model access
