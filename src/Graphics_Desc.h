@@ -5,6 +5,7 @@
 #pragma once
 #include <string>
 #include "SDL.h"
+#include "SDL_ttf.h"
 
 #include "pong/render/text.h"
 #include "pong/render/widgets/Label.h"
@@ -62,6 +63,9 @@ namespace game
       pong::text::Face face;
       pong::text::AntiAliasedRaster raster;
     } font;
+
+    TTF_Font* large_font;
+    TTF_Font* small_font;
   private:
     Vec<int> extents_;
 

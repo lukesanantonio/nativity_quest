@@ -68,11 +68,20 @@ namespace game
     }
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
+    TTF_Init();
+
+    large_font = TTF_OpenFont(font_file.c_str(), 50);
+    small_font = TTF_OpenFont(font_file.c_str(), 35);
   }
   Graphics_Desc::~Graphics_Desc() noexcept
   {
     if(renderer) SDL_DestroyRenderer(renderer);
     if(window) SDL_DestroyWindow(window);
+
+    TTF_CloseFont(small_font);
+    TTF_CloseFont(large_font);
+    TTF_Quit();
   }
   int Graphics_Desc::get_width() const noexcept
   {
