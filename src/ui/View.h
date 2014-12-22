@@ -5,6 +5,8 @@
 #pragma once
 #include <string>
 
+#include "../util/surface.h"
+
 #include "../vec.h"
 #include "../volume.h"
 
@@ -14,9 +16,23 @@ namespace game { namespace ui
 {
   struct Label
   {
+    Label(std::string const& str = {},
+          Vec<int> pos = {},
+          Color c = {}) noexcept
+          : str{str}, pos{pos}, color(c) {}
+
+    Label(Label const& label) noexcept;
+    Label(Label&& label) noexcept = default;
+
+    Label& operator=(Label const& label) noexcept;
+    Label& operator=(Label&& label) noexcept = default;
+
     std::string str;
     Vec<int> pos;
     Color color;
+
+    mutable Surface_Ptr surface_cache_;
+    mutable Texture_Ptr texture_cache_;
   };
 
   struct Box
@@ -40,6 +56,8 @@ namespace game { namespace ui
 
     Vec<int> text_size(std::string const& str) const noexcept;
   private:
+    void generate_label_surface_cache(Label const& l) const noexcept;
+
     Graphics_Desc* g_;
 
     std::vector<Label> label_cache_;
