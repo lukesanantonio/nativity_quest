@@ -15,4 +15,16 @@ namespace game
   };
 
   void set_render_draw_color(SDL_Renderer* renderer, Color c) noexcept;
+
+  inline SDL_Color to_sdl_color(Color c) noexcept
+  {
+    auto sc = SDL_Color{};
+
+    sc.r = c.red;
+    sc.g = c.green;
+    sc.b = c.blue;
+    sc.a = 0xff;
+
+    return sc;
+  }
 }
