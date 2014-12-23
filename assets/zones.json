@@ -1,6 +1,6 @@
 {
   "map":"map",
-  "decl":"assets/zones.png",
+  "decl":"zones",
 
   "classes": [
     { "str":"Water", "required_item":"Boat", "speed_cost":2,

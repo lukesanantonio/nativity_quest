@@ -1,49 +1,71 @@
-[
-  {
-    "sprite": "worf",
-    "id": "wolf",
-    "str": "Wild Mongrel",
-    "defense": 0,
-    "life": 2
-  },
+{
+  "decl":
+  [
+    {
+      "sprite": "worf",
+      "id": "wolf",
+      "str": "Wild Mongrel",
+      "defense": 0,
+      "life": 2
+    },
 
-  {
-    "sprite": "snake",
-    "id": "snake",
-    "str": "Mire Boa",
-    "defense": 0,
-    "life": 3
-  },
+    {
+      "sprite": "snake",
+      "id": "snake",
+      "str": "Mire Boa",
+      "defense": 0,
+      "life": 3
+    },
 
-  {
-    "sprite": "creeper",
-    "id": "creeper",
-    "str": "Blind Creeper",
-    "defense": 1,
-    "life": 4
-  },
+    {
+      "sprite": "creeper",
+      "id": "creeper",
+      "str": "Blind Creeper",
+      "defense": 1,
+      "life": 4
+    },
 
-  {
-    "sprite": "soldier",
-    "id": "soldier",
-    "str": "Roman Soldier",
-    "defense": 2,
-    "life": 2
-  },
+    {
+      "sprite": "soldier",
+      "id": "soldier",
+      "str": "Roman Soldier",
+      "defense": 2,
+      "life": 2
+    },
 
-  {
-    "sprite": "giant",
-    "id": "giant",
-    "str": "Giant",
-    "defense": 0,
-    "life": 4
-  },
+    {
+      "sprite": "giant",
+      "id": "giant",
+      "str": "Giant",
+      "defense": 0,
+      "life": 4
+    },
 
-  {
-    "sprite": "future",
-    "id": "myrr",
-    "str": "Myrr",
-    "defense": 2,
-    "life": 5
-  }
-]
+    {
+      "sprite": "myrr",
+      "id": "myrr",
+      "str": "Myrr",
+      "defense": 2,
+      "life": 5
+    }
+  ],
+
+  "spawn":
+  [
+    { "decl": "soldier", "pos": { "x": 260, "y":  84 } },
+    { "decl": "giant",   "pos": { "x": 531, "y":  13 } },
+    { "decl": "wolf",    "pos": { "x": 688, "y":  72 } },
+    { "decl": "creeper", "pos": { "x": 867, "y":  47 } },
+    { "decl": "soldier", "pos": { "x": 815, "y": 208 } },
+    { "decl": "creeper", "pos": { "x": 575, "y": 275 } },
+    { "decl": "giant",   "pos": { "x": 785, "y": 565 } },
+    { "decl": "soldier", "pos": { "x": 565, "y": 636 } },
+    { "decl": "giant",   "pos": { "x": 219, "y": 542 } },
+    { "decl": "creeper", "pos": { "x":  55, "y": 639 } },
+    { "decl": "wolf",    "pos": { "x": 263, "y": 355 } },
+    { "decl": "myrr",    "pos": { "x": 322, "y": 359 } },
+    { "decl": "creeper", "pos": { "x": 359, "y": 410 } },
+    { "decl": "wolf",    "pos": { "x": 461, "y": 351 } },
+    { "decl": "myrr",    "pos": { "x": 274, "y": 195 } }
+  ]
+}
