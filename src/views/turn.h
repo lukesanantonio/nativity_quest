@@ -15,6 +15,7 @@
 #include "../Discard_Item_Control.h"
 #include "../Inventory_View_Control.h"
 #include "../Combat_Control.h"
+#include "../State.h"
 
 #include "../decl/char.h"
 #include "../decl/enemies.h"
@@ -104,7 +105,7 @@ namespace game
     int steps = 15;
   };
 
-  struct Turn_Data
+  struct Turn_Data : public Game_State
   {
     Turn_Data(std::string const& items_file,
               std::string const& zones_file,
@@ -112,26 +113,26 @@ namespace game
               std::string const& enemies_file);
 
 
-    Item_Parser items;
-    std::shared_ptr<Map> map;
+    mutable Item_Parser items;
+    mutable std::shared_ptr<Map> map;
 
-    Managed_Label zone_label;
+    mutable Managed_Label zone_label;
 
-    player_id player;
-    Turn_State state;
+    mutable player_id player;
+    mutable Turn_State state;
 
     // map coordinates.
-    Vec<int> map_corner;
+    mutable Vec<int> map_corner;
 
-    Character_Parser character;
+    mutable Character_Parser character;
+
+    void handle_event(State&, SDL_Event const&) noexcept;
+    void step(State&) noexcept override;
+    void render(State&, Graphics_Desc&,
+                Sprite_Container&) const noexcept override;
+
+    inline bool is_toplevel() const noexcept override { return false; }
   };
 
   Turn_State change_player(Turn_Data& turn) noexcept;
-
-  struct State;
-
-  void handle_event_state(State& s, Turn_Data&, SDL_Event const&) noexcept;
-  void step_state(State& s, Turn_Data&) noexcept;
-  void render_state(State& s, Graphics_Desc&,
-                    Sprite_Container&, Turn_Data&) noexcept;
 }

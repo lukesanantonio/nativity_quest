@@ -390,11 +390,9 @@ namespace game
     }
   }
 
-  void handle_event_state(State& s, Turn_Data& turn,
-                          SDL_Event const& event) noexcept
+  void Turn_Data::handle_event(State& s, SDL_Event const& event) noexcept
   {
-    turn.state = boost::apply_visitor(Event_Visitor{s, turn, event},
-                                      turn.state);
+    state = boost::apply_visitor(Event_Visitor{s, *this, event}, state);
   }
 
   namespace
@@ -701,10 +699,9 @@ namespace game
     }
   }
 
-  void step_state(State& s, Turn_Data& turn_data) noexcept
+  void Turn_Data::step(State& s) noexcept
   {
-    turn_data.state = boost::apply_visitor(Step_Visitor{s, turn_data},
-                                           turn_data.state);
+    state = boost::apply_visitor(Step_Visitor{s, *this}, state);
   }
 
   namespace
@@ -730,9 +727,11 @@ namespace game
 
   }
 
-  void render_state(State& s, Graphics_Desc& g, Sprite_Container& sprites,
-                    Turn_Data& turn) noexcept
+  void Turn_Data::render(State& s, Graphics_Desc& g,
+                         Sprite_Container& sprites) const noexcept
   {
+    auto const& turn = *this;
+
     Player& player = turn.state.which() != 6 ? turn.map->players[turn.player] :
                      turn.map->players[next_player(turn)];
 
