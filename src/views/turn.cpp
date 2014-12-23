@@ -727,7 +727,7 @@ namespace game
 
   }
 
-  void Turn_Data::render(State& s, Graphics_Desc& g,
+  void Turn_Data::render(State const& s, Graphics_Desc& g,
                          Sprite_Container& sprites) const noexcept
   {
     auto const& turn = *this;

@@ -19,7 +19,7 @@ namespace game
     return last_found;
   }
 
-  State::stack_t::iterator find_toplevel(State::stack_t& stack) noexcept
+  auto find_toplevel(State::stack_t const& stack) noexcept -> decltype(auto)
   {
     using std::begin; using std::end;
     return find_last_if(begin(stack), end(stack),
@@ -29,7 +29,8 @@ namespace game
     });
   }
 
-  void render(State& state, Graphics_Desc& g, Sprite_Container& s) noexcept
+  void render(State const& state, Graphics_Desc& g,
+              Sprite_Container& s) noexcept
   {
     using std::begin; using std::end;
 

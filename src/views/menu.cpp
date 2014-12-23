@@ -24,7 +24,7 @@ namespace game
 
   void Menu_Data::handle_event(State& s, SDL_Event const&) noexcept {}
   void Menu_Data::step(State& s) noexcept {}
-  void Menu_Data::render(State& s, Graphics_Desc&,
+  void Menu_Data::render(State const& s, Graphics_Desc&,
                          Sprite_Container&) const noexcept
   {
     view.render();

@@ -128,7 +128,7 @@ namespace game
 
     void handle_event(State&, SDL_Event const&) noexcept;
     void step(State&) noexcept override;
-    void render(State&, Graphics_Desc&,
+    void render(State const&, Graphics_Desc&,
                 Sprite_Container&) const noexcept override;
 
     inline bool is_toplevel() const noexcept override { return false; }
