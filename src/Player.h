@@ -6,7 +6,7 @@
 #include <array>
 #include "SDL.h"
 
-#include "vec.h"
+#include "common/vec.h"
 #include "decl/items.h"
 
 #include "Sprite_Container.h"

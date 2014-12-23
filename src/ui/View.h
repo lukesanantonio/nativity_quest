@@ -5,14 +5,14 @@
 #pragma once
 #include <string>
 
-#include "../util/surface.h"
+#include "../common/surface.h"
 
-#include "../vec.h"
-#include "../volume.h"
+#include "../common/vec.h"
+#include "../common/volume.h"
+#include "../common/Color.h"
 
-#include "../Graphics_Desc.h"
-#include "../Font_Renderer.h"
-#include "../Color.h"
+#include "../game/Graphics_Desc.h"
+#include "../game/Font_Renderer.h"
 namespace game { namespace ui
 {
   struct Label

@@ -4,7 +4,7 @@
  */
 #include "Player.h"
 
-#include "util/pi.h"
+#include "common/pi.h"
 
 #include "effects.h"
 namespace game

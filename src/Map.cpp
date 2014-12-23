@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 #include "Map.h"
-#include "util/except.h"
+#include "common/except.h"
 
 #include "SDL_image.h"
 namespace game

@@ -6,7 +6,7 @@
 #include <string>
 #include <memory>
 
-#include "../Game.h"
+#include "../game/Game.h"
 
 #include "SDL.h"
 

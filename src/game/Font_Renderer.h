@@ -10,7 +10,7 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 
-#include "Color.h"
+#include "../common/Color.h"
 namespace game
 {
   struct Font_Renderer

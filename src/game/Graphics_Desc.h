@@ -7,7 +7,7 @@
 
 #include "SDL.h"
 
-#include "vec.h"
+#include "../common/vec.h"
 namespace game
 {
   struct Bad_Window {};

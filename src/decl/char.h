@@ -6,7 +6,7 @@
 #include <string>
 #include <array>
 
-#include "../volume.h"
+#include "../common/volume.h"
 namespace game
 {
   struct Char_Info

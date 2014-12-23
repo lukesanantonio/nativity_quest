@@ -4,9 +4,9 @@
  */
 #pragma once
 
-#include "vec.h"
+#include "common/vec.h"
 #include "Map.h"
-#include "Graphics_Desc.h"
+#include "game/Graphics_Desc.h"
 #include "Sprite_Container.h"
 
 namespace game

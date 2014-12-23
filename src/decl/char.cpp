@@ -4,8 +4,8 @@
  */
 #include "char.h"
 
-#include "../util/json.h"
-#include "../util/except.h"
+#include "../common/json.h"
+#include "../common/except.h"
 namespace game
 {
     Character_Parser::Character_Parser(std::string json_file)

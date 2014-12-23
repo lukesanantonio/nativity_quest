@@ -6,7 +6,7 @@
 #include <string>
 
 #include "SDL.h"
-#include "util/surface.h"
+#include "common/surface.h"
 
 #include "Player.h"
 #include "decl/zones.h"

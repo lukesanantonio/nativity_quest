@@ -8,7 +8,7 @@
 
 #include "SDL_image.h"
 
-#include "util/json.h"
+#include "common/json.h"
 namespace game
 {
   Sprite_Impl::Sprite_Impl(SDL_Surface* srf) noexcept

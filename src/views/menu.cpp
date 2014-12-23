@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 #include "menu.h"
-#include "../util/json.h"
+#include "../common/json.h"
 namespace game
 {
   Menu_Data::Menu_Data(Game& game, std::string const& menu_json)

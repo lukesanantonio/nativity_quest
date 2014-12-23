@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 #include "enemies.h"
-#include "../util/json.h"
+#include "../common/json.h"
 namespace game
 {
   Enemy_Parser::Enemy_Parser(std::string const& enemy_json)

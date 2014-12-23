@@ -6,8 +6,8 @@
 
 #include <algorithm>
 
-#include "../util/except.h"
-#include "../util/json.h"
+#include "../common/except.h"
+#include "../common/json.h"
 namespace game
 {
   Item_Impl parse_item(rapidjson::Value const& val) noexcept

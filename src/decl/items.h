@@ -7,7 +7,7 @@
 #include <memory>
 #include <vector>
 
-#include "../vec.h"
+#include "../common/vec.h"
 namespace game
 {
   struct Item_Impl

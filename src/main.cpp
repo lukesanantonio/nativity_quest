@@ -8,14 +8,17 @@
 
 #include "pong/common/Timer.hpp"
 
-#include "Graphics_Desc.h"
+#include "game/Graphics_Desc.h"
+#include "game/Game.h"
+
 #include "Sprite_Container.h"
+
 #include "decl/items.h"
 #include "decl/zones.h"
-#include "Game.h"
+
 #include "views/menu.h"
 
-#include "util/except.h"
+#include "common/except.h"
 
 #define SPRITES_JSON "assets/sprites.json"
 

@@ -4,18 +4,16 @@
 
 include_directories(${CMAKE_SOURCE_DIR}/rapidjson)
 
+add_subdirectory(common)
 add_subdirectory(decl)
-add_subdirectory(util)
-add_subdirectory(views)
+add_subdirectory(game)
 add_subdirectory(ui)
+add_subdirectory(views)
 
-add_executable(game main.cpp Map.cpp Game.cpp Player.cpp Font_Renderer.cpp
-                    Graphics_Desc.cpp render.cpp Sprite_Container.cpp
-                    effects.cpp Color.cpp)
-target_link_libraries(game decllib utillib viewlib)
+add_executable(quest main.cpp Map.cpp Player.cpp render.cpp Sprite_Container.cpp
+                    effects.cpp)
+target_link_libraries(quest commonlib decllib gamelib uilib viewlib)
 
-target_link_libraries(game io_core render_core)
-
-target_link_libraries(game ${SDL2_LIBRARIES})
-target_link_libraries(game ${SDL2_IMAGE_LIBRARIES})
-target_link_libraries(game ${FREETYPE_LIBRARIES})
+target_link_libraries(quest ${SDL2_LIBRARIES})
+target_link_libraries(quest ${SDL2_IMAGE_LIBRARIES})
+target_link_libraries(quest ${FREETYPE_LIBRARIES})

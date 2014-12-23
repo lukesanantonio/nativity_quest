@@ -8,9 +8,9 @@
 
 #include "rapidjson/document.h"
 
-#include "../util/except.h"
-#include "../util/json.h"
-#include "../util/surface.h"
+#include "../common/except.h"
+#include "../common/json.h"
+#include "../common/surface.h"
 
 #include "SDL.h"
 #include "SDL_image.h"

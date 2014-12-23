@@ -5,8 +5,8 @@
 #pragma once
 #include <memory>
 
-#include "../util/surface.h"
-#include "../vec.h"
+#include "../common/surface.h"
+#include "../common/vec.h"
 #include "../Sprite_Container.h"
 
 #include "items.h"

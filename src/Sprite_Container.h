@@ -9,7 +9,7 @@
 
 #include "pong/common/Cache.h"
 
-#include "util/surface.h"
+#include "common/surface.h"
 
 #include <boost/variant.hpp>
 namespace game
