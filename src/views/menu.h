@@ -6,9 +6,9 @@
 #include <string>
 #include <memory>
 
-#include "SDL.h"
+#include "../State.h"
 
-#include "../Graphics_Desc.h"
+#include "SDL.h"
 
 #include "../ui/Model.h"
 #include "../ui/Presenter.h"
@@ -16,7 +16,7 @@
 
 namespace game
 {
-  struct Menu_Data
+  struct Menu_Data : public Game_State
   {
     Menu_Data(Graphics_Desc& g, std::string const& menu_json);
     Menu_Data(Menu_Data&& md) noexcept;
@@ -24,14 +24,13 @@ namespace game
     ui::Model model;
     ui::Presenter presenter;
     ui::View view;
+
+    void handle_event(State&, SDL_Event const&) noexcept override;
+    void step(State&) noexcept override;
+    void render(State&, Graphics_Desc&,
+                Sprite_Container&) const noexcept override;
+
+    inline bool is_toplevel() const noexcept override { return true; }
   };
-
-  struct State;
-  struct Sprite_Container;
-
-  void handle_event_state(State& s, Menu_Data&, SDL_Event const&) noexcept;
-  void step_state(State& s, Menu_Data&) noexcept;
-  void render_state(State& s, Graphics_Desc&,
-                    Sprite_Container&, Menu_Data&) noexcept;
 }
 

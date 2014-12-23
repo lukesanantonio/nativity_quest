@@ -9,7 +9,7 @@ add_subdirectory(util)
 add_subdirectory(views)
 add_subdirectory(ui)
 
-add_executable(game main.cpp Map.cpp State.cpp Player.cpp step.cpp
+add_executable(game main.cpp Map.cpp State.cpp Player.cpp
                     Graphics_Desc.cpp render.cpp Sprite_Container.cpp
                     Discard_Item_Control.cpp Inventory_View_Control.cpp
                     Combat_Control.cpp effects.cpp Color.cpp)

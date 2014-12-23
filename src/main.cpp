@@ -13,7 +13,7 @@
 #include "decl/items.h"
 #include "decl/zones.h"
 #include "State.h"
-#include "step.h"
+#include "views/menu.h"
 
 #include "util/except.h"
 
@@ -38,8 +38,7 @@ int main(int argc, char** argv)
 
     game::Sprite_Container sprites(SPRITES_JSON);
 
-    game::State state{true, {g.get_width(), g.get_height()}, game::View::Menu,
-                      game::Menu_Data{g, MENU_JSON}};
+    game::State state{true, {g.get_width(), g.get_height()}};
 #if 0
                       game::Turn_Data{ITEMS_JSON, ZONES_JSON, CHAR_JSON,
                                       ENEMIES_JSON} };
@@ -50,6 +49,9 @@ int main(int argc, char** argv)
       turn.map->extents = {map_sprite->surface()->w, map_sprite->surface()->h};
     }
 #endif
+
+    // Our menu is going to be our top level state.
+    push_state(state, std::make_shared<game::Menu_Data>(g, MENU_JSON));
 
     pong::Timer<> timer;
 

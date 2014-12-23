@@ -22,11 +22,11 @@ namespace game
     presenter.model(model);
   }
 
-  void handle_event_state(State& s, Menu_Data&, SDL_Event const&) noexcept {}
-  void step_state(State& s, Menu_Data&) noexcept {}
-  void render_state(State& s, Graphics_Desc&,
-                    Sprite_Container&, Menu_Data& menu) noexcept
+  void Menu_Data::handle_event(State& s, SDL_Event const&) noexcept {}
+  void Menu_Data::step(State& s) noexcept {}
+  void Menu_Data::render(State& s, Graphics_Desc&,
+                         Sprite_Container&) const noexcept
   {
-    menu.view.render();
+    view.render();
   }
 }
