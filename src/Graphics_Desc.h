@@ -16,7 +16,6 @@ namespace game
   struct Graphics_Desc
   {
     Graphics_Desc(std::string const& title, Vec<int> const& extents);
-
     Graphics_Desc(Graphics_Desc&& g) noexcept;
 
     ~Graphics_Desc() noexcept;
