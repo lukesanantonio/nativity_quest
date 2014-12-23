@@ -66,6 +66,8 @@ int main(int argc, char** argv)
 
       timer.reset();
 
+      auto state_ptr = state.stack.back();
+
       SDL_Event event;
       while(SDL_PollEvent(&event))
       {
@@ -74,11 +76,12 @@ int main(int argc, char** argv)
           state.running = false;
           continue;
         }
-        handle_event(state, event);
+        state_ptr->handle_event(state, event);
       }
 
-      step(state);
-      render(state, g, sprites);
+      state_ptr->step(state);
+
+      game::render_all(state, g, sprites);
 
       std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }

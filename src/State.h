@@ -57,8 +57,6 @@ namespace game
     s.state_stack.pop_back();
   }
 
-  void render(State const& state, Graphics_Desc& g,
-              Sprite_Container& s) noexcept;
-  void handle_event(State& s, SDL_Event const& event) noexcept;
-  void step(State& s) noexcept;
+  void render_all(State const& state, Graphics_Desc& g,
+                  Sprite_Container& s) noexcept;
 }

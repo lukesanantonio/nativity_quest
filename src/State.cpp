@@ -29,8 +29,8 @@ namespace game
     });
   }
 
-  void render(State const& state, Graphics_Desc& g,
-              Sprite_Container& s) noexcept
+  void render_all(State const& state, Graphics_Desc& g,
+                  Sprite_Container& s) noexcept
   {
     using std::begin; using std::end;
 
@@ -47,14 +47,5 @@ namespace game
     });
 
     SDL_RenderPresent(g.renderer);
-  }
-
-  void handle_event(State& s, SDL_Event const& event) noexcept
-  {
-    s.state_stack.back()->handle_event(s, event);
-  }
-  void step(State& s) noexcept
-  {
-    s.state_stack.back()->step(s);
   }
 }
