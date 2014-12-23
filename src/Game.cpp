@@ -2,7 +2,7 @@
  * Copyright (C) 2014 Luke San Antonio
  * All rights reserved.
  */
-#include "State.h"
+#include "Game.h"
 namespace game
 {
   template <class InputIt, class UnaryPredicate>
@@ -19,7 +19,7 @@ namespace game
     return last_found;
   }
 
-  auto find_toplevel(State::stack_t const& stack) noexcept -> decltype(auto)
+  auto find_toplevel(Game::stack_t const& stack) noexcept -> decltype(auto)
   {
     using std::begin; using std::end;
     return find_last_if(begin(stack), end(stack),
@@ -29,23 +29,22 @@ namespace game
     });
   }
 
-  void render_all(State const& state, Graphics_Desc& g,
-                  Sprite_Container& s) noexcept
+  void render_all(Game const& game) noexcept
   {
     using std::begin; using std::end;
 
-    auto toplevel = find_toplevel(state.state_stack);
-    if(toplevel == end(state.state_stack)) return;
+    auto toplevel = find_toplevel(game.states);
+    if(toplevel == end(game.states)) return;
 
-    SDL_SetRenderDrawColor(g.renderer, 0x00, 0x00, 0x00, 0xff);
-    SDL_RenderClear(g.renderer);
+    SDL_SetRenderDrawColor(game.graphics.renderer, 0x00, 0x00, 0x00, 0xff);
+    SDL_RenderClear(game.graphics.renderer);
 
-    std::for_each(toplevel, end(state.state_stack),
+    std::for_each(toplevel, end(game.states),
     [&](auto& game_state)
     {
-      game_state->render(state, g, s);
+      game_state->render();
     });
 
-    SDL_RenderPresent(g.renderer);
+    SDL_RenderPresent(game.graphics.renderer);
   }
 }

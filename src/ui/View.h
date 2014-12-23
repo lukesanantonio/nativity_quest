@@ -11,15 +11,17 @@
 #include "../volume.h"
 
 #include "../Graphics_Desc.h"
+#include "../Font_Renderer.h"
 #include "../Color.h"
 namespace game { namespace ui
 {
   struct Label
   {
     Label(std::string const& str = {},
+          int size = 0,
           Vec<int> pos = {},
           Color c = {}) noexcept
-          : str{str}, pos{pos}, color(c) {}
+          : str{str}, size{size}, pos{pos}, color(c) {}
 
     Label(Label const& label) noexcept;
     Label(Label&& label) noexcept = default;
@@ -28,6 +30,7 @@ namespace game { namespace ui
     Label& operator=(Label&& label) noexcept = default;
 
     std::string str;
+    int size;
     Vec<int> pos;
     Color color;
 
@@ -43,22 +46,25 @@ namespace game { namespace ui
 
   struct View
   {
-    View(Graphics_Desc& graphics) noexcept : g_(&graphics) {}
+    View(Font_Renderer& font) noexcept : font_(&font) {}
 
     void label(Label const& label) noexcept;
     void box(Box const& box) noexcept;
 
+    inline void font_renderer(Font_Renderer& font) noexcept
+    { font_ = &font; }
+    inline Font_Renderer& font_renderer() const noexcept
+    { return *font_; }
+
     void reset() noexcept;
-    void render() const noexcept;
+    void render(Graphics_Desc& g) const noexcept;
 
-    inline Vec<int> size() const noexcept
-    { return g_->size(); }
-
-    Vec<int> text_size(std::string const& str) const noexcept;
+    Vec<int> text_size(std::string str, int size) const noexcept;
   private:
+    // Regenerates a label's
     void generate_label_surface_cache(Label const& l) const noexcept;
 
-    Graphics_Desc* g_;
+    Font_Renderer* font_;
 
     std::vector<Label> label_cache_;
     std::vector<Box> box_cache_;

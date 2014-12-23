@@ -6,17 +6,21 @@
 #include <algorithm>
 namespace game { namespace ui
 {
-  Label::Label(Label const& label) noexcept
-              : str{label.str}, pos{label.pos}, color(label.color) {}
+  Label::Label(Label const& rhs) noexcept
+               : str{rhs.str},
+                 size{rhs.size},
+                 pos{rhs.pos},
+                 color(rhs.color) {}
 
   Label& Label::operator=(Label const& label) noexcept
   {
     str = label.str;
+    size = label.size;
     pos = label.pos;
     color = label.color;
 
     surface_cache_.release();
-    surface_cache_.release();
+    texture_cache_.release();
 
     return *this;
   }
@@ -28,15 +32,17 @@ namespace game { namespace ui
   {
     box_cache_.push_back(box);
   }
-  Vec<int> View::text_size(std::string const& str) const noexcept
+  Vec<int> View::text_size(std::string str, int size) const noexcept
   {
     using std::begin; using std::end;
     auto label_find = std::find_if(begin(label_cache_), end(label_cache_),
-    [&str](auto const& label)
+    [&](auto const& label)
     {
-      return label.str == str;
+      return label.str == str && label.size == size;
     });
 
+    // If we already have a label with the same data, we can generate the
+    // label now and save it for later!
     if(label_find != end(label_cache_))
     {
       generate_label_surface_cache(*label_find);
@@ -46,10 +52,11 @@ namespace game { namespace ui
       auto size = Vec<int>{surface->w, surface->h};
       return size;
     }
+    // Well we just need to render some text and forget about it.
     else
     {
-      SDL_Surface* surface = TTF_RenderText_Blended(g_->small_font, str.data(),
-                                                    {0x00, 0x00, 0x00, 0x00});
+      SDL_Surface* surface = font_->render_text(str, size,
+                                                {0x00, 0x00, 0x00});
       auto size = Vec<int>{surface->w, surface->h};
 
       SDL_FreeSurface(surface);
@@ -60,24 +67,22 @@ namespace game { namespace ui
 
   void View::reset() noexcept
   {
+    // Clear all of the things we were going to draw.
     label_cache_.clear();
     box_cache_.clear();
   }
-  void View::render() const noexcept
+  void View::render(Graphics_Desc& g) const noexcept
   {
+    // For each label
     for(auto& label : label_cache_)
     {
-      // TODO: Make this actually render the label
-      set_render_draw_color(g_->renderer, label.color);
-
+      // Generate the texture
       if(!label.texture_cache_)
       {
-        if(!label.surface_cache_)
-        {
-          generate_label_surface_cache(label);
-        }
+        // ... But first the surface if necessary.
+        generate_label_surface_cache(label);
         label.texture_cache_.reset(
-          SDL_CreateTextureFromSurface(g_->renderer,
+          SDL_CreateTextureFromSurface(g.renderer,
                                        label.surface_cache_.get()));
       }
 
@@ -87,11 +92,11 @@ namespace game { namespace ui
       dest.w = label.surface_cache_->w;
       dest.h = label.surface_cache_->h;
 
-      SDL_RenderCopy(g_->renderer, label.texture_cache_.get(), NULL, &dest);
+      SDL_RenderCopy(g.renderer, label.texture_cache_.get(), NULL, &dest);
     }
     for(auto const& box : box_cache_)
     {
-      set_render_draw_color(g_->renderer, box.color);
+      set_render_draw_color(g.renderer, box.color);
 
       SDL_Rect rect;
       rect.x = box.vol.pos.x;
@@ -99,7 +104,7 @@ namespace game { namespace ui
       rect.w = box.vol.width;
       rect.h = box.vol.height;
 
-      SDL_RenderDrawRect(g_->renderer, &rect);
+      SDL_RenderDrawRect(g.renderer, &rect);
     }
   }
 
@@ -107,8 +112,6 @@ namespace game { namespace ui
   {
     if(l.surface_cache_) return;
 
-    l.surface_cache_.reset(
-      TTF_RenderText_Blended(g_->small_font, l.str.c_str(),
-                             {l.color.red,l.color.green,l.color.blue,0xff}));
+    l.surface_cache_.reset(font_->render_text(l.str, l.size, l.color));
   }
 } }

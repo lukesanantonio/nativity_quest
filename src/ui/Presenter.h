@@ -17,32 +17,23 @@ namespace game { namespace ui
   {
     using event_func_t = std::function<void (Vec<int>)>;
 
-    explicit Presenter(Model& model) noexcept : model_(&model) {}
-
     // Default copy/move construction/assignment.
+    Presenter() noexcept = default;
     Presenter(Presenter const&) = default;
     Presenter(Presenter&&) noexcept = default;
 
     Presenter& operator=(Presenter const&) = default;
     Presenter& operator=(Presenter&&) noexcept = default;
 
-    // Model access
-    inline Model& model() noexcept { return *model_; }
-    inline Model const& model() const noexcept { return *model_; }
-
-    // Model set
-    inline void model(Model& model) noexcept { model_ = &model; }
-
     // Present the model onto the view
-    void present(View& view) const noexcept;
+    void present(Model& model, View& view, Vec<int> bounds) const noexcept;
 
     // Modify the view according to an event relative to the view
     void event_notify(SDL_Event const& event) noexcept;
 
+    // Set the event handler
     void use_handler(std::string const& str, event_func_t func) noexcept;
   private:
-    Model* model_;
-
     struct Click_Area
     {
       std::string event;

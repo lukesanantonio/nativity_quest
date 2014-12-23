@@ -6,7 +6,8 @@
 #include <numeric>
 namespace game { namespace ui
 {
-  void Presenter::present(View& view) const noexcept
+  void Presenter::present(Model& model, View& view,
+                          Vec<int> bounds) const noexcept
   {
     buttons_.clear();
 
@@ -22,9 +23,9 @@ namespace game { namespace ui
       }
     };
 
-    if(model_->layout() == Layout_Type::Vertical)
+    if(model.layout() == Layout_Type::Vertical)
     {
-      auto& elemnts = model_->elements();
+      auto& elemnts = model.elements();
 
       int top_aligned = 0, bottom_aligned = 0;
       std::tie(top_aligned, bottom_aligned) = std::accumulate(begin(elemnts),
@@ -43,6 +44,8 @@ namespace game { namespace ui
       });
 
       int top_aligned_done = 0, bottom_aligned_done = 0;
+
+      constexpr auto text_height = 34;
 
       // TODO find some sort order to make everything work, for now depend
       // on the order of the json array.
@@ -65,15 +68,15 @@ namespace game { namespace ui
           ++bottom_aligned_done;
 
           // Add top padding.
-          pos.y = view.size().y - 10;
+          pos.y = bounds.y - 10;
           // Go down 100 pixels per item.
           pos.y -= 100 * (where - 1);
         }
 
         auto text = boost::apply_visitor(Text_Visitor{}, elem.element);
-        auto text_size = view.text_size(text);
+        auto text_size = view.text_size(text, text_height);
 
-        pos.x = view.size().x / 2 - text_size.x / 2;
+        pos.x = bounds.x / 2 - text_size.x / 2;
         if(elem.element.which() == 1)
         {
           pos.y -= text_size.y;
@@ -85,7 +88,7 @@ namespace game { namespace ui
 
           buttons_.push_back({button.event, vol});
         }
-        view.label({text, pos, {0xff, 0xff, 0xff}});
+        view.label({text, text_height, pos, {0xff, 0xff, 0xff}});
 
         if(elem.element.which() == 1)
         {

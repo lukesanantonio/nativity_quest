@@ -6,27 +6,17 @@
 #include "../util/json.h"
 namespace game
 {
-  Menu_Data::Menu_Data(Graphics_Desc& g, std::string const& menu_json)
-                       : model{parse_json(menu_json)},
-                         presenter{model},
-                         view{g}
+  Menu_Data::Menu_Data(Game& game, std::string const& menu_json)
+                       : model{parse_json(menu_json)}, presenter{},
+                         view{game.font}, Game_State(game)
   {
-    presenter.present(view);
+    presenter.present(model, view, game.graphics.size());
   }
 
-  Menu_Data::Menu_Data(Menu_Data&& md) noexcept
-                       : model{std::move(md.model)},
-                         presenter{std::move(md.presenter)},
-                         view{std::move(md.view)}
+  void Menu_Data::handle_event(SDL_Event const&) noexcept {}
+  void Menu_Data::step() noexcept {}
+  void Menu_Data::render() const noexcept
   {
-    presenter.model(model);
-  }
-
-  void Menu_Data::handle_event(State& s, SDL_Event const&) noexcept {}
-  void Menu_Data::step(State& s) noexcept {}
-  void Menu_Data::render(State const& s, Graphics_Desc&,
-                         Sprite_Container&) const noexcept
-  {
-    view.render();
+    view.render(game_.graphics);
   }
 }

@@ -12,7 +12,7 @@
 #include "Sprite_Container.h"
 #include "decl/items.h"
 #include "decl/zones.h"
-#include "State.h"
+#include "Game.h"
 #include "views/menu.h"
 
 #include "util/except.h"
@@ -32,13 +32,9 @@ int main(int argc, char** argv)
 {
   try
   {
-    pong::Logger log;
-
-    game::Graphics_Desc g{"Tommy's Game", {1000, 720}, FONT_FILE, &log};
-
-    game::Sprite_Container sprites(SPRITES_JSON);
-
-    game::State state{true, {g.get_width(), g.get_height()}};
+    auto g = game::Graphics_Desc{"Tommy's Game", {1000, 720}};
+    auto font = game::Font_Renderer{FONT_FILE};
+    auto game = game::Game{std::move(g), std::move(font), true};
 #if 0
                       game::Turn_Data{ITEMS_JSON, ZONES_JSON, CHAR_JSON,
                                       ENEMIES_JSON} };
@@ -51,11 +47,11 @@ int main(int argc, char** argv)
 #endif
 
     // Our menu is going to be our top level state.
-    push_state(state, std::make_shared<game::Menu_Data>(g, MENU_JSON));
+    push_state(game, std::make_shared<game::Menu_Data>(game, MENU_JSON));
 
     pong::Timer<> timer;
 
-    while(state.running)
+    while(game.running)
     {
       // Everything updates 60 times per second (16 ms/frame).
       if(!timer.has_been(std::chrono::milliseconds(16)))
@@ -66,22 +62,22 @@ int main(int argc, char** argv)
 
       timer.reset();
 
-      auto state_ptr = state.stack.back();
+      auto state = game.states.back();
 
       SDL_Event event;
       while(SDL_PollEvent(&event))
       {
         if(event.type == SDL_QUIT)
         {
-          state.running = false;
+          game.running = false;
           continue;
         }
-        state_ptr->handle_event(state, event);
+        state->handle_event(event);
       }
 
-      state_ptr->step(state);
+      state->step();
 
-      game::render_all(state, g, sprites);
+      game::render_all(game);
 
       std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
