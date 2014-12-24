@@ -8,8 +8,7 @@
 
 #include "common/vec.h"
 #include "decl/items.h"
-
-#include "Sprite_Container.h"
+#include "decl/sprites.h"
 
 #include "Entity_Data.h"
 
@@ -20,24 +19,15 @@ namespace game
     // Position on the map.
     Vec<double> pos;
 
-    std::array<Item, 6> inventory;
+    std::array<decl::Item, 6> inventory;
 
     double view_radius = 85.0;
-    Sprite_Impl fog;
+    decl::Sprite_Impl fog;
 
     Entity_Data entity_data;
 
     double moved;
     double max_movement;
-
-    int turns_of_haste = 0;
-
-    bool done = false;
-
-    Item_Parser* item_parser;
-
-    int combat_defense = 0;
-    bool flare = false;
 
     Vec<int> spawn_pt;
   };

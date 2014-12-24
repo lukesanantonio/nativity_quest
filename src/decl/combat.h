@@ -3,8 +3,8 @@
  * All rights reserved.
  */
 #pragma once
-namespace game
+namespace game { namespace decl
 {
   struct Invalid_Power_Level {};
   short damage() noexcept;
-}
+} }

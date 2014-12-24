@@ -7,6 +7,7 @@
                                  "assets/chest2.png", "assets/chest3.png"]},
 
   { "str":       "items", "source": "assets/items.png"       },
+
   { "str":         "map", "source": "assets/map.png"         },
   { "str": "map_overlay", "source": "assets/map_overlay.png" },
   { "str":       "zones", "source": "assets/zones.png"       },

@@ -6,7 +6,7 @@
 
 #include "../common/json.h"
 #include "../common/except.h"
-namespace game
+namespace game { namespace decl
 {
     Character_Parser::Character_Parser(std::string json_file)
     {
@@ -42,4 +42,4 @@ namespace game
         info.center.y = center_json["y"].GetInt();
       }
     }
-}
+} }

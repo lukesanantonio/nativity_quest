@@ -7,7 +7,7 @@
 #include <array>
 
 #include "../common/volume.h"
-namespace game
+namespace game { namespace decl
 {
   struct Char_Info
   {
@@ -32,4 +32,4 @@ namespace game
   {
     return infos_[o];
   }
-}
+} }

@@ -4,7 +4,7 @@
  */
 #include "combat.h"
 #include <random>
-namespace game
+namespace game { namespace decl
 {
   static constexpr short damage_table[6][10] = {
     {0, 0, 1, 1, 1, 2, 3, 4, 5, 6},
@@ -30,4 +30,4 @@ namespace game
     static std::uniform_int_distribution<short> gen(1, 3);
     return gen(prng);
   }
-}
+} }

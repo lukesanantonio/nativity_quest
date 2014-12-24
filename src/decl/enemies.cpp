@@ -4,9 +4,9 @@
  */
 #include "enemies.h"
 #include "../common/json.h"
-namespace game
+namespace game { namespace decl
 {
-  Enemy_Parser::Enemy_Parser(std::string const& enemy_json)
+  Enemies::Enemies(std::string const& enemy_json)
   {
     auto doc = parse_json(enemy_json);
 
@@ -28,4 +28,4 @@ namespace game
       enemies_.push_back(Enemy{new Enemy_Impl(enemy)});
     }
   }
-}
+} }

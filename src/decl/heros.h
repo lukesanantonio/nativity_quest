@@ -8,7 +8,7 @@
 
 #include "items.h"
 
-namespace game
+namespace game { namespace decl
 {
   struct Hero
   {
@@ -34,4 +34,4 @@ namespace game
   };
 
   Hero instantiate_hero(Hero_Id) noexcept;
-}
+} }

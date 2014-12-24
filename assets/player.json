@@ -5,6 +5,13 @@
   "height": 48,
   "scale": 0.25,
 
+  "player0_item": "Wool",
+  "player1_item": "Starlight",
+  "player2_item": "Gold",
+  "player3_item": "Gemstones",
+  "player4_item": "Myrrh",
+  "player5_item": "Incense",
+
   "decl": [
     {"start": {"x": 0, "y":   0}, "center": {"x": 16, "y": 45}},
     {"start": {"x": 0, "y":  96}, "center": {"x": 14, "y": 45}},

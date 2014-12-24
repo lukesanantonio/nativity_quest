@@ -8,14 +8,14 @@
 
 #include "../common/except.h"
 #include "../common/json.h"
-namespace game
+namespace game { namespace decl
 {
   Item_Impl parse_item(rapidjson::Value const& val) noexcept
   {
     return Item_Impl{val["str"].GetString(),
                      {val["x"].GetInt(), val["y"].GetInt()}};
   }
-  Item_Parser::Item_Parser(std::string const& filename)
+  Items::Items(std::string const& filename)
   {
     auto d = parse_json(filename);
 
@@ -36,7 +36,7 @@ namespace game
       items_.push_back(std::make_shared<Item_Impl>(parse_item(*iter)));
     }
   }
-  Item Item_Parser::get_item(std::string const& str) const noexcept
+  Item Items::get_item(std::string const& str) const noexcept
   {
     using std::begin; using std::end;
     auto item_find = std::find_if(begin(items_), end(items_),
@@ -52,4 +52,4 @@ namespace game
 
     return *item_find;
   }
-}
+} }

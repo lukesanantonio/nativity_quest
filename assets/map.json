@@ -1,0 +1,86 @@
+{
+  "sprite": "map",
+  "overlay_sprite": "map_overlay",
+
+  "map_scale": 4.0,
+  "minimap_scale": 0.25,
+
+  "player0_spawn": { "x": 418, "y":  20},
+  "player1_spawn": { "x": 616, "y": 142},
+  "player2_spawn": { "x": 728, "y": 328},
+  "player3_spawn": { "x": 833, "y": 638},
+  "player4_spawn": { "x": 337, "y": 648},
+  "player5_spawn": { "x":  76, "y": 499},
+
+  "chest_sprite": "chest",
+
+  "spawns":
+  [
+    { "enemy": "soldier", "pos": { "x": 260, "y":  84 } },
+    { "enemy": "giant",   "pos": { "x": 531, "y":  13 } },
+    { "enemy": "wolf",    "pos": { "x": 688, "y":  72 } },
+    { "enemy": "creeper", "pos": { "x": 867, "y":  47 } },
+    { "enemy": "soldier", "pos": { "x": 815, "y": 208 } },
+    { "enemy": "creeper", "pos": { "x": 575, "y": 275 } },
+    { "enemy": "giant",   "pos": { "x": 785, "y": 565 } },
+    { "enemy": "soldier", "pos": { "x": 565, "y": 636 } },
+    { "enemy": "giant",   "pos": { "x": 219, "y": 542 } },
+    { "enemy": "creeper", "pos": { "x":  55, "y": 639 } },
+    { "enemy": "wolf",    "pos": { "x": 263, "y": 355 } },
+    { "enemy": "myrr",    "pos": { "x": 322, "y": 359 } },
+    { "enemy": "creeper", "pos": { "x": 359, "y": 410 } },
+    { "enemy": "wolf",    "pos": { "x": 461, "y": 351 } },
+    { "enemy": "myrr",    "pos": { "x": 274, "y": 195 } },
+
+    { "chest": "Bow",                 "pos": { "x": 148, "y":  18 } },
+    { "chest": "Potion of Strength",  "pos": { "x": 274, "y": 195 } },
+    { "chest": "Torch",               "pos": { "x": 567, "y":  26 } },
+    { "chest": "Boat",                "pos": { "x": 895, "y":  32 } },
+    { "chest": "Dagger",              "pos": { "x": 554, "y": 291 } },
+    { "chest": "Cloak of Protection", "pos": { "x": 924, "y": 492 } },
+    { "chest": "Ring of Protection",  "pos": { "x": 612, "y": 516 } },
+    { "chest": "Canteen",             "pos": { "x": 558, "y": 566 } },
+    { "chest": "Throwing Axe",        "pos": { "x": 236, "y": 518 } },
+    { "chest": "Rope",                "pos": { "x":  19, "y": 674 } },
+    { "chest": "Longsword",           "pos": { "x": 416, "y": 349 } },
+    { "chest": "Potion of Defense",   "pos": { "x": 886, "y": 200 } },
+    { "chest": "Potion of Haste",     "pos": { "x": 886, "y": 219 } },
+    { "chest": "Flare",               "pos": { "x": 113, "y": 329 } }
+  ],
+
+  "zones_sprite": "zones",
+
+  "zone_classes":
+  [
+    {
+      "str": "Water",
+      "required_item": "Boat",
+      "speed_cost": 2
+    },
+    {
+      "str": "Mountains",
+      "required_item": "Rope",
+      "speed_cost": 2
+    },
+    {
+      "str":"Win",
+      "important":true
+    }
+  ],
+
+  "zones":
+  [
+    { "str": "The Great Sea",        "class":"Water",     "color":   0 },
+    { "str": "The Arabian Desert",                        "color":  17 },
+    { "str": "Jerusalem",                                 "color":  34 },
+    { "str": "Bethlehem",            "class":"Win",       "color":  51 },
+    { "str": "Gloomy Swamp",                              "color":  68 },
+    { "str": "Desert of Despair",                         "color":  85 },
+    { "str": "Mountains of Madness", "class":"Mountains", "color": 102 },
+    { "str": "Cedars of Lebanon",                         "color": 119 },
+    { "str": "Sea of Gallilee",      "class":"Water",     "color": 136 },
+    { "str": "Jordon River",         "class":"Water",     "color": 153 },
+    { "str": "Desert Straight",                           "color": 170 },
+    { "str": "Mountain Range",       "class":"Mountains", "color": 187 }
+  ]
+}

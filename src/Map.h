@@ -9,18 +9,20 @@
 #include "common/surface.h"
 
 #include "Player.h"
+#include "Enemy_Instance.h"
+
+#include "decl/items.h"
 #include "decl/zones.h"
 #include "decl/enemies.h"
+#include "decl/sprites.h"
 namespace game
 {
-  struct Item_Parser;
-
   using player_id = short;
 
   struct Chest
   {
-    Item item;
-    bool active;
+    decl::Item item;
+    bool visible;
     Vec<int> pos;
   };
 
@@ -31,21 +33,26 @@ namespace game
    */
   struct Map
   {
-    Map(std::string const& zone_json, Item_Parser const&,
-        std::string const& enemy_json);
+    Map(decl::Sprites& sprites, std::string map_json,
+        std::string items_decl_json, std::string enemy_decl_json) noexcept;
 
-    Vec<int> extents;
+    decl::Sprites& sprites;
 
-    Zone_Parser zones;
+    decl::Items items;
+    decl::Enemies enemies_decl;
+
+    std::string map_sprite;
+    std::string map_overlay_sprite;
+    std::string chest_sprite;
+
+    std::vector<Chest> chests;
+    std::vector<Enemy_Instance> enemies;
+
     std::array<Player, 6> players;
 
     double scale; // screen pixels / map pixel
-    double mini_scale; // screen pixels / map pixel
+    double mini_scale;
 
-    std::vector<Chest> chests;
-
-    Enemy_Parser enemy_decl;
-
-    std::vector<Enemy_Instance> enemies;
+    decl::Zones zones;
   };
 }

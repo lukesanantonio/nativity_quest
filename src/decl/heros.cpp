@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 #include "heros.h"
-namespace game
+namespace game { namespace decl
 {
   struct Hero_Decl
   {
@@ -62,4 +62,4 @@ namespace game
       }
     }
   }
-}
+} }
