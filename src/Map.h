@@ -54,5 +54,13 @@ namespace game
     double mini_scale;
 
     decl::Zones zones;
+
+    inline Vec<int> size() const noexcept;
   };
+
+  inline Vec<int> Map::size() const noexcept
+  {
+    auto surf = sprites.get_sprite(map_sprite)->surface();
+    return {surf->w, surf->h};
+  }
 }
