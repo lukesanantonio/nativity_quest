@@ -7,6 +7,8 @@
 #include "vec.h"
 #include <algorithm>
 
+#include "SDL.h"
+
 namespace game
 {
   template <typename T = int>
@@ -51,6 +53,19 @@ namespace game
     vol.height = vp_height;
 
     return vol;
+  }
+
+  template <typename T>
+  SDL_Rect to_sdl_rect(Volume<T> const& vol) noexcept
+  {
+    auto rect = SDL_Rect{};
+
+    rect.x = vol.pos.x;
+    rect.y = vol.pos.y;
+    rect.w = vol.width;
+    rect.h = vol.height;
+
+    return rect;
   }
 
   template <typename T, typename P>
