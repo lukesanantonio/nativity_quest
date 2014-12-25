@@ -4,6 +4,12 @@
  */
 #include "menu.h"
 #include "../common/json.h"
+#include "navigate.h"
+
+#define NAVIGATE_SPRITES "assets/navigation_sprites.json"
+#define MAP_JSON "assets/map.json"
+#define ITEMS_JSON "assets/items.json"
+#define ENEMIES_JSON "assets/enemies.json"
 namespace game
 {
   Menu_Data::Menu_Data(Game& game, std::string const& menu_json)
@@ -11,9 +17,20 @@ namespace game
                          view{game.font}, Game_State(game)
   {
     presenter.present(model, view, game.graphics.size());
+
+    presenter.use_handler("on_start", [this](Vec<int>)
+    {
+      push_state(game_,
+                 std::make_shared<Navigate_State>(game_,
+                                                  NAVIGATE_SPRITES, MAP_JSON,
+                                                  ITEMS_JSON, ENEMIES_JSON));
+    });
   }
 
-  void Menu_Data::handle_event(SDL_Event const&) noexcept {}
+  void Menu_Data::handle_event(SDL_Event const& event) noexcept
+  {
+    presenter.event_notify(event);
+  }
   void Menu_Data::step() noexcept {}
   void Menu_Data::render() const noexcept
   {
