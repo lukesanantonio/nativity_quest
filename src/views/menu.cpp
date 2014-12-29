@@ -13,9 +13,9 @@
 #define ENEMIES_JSON "assets/enemies.json"
 namespace game
 {
-  Menu_Data::Menu_Data(Game& game, std::string const& menu_json)
-                       : model{parse_json(menu_json)}, presenter{},
-                         view{game.font}, Game_State(game)
+  Menu_State::Menu_State(Game& game, std::string const& menu_json)
+                         : model{parse_json(menu_json)}, presenter{},
+                           view{game.font}, Game_State(game)
   {
     presenter.present(model, view, game.graphics.size());
 
@@ -29,12 +29,12 @@ namespace game
     });
   }
 
-  void Menu_Data::handle_event(SDL_Event const& event) noexcept
+  void Menu_State::handle_event(SDL_Event const& event) noexcept
   {
     presenter.event_notify(event);
   }
-  void Menu_Data::step() noexcept {}
-  void Menu_Data::render() const noexcept
+  void Menu_State::step() noexcept {}
+  void Menu_State::render() const noexcept
   {
     view.render(game_.graphics);
   }

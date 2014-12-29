@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 #endif
 
     // Our menu is going to be our top level state.
-    push_state(game, std::make_shared<game::Menu_Data>(game, MENU_JSON));
+    push_state(game, std::make_shared<game::Menu_State>(game, MENU_JSON));
 
     pong::Timer<> timer;
 
