@@ -18,12 +18,14 @@ namespace game
                                    sprites(sprite_json),
                                    players(players_json),
                                    map(sprites, map_json, items_decl_json,
-                                       enemies_decl_json)
+                                       enemies_decl_json),
+                                   player(0)
   {
     for(int player_index; player_index < map.players.size(); ++player_index)
     {
       auto& player = map.players[player_index];
       player.inventory[5] = map.items.get_item(players.get_item(player_index));
+      respawn(player);
     }
   }
 

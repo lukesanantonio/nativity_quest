@@ -36,4 +36,9 @@ namespace game
 
   void reset_fog(Player&, Vec<int> extents) noexcept;
   void unfog(Player&) noexcept;
+
+  inline void respawn(Player& p) noexcept
+  {
+    p.pos = p.spawn_pt;
+  }
 }
