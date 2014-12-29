@@ -54,7 +54,7 @@ int main(int argc, char** argv)
 
     pong::Timer<> timer;
 
-    while(game.running)
+    while(game.running && game.states.size())
     {
       // Everything updates 60 times per second (16 ms/frame).
       if(!timer.has_been(std::chrono::milliseconds(16)))
@@ -74,6 +74,14 @@ int main(int argc, char** argv)
         {
           game.running = false;
           continue;
+        }
+        if(event.type == SDL_KEYDOWN)
+        {
+          if(event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+          {
+            game::pop_state(game);
+            continue;
+          }
         }
         state->handle_event(event);
       }
