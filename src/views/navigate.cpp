@@ -25,6 +25,7 @@ namespace game
     {
       auto& player = map.players[player_index];
       player.inventory[5] = map.items.get_item(players.get_item(player_index));
+      player.sprite_frame = player_index;
       respawn(player);
     }
   }
