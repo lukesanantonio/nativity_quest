@@ -17,19 +17,21 @@ namespace game
   struct Player
   {
     // Position on the map.
-    Vec<double> pos;
+    Vec<double> pos = {};
 
     std::array<decl::Item, 6> inventory;
 
     double view_radius = 85.0;
-    decl::Sprite_Impl fog;
+    decl::Sprite_Impl fog = {};
 
-    Entity_Data entity_data;
+    Entity_Data entity_data = {0, 0, 0};
 
-    double moved;
-    double max_movement;
+    double moved = 0.0;
+    double max_movement = 0.0;
 
-    Vec<int> spawn_pt;
+    Vec<int> spawn_pt = {};
+
+    short sprite_frame = 0;
   };
 
   void reset_fog(Player&, Vec<int> extents) noexcept;

@@ -7,20 +7,18 @@
 #include "../Map.h"
 #include "../common/vec.h"
 #include "../decl/sprites.h"
+#include "../decl/players.h"
 namespace game
 {
   struct Navigate_State : public Game_State
   {
     Navigate_State(Game& game, std::string sprite_json,
-                   std::string map_json,
+                   std::string players_json, std::string map_json,
                    std::string items_decl_json,
-                   std::string enemies_decl_json) noexcept
-                   : Game_State(game),
-                     sprites(sprite_json),
-                     map(sprites, map_json,
-                         items_decl_json, enemies_decl_json) {}
+                   std::string enemies_decl_json) noexcept;
 
     decl::Sprites sprites;
+    decl::Players players;
 
     Map map;
 
