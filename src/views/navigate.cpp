@@ -5,6 +5,8 @@
 #include "navigate.h"
 #include "../common/volume.h"
 
+#include "move.h"
+
 #define PI 3.14159
 
 namespace game
@@ -32,9 +34,36 @@ namespace game
     }
 
     game_.presenter.sprites(&sprites);
+
+    game_.presenter.use_handler("on_next_player",
+    [this](auto const&)
+    {
+      map.players[player].moved = 0.0;
+      if(++player == map.players.size()) player = 0;
+    });
   }
 
-  void Navigate_State::handle_event(SDL_Event const& event) noexcept {}
+  void Navigate_State::handle_event(SDL_Event const& event) noexcept
+  {
+    if(event.type == SDL_MOUSEBUTTONDOWN)
+    {
+      if(event.button.button == SDL_BUTTON_LEFT)
+      {
+        // Get the mouse in screen coordinates.
+        auto mouse = Vec<int>{event.button.x, event.button.y};
+
+        // Use the map scale and current top-left corner to calculate the
+        // map coordinates.
+        auto map_coord = (mouse / map.scale) + map_corner;
+
+        // Calculate our delta movement.
+        auto delta = map_coord - map.players[player].pos;
+
+        auto move = std::make_shared<Movement_State>(game_, *this, delta);
+        push_state(game_, move);
+      }
+    }
+  }
   void Navigate_State::step() noexcept {}
 
   void Navigate_State::on_enter() noexcept
