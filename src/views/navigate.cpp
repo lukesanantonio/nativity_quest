@@ -26,7 +26,8 @@ namespace game
                                    player(0),
                                    hud{parse_json(hud_json)}
   {
-    for(int player_index; player_index < map.players.size(); ++player_index)
+    for(int player_index = 0; player_index < map.players.size();
+        ++player_index)
     {
       auto& player = map.players[player_index];
       player.inventory[5] = map.items.get_item(players.get_item(player_index));
