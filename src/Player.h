@@ -27,7 +27,7 @@ namespace game
     Entity_Data entity_data = {0, 0, 0};
 
     double moved = 0.0;
-    double max_movement = 0.0;
+    double max_movement = 150.0;
 
     Vec<int> spawn_pt = {};
 
