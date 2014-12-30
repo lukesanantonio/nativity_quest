@@ -255,8 +255,8 @@ namespace game
       chest_dest.x *= map.scale;
       chest_dest.y *= map.scale;
 
-      chest_dest.w = chest_sprite->surface()->w * map.scale;
-      chest_dest.h = chest_sprite->surface()->h * map.scale;
+      chest_dest.w = chest_sprite->surface()->w * map.scale * .8;
+      chest_dest.h = chest_sprite->surface()->h * map.scale * .8;
       SDL_RenderCopy(game_.graphics.renderer,
                      chest_sprite->texture(game_.graphics.renderer),
                      NULL, &chest_dest);
