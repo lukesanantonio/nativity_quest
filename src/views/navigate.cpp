@@ -64,6 +64,8 @@ namespace game
                    map_sprite->texture(game_.graphics.renderer),
                    &viewport_src_rect, NULL);
 
+    map_corner = viewport_src.pos;
+
     // Render the player.
     auto player_scr_coord = (active_player.pos - viewport_src.pos) * map.scale;
 

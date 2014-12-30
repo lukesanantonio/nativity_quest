@@ -28,7 +28,7 @@ namespace game
     player_id player;
 
     // map coordinates.
-    Vec<int> map_corner;
+    mutable Vec<int> map_corner;
 
     void handle_event(SDL_Event const&) noexcept override;
     void step() noexcept override;
