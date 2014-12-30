@@ -7,48 +7,69 @@
 #include <string>
 
 #include <boost/variant.hpp>
+#include <boost/optional.hpp>
+
 #include "rapidjson/document.h"
 namespace game { namespace ui
 {
   struct Text
   {
     std::string str;
+
+    std::string col;
   };
 
   struct Button
   {
     std::string str;
     std::string event;
+
+    std::string col;
   };
 
-  using Element_Data = boost::variant<Text, Button>;
-
-  enum class Alignment_Type
+  struct Sprite
   {
-    Centered, Top, Left, Bottom, Right
+    std::string src;
+    double scale;
+
+    boost::optional<std::string> border_col;
+  };
+
+  using Element_Data = boost::variant<Text, Button, Sprite>;
+
+  enum class Horizontal_Alignment
+  {
+    Left, Center, Right
+  };
+  enum class Vertical_Alignment
+  {
+    Top, Center, Bottom
+  };
+
+  struct Padding
+  {
+    int left = 0;
+    int right = 0;
+    int top = 0;
+    int bottom = 0;
   };
 
   struct Element
   {
-    Alignment_Type alignment;
     Element_Data element;
-  };
 
-  enum class Layout_Type
-  {
-    Vertical, Horizontal
+    Padding padding;
+
+    Horizontal_Alignment h_align;
+    Vertical_Alignment v_align;
+
+    boost::optional<double> autohide;
   };
 
   struct Model
   {
     Model(rapidjson::Document const& json);
     Model() noexcept;
-
-    inline void layout(Layout_Type layout) noexcept
-    { layout_ = layout; }
-
-    inline Layout_Type layout() const noexcept
-    { return layout_; }
 
     inline std::vector<Element>& elements() noexcept
     { return elemts_; }
@@ -57,7 +78,6 @@ namespace game { namespace ui
     { return elemts_; }
 
   private:
-    Layout_Type layout_;
     std::vector<Element> elemts_;
   };
 } }

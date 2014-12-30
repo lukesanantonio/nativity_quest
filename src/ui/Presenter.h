@@ -33,7 +33,15 @@ namespace game { namespace ui
 
     // Set the event handler
     void use_handler(std::string const& str, event_func_t func) noexcept;
+
+    void sprites(decl::Sprites* sprites) noexcept
+    { sprites_ = sprites; }
+
+    decl::Sprites* sprites() const noexcept
+    { return sprites_; }
   private:
+    decl::Sprites* sprites_;
+
     struct Click_Area
     {
       std::string event;

@@ -3,78 +3,132 @@
  * All rights reserved.
  */
 #include "Model.h"
+#include "../common/json.h"
 namespace game { namespace ui
 {
-  struct Bad_Layout {};
-  template <class Doc>
-  Layout_Type parse_layout_type(Doc const& doc)
-  {
-    if(strcmp(doc.GetString(), "vertical") == 0)
-    {
-      return Layout_Type::Vertical;
-    }
-    else if(strcmp(doc.GetString(), "horizontal") == 0)
-    {
-      return Layout_Type::Horizontal;
-    }
-
-    throw Bad_Layout{};
-  }
-
   struct Bad_Element_Data {};
   template <class Doc>
   Element_Data parse_element_type(Doc const& doc)
   {
     if(strcmp(doc.GetString(), "text") == 0) { return Text{}; }
     else if(strcmp(doc.GetString(), "button") == 0) { return Button{}; }
+    else if(strcmp(doc.GetString(), "sprite") == 0) { return Sprite{}; }
 
     throw Bad_Element_Data{};
   }
 
   struct Bad_Alignment_Type {};
   template <class Doc>
-  Alignment_Type parse_alignment_type(Doc const& doc)
+  auto parse_alignment(Doc const& doc) -> decltype(auto)
   {
-    if(strcmp(doc.GetString(), "center") == 0)
-    { return Alignment_Type::Centered; }
-    else if(strcmp(doc.GetString(), "top") == 0)
-    { return Alignment_Type::Top; }
-    else if(strcmp(doc.GetString(), "left") == 0)
-    { return Alignment_Type::Left; }
-    else if(strcmp(doc.GetString(), "bottom") == 0)
-    { return Alignment_Type::Bottom; }
-    else if(strcmp(doc.GetString(), "right") == 0)
-    { return Alignment_Type::Right; }
+    auto hor_string = doc["horizontal"].GetString();
+    auto vert_string = doc["vertical"].GetString();
 
-    throw Bad_Alignment_Type {};
+    auto ret_tup = std::tuple<Horizontal_Alignment, Vertical_Alignment>{};
+
+    if(strcmp(hor_string, "left") == 0)
+    { std::get<0>(ret_tup) = Horizontal_Alignment::Left; }
+    if(strcmp(hor_string, "center") == 0)
+    { std::get<0>(ret_tup) = Horizontal_Alignment::Center; }
+    if(strcmp(hor_string, "right") == 0)
+    { std::get<0>(ret_tup) = Horizontal_Alignment::Right; }
+
+    if(strcmp(vert_string, "top") == 0)
+    { std::get<1>(ret_tup) = Vertical_Alignment::Top; }
+    if(strcmp(vert_string, "center") == 0)
+    { std::get<1>(ret_tup) = Vertical_Alignment::Center; }
+    if(strcmp(vert_string, "bottom") == 0)
+    { std::get<1>(ret_tup) = Vertical_Alignment::Bottom; }
+
+    return ret_tup;
   }
 
   template <class Doc>
   Element_Data parse_text(Doc const& doc)
   {
-    return Text{doc["text"].GetString()};
+    auto text = Text{doc["text"].GetString(), "white"};
+    if_has_member(doc, "color",
+    [&text](auto const& elem)
+    {
+      text.col = elem.GetString();
+    });
+    return text;
   }
   template <class Doc>
   Element_Data parse_button(Doc const& doc)
   {
-    return Button{doc["text"].GetString(), doc["event"].GetString()};
+    auto but = Button{doc["text"].GetString(), doc["event"].GetString(),
+                      "white"};
+    if_has_member(doc, "color",
+    [&but](auto const& elem)
+    {
+      but.col = elem.GetString();
+    });
+    return but;
+  }
+
+  template <class Doc>
+  Element_Data parse_sprite(Doc const& doc)
+  {
+    auto sprite = Sprite{doc["src"].GetString(), doc["scale"].GetDouble()};
+    if_has_member(doc, "border",
+    [&sprite](auto const& elem)
+    {
+      sprite.border_col = elem.GetString();
+    });
+    return sprite;
   }
 
   Model::Model(rapidjson::Document const& json)
   {
-    layout_ = parse_layout_type(json["layout"]);
-
-    auto const& data = json["data"];
-    for(auto iter = data.Begin(); iter != data.End(); ++iter)
+    for(auto iter = json.Begin(); iter != json.End(); ++iter)
     {
-      auto align = parse_alignment_type((*iter)["aligned"]);
-      auto elem = Element{align, parse_element_type((*iter)["type"])};
+      // Parse element specific data.
+      auto e = Element{parse_element_type((*iter)["type"])};
 
-      if(elem.element.which() == 0) elem.element = parse_text(*iter);
-      else elem.element = parse_button(*iter);
+      // Parse alignment
+      std::tie(e.h_align, e.v_align) = parse_alignment((*iter)["alignment"]);
 
-      elemts_.push_back(elem);
+      // Parse (optional) padding.
+      if_has_member(*iter, "padding",
+      [&](auto const& val)
+      {
+        if_has_member(val, "left",
+        [&](auto const& num)
+        {
+          e.padding.left = num.GetInt();
+        });
+        if_has_member(val, "right",
+        [&](auto const& num)
+        {
+          e.padding.right = num.GetInt();
+        });
+        if_has_member(val, "top",
+        [&](auto const& num)
+        {
+          e.padding.top = num.GetInt();
+        });
+        if_has_member(val, "bottom",
+        [&](auto const& num)
+        {
+          e.padding.bottom = num.GetInt();
+        });
+      });
+
+
+      if(e.element.which() == 0) e.element = parse_text(*iter);
+      else if(e.element.which() == 1) e.element = parse_button(*iter);
+      else e.element = parse_sprite(*iter);
+
+      // Parse autohide parameter (if provided).
+      if_has_member(*iter, "autohide",
+      [&](auto const& val)
+      {
+        e.autohide = val.GetDouble();
+      });
+
+      elemts_.push_back(e);
     }
   }
-  Model::Model() noexcept : layout_(Layout_Type::Vertical) {}
+  Model::Model() noexcept {}
 } }

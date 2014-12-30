@@ -13,6 +13,8 @@
 
 #include "../game/Graphics_Desc.h"
 #include "../game/Font_Renderer.h"
+
+#include "../decl/sprites.h"
 namespace game { namespace ui
 {
   struct Label
@@ -44,12 +46,21 @@ namespace game { namespace ui
     Color color;
   };
 
+  struct Image
+  {
+    decl::Sprite sprite;
+
+    Volume<int> src;
+    Volume<int> dst;
+  };
+
   struct View
   {
     View(Font_Renderer& font) noexcept : font_(&font) {}
 
     void label(Label const& label) noexcept;
     void box(Box const& box) noexcept;
+    void image(Image const& image) noexcept;
 
     inline void font_renderer(Font_Renderer& font) noexcept
     { font_ = &font; }
@@ -68,5 +79,6 @@ namespace game { namespace ui
 
     std::vector<Label> label_cache_;
     std::vector<Box> box_cache_;
+    std::vector<Image> image_cache_;
   };
 } }

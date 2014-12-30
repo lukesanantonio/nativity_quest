@@ -32,6 +32,11 @@ namespace game { namespace ui
   {
     box_cache_.push_back(box);
   }
+  void View::image(Image const& image) noexcept
+  {
+    image_cache_.push_back(image);
+  }
+
   Vec<int> View::text_size(std::string str, int size) const noexcept
   {
     using std::begin; using std::end;
@@ -70,6 +75,7 @@ namespace game { namespace ui
     // Clear all of the things we were going to draw.
     label_cache_.clear();
     box_cache_.clear();
+    image_cache_.clear();
   }
   void View::render(Graphics_Desc& g) const noexcept
   {
@@ -105,6 +111,22 @@ namespace game { namespace ui
       rect.h = box.vol.height;
 
       SDL_RenderDrawRect(g.renderer, &rect);
+    }
+    for(auto const& image : image_cache_)
+    {
+      SDL_Rect src;
+      src.x = image.src.pos.x;
+      src.y = image.src.pos.y;
+      src.w = image.src.width;
+      src.h = image.src.height;
+      SDL_Rect dst;
+      dst.x = image.dst.pos.x;
+      dst.y = image.dst.pos.y;
+      dst.w = image.dst.width;
+      dst.h = image.dst.height;
+
+      SDL_RenderCopy(g.renderer, image.sprite->texture(g.renderer),
+                     &src, &dst);
     }
   }
 
