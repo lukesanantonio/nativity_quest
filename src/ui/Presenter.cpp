@@ -36,14 +36,11 @@ namespace game { namespace ui
 
   Color get_color_from_str(std::string col) noexcept
   {
-    if(col == "white")
-    {
-      return {0xff, 0xff, 0xff};
-    }
-    else if(col == "black")
+    if(col == "black")
     {
       return {0x00, 0x00, 0x00};
     }
+    return {0xff, 0xff, 0xff};
   }
 
   void Presenter::present(Model& model, View& view,
