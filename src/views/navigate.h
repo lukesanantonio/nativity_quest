@@ -15,10 +15,13 @@ namespace game
     Navigate_State(Game& game, std::string sprite_json,
                    std::string players_json, std::string map_json,
                    std::string items_decl_json,
-                   std::string enemies_decl_json) noexcept;
+                   std::string enemies_decl_json,
+                   std::string hud_json) noexcept;
 
     decl::Sprites sprites;
     decl::Players players;
+
+    ui::Model hud;
 
     Map map;
 

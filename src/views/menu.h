@@ -11,8 +11,6 @@
 #include "SDL.h"
 
 #include "../ui/Model.h"
-#include "../ui/Presenter.h"
-#include "../ui/View.h"
 
 namespace game
 {
@@ -21,8 +19,6 @@ namespace game
     Menu_State(Game& game, std::string const& menu_json);
 
     ui::Model model;
-    ui::Presenter presenter;
-    ui::View view;
 
     void handle_event(SDL_Event const&) noexcept override;
     void step() noexcept override;

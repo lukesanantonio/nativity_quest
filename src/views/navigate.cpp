@@ -13,13 +13,15 @@ namespace game
                                  std::string players_json,
                                  std::string map_json,
                                  std::string items_decl_json,
-                                 std::string enemies_decl_json) noexcept
+                                 std::string enemies_decl_json,
+                                 std::string hud_json) noexcept
                                  : Game_State(game),
                                    sprites(sprite_json),
                                    players(players_json),
                                    map(sprites, map_json, items_decl_json,
                                        enemies_decl_json),
-                                   player(0)
+                                   player(0),
+                                   hud{parse_json(hud_json)}
   {
     for(int player_index; player_index < map.players.size(); ++player_index)
     {
@@ -28,13 +30,18 @@ namespace game
       player.sprite_frame = player_index;
       respawn(player);
     }
+
+    game_.presenter.sprites(&sprites);
   }
 
-  void Navigate_State::handle_event(SDL_Event const&) noexcept
+  void Navigate_State::handle_event(SDL_Event const& event) noexcept
   {
+    game_.presenter.event_notify(event);
   }
   void Navigate_State::step() noexcept
   {
+    game_.view.reset();
+    game_.presenter.present(hud, game_.view, game_.graphics.size());
   }
   void Navigate_State::render() const noexcept
   {
@@ -125,5 +132,7 @@ namespace game
                      char_sprite->texture(game_.graphics.renderer),
                      &char_src, &char_dest,
                      angle / PI * 180, &char_center, SDL_FLIP_NONE);
+
+    game_.view.render(game_.graphics);
   }
 }

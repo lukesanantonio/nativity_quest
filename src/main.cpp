@@ -37,7 +37,7 @@ int main(int argc, char** argv)
   {
     auto g = game::Graphics_Desc{"Tommy's Game", {1000, 720}};
     auto font = game::Font_Renderer{FONT_FILE};
-    auto game = game::Game{std::move(g), std::move(font), true};
+    auto game = game::Game{std::move(g), std::move(font)};
 #if 0
                       game::Turn_Data{ITEMS_JSON, ZONES_JSON, CHAR_JSON,
                                       ENEMIES_JSON} };

@@ -1,0 +1,20 @@
+[
+  {
+    "type": "sprite",
+    "src": "map",
+    "scale": 0.2,
+    "alignment": { "vertical": "top", "horizontal": "left" },
+    "padding": { "top": 5, "left": 5 },
+    "autohide": 0.0,
+    "border": "black"
+  },
+  {
+    "type": "button",
+    "text": "Next Player",
+    "event": "on_next_player",
+    "alignment": { "vertical": "bottom", "horizontal": "right" },
+    "padding": { "right": 10, "bottom": 10 },
+    "autohide": 0.75,
+    "color": "black"
+  }
+]
