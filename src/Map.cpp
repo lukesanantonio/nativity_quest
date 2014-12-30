@@ -56,5 +56,11 @@ namespace game
 
     zones.sprite(sprites.get_sprite(map["zones_sprite"].GetString()));
     zones.initialize_zones(items, map["zone_classes"], map["zones"]);
+
+    for(auto& player : players)
+    {
+      player.entity_data.max_life = 25;
+      reset_life(player.entity_data);
+    }
   }
 }
