@@ -6,6 +6,7 @@
 #include "../common/volume.h"
 
 #include "move.h"
+#include "uncrate.h"
 
 #define PI 3.14159
 
@@ -64,8 +65,71 @@ namespace game
       }
     }
   }
-  void Navigate_State::step() noexcept {}
+  void Navigate_State::step() noexcept
+  {
+    auto& active_player = map.players[player];
 
+    using std::begin; using std::end;
+
+    // Remove any dead enemies.
+    {
+      auto new_end = std::remove_if(begin(map.enemies), end(map.enemies),
+      [](auto const& enemy)
+      {
+        return enemy.entity_data.cur_life == 0;
+      });
+
+      map.enemies.erase(new_end, end(map.enemies));
+    }
+
+    // Respawn ourselves if necessary.
+    if(active_player.entity_data.cur_life == 0)
+    {
+      active_player.pos = active_player.spawn_pt;
+      reset_life(active_player.entity_data);
+      // Switch player
+    }
+
+    // Check for any enemies in our view
+    {
+      auto enemy_find = std::find_if(begin(map.enemies), end(map.enemies),
+      [&active_player](auto const& enemy)
+      {
+        if(enemy.not_fighting) return false;
+
+        // Check if they are a reasonable distance.
+        auto len = length(active_player.pos - Vec<double>{enemy.pos});
+        return len < active_player.view_radius;
+      });
+
+      if(enemy_find != end(map.enemies))
+      {
+        // Go into combat.
+      }
+    }
+
+    // If we cleared the area of enemies, check for chests.
+    {
+      auto chest_find = std::find_if(begin(map.chests), end(map.chests),
+      [&active_player](auto const& chest)
+      {
+        // If the chest isn't visible, don't allow it to be opened/found.
+        if(!chest.visible) return false;
+
+        // Check if it's a suitable distance.
+        auto len = length(active_player.pos - Vec<double>{chest.pos});
+        return len < active_player.view_radius;
+      });
+
+      if(chest_find != end(map.chests))
+      {
+        push_state(game_,
+                   std::make_shared<Uncrate_State>(game_, *this, *chest_find));
+      }
+    }
+
+    // Can it be? Have we reached Bethlehem?
+  }
   void Navigate_State::on_enter() noexcept
   {
     game_.view.reset();
