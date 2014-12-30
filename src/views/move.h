@@ -15,7 +15,7 @@ namespace game
                    : Game_State(game), ns(ns), delta(delta) {}
 
     Navigate_State& ns;
-    Vec<int> delta;
+    Vec<double> delta;
 
     inline void handle_event(SDL_Event const&) noexcept override {}
     void step() noexcept override;
