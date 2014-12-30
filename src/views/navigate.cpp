@@ -234,6 +234,71 @@ namespace game
                      &char_src, &char_dest,
                      angle / PI * 180, &char_center, SDL_FLIP_NONE);
 
+    // Render any chests.
+    auto chest_sprite = sprites.get_sprite(map.chest_sprite);
+
+    for(auto const& chest : map.chests)
+    {
+      // Only render active chests, others have been opened and shouldn't be
+      // shown, TODO make an opened chest sprite.
+      if(!chest.visible) continue;
+
+      auto chest_extent =
+              Vec<int>{chest_sprite->surface()->w, chest_sprite->surface()->h};
+
+      SDL_Rect chest_dest;
+      chest_dest.x = chest.pos.x - viewport_src.pos.x - chest_extent.x / 2;
+      chest_dest.y = chest.pos.y - viewport_src.pos.y - chest_extent.y / 2;
+
+      // Scale to the viewport
+      chest_dest.x *= map.scale;
+      chest_dest.y *= map.scale;
+
+      chest_dest.w = chest_sprite->surface()->w * map.scale;
+      chest_dest.h = chest_sprite->surface()->h * map.scale;
+      SDL_RenderCopy(game_.graphics.renderer,
+                     chest_sprite->texture(game_.graphics.renderer),
+                     NULL, &chest_dest);
+    }
+
+    for(auto const& enemy : map.enemies)
+    {
+      auto enemy_extents = Vec<int>{15, 15};
+
+      // Render fighting enemies red and non-fighting enemies yellow.
+      SDL_Rect enemy_dest;
+      enemy_dest.x = enemy.pos.x - viewport_src.pos.x - enemy_extents.x / 2;
+      enemy_dest.y = enemy.pos.y - viewport_src.pos.y - enemy_extents.y / 2;
+
+      // Scale to the viewport
+      enemy_dest.x *= map.scale;
+      enemy_dest.y *= map.scale;
+
+      enemy_dest.w = enemy_extents.x;
+      enemy_dest.h = enemy_extents.y;
+
+      if(enemy.not_fighting == 0)
+      {
+        SDL_SetRenderDrawColor(game_.graphics.renderer,
+                               0xff, 0x00, 0x00, 0xff);
+      }
+      else
+      {
+        SDL_SetRenderDrawColor(game_.graphics.renderer,
+                               0xff, 0xff, 0x00, 0xff);
+      }
+
+      SDL_RenderFillRect(game_.graphics.renderer, &enemy_dest);
+
+      --enemy_dest.x;
+      --enemy_dest.y;
+      enemy_dest.w += 2;
+      enemy_dest.h += 2;
+
+      SDL_SetRenderDrawColor(game_.graphics.renderer, 0x00, 0x00, 0x00, 0xff);
+      SDL_RenderDrawRect(game_.graphics.renderer, &enemy_dest);
+    }
+
     game_.view.render(game_.graphics);
   }
 }
