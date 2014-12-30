@@ -83,8 +83,10 @@ int main(int argc, char** argv)
             continue;
           }
         }
-        game.presenter.event_notify(event);
-        state->handle_event(event);
+        if(!game.presenter.event_notify(event))
+        {
+          state->handle_event(event);
+        }
       }
 
       state->step();

@@ -138,10 +138,12 @@ namespace game { namespace ui
     }
   }
 
-  void Presenter::event_notify(SDL_Event const& event) noexcept
+  bool Presenter::event_notify(SDL_Event const& event) noexcept
   {
-    if(event.type != SDL_MOUSEBUTTONDOWN) return;
+    if(!handle_events_) return false;
+    if(event.type != SDL_MOUSEBUTTONDOWN) return false;
 
+    bool ret = false;
     for(auto const& area : buttons_)
     {
       auto pt = Vec<int>{event.button.x, event.button.y};
@@ -157,9 +159,11 @@ namespace game { namespace ui
         if(handler_find != end(events_))
         {
           handler_find->handler(pt);
+          ret = true;
         }
       }
     }
+    return ret;
   }
 
   void Presenter::use_handler(std::string const& event_str,

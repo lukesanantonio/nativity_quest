@@ -41,8 +41,13 @@ namespace game
   {
     game_.view.reset();
     game_.presenter.present(hud, game_.view, game_.graphics.size());
+
+    game_.presenter.handle_events(true);
   }
-  void Navigate_State::on_exit() noexcept {}
+  void Navigate_State::on_exit() noexcept
+  {
+    game_.presenter.handle_events(false);
+  }
 
   void Navigate_State::render() const noexcept
   {

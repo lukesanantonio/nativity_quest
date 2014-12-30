@@ -29,7 +29,7 @@ namespace game { namespace ui
     void present(Model& model, View& view, Vec<int> bounds) const noexcept;
 
     // Modify the view according to an event relative to the view
-    void event_notify(SDL_Event const& event) noexcept;
+    bool event_notify(SDL_Event const& event) noexcept;
 
     // Set the event handler
     void use_handler(std::string const& str, event_func_t func) noexcept;
@@ -39,7 +39,12 @@ namespace game { namespace ui
 
     decl::Sprites* sprites() const noexcept
     { return sprites_; }
+
+    inline void handle_events(bool on) noexcept { handle_events_ = on; }
+    inline bool handle_events() const noexcept { return handle_events_; }
   private:
+    bool handle_events_ = true;
+
     decl::Sprites* sprites_;
 
     struct Click_Area

@@ -40,6 +40,11 @@ namespace game
   {
     game_.view.reset();
     game_.presenter.present(model, game_.view, game_.graphics.size());
+
+    game_.presenter.handle_events(true);
   }
-  void Menu_State::on_exit() noexcept {}
+  void Menu_State::on_exit() noexcept
+  {
+    game_.presenter.handle_events(false);
+  }
 }
