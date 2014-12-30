@@ -34,15 +34,16 @@ namespace game
     game_.presenter.sprites(&sprites);
   }
 
-  void Navigate_State::handle_event(SDL_Event const& event) noexcept
-  {
-    game_.presenter.event_notify(event);
-  }
-  void Navigate_State::step() noexcept
+  void Navigate_State::handle_event(SDL_Event const& event) noexcept {}
+  void Navigate_State::step() noexcept {}
+
+  void Navigate_State::on_enter() noexcept
   {
     game_.view.reset();
     game_.presenter.present(hud, game_.view, game_.graphics.size());
   }
+  void Navigate_State::on_exit() noexcept {}
+
   void Navigate_State::render() const noexcept
   {
     auto& active_player = map.players[player];

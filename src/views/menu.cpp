@@ -29,17 +29,17 @@ namespace game
     });
   }
 
-  void Menu_State::handle_event(SDL_Event const& event) noexcept
-  {
-    game_.presenter.event_notify(event);
-  }
-  void Menu_State::step() noexcept
-  {
-    game_.view.reset();
-    game_.presenter.present(model, game_.view, game_.graphics.size());
-  }
+  void Menu_State::handle_event(SDL_Event const& event) noexcept {}
+  void Menu_State::step() noexcept {}
   void Menu_State::render() const noexcept
   {
     game_.view.render(game_.graphics);
   }
+
+  void Menu_State::on_enter() noexcept
+  {
+    game_.view.reset();
+    game_.presenter.present(model, game_.view, game_.graphics.size());
+  }
+  void Menu_State::on_exit() noexcept {}
 }

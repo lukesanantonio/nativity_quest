@@ -43,6 +43,9 @@ namespace game
     virtual void step() noexcept = 0;
     virtual void render() const noexcept = 0;
 
+    virtual void on_enter() noexcept = 0;
+    virtual void on_exit() noexcept = 0;
+
     virtual bool is_toplevel() const noexcept = 0;
 
   protected:
@@ -56,16 +59,22 @@ namespace game
 
   inline void push_state(Game& g, std::shared_ptr<Game_State> gs) noexcept
   {
+    if(g.states.size()) g.states.back()->on_exit();
+
+    gs->on_enter();
     g.states.push_back(gs);
+  }
+  inline void pop_state(Game& g) noexcept
+  {
+    g.states.back()->on_exit();
+    g.states.pop_back();
+
+    if(g.states.size()) g.states.back()->on_enter();
   }
   inline void replace_state(Game& g, std::shared_ptr<Game_State> gs) noexcept
   {
-    g.states.pop_back();
-    g.states.push_back(gs);
-  }
-  inline void pop_state(Game& game) noexcept
-  {
-    game.states.pop_back();
+    pop_state(g);
+    push_state(g, gs);
   }
 
   void render_all(Game const& game) noexcept;
