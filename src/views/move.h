@@ -12,7 +12,7 @@ namespace game
   {
     Movement_State(Game& game, Navigate_State& ns,
                    Vec<int> delta) noexcept
-                   : Game_State(game), ns(ns), delta(delta) {}
+                   : Game_State(game, false), ns(ns), delta(delta) {}
 
     Navigate_State& ns;
     Vec<double> delta;
@@ -23,7 +23,5 @@ namespace game
 
     inline void on_enter() noexcept override {}
     inline void on_exit() noexcept override {}
-
-    inline bool is_toplevel() const noexcept override { return false; }
   };
 }

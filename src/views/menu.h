@@ -26,8 +26,6 @@ namespace game
 
     void on_enter() noexcept override;
     void on_exit() noexcept override;
-
-    inline bool is_toplevel() const noexcept override { return true; }
   };
 }
 

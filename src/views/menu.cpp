@@ -16,7 +16,7 @@
 namespace game
 {
   Menu_State::Menu_State(Game& game, std::string const& menu_json)
-                         : model{parse_json(menu_json)}, Game_State(game)
+                         : model{parse_json(menu_json)}, Game_State(game, true)
   {
     game.presenter.use_handler("on_start", [this](Vec<int>)
     {

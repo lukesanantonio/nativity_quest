@@ -36,7 +36,8 @@ namespace game
 
   struct Game_State
   {
-    Game_State(Game& game) noexcept : game_(game) {}
+    Game_State(Game& game, bool toplevel) noexcept
+               : game_(game), is_toplevel_(toplevel) {}
     virtual ~Game_State() noexcept {}
 
     virtual void handle_event(SDL_Event const&) noexcept = 0;
@@ -46,10 +47,12 @@ namespace game
     virtual void on_enter() noexcept = 0;
     virtual void on_exit() noexcept = 0;
 
-    virtual bool is_toplevel() const noexcept = 0;
+    inline bool is_toplevel() const noexcept { return is_toplevel_; }
 
   protected:
     Game& game_;
+  private:
+    bool is_toplevel_;
   };
 
   enum class View

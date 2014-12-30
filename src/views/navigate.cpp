@@ -17,7 +17,7 @@ namespace game
                                  std::string items_decl_json,
                                  std::string enemies_decl_json,
                                  std::string hud_json) noexcept
-                                 : Game_State(game),
+                                 : Game_State(game, true),
                                    sprites(sprite_json),
                                    players(players_json),
                                    map(sprites, map_json, items_decl_json,
