@@ -36,6 +36,13 @@ namespace game
 
     void on_enter() noexcept override;
     void on_exit() noexcept override;
+  };
 
+  struct Navigate_Sub_State : public Game_State
+  {
+    Navigate_Sub_State(Game& g, Navigate_State& ns) noexcept
+                       : Game_State(g, false), navigate(ns) {}
+
+    Navigate_State& navigate;
   };
 }

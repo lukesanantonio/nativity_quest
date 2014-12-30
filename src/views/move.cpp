@@ -3,14 +3,13 @@
  * All rights reserved.
  */
 #include "move.h"
-#include "navigate.h"
 namespace game
 {
   void Movement_State::step() noexcept
   {
     // Player movement!
 
-    auto& player = ns.map.players[ns.player];
+    auto& player = navigate.map.players[navigate.player];
 
     // Find out the distance we have yet to travel.
     auto delta_len = length(delta);

@@ -4,17 +4,14 @@
  */
 #pragma once
 #include "../game/Game.h"
+#include "navigate.h"
 namespace game
 {
-  struct Navigate_State;
-
-  struct Movement_State : public Game_State
+  struct Movement_State : public Navigate_Sub_State
   {
-    Movement_State(Game& game, Navigate_State& ns,
-                   Vec<int> delta) noexcept
-                   : Game_State(game, false), ns(ns), delta(delta) {}
+    Movement_State(Game& game, Navigate_State& ns, Vec<int> delta) noexcept
+                   : Navigate_Sub_State(game, ns), delta(delta) {}
 
-    Navigate_State& ns;
     Vec<double> delta;
 
     inline void handle_event(SDL_Event const&) noexcept override {}
