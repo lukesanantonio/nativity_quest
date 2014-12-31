@@ -47,6 +47,7 @@ namespace game { namespace ui
                           Vec<int> bounds) const noexcept
   {
     buttons_.clear();
+    labels_.clear();
 
     constexpr auto text_height = 34;
 
@@ -95,12 +96,27 @@ namespace game { namespace ui
         int i = 0;
         for(int str_i = 0; str_i < label_view.labels.size(); ++str_i)
         {
-          auto pos = Vec<int>{cur_pos.x - (extents_vec[str_i].x / 2),
-                              cur_pos.y};
+          auto cell_vol = Volume<int>{{cur_pos.x - cell_width / 2, cur_pos.y},
+                                      (int)cell_width,
+                                      height / label_view.rows};
 
-          // Render the actual text.
+          // Render the actual text, centered in the cell.
+          auto pos = Vec<int>{cell_vol.pos.x + (cell_width / 2) -
+                              (extents_vec[str_i].x / 2),
+                              cell_vol.pos.y + (cell_vol.height / 2) -
+                              (extents_vec[str_i].y / 2)};
           view.label({label_view.labels[str_i], text_height,
                       pos, {0xff, 0xff, 0xff}});
+
+          labels_.push_back({label_view, str_i,
+                             {{cur_pos.x - cell_width / 2, cur_pos.y},
+                              (int)cell_width, vol.height / label_view.rows}});
+
+          // Render the marker if this item is selected.
+          if(label_view.selected == str_i)
+          {
+            view.box({cell_vol, {0xff, 0xff, 0xff}});
+          }
 
           cur_pos.x += cell_width;
 
@@ -220,24 +236,48 @@ namespace game { namespace ui
   bool Presenter::event_notify(SDL_Event const& event) noexcept
   {
     if(!handle_events_) return false;
-    if(event.type != SDL_MOUSEBUTTONDOWN) return false;
 
     bool ret = false;
-    for(auto const& area : buttons_)
+    if(event.type == SDL_MOUSEBUTTONDOWN)
     {
-      auto pt = Vec<int>{event.button.x, event.button.y};
-      if(is_in(area.vol, pt))
+      for(auto const& area : buttons_)
       {
-        using std::begin; using std::end;
-        auto handler_find = std::find_if(begin(events_), end(events_),
-        [&area](auto const& handler)
+        auto pt = Vec<int>{event.button.x, event.button.y};
+        if(is_in(area.vol, pt))
         {
-          return handler.event == area.event;
-        });
+          using std::begin; using std::end;
+          auto handler_find = std::find_if(begin(events_), end(events_),
+          [&area](auto const& handler)
+          {
+            return handler.event == area.event;
+          });
 
-        if(handler_find != end(events_))
+          if(handler_find != end(events_))
+          {
+            handler_find->handler(pt);
+            ret = true;
+          }
+        }
+      }
+      for(auto const& area : labels_)
+      {
+        auto pt = Vec<int>{event.motion.x, event.motion.y};
+        if(is_in(area.vol, pt) && !area.lv.done)
         {
-          handler_find->handler(pt);
+          area.lv.selected = area.index;
+          area.lv.done = true;
+          ret = true;
+        }
+      }
+    }
+    else if(event.type == SDL_MOUSEMOTION)
+    {
+      for(auto const& area : labels_)
+      {
+        auto pt = Vec<int>{event.motion.x, event.motion.y};
+        if(is_in(area.vol, pt) && !area.lv.done)
+        {
+          area.lv.selected = area.index;
           ret = true;
         }
       }

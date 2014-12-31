@@ -62,5 +62,14 @@ namespace game { namespace ui
     };
 
     std::vector<Event_Handler> events_;
+
+    struct Label_View_Area
+    {
+      Label_View& lv;
+      int index;
+      Volume<int> vol;
+    };
+
+    mutable std::vector<Label_View_Area> labels_;
   };
 } }
