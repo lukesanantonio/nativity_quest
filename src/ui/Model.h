@@ -35,7 +35,16 @@ namespace game { namespace ui
     boost::optional<std::string> border_col;
   };
 
-  using Element_Data = boost::variant<Text, Button, Sprite>;
+  struct Label_View
+  {
+    int rows = 2;
+    int selected = 0;
+    bool done = false;
+
+    std::vector<std::string> labels = {};
+  };
+
+  using Element_Data = boost::variant<Text, Button, Sprite, Label_View>;
 
   enum class Horizontal_Alignment
   {

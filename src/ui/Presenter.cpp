@@ -50,93 +50,157 @@ namespace game { namespace ui
 
     constexpr auto text_height = 34;
 
+    // Go through each 'side' element first.
     for(auto& elem : model.elements)
     {
-      if(elem.align.which() == 0)
+      if(elem.align.which() != 1) continue;
+
+      auto side = boost::get<Side>(elem.align);
+
+      // Only Label_View elements support 'side' layout.
+      if(elem.element.which() != 3) continue;
+
+      auto& label_view = boost::get<Label_View>(elem.element);
+      // And it only supports bottom.
+      if(side == Side::Bottom)
       {
-        auto& align = boost::get<Alignment>(elem.align);
-        auto h_align = align.horizontal;
-        auto v_align = align.vertical;
-
-        auto pos = Vec<int>{};
-        if(h_align == Horizontal_Alignment::Center) pos.x = bounds.x / 2;
-        else if(h_align == Horizontal_Alignment::Right) pos.x = bounds.x;
-
-        if(v_align == Vertical_Alignment::Center) pos.y = bounds.y / 2;
-        else if(v_align == Vertical_Alignment::Bottom) pos.y = bounds.y;
-
-        if(h_align == Horizontal_Alignment::Left)
-        { pos.x += elem.padding.left; }
-        else if(h_align == Horizontal_Alignment::Right)
-        { pos.x -= elem.padding.right; }
-
-        if(v_align == Vertical_Alignment::Top)
-        { pos.y += elem.padding.top; }
-        else if(v_align == Vertical_Alignment::Bottom)
-        { pos.y -= elem.padding.bottom; }
-
-        if(elem.element.which() == 0 || elem.element.which() == 1)
+        // Find the height.
+        auto extents_vec = std::vector<Vec<int> >{};
+        for(auto str : label_view.labels)
         {
-          auto text = boost::apply_visitor(Text_Visitor{}, elem.element);
-          auto text_size = view.text_size(text, text_height);
+          extents_vec.push_back(view.text_size(str, text_height));
+        }
 
-          auto vol = Volume<int>{{pos.x - 1, pos.y - 1},
-                                 text_size.x + 2, text_size.y + 2};
+        using std::begin; using std::end;
+        auto max_vec = std::max_element(begin(extents_vec), end(extents_vec),
+        [](auto const& v1, auto const& v2)
+        {
+          return v1.y < v2.y;
+        });
 
-          align_vol(vol, h_align, v_align);
+        auto height = max_vec->y * label_view.rows;
+        bounds.y -= height;
 
-          if(elem.element.which() == 1)
+        auto max_per_row = label_view.labels.size() / label_view.rows +
+                           label_view.labels.size() % label_view.rows;
+
+        auto vol = Volume<int>{{0, bounds.y}, bounds.x, height};
+        auto cell_width = vol.width / max_per_row;
+        auto start = Vec<int>{cell_width / 2, bounds.y};
+        auto cur_pos = start;
+
+        // Render the background.
+        view.box({vol, {0xff, 0xff, 0xff}});
+
+        int i = 0;
+        for(int str_i = 0; str_i < label_view.labels.size(); ++str_i)
+        {
+          auto pos = Vec<int>{cur_pos.x - (extents_vec[str_i].x / 2),
+                              cur_pos.y};
+
+          // Render the actual text.
+          view.label({label_view.labels[str_i], text_height,
+                      pos, {0xff, 0xff, 0xff}});
+
+          cur_pos.x += cell_width;
+
+          if(i == label_view.labels.size() / label_view.rows - 1)
           {
-            auto button = boost::get<Button>(elem.element);
-
-            view.box({vol, get_color_from_str(button.col)});
-            buttons_.push_back({button.event, vol});
+            cur_pos.y += vol.height / label_view.rows;
+            cur_pos.x = start.x;
           }
 
-          ++vol.pos.x;
-          ++vol.pos.y;
+          ++i;
+        }
+      }
+    }
 
-          Color text_color;
+    // Now go through each non-side element.
+    for(auto& elem : model.elements)
+    {
+      if(elem.align.which() != 0) continue;
+      auto& align = boost::get<Alignment>(elem.align);
+      auto h_align = align.horizontal;
+      auto v_align = align.vertical;
 
-          if(elem.element.which() == 0)
-          {
-            auto text = boost::get<Text>(elem.element);
-            text_color = get_color_from_str(text.col);
-          }
-          else
-          {
-            auto button = boost::get<Button>(elem.element);
-            text_color = get_color_from_str(button.col);
-          }
-          view.label({text, text_height, vol.pos, text_color});
+      auto pos = Vec<int>{};
+      if(h_align == Horizontal_Alignment::Center) pos.x = bounds.x / 2;
+      else if(h_align == Horizontal_Alignment::Right) pos.x = bounds.x;
+
+      if(v_align == Vertical_Alignment::Center) pos.y = bounds.y / 2;
+      else if(v_align == Vertical_Alignment::Bottom) pos.y = bounds.y;
+
+      if(h_align == Horizontal_Alignment::Left)
+      { pos.x += elem.padding.left; }
+      else if(h_align == Horizontal_Alignment::Right)
+      { pos.x -= elem.padding.right; }
+
+      if(v_align == Vertical_Alignment::Top)
+      { pos.y += elem.padding.top; }
+      else if(v_align == Vertical_Alignment::Bottom)
+      { pos.y -= elem.padding.bottom; }
+
+      if(elem.element.which() == 0 || elem.element.which() == 1)
+      {
+        auto text = boost::apply_visitor(Text_Visitor{}, elem.element);
+        auto text_size = view.text_size(text, text_height);
+
+        auto vol = Volume<int>{{pos.x - 1, pos.y - 1},
+                               text_size.x + 2, text_size.y + 2};
+
+        align_vol(vol, h_align, v_align);
+
+        if(elem.element.which() == 1)
+        {
+          auto button = boost::get<Button>(elem.element);
+
+          view.box({vol, get_color_from_str(button.col)});
+          buttons_.push_back({button.event, vol});
+        }
+
+        ++vol.pos.x;
+        ++vol.pos.y;
+
+        Color text_color;
+
+        if(elem.element.which() == 0)
+        {
+          auto text = boost::get<Text>(elem.element);
+          text_color = get_color_from_str(text.col);
         }
         else
         {
-          auto spr_elem = boost::get<ui::Sprite>(elem.element);
-          auto sprite = sprites_->get_sprite(spr_elem.src);
+          auto button = boost::get<Button>(elem.element);
+          text_color = get_color_from_str(button.col);
+        }
+        view.label({text, text_height, vol.pos, text_color});
+      }
+      else
+      {
+        auto spr_elem = boost::get<ui::Sprite>(elem.element);
+        auto sprite = sprites_->get_sprite(spr_elem.src);
 
-          auto src = Volume<int>{{0, 0}, sprite->surface()->w,
-                                 sprite->surface()->h};
+        auto src = Volume<int>{{0, 0}, sprite->surface()->w,
+                               sprite->surface()->h};
 
-          auto dst = Volume<int>{pos,
-                                 (int) (sprite->surface()->w * spr_elem.scale),
-                                 (int) (sprite->surface()->h * spr_elem.scale)};
+        auto dst = Volume<int>{pos,
+                               (int) (sprite->surface()->w * spr_elem.scale),
+                               (int) (sprite->surface()->h * spr_elem.scale)};
 
-          align_vol(dst, h_align, v_align);
+        align_vol(dst, h_align, v_align);
 
-          view.image({sprite, src, dst});
+        view.image({sprite, src, dst});
 
-          if(spr_elem.border_col)
-          {
-            Color col = get_color_from_str(spr_elem.border_col.value());
+        if(spr_elem.border_col)
+        {
+          Color col = get_color_from_str(spr_elem.border_col.value());
 
-            --dst.pos.x;
-            --dst.pos.y;
-            dst.width += 2;
-            dst.height += 2;
+          --dst.pos.x;
+          --dst.pos.y;
+          dst.width += 2;
+          dst.height += 2;
 
-            view.box({dst, col});
-          }
+          view.box({dst, col});
         }
       }
     }
