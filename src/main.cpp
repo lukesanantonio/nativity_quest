@@ -89,6 +89,9 @@ int main(int argc, char** argv)
         }
       }
 
+      // Did an event cause the state to change?
+      if(state != game.states.back()) continue;
+
       state->step();
 
       game::render_all(game);
