@@ -52,84 +52,91 @@ namespace game { namespace ui
 
     for(auto& elem : model.elements)
     {
-      auto pos = Vec<int>{};
-      if(elem.h_align == Horizontal_Alignment::Center) pos.x = bounds.x / 2;
-      else if(elem.h_align == Horizontal_Alignment::Right) pos.x = bounds.x;
-
-      if(elem.v_align == Vertical_Alignment::Center) pos.y = bounds.y / 2;
-      else if(elem.v_align == Vertical_Alignment::Bottom) pos.y = bounds.y;
-
-      if(elem.h_align == Horizontal_Alignment::Left)
-      { pos.x += elem.padding.left; }
-      else if(elem.h_align == Horizontal_Alignment::Right)
-      { pos.x -= elem.padding.right; }
-
-      if(elem.v_align == Vertical_Alignment::Top)
-      { pos.y += elem.padding.top; }
-      else if(elem.v_align == Vertical_Alignment::Bottom)
-      { pos.y -= elem.padding.bottom; }
-
-      if(elem.element.which() == 0 || elem.element.which() == 1)
+      if(elem.align.which() == 0)
       {
-        auto text = boost::apply_visitor(Text_Visitor{}, elem.element);
-        auto text_size = view.text_size(text, text_height);
+        auto& align = boost::get<Alignment>(elem.align);
+        auto h_align = align.horizontal;
+        auto v_align = align.vertical;
 
-        auto vol = Volume<int>{{pos.x - 1, pos.y - 1},
-                               text_size.x + 2, text_size.y + 2};
+        auto pos = Vec<int>{};
+        if(h_align == Horizontal_Alignment::Center) pos.x = bounds.x / 2;
+        else if(h_align == Horizontal_Alignment::Right) pos.x = bounds.x;
 
-        align_vol(vol, elem.h_align, elem.v_align);
+        if(v_align == Vertical_Alignment::Center) pos.y = bounds.y / 2;
+        else if(v_align == Vertical_Alignment::Bottom) pos.y = bounds.y;
 
-        if(elem.element.which() == 1)
+        if(h_align == Horizontal_Alignment::Left)
+        { pos.x += elem.padding.left; }
+        else if(h_align == Horizontal_Alignment::Right)
+        { pos.x -= elem.padding.right; }
+
+        if(v_align == Vertical_Alignment::Top)
+        { pos.y += elem.padding.top; }
+        else if(v_align == Vertical_Alignment::Bottom)
+        { pos.y -= elem.padding.bottom; }
+
+        if(elem.element.which() == 0 || elem.element.which() == 1)
         {
-          auto button = boost::get<Button>(elem.element);
+          auto text = boost::apply_visitor(Text_Visitor{}, elem.element);
+          auto text_size = view.text_size(text, text_height);
 
-          view.box({vol, get_color_from_str(button.col)});
-          buttons_.push_back({button.event, vol});
-        }
+          auto vol = Volume<int>{{pos.x - 1, pos.y - 1},
+                                 text_size.x + 2, text_size.y + 2};
 
-        ++vol.pos.x;
-        ++vol.pos.y;
+          align_vol(vol, h_align, v_align);
 
-        Color text_color;
+          if(elem.element.which() == 1)
+          {
+            auto button = boost::get<Button>(elem.element);
 
-        if(elem.element.which() == 0)
-        {
-          auto text = boost::get<Text>(elem.element);
-          text_color = get_color_from_str(text.col);
+            view.box({vol, get_color_from_str(button.col)});
+            buttons_.push_back({button.event, vol});
+          }
+
+          ++vol.pos.x;
+          ++vol.pos.y;
+
+          Color text_color;
+
+          if(elem.element.which() == 0)
+          {
+            auto text = boost::get<Text>(elem.element);
+            text_color = get_color_from_str(text.col);
+          }
+          else
+          {
+            auto button = boost::get<Button>(elem.element);
+            text_color = get_color_from_str(button.col);
+          }
+          view.label({text, text_height, vol.pos, text_color});
         }
         else
         {
-          auto button = boost::get<Button>(elem.element);
-          text_color = get_color_from_str(button.col);
-        }
-        view.label({text, text_height, vol.pos, text_color});
-      }
-      else
-      {
-        auto spr_elem = boost::get<ui::Sprite>(elem.element);
-        auto sprite = sprites_->get_sprite(spr_elem.src);
+          auto spr_elem = boost::get<ui::Sprite>(elem.element);
+          auto sprite = sprites_->get_sprite(spr_elem.src);
 
-        auto src = Volume<int>{{0, 0}, sprite->surface()->w,
-                               sprite->surface()->h};
+          auto src = Volume<int>{{0, 0}, sprite->surface()->w,
+                                 sprite->surface()->h};
 
-        auto dst = Volume<int>{pos,
-                               (int) (sprite->surface()->w * spr_elem.scale),
-                               (int) (sprite->surface()->h * spr_elem.scale)};
+          auto dst = Volume<int>{pos,
+                                 (int) (sprite->surface()->w * spr_elem.scale),
+                                 (int) (sprite->surface()->h * spr_elem.scale)};
 
-        align_vol(dst, elem.h_align, elem.v_align);
+          align_vol(dst, h_align, v_align);
 
-        view.image({sprite, src, dst});
+          view.image({sprite, src, dst});
 
-        if(spr_elem.border_col)
-        {
-          Color col = get_color_from_str(spr_elem.border_col.value());
+          if(spr_elem.border_col)
+          {
+            Color col = get_color_from_str(spr_elem.border_col.value());
 
-          --dst.pos.x;
-          --dst.pos.y;
-          dst.width += 2;
-          dst.height += 2;
+            --dst.pos.x;
+            --dst.pos.y;
+            dst.width += 2;
+            dst.height += 2;
 
-          view.box({dst, col});
+            view.box({dst, col});
+          }
         }
       }
     }

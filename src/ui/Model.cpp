@@ -19,28 +19,28 @@ namespace game { namespace ui
 
   struct Bad_Alignment_Type {};
   template <class Doc>
-  auto parse_alignment(Doc const& doc) -> decltype(auto)
+  Alignment parse_alignment(Doc const& doc)
   {
     auto hor_string = doc["horizontal"].GetString();
     auto vert_string = doc["vertical"].GetString();
 
-    auto ret_tup = std::tuple<Horizontal_Alignment, Vertical_Alignment>{};
+    Alignment ret;
 
     if(strcmp(hor_string, "left") == 0)
-    { std::get<0>(ret_tup) = Horizontal_Alignment::Left; }
-    if(strcmp(hor_string, "center") == 0)
-    { std::get<0>(ret_tup) = Horizontal_Alignment::Center; }
-    if(strcmp(hor_string, "right") == 0)
-    { std::get<0>(ret_tup) = Horizontal_Alignment::Right; }
+    { ret.horizontal = Horizontal_Alignment::Left; }
+    else if(strcmp(hor_string, "center") == 0)
+    { ret.horizontal = Horizontal_Alignment::Center; }
+    else if(strcmp(hor_string, "right") == 0)
+    { ret.horizontal = Horizontal_Alignment::Right; }
 
     if(strcmp(vert_string, "top") == 0)
-    { std::get<1>(ret_tup) = Vertical_Alignment::Top; }
-    if(strcmp(vert_string, "center") == 0)
-    { std::get<1>(ret_tup) = Vertical_Alignment::Center; }
-    if(strcmp(vert_string, "bottom") == 0)
-    { std::get<1>(ret_tup) = Vertical_Alignment::Bottom; }
+    { ret.vertical = Vertical_Alignment::Top; }
+    else if(strcmp(vert_string, "center") == 0)
+    { ret.vertical = Vertical_Alignment::Center; }
+    else if(strcmp(vert_string, "bottom") == 0)
+    { ret.vertical = Vertical_Alignment::Bottom; }
 
-    return ret_tup;
+    return ret;
   }
 
   template <class Doc>
@@ -87,7 +87,7 @@ namespace game { namespace ui
       auto e = Element{parse_element_type((*iter)["type"])};
 
       // Parse alignment
-      std::tie(e.h_align, e.v_align) = parse_alignment((*iter)["alignment"]);
+      e.align = parse_alignment((*iter)["alignment"]);
 
       // Parse (optional) padding.
       if_has_member(*iter, "padding",

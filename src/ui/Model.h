@@ -54,14 +54,24 @@ namespace game { namespace ui
     int bottom = 0;
   };
 
+  struct Alignment
+  {
+    Horizontal_Alignment horizontal;
+    Vertical_Alignment vertical;
+  };
+
+  enum class Side
+  {
+    Top, Right, Bottom, Left
+  };
+
   struct Element
   {
     Element_Data element;
 
     Padding padding;
 
-    Horizontal_Alignment h_align;
-    Vertical_Alignment v_align;
+    boost::variant<Alignment, Side> align;
 
     boost::optional<double> autohide;
   };
