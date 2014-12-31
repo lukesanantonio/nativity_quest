@@ -108,14 +108,18 @@ namespace game { namespace ui
           view.label({label_view.labels[str_i], text_height,
                       pos, {0xff, 0xff, 0xff}});
 
-          labels_.push_back({label_view, str_i,
-                             {{cur_pos.x - cell_width / 2, cur_pos.y},
-                              (int)cell_width, vol.height / label_view.rows}});
-
-          // Render the marker if this item is selected.
-          if(label_view.selected == str_i)
+          if(label_view.is_selectable)
           {
-            view.box({cell_vol, {0xff, 0xff, 0xff}});
+            labels_.push_back({label_view, str_i,
+                               {{cur_pos.x - cell_width / 2, cur_pos.y},
+                                (int) cell_width,
+                                vol.height / label_view.rows}});
+
+            // Render the marker if this item is selected.
+            if(label_view.selected == str_i)
+            {
+              view.box({cell_vol, {0xff, 0xff, 0xff}});
+            }
           }
 
           cur_pos.x += cell_width;

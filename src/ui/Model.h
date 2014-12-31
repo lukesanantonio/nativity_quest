@@ -42,6 +42,8 @@ namespace game { namespace ui
     bool done = false;
 
     std::vector<std::string> labels = {};
+
+    bool is_selectable = true;
   };
 
   struct Bar
