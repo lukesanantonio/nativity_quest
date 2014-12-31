@@ -50,7 +50,7 @@ namespace game { namespace ui
 
     constexpr auto text_height = 34;
 
-    for(auto& elem : model.elements())
+    for(auto& elem : model.elements)
     {
       auto pos = Vec<int>{};
       if(elem.h_align == Horizontal_Alignment::Center) pos.x = bounds.x / 2;

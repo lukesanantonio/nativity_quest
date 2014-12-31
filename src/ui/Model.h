@@ -71,13 +71,6 @@ namespace game { namespace ui
     Model(rapidjson::Document const& json);
     Model() noexcept;
 
-    inline std::vector<Element>& elements() noexcept
-    { return elemts_; }
-
-    inline std::vector<Element> const& elements() const noexcept
-    { return elemts_; }
-
-  private:
-    std::vector<Element> elemts_;
+    std::vector<Element> elements;
   };
 } }

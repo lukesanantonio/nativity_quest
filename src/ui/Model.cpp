@@ -127,7 +127,7 @@ namespace game { namespace ui
         e.autohide = val.GetDouble();
       });
 
-      elemts_.push_back(e);
+      elements.push_back(e);
     }
   }
   Model::Model() noexcept {}
