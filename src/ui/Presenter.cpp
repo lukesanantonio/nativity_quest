@@ -175,7 +175,7 @@ namespace game { namespace ui
         }
         view.label({text, text_height, vol.pos, text_color});
       }
-      else
+      else if(elem.element.which() == 2)
       {
         auto spr_elem = boost::get<ui::Sprite>(elem.element);
         auto sprite = sprites_->get_sprite(spr_elem.src);
@@ -202,6 +202,17 @@ namespace game { namespace ui
 
           view.box({dst, col});
         }
+      }
+      else
+      {
+        auto vol = Volume<int>{pos, bounds.x / 7, bounds.y / 14};
+        align_vol(vol, h_align, v_align);
+
+        view.box({vol, {0xff, 0xff, 0xff}});
+
+        auto& bar = boost::get<Bar>(elem.element);
+        vol.width *= bar.cur / (double) bar.max;
+        view.box({vol, {0xff, 0xff, 0xff}});
       }
     }
   }

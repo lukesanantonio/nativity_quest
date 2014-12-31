@@ -44,7 +44,14 @@ namespace game { namespace ui
     std::vector<std::string> labels = {};
   };
 
-  using Element_Data = boost::variant<Text, Button, Sprite, Label_View>;
+  struct Bar
+  {
+    int max = 1;
+    int cur = 0;
+  };
+
+  using Element_Data = boost::variant<Text, Button, Sprite, Label_View,
+                                      Bar>;
 
   enum class Horizontal_Alignment
   {
