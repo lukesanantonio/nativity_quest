@@ -165,8 +165,6 @@ namespace game
 
     // Determine the character orientation, then the required rotation in
     // addition to that.
-
-    auto move = Vec<double>{0.0, 0.0};
     auto move_unit = normalize(move);
     auto angle = std::atan2(move_unit.y, move_unit.x);
 

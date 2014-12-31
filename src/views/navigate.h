@@ -30,6 +30,8 @@ namespace game
     // map coordinates.
     mutable Vec<int> map_corner;
 
+    Vec<double> move = {0,0};
+
     void handle_event(SDL_Event const&) noexcept override;
     void step() noexcept override;
     void render() const noexcept override;

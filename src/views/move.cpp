@@ -61,11 +61,17 @@ namespace game
     delta -= move_delta;
     player.moved += move_length;
 
+    navigate.move = move_delta;
+
     // If we have less than the max units per step, it means we just
     // completed that and we can become static.
     if(delta_len < max_speed || max_movement <= player.moved)
     {
       pop_state(game_);
     }
+  }
+  void Movement_State::on_exit() noexcept
+  {
+    navigate.move = {0, 0};
   }
 }

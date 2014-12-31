@@ -19,6 +19,6 @@ namespace game
     inline void render() const noexcept override {}
 
     inline void on_enter() noexcept override {}
-    inline void on_exit() noexcept override {}
+    void on_exit() noexcept override;
   };
 }
