@@ -48,6 +48,8 @@ namespace game { namespace ui
     std::vector<std::string> labels = {};
 
     bool is_selectable = true;
+
+    std::string col;
   };
 
   struct Bar

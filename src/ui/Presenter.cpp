@@ -92,8 +92,10 @@ namespace game { namespace ui
         auto start = Vec<int>{cell_width / 2, bounds.y};
         auto cur_pos = start;
 
+        auto color = get_color_from_str(label_view.col);
+
         // Render the background.
-        view.box({vol, {0xff, 0xff, 0xff}});
+        view.box({vol, color});
 
         int i = 0;
         for(int str_i = 0; str_i < label_view.labels.size(); ++str_i)
@@ -108,7 +110,7 @@ namespace game { namespace ui
                               cell_vol.pos.y + (cell_vol.height / 2) -
                               (extents_vec[str_i].y / 2)};
           view.label({label_view.labels[str_i], text_height,
-                      pos, {0xff, 0xff, 0xff}});
+                      pos, color});
 
           if(label_view.is_selectable)
           {
@@ -120,7 +122,7 @@ namespace game { namespace ui
             // Render the marker if this item is selected.
             if(label_view.selected == str_i)
             {
-              view.box({cell_vol, {0xff, 0xff, 0xff}});
+              view.box({cell_vol, color});
             }
           }
 
