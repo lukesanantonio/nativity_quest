@@ -7,6 +7,7 @@
 
 #include "move.h"
 #include "uncrate.h"
+#include "inventory.h"
 
 #define PI 3.14159
 
@@ -42,6 +43,11 @@ namespace game
     {
       map.players[player].moved = 0.0;
       if(++player == map.players.size()) player = 0;
+    });
+    game_.presenter.use_handler("on_inventory_view",
+    [this](auto const&)
+    {
+      push_state(game_, std::make_shared<Inventory_View_State>(game_, *this));
     });
   }
 

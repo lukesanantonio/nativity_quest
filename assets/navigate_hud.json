@@ -16,5 +16,14 @@
     "padding": { "right": 10, "bottom": 10 },
     "autohide": 0.75,
     "color": "black"
+  },
+  {
+    "type": "button",
+    "text": "View inventory",
+    "event": "on_inventory_view",
+    "alignment": { "vertical": "bottom", "horizontal": "center" },
+    "padding": { "bottom": 10 },
+    "autohide": 0.75,
+    "color": "black"
   }
 ]

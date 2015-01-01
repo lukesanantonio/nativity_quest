@@ -3,22 +3,17 @@
  * All rights reserved.
  */
 #pragma once
-#include "navigate.h"
+#include "inventory.h"
 #include "../decl/items.h"
 namespace game
 {
-  struct Discard_State : public Navigate_Sub_State
+  struct Discard_State : public Inventory_View_State
   {
     Discard_State(Game& g, Navigate_State& ns, decl::Item item) noexcept;
 
-    void handle_event(SDL_Event const&) noexcept;
-    void step() noexcept;
-    void render() const noexcept;
+    void on_label_view_done() noexcept override;
+    void on_extra_label_select() noexcept override;
 
-    void on_enter() noexcept override;
-    void on_exit() noexcept override;
-
-    decl::Item item;
-    ui::Model hud;
+    decl::Item extra_item;
   };
 }
