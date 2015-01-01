@@ -54,6 +54,8 @@ namespace game { namespace ui
     // Go through each 'side' element first.
     for(auto& elem : model.elements)
     {
+      if(!elem.is_visible) continue;
+
       if(elem.align.which() != 1) continue;
 
       auto side = boost::get<Side>(elem.align);
@@ -138,6 +140,8 @@ namespace game { namespace ui
     // Now go through each non-side element.
     for(auto& elem : model.elements)
     {
+      if(!elem.is_visible) continue;
+
       if(elem.align.which() != 0) continue;
       auto& align = boost::get<Alignment>(elem.align);
       auto h_align = align.horizontal;

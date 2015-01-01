@@ -95,6 +95,8 @@ namespace game { namespace ui
 
     boost::variant<Alignment, Side> align;
 
+    bool is_visible = true;
+
     boost::optional<double> autohide;
   };
 
