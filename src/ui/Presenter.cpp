@@ -285,8 +285,11 @@ namespace game { namespace ui
         auto pt = Vec<int>{event.motion.x, event.motion.y};
         if(is_in(area.vol, pt) && !area.lv.done)
         {
-          area.lv.selected = area.index;
-          ret = true;
+          if(area.lv.selected != area.index)
+          {
+            area.lv.selected = area.index;
+            ret = true;
+          }
         }
       }
     }
