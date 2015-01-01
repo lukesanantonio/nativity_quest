@@ -32,7 +32,7 @@ namespace game { namespace ui
   struct Sprite
   {
     std::string src;
-    double scale;
+    double scale = 1.0;
 
     boost::optional<Volume<int> > vol;
 
