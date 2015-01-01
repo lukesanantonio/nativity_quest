@@ -4,6 +4,7 @@
  */
 #include "uncrate.h"
 #include "../decl/items.h"
+#include "discard.h"
 namespace game
 {
   template <typename C>
@@ -37,32 +38,14 @@ namespace game
         {
           // Inventory not full!
           *inventory = chest.item;
+
+          pop_state(game_);
         }
         else
         {
-#if 0
-          auto& player = turn.map.players[turn.player];
-          Discard_Item_Data discard_data{player, turn.items};
-
-          discard_data.label_view.control().new_item = data.chest.item;
-          discard_data.after_state = Waiting_Data{};
-
-          for(int i = 0; i < player.inventory.size(); ++i)
-          {
-            discard_data.label_view.add_label(player.inventory[i]->str);
-          }
-
-          discard_data.label_view.add_label("Discard");
-
-          for(auto& label : discard_data.label_view.labels())
-          {
-            label.text_height(25);
-            label.color({0x00, 0x00, 0x00, 0xff});
-          }
-#endif
+          replace_state(game_, std::make_shared<Discard_State>(game_, navigate,
+                        chest.item));
         }
-
-        pop_state(game_);
       }
     }
     else if(++intermediate_counter == frames_between)
