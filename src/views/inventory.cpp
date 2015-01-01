@@ -14,16 +14,20 @@ namespace game
     auto& player = navigate.map.players[navigate.player];
     auto& inventory = player.inventory;
 
-    label_view.labels.push_back(inventory[0]->str);
-    label_view.labels.push_back(inventory[1]->str);
-    label_view.labels.push_back(inventory[2]->str);
-    label_view.labels.push_back(inventory[3]->str);
-    label_view.labels.push_back(inventory[4]->str);
-    label_view.labels.push_back(inventory[5]->str);
+    for(auto item : inventory)
+    {
+      if(item)
+      {
+        label_view.labels.push_back(item->str);
+      }
+      else
+      {
+        label_view.labels.push_back("No item");
+      }
+    }
+
     label_view.labels.push_back("Back");
-
     label_view.selected = 0;
-
     label_view.col = "black";
 
     hud.elements.push_back({label_view, {}, ui::Side::Bottom});
@@ -70,12 +74,20 @@ namespace game
   }
   void Inventory_View_State::set_sprite_src(decl::Item item) noexcept
   {
+    if(!item)
+    {
+      hud.elements[1].is_visible = false;
+      return;
+    }
+
     auto& sprite_element = boost::get<ui::Sprite>(hud.elements[1].element);
 
     // Modify the image displayed using that item.
     auto& vol = sprite_element.vol.value();
     vol.pos.x = item->sprite_pos.x * vol.width;
     vol.pos.y = item->sprite_pos.y * vol.height;
+
+    hud.elements[1].is_visible = true;
   }
   void Inventory_View_State::on_label_view_done() noexcept
   {
@@ -88,14 +100,11 @@ namespace game
   void Inventory_View_State::on_inventory_label_select() noexcept
   {
     auto sel = boost::get<ui::Label_View>(hud.elements[0].element).selected;
-    auto sel_item = navigate.map.players[navigate.player].inventory[sel];
-
-    set_sprite_src(sel_item);
-    hud.elements[1].is_visible = true;
+    set_sprite_src(navigate.map.players[navigate.player].inventory[sel]);
   }
   void Inventory_View_State::on_extra_label_select() noexcept
   {
-    hud.elements[1].is_visible = false;
+    set_sprite_src(decl::no::item);
   }
 
   void Inventory_View_State::render() const noexcept
