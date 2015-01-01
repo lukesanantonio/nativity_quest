@@ -10,6 +10,8 @@
 #include <boost/optional.hpp>
 
 #include "rapidjson/document.h"
+
+#include "../common/volume.h"
 namespace game { namespace ui
 {
   struct Text
@@ -31,6 +33,8 @@ namespace game { namespace ui
   {
     std::string src;
     double scale;
+
+    boost::optional<Volume<int> > vol;
 
     boost::optional<std::string> border_col;
   };

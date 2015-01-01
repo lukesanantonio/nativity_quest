@@ -202,6 +202,10 @@ namespace game { namespace ui
 
         auto src = Volume<int>{{0, 0}, sprite->surface()->w,
                                sprite->surface()->h};
+        if(spr_elem.vol)
+        {
+          src = spr_elem.vol.value();
+        }
 
         auto dst = Volume<int>{pos,
                                (int) (sprite->surface()->w * spr_elem.scale),
