@@ -9,6 +9,14 @@
     "border": "black"
   },
   {
+    "type": "text",
+    "text": "Unknown Zone",
+    "alignment": { "vertical": "top", "horizontal": "right" },
+    "padding": { "top": 5, "left": 5 },
+    "autohide": 0.0,
+    "color": "black"
+  },
+  {
     "type": "button",
     "text": "Next Player",
     "event": "on_next_player",

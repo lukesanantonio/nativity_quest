@@ -21,7 +21,8 @@ namespace game
     decl::Sprites sprites;
     decl::Players players;
 
-    ui::Model hud;
+    mutable ui::Model hud;
+    mutable bool ui_dirty = true;
 
     Map map;
 
@@ -38,6 +39,8 @@ namespace game
 
     void on_enter() noexcept override;
     void on_exit() noexcept override;
+
+    void update_zone_ui() noexcept;
   };
 
   struct Navigate_Sub_State : public Game_State

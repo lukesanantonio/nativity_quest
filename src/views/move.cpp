@@ -30,6 +30,8 @@ namespace game
     // Move the player.
     player.pos += move_delta;
 
+    navigate.update_zone_ui();
+
     /*
     auto cur_zone = update_zone(turn);
 

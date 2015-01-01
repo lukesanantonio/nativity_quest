@@ -136,12 +136,13 @@ namespace game
     }
 
     // Can it be? Have we reached Bethlehem?
+
+    // Get the current zone.
+    update_zone_ui();
   }
   void Navigate_State::on_enter() noexcept
   {
-    game_.view.reset();
-    game_.presenter.present(hud, game_.view, game_.graphics.size());
-
+    ui_dirty = true;
     game_.presenter.handle_events(true);
   }
   void Navigate_State::on_exit() noexcept
@@ -149,8 +150,28 @@ namespace game
     game_.presenter.handle_events(false);
   }
 
+  void Navigate_State::update_zone_ui() noexcept
+  {
+    auto& active_player = map.players[player];
+    auto cur_zone = map.zones.get_zone(active_player.pos);
+    if(cur_zone != decl::no::zone)
+    {
+      auto& text = boost::get<ui::Text>(hud.elements[1].element);
+      text.str = cur_zone->str;
+
+      ui_dirty = true;
+    }
+  }
+
   void Navigate_State::render() const noexcept
   {
+    if(ui_dirty)
+    {
+      game_.view.reset();
+      game_.presenter.present(hud, game_.view, game_.graphics.size());
+      ui_dirty = false;
+    }
+
     auto& active_player = map.players[player];
 
     // Render the map.
