@@ -48,7 +48,19 @@ namespace game
     void update_cur_zone() noexcept;
 
     void next_player() noexcept;
+
+    inline Player& active_player() noexcept;
+    inline Player const& active_player() const noexcept;
   };
+
+  inline Player& Navigate_State::active_player() noexcept
+  {
+    return map.players[player];
+  }
+  inline Player const& Navigate_State::active_player() const noexcept
+  {
+    return map.players[player];
+  }
 
   struct Navigate_Sub_State : public Game_State
   {
