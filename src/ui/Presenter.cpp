@@ -43,6 +43,20 @@ namespace game { namespace ui
     return {0xff, 0xff, 0xff};
   }
 
+  Color inverse_color(Color color) noexcept
+  {
+    return {static_cast<Color::component_t>(0xff - color.red),
+            static_cast<Color::component_t>(0xff - color.green),
+            static_cast<Color::component_t>(0xff - color.blue)};
+  }
+
+  Color darker_color(Color color) noexcept
+  {
+    return {static_cast<Color::component_t>(std::max(0, color.red - 0x55)),
+            static_cast<Color::component_t>(std::max(0, color.green - 0x55)),
+            static_cast<Color::component_t>(std::max(0, color.blue - 0x55))};
+  }
+
   void Presenter::present(Model& model, View& view,
                           Vec<int> bounds) const noexcept
   {
@@ -110,7 +124,7 @@ namespace game { namespace ui
                               cell_vol.pos.y + (cell_vol.height / 2) -
                               (extents_vec[str_i].y / 2)};
           view.label({label_view.labels[str_i], text_height,
-                      pos, color});
+                      pos, inverse_color(color)});
 
           if(label_view.is_selectable)
           {
@@ -122,7 +136,7 @@ namespace game { namespace ui
             // Render the marker if this item is selected.
             if(label_view.selected == str_i)
             {
-              view.box({cell_vol, color});
+              view.box({cell_vol, inverse_color(color)});
             }
           }
 
@@ -197,7 +211,7 @@ namespace game { namespace ui
         else
         {
           auto button = boost::get<Button>(elem.element);
-          text_color = get_color_from_str(button.col);
+          text_color = inverse_color(get_color_from_str(button.col));
         }
         view.label({text, text_height, vol.pos, text_color});
       }
@@ -241,7 +255,7 @@ namespace game { namespace ui
         auto& bar = boost::get<Bar>(elem.element);
         auto color = get_color_from_str(bar.col);
 
-        view.box({vol, color});
+        view.box({vol, darker_color(color), true});
 
         vol.width *= bar.cur / (double) bar.max;
         view.box({vol, color, true});
