@@ -40,6 +40,10 @@ namespace game { namespace ui
     {
       return {0x00, 0x00, 0x00};
     }
+    if(col == "green")
+    {
+      return {0x00, 0xff, 0x00};
+    }
     return {0xff, 0xff, 0xff};
   }
 
@@ -254,6 +258,17 @@ namespace game { namespace ui
 
         auto& bar = boost::get<Bar>(elem.element);
         auto color = get_color_from_str(bar.col);
+
+        // Find the border vol;
+        if(bar.border)
+        {
+          auto border_vol = vol;
+          --border_vol.pos.x;
+          --border_vol.pos.y;
+          border_vol.width += 2;
+          border_vol.height += 2;
+          view.box({border_vol, {0x00, 0x00, 0x00}, false});
+        }
 
         view.box({vol, darker_color(color), true});
 

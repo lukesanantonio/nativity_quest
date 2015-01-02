@@ -51,7 +51,7 @@ namespace game
 
     auto bar = ui::Bar{player.entity_data.max_life,
                        player.entity_data.cur_life,
-                       "black"};
+                       "green", true};
     hud.elements.push_back({bar, {5, 0, 0, 5}, alignment});
   }
 

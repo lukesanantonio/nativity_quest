@@ -20,7 +20,7 @@
     "cur": 0,
     "padding": { "right": 5 },
     "alignment": { "vertical": "center", "horizontal": "right" },
-    "color": "black"
+    "color": "green"
   },
   {
     "id": "player_health",
@@ -29,6 +29,7 @@
     "cur": 0,
     "padding": { "right": 5, "bottom": 5 },
     "alignment": { "vertical": "bottom", "horizontal": "right" },
-    "color": "black"
+    "color": "green",
+    "border": true
   }
 ]
