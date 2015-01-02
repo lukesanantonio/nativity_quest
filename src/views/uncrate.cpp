@@ -95,4 +95,8 @@ namespace game
                      &item_src, &chest_dest);
     }
   }
+  void Uncrate_State::on_exit() noexcept
+  {
+    unfog(navigate.active_player(), navigate.effects);
+  }
 }

@@ -68,6 +68,8 @@ namespace game
     delta -= move_delta;
     player.moved += move_length;
 
+    unfog(player, navigate.effects);
+
     navigate.move = move_delta;
 
     // If we have less than the max units per step, it means we just

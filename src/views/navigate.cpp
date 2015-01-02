@@ -50,6 +50,9 @@ namespace game
       player.inventory[5] = map.items.get_item(players.get_item(player_index));
       player.sprite_frame = player_index;
       respawn(player);
+
+      reset_fog(player, game.graphics.size());
+      unfog(player, effects);
     }
 
     game_.presenter.sprites(&sprites);
@@ -354,6 +357,14 @@ namespace game
 
       SDL_SetRenderDrawColor(game_.graphics.renderer, 0x00, 0x00, 0x00, 0xff);
       SDL_RenderDrawRect(game_.graphics.renderer, &enemy_dest);
+    }
+
+    // Render the fog of war.
+    if(active_player.fog.surface())
+    {
+      SDL_RenderCopy(game_.graphics.renderer,
+                     active_player.fog.texture(game_.graphics.renderer),
+                     &viewport_src_rect, NULL);
     }
 
     game_.view.render(game_.graphics);
