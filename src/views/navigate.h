@@ -46,6 +46,8 @@ namespace game
     void on_exit() noexcept override;
 
     void update_cur_zone() noexcept;
+
+    void next_player() noexcept;
   };
 
   struct Navigate_Sub_State : public Game_State

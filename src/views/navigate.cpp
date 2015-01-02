@@ -14,6 +14,20 @@
 
 namespace game
 {
+  void Navigate_State::next_player() noexcept
+  {
+    // Count down an enemy's wait to start fighting again.
+    for(auto& e_instance : map.enemies)
+    {
+      if(e_instance.not_fighting) --e_instance.not_fighting;
+    }
+
+    // Reset a player's movement.
+    map.players[player].moved = 0.0;
+
+    // Change the active player.
+    if(++player == map.players.size()) player = 0;
+  }
   Navigate_State::Navigate_State(Game& game, std::string sprite_json,
                                  std::string players_json,
                                  std::string map_json,
@@ -33,6 +47,8 @@ namespace game
         ++player_index)
     {
       auto& player = map.players[player_index];
+      player.inventory[0] = map.items.get_item("Flare");
+
       player.inventory[5] = map.items.get_item(players.get_item(player_index));
       player.sprite_frame = player_index;
       respawn(player);
@@ -43,8 +59,7 @@ namespace game
     game_.presenter.use_handler("on_next_player",
     [this](auto const&)
     {
-      map.players[player].moved = 0.0;
-      if(++player == map.players.size()) player = 0;
+      next_player();
     });
     game_.presenter.use_handler("on_inventory_view",
     [this](auto const&)
@@ -98,7 +113,9 @@ namespace game
     {
       active_player.pos = active_player.spawn_pt;
       reset_life(active_player.entity_data);
+
       // Switch player
+      next_player();
     }
 
     // Check for any enemies in our view
