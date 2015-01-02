@@ -14,9 +14,8 @@ namespace game
     enemy_sprite.src = e.decl->sprite;
 
     auto& player_sprite = boost::get<ui::Sprite>(hud.elements[1].element);
-    auto& active_player = navigate.map.players[navigate.player];
     player_sprite.src = navigate.players.get_sprite();
-    player_sprite.frame = active_player.sprite_frame;
+    player_sprite.frame = active_player().sprite_frame;
     player_sprite.vol = Volume<int>{{5, 144}, 25, 32};
 
     auto label_view = ui::Label_View{};

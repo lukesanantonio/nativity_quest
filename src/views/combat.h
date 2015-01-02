@@ -23,5 +23,17 @@ namespace game
     ui::Model hud;
 
     Enemy_Instance& enemy;
+
+    inline Player& active_player() noexcept;
+    inline Player const& active_player() const noexcept;
   };
+
+  inline Player& Combat_State::active_player() noexcept
+  {
+    return navigate.map.players[navigate.player];
+  }
+  inline Player const& Combat_State::active_player() const noexcept
+  {
+    return navigate.map.players[navigate.player];
+  }
 }
