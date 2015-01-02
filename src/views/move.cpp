@@ -17,7 +17,13 @@ namespace game
     // Max step size for the player.
     auto max_speed = 1.0;
 
-    auto max_movement = player.max_movement;
+    auto max_movement = navigate.effects.max_movement(player);
+
+    if(player.turns_of_haste)
+    {
+      max_movement += 30.0;
+      --player.turns_of_haste;
+    }
 
     // Isolate the direction.
     auto unit_delta = normalize<>(delta);
