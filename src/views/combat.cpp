@@ -63,6 +63,7 @@ namespace game
       std::uniform_int_distribution<int> dist(0, 2);
       if(dist(prng) == 0)
       {
+        enemy.not_fighting = 6;
         pop_state(game_);
       }
       else
@@ -85,6 +86,16 @@ namespace game
       if(effects.used_in_combat(sel_item))
       {
         effects.apply_effect(active_player(), sel_item);
+
+        active_player().inventory[label_view.selected] = decl::no::item;
+
+        if(active_player().flare)
+        {
+          enemy.not_fighting = 12;
+          replace_state(game_, std::make_shared<Flare_State>(game_));
+
+          return;
+        }
 
         switch_to_combat_menu();
       }

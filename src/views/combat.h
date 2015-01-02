@@ -9,6 +9,8 @@
 #include "../ui/Model.h"
 
 #include <random>
+
+#include "flare.h"
 namespace game
 {
   enum class Fight_State
