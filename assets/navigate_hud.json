@@ -27,7 +27,7 @@
   },
   {
     "type": "button",
-    "text": "View inventory",
+    "text": "Use item",
     "event": "on_inventory_view",
     "alignment": { "vertical": "bottom", "horizontal": "center" },
     "padding": { "bottom": 10 },
