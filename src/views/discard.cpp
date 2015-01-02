@@ -13,6 +13,8 @@ namespace game
 
     label_view.labels[6] = "Discard";
     label_view.selected = 6;
+
+    hud.elements.erase(hud.elements.end() - 1);
   }
 
   void Discard_State::on_label_view_done() noexcept

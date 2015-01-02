@@ -45,6 +45,14 @@ namespace game
     alignment.vertical = ui::Vertical_Alignment::Center;
 
     hud.elements.push_back({item_sprite, {}, alignment});
+
+    alignment.horizontal = ui::Horizontal_Alignment::Left;
+    alignment.vertical = ui::Vertical_Alignment::Bottom;
+
+    auto bar = ui::Bar{player.entity_data.max_life,
+                       player.entity_data.cur_life,
+                       "black"};
+    hud.elements.push_back({bar, {5, 0, 0, 5}, alignment});
   }
 
   void Inventory_View_State::handle_event(SDL_Event const&) noexcept {}
