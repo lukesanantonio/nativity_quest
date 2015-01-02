@@ -29,7 +29,16 @@ namespace game
 
     if(sel != 6)
     {
-      navigate.map.players[navigate.player].inventory[sel] = extra_item;
+      auto item = navigate.map.players[navigate.player].inventory[sel];
+      if(!navigate.effects.character_locked(item))
+      {
+        navigate.map.players[navigate.player].inventory[sel] = extra_item;
+      }
+      else
+      {
+        auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
+        label_view.done = false;
+      }
     }
     pop_state(game_);
   }

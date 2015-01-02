@@ -78,10 +78,16 @@ namespace game
     }
     else if(label_view.done && labels_state == Labels_State::Inventory)
     {
-      // Do something with that item.
-      // For now just return back to the combat menu.
+      auto sel_item = active_player().inventory[label_view.selected];
+
+      auto& effects = navigate.effects;
+      if(effects.used_in_combat(sel_item))
+      {
+        effects.apply_effect(active_player(), sel_item);
+
+        switch_to_combat_menu();
+      }
       label_view.done = false;
-      switch_to_combat_menu();
     }
     else if(fight_state == Fight_State::Enemy_Turn)
     {
