@@ -60,6 +60,8 @@ namespace game { namespace ui
     int cur = 0;
 
     std::string col;
+
+    bool border = false;
   };
 
   using Element_Data = boost::variant<Text, Button, Sprite, Label_View,

@@ -90,6 +90,12 @@ namespace game { namespace ui
     {
       bar.col = elem.GetString();
     });
+
+    if_has_member(doc, "border",
+    [&bar](auto const& elem)
+    {
+      bar.border = elem.GetBool();
+    });
     return bar;
   }
 
