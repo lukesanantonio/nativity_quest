@@ -29,6 +29,12 @@ namespace game
     auto sprite_width = player_sprite.vol->width * player_sprite.scale;
 
     hud.elements.push_back({label_view, {}, ui::Side::Bottom});
+
+    auto& enemy_bar = boost::get<ui::Bar>(hud.elements[2].element);
+    auto& player_bar = boost::get<ui::Bar>(hud.elements[3].element);
+
+    enemy_bar.max = enemy.entity_data.max_life;
+    player_bar.max = active_player().entity_data.max_life;
   }
 
   void Combat_State::handle_event(SDL_Event const&) noexcept
@@ -36,6 +42,12 @@ namespace game
   }
   void Combat_State::step() noexcept
   {
+    auto& enemy_bar = boost::get<ui::Bar>(hud.elements[2].element);
+    enemy_bar.cur = enemy.entity_data.cur_life;
+
+    auto& player_bar = boost::get<ui::Bar>(hud.elements[3].element);
+    player_bar.cur = active_player().entity_data.cur_life;
+
     game_.view.reset();
     game_.presenter.present(hud, game_.view, game_.graphics.size());
   }

@@ -3,14 +3,32 @@
     "id":"enemy_sprite",
     "type": "sprite",
     "src": "",
-    "scale": 2.8,
+    "scale": 2.6,
     "alignment": { "vertical": "top", "horizontal": "right" }
   },
   {
     "id":"player_sprite",
     "type": "sprite",
     "src": "",
-    "scale": 1.8,
+    "scale": 1.4,
     "alignment": { "vertical": "bottom", "horizontal": "left" }
+  },
+  {
+    "id": "enemy_health",
+    "type": "bar",
+    "max": 1,
+    "cur": 0,
+    "padding": { "right": 5 },
+    "alignment": { "vertical": "center", "horizontal": "right" },
+    "color": "black"
+  },
+  {
+    "id": "player_health",
+    "type": "bar",
+    "max": 1,
+    "cur": 0,
+    "padding": { "right": 5, "bottom": 5 },
+    "alignment": { "vertical": "bottom", "horizontal": "right" },
+    "color": "black"
   }
 ]
