@@ -15,10 +15,13 @@
 
 #include "decl/items.h"
 #include "decl/zones.h"
+#include "decl/game.h"
 
 #include "views/menu.h"
 
 #include "common/except.h"
+
+#define GAME_DECL_JSON "assets/game.json"
 
 #define SPRITES_JSON "assets/sprites.json"
 
@@ -35,7 +38,11 @@ int main(int argc, char** argv)
 {
   try
   {
-    auto g = game::Graphics_Desc{"Tommy's Game", {1000, 720}};
+    const auto game_decl = game::decl::Game(GAME_DECL_JSON);
+
+    auto g = game::Graphics_Desc{"Tommy's Game",
+                                 game_decl.size,
+                                 game_decl.fullscreen};
     auto font = game::Font_Renderer{FONT_FILE};
     auto game = game::Game{std::move(g), std::move(font)};
 #if 0

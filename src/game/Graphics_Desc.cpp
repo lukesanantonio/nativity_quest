@@ -6,12 +6,18 @@
 namespace game
 {
   Graphics_Desc::Graphics_Desc(std::string const& title,
-                               Vec<int> const& extents)
+                               Vec<int> const& extents,
+                               bool fullscreen)
                                : extents_(extents)
   {
+    auto flags = 0;
+    if(fullscreen)
+    {
+      flags |= SDL_WINDOW_FULLSCREEN;
+    }
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED, extents.x, extents.y,
-                              0);
+                              flags);
     if(!window) throw Bad_Window{};
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
