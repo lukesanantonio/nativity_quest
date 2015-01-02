@@ -20,6 +20,11 @@ namespace game
     Running
   };
 
+  enum class Labels_State
+  {
+    Inventory, Combat
+  };
+
   struct Combat_State : public Navigate_Sub_State
   {
     Combat_State(Game& g, Navigate_State& ns, Enemy_Instance& e) noexcept;
@@ -41,6 +46,11 @@ namespace game
 
     inline Player& active_player() noexcept;
     inline Player const& active_player() const noexcept;
+
+    void switch_to_inventory_view() noexcept;
+    void switch_to_combat_menu() noexcept;
+
+    Labels_State labels_state;
   };
 
   inline Player& Combat_State::active_player() noexcept

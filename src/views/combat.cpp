@@ -20,16 +20,10 @@ namespace game
     player_sprite.vol = Volume<int>{{5, 144}, 25, 32};
 
     auto label_view = ui::Label_View{};
-
-    label_view.labels.push_back("Attack");
-    label_view.labels.push_back("Use item");
-    label_view.labels.push_back("Run");
-
     label_view.col = "black";
-
-    auto sprite_width = player_sprite.vol->width * player_sprite.scale;
-
     hud.elements.push_back({label_view, {}, ui::Side::Bottom});
+
+    switch_to_combat_menu();
 
     auto& enemy_bar = boost::get<ui::Bar>(hud.elements[2].element);
     auto& player_bar = boost::get<ui::Bar>(hud.elements[3].element);
@@ -53,12 +47,14 @@ namespace game
 
     auto& label_view = boost::get<ui::Label_View>(hud.elements.back().element);
     if(label_view.done && label_view.selected == 0 &&
+       labels_state == Labels_State::Combat &&
        fight_state == Fight_State::Player_Turn)
     {
       apply_damage(enemy.entity_data, decl::damage());
       fight_state = Fight_State::Enemy_Turn;
     }
     else if(label_view.done && label_view.selected == 2 &&
+            labels_state == Labels_State::Combat &&
             fight_state == Fight_State::Player_Turn)
     {
       std::mt19937 prng{random_device()};
@@ -72,6 +68,20 @@ namespace game
       {
         fight_state = Fight_State::Enemy_Turn;
       }
+    }
+    else if(label_view.done && label_view.selected == 1 &&
+            labels_state == Labels_State::Combat &&
+            fight_state == Fight_State::Player_Turn)
+    {
+      label_view.done = false;
+      switch_to_inventory_view();
+    }
+    else if(label_view.done && labels_state == Labels_State::Inventory)
+    {
+      // Do something with that item.
+      // For now just return back to the combat menu.
+      label_view.done = false;
+      switch_to_combat_menu();
     }
     else if(fight_state == Fight_State::Enemy_Turn)
     {
@@ -101,5 +111,34 @@ namespace game
   void Combat_State::on_exit() noexcept
   {
     game_.presenter.handle_events(true);
+  }
+
+  void Combat_State::switch_to_inventory_view() noexcept
+  {
+    auto& label_view = boost::get<ui::Label_View>(hud.elements.back().element);
+
+    label_view.labels.clear();
+
+    for(auto item : active_player().inventory)
+    {
+      if(item) label_view.labels.push_back(item->str);
+      else label_view.labels.push_back("No item");
+    }
+
+    label_view.labels.push_back("Back");
+
+    labels_state = Labels_State::Inventory;
+  }
+  void Combat_State::switch_to_combat_menu() noexcept
+  {
+    auto& label_view = boost::get<ui::Label_View>(hud.elements.back().element);
+
+    label_view.labels.clear();
+
+    label_view.labels.push_back("Attack");
+    label_view.labels.push_back("Use item");
+    label_view.labels.push_back("Run");
+
+    labels_state = Labels_State::Combat;
   }
 }
