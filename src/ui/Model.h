@@ -58,6 +58,8 @@ namespace game { namespace ui
   {
     int max = 1;
     int cur = 0;
+
+    std::string col;
   };
 
   using Element_Data = boost::variant<Text, Button, Sprite, Label_View,

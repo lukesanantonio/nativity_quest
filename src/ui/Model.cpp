@@ -13,6 +13,7 @@ namespace game { namespace ui
     if(strcmp(doc.GetString(), "text") == 0) { return Text{}; }
     else if(strcmp(doc.GetString(), "button") == 0) { return Button{}; }
     else if(strcmp(doc.GetString(), "sprite") == 0) { return Sprite{}; }
+    else if(strcmp(doc.GetString(), "bar") == 0) { return Bar{}; }
 
     throw Bad_Element_Data{};
   }
@@ -79,6 +80,19 @@ namespace game { namespace ui
     return sprite;
   }
 
+  template <class Doc>
+  Element_Data parse_bar(Doc const& doc)
+  {
+    auto bar =  Bar{doc["max"].GetInt(), doc["cur"].GetInt()};
+
+    if_has_member(doc, "color",
+    [&bar](auto const& elem)
+    {
+      bar.col = elem.GetString();
+    });
+    return bar;
+  }
+
   Model::Model(rapidjson::Document const& json)
   {
     for(auto iter = json.Begin(); iter != json.End(); ++iter)
@@ -118,7 +132,8 @@ namespace game { namespace ui
 
       if(e.element.which() == 0) e.element = parse_text(*iter);
       else if(e.element.which() == 1) e.element = parse_button(*iter);
-      else e.element = parse_sprite(*iter);
+      else if(e.element.which() == 2) e.element = parse_sprite(*iter);
+      else e.element = parse_bar(*iter);
 
       // Parse autohide parameter (if provided).
       if_has_member(*iter, "autohide",

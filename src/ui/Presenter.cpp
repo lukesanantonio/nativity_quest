@@ -238,11 +238,13 @@ namespace game { namespace ui
         auto vol = Volume<int>{pos, bounds.x / 7, bounds.y / 14};
         align_vol(vol, h_align, v_align);
 
-        view.box({vol, {0xff, 0xff, 0xff}});
-
         auto& bar = boost::get<Bar>(elem.element);
+        auto color = get_color_from_str(bar.col);
+
+        view.box({vol, color});
+
         vol.width *= bar.cur / (double) bar.max;
-        view.box({vol, {0xff, 0xff, 0xff}});
+        view.box({vol, color});
       }
     }
   }
