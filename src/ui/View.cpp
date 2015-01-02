@@ -80,6 +80,25 @@ namespace game { namespace ui
   void View::render(Graphics_Desc& g) const noexcept
   {
     // For each label
+    for(auto const& box : box_cache_)
+    {
+      set_render_draw_color(g.renderer, box.color);
+
+      SDL_Rect rect;
+      rect.x = box.vol.pos.x;
+      rect.y = box.vol.pos.y;
+      rect.w = box.vol.width;
+      rect.h = box.vol.height;
+
+      if(box.filled)
+      {
+        SDL_RenderFillRect(g.renderer, &rect);
+      }
+      else
+      {
+        SDL_RenderDrawRect(g.renderer, &rect);
+      }
+    }
     for(auto& label : label_cache_)
     {
       // Generate the texture
@@ -99,18 +118,6 @@ namespace game { namespace ui
       dest.h = label.surface_cache_->h;
 
       SDL_RenderCopy(g.renderer, label.texture_cache_.get(), NULL, &dest);
-    }
-    for(auto const& box : box_cache_)
-    {
-      set_render_draw_color(g.renderer, box.color);
-
-      SDL_Rect rect;
-      rect.x = box.vol.pos.x;
-      rect.y = box.vol.pos.y;
-      rect.w = box.vol.width;
-      rect.h = box.vol.height;
-
-      SDL_RenderDrawRect(g.renderer, &rect);
     }
     for(auto const& image : image_cache_)
     {

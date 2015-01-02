@@ -44,6 +44,7 @@ namespace game { namespace ui
   {
     Volume<int> vol;
     Color color;
+    bool filled = false;
   };
 
   struct Image

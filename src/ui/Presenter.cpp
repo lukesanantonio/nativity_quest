@@ -95,7 +95,7 @@ namespace game { namespace ui
         auto color = get_color_from_str(label_view.col);
 
         // Render the background.
-        view.box({vol, color});
+        view.box({vol, color, true});
 
         int i = 0;
         for(int str_i = 0; str_i < label_view.labels.size(); ++str_i)
@@ -180,7 +180,7 @@ namespace game { namespace ui
         {
           auto button = boost::get<Button>(elem.element);
 
-          view.box({vol, get_color_from_str(button.col)});
+          view.box({vol, get_color_from_str(button.col), true});
           buttons_.push_back({button.event, vol});
         }
 
@@ -244,7 +244,7 @@ namespace game { namespace ui
         view.box({vol, color});
 
         vol.width *= bar.cur / (double) bar.max;
-        view.box({vol, color});
+        view.box({vol, color, true});
       }
     }
   }
