@@ -24,6 +24,8 @@ namespace game
     mutable ui::Model hud;
     mutable bool ui_dirty = true;
 
+    decl::Zone cur_zone;
+
     Map map;
 
     player_id player;
@@ -40,7 +42,7 @@ namespace game
     void on_enter() noexcept override;
     void on_exit() noexcept override;
 
-    void update_zone_ui() noexcept;
+    void update_cur_zone() noexcept;
   };
 
   struct Navigate_Sub_State : public Game_State

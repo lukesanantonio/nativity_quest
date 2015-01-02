@@ -49,6 +49,8 @@ namespace game
     {
       push_state(game_, std::make_shared<Inventory_View_State>(game_, *this));
     });
+
+    update_cur_zone();
   }
 
   void Navigate_State::handle_event(SDL_Event const& event) noexcept
@@ -136,9 +138,6 @@ namespace game
     }
 
     // Can it be? Have we reached Bethlehem?
-
-    // Get the current zone.
-    update_zone_ui();
   }
   void Navigate_State::on_enter() noexcept
   {
@@ -150,12 +149,17 @@ namespace game
     game_.presenter.handle_events(false);
   }
 
-  void Navigate_State::update_zone_ui() noexcept
+  void Navigate_State::update_cur_zone() noexcept
   {
     auto& active_player = map.players[player];
-    auto cur_zone = map.zones.get_zone(active_player.pos);
-    if(cur_zone != decl::no::zone)
+    auto new_zone = map.zones.get_zone(active_player.pos);
+
+    // If the zone is both new and valid.
+    if(new_zone != cur_zone && new_zone != decl::no::zone)
     {
+      cur_zone = new_zone;
+
+      // Update the ui.
       auto& text = boost::get<ui::Text>(hud.elements[1].element);
       text.str = cur_zone->str;
 

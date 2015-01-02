@@ -30,20 +30,17 @@ namespace game
     // Move the player.
     player.pos += move_delta;
 
-    navigate.update_zone_ui();
-
-    /*
-    auto cur_zone = update_zone(turn);
+    navigate.update_cur_zone();
 
     // Check to make sure we can be in this zone.
-    if(cur_zone->required_item != no::item)
+    if(navigate.cur_zone->required_item != decl::no::item)
     {
       using std::begin; using std::end;
       auto item_find =
         std::find_if(begin(player.inventory), end(player.inventory),
-        [&cur_zone](auto const& item)
+        [this](auto const& item)
         {
-          return cur_zone->required_item == item;
+          return navigate.cur_zone->required_item == item;
         });
 
       // We don't have the required item.
@@ -51,11 +48,13 @@ namespace game
       {
         // Cancel the movement.
         player.pos -= move_delta;
-        update_zone(turn);
-        return Waiting_Data{};
+
+        navigate.update_cur_zone();
+
+        pop_state(game_);
+        return;
       }
     }
-    */
 
     // We can continue.
 
