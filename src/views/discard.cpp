@@ -17,6 +17,12 @@ namespace game
     hud.elements.erase(hud.elements.end() - 1);
   }
 
+  void Discard_State::on_inventory_label_select() noexcept
+  {
+    auto sel = boost::get<ui::Label_View>(hud.elements[0].element).selected;
+    set_sprite_src(navigate.map.players[navigate.player].inventory[sel]);
+  }
+
   void Discard_State::on_label_view_done() noexcept
   {
     auto sel = boost::get<ui::Label_View>(hud.elements[0].element).selected;

@@ -100,15 +100,27 @@ namespace game
   void Inventory_View_State::on_label_view_done() noexcept
   {
     auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
-    auto sel = label_view.selected;
-
-    if(sel != 6) label_view.done = false;
-    else pop_state(game_);
+    pop_state(game_);
   }
   void Inventory_View_State::on_inventory_label_select() noexcept
   {
     auto sel = boost::get<ui::Label_View>(hud.elements[0].element).selected;
-    set_sprite_src(navigate.map.players[navigate.player].inventory[sel]);
+
+    auto& player = navigate.map.players[navigate.player];
+    auto item = player.inventory[sel];
+    set_sprite_src(item);
+
+    auto& effects = navigate.effects;
+    if(effects.used_in_navigation(item))
+    {
+      effects.apply_effect(player, item);
+      player.inventory[sel] = decl::no::item;
+    }
+    else
+    {
+      auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
+      label_view.done = false;
+    }
   }
   void Inventory_View_State::on_extra_label_select() noexcept
   {
