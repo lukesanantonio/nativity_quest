@@ -1,0 +1,16 @@
+[
+  {
+    "id":"enemy_sprite",
+    "type": "sprite",
+    "src": "",
+    "scale": 2.8,
+    "alignment": { "vertical": "top", "horizontal": "right" }
+  },
+  {
+    "id":"player_sprite",
+    "type": "sprite",
+    "src": "",
+    "scale": 1.8,
+    "alignment": { "vertical": "bottom", "horizontal": "left" }
+  }
+]

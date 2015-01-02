@@ -8,6 +8,7 @@
 #include "move.h"
 #include "uncrate.h"
 #include "inventory.h"
+#include "combat.h"
 
 #define PI 3.14159
 
@@ -114,6 +115,8 @@ namespace game
       if(enemy_find != end(map.enemies))
       {
         // Go into combat.
+        push_state(game_,
+                   std::make_shared<Combat_State>(game_, *this, *enemy_find));
       }
     }
 
