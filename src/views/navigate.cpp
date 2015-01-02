@@ -210,6 +210,12 @@ namespace game
                    map_sprite->texture(game_.graphics.renderer),
                    &viewport_src_rect, NULL);
 
+    // Render the map overlay
+    auto map_overlay_sprite = sprites.get_sprite(map.map_overlay_sprite);
+    SDL_RenderCopy(game_.graphics.renderer,
+                   map_overlay_sprite->texture(game_.graphics.renderer),
+                   &viewport_src_rect, NULL);
+
     map_corner = viewport_src.pos;
 
     // Render the player.
