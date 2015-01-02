@@ -50,7 +50,8 @@ namespace game
        labels_state == Labels_State::Combat &&
        fight_state == Fight_State::Player_Turn)
     {
-      apply_damage(enemy.entity_data, decl::damage());
+      auto add_attack = navigate.effects.additional_damage(active_player());
+      apply_damage(enemy.entity_data, decl::damage() + add_attack);
       fight_state = Fight_State::Enemy_Turn;
     }
     else if(label_view.done && label_view.selected == 2 &&
@@ -91,7 +92,12 @@ namespace game
     }
     else if(fight_state == Fight_State::Enemy_Turn)
     {
-      apply_damage(active_player().entity_data, decl::damage());
+      // Find any additional defense of the player.
+      auto p_def = navigate.effects.additional_defense(active_player());
+      p_def += active_player().combat_defense;
+
+      apply_damage(active_player().entity_data, decl::damage(), p_def);
+
       fight_state = Fight_State::Player_Turn;
       label_view.done = false;
     }
@@ -117,6 +123,8 @@ namespace game
   void Combat_State::on_exit() noexcept
   {
     game_.presenter.handle_events(true);
+
+    active_player().combat_defense = 0;
   }
 
   void Combat_State::switch_to_inventory_view() noexcept
