@@ -27,6 +27,10 @@ namespace game
                                                   ITEMS_JSON, ENEMIES_JSON,
                                                   HUD_JSON));
     });
+    game.presenter.use_handler("on_quit", [this](Vec<int>)
+    {
+      pop_state(game_);
+    });
   }
 
   void Menu_State::handle_event(SDL_Event const& event) noexcept {}
