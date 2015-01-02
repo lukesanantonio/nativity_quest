@@ -117,6 +117,7 @@ namespace game
         // Go into combat.
         push_state(game_,
                    std::make_shared<Combat_State>(game_, *this, *enemy_find));
+        return;
       }
     }
 
@@ -137,6 +138,7 @@ namespace game
       {
         push_state(game_,
                    std::make_shared<Uncrate_State>(game_, *this, *chest_find));
+        return;
       }
     }
 
