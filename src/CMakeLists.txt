@@ -10,7 +10,7 @@ add_subdirectory(game)
 add_subdirectory(ui)
 add_subdirectory(views)
 
-add_executable(quest main.cpp Map.cpp)
+add_executable(quest main.cpp Map.cpp Player.cpp)
 target_link_libraries(quest commonlib decllib gamelib uilib viewlib)
 
 target_link_libraries(quest ${SDL2_LIBRARIES})

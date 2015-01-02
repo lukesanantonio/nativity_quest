@@ -8,6 +8,7 @@
 #include "../common/vec.h"
 #include "../decl/sprites.h"
 #include "../decl/players.h"
+#include "../decl/effects.h"
 namespace game
 {
   struct Navigate_State : public Game_State
@@ -34,6 +35,8 @@ namespace game
     mutable Vec<int> map_corner;
 
     Vec<double> move = {0,0};
+
+    decl::Effects effects;
 
     void handle_event(SDL_Event const&) noexcept override;
     void step() noexcept override;

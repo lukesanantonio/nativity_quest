@@ -14,6 +14,11 @@
 
 namespace game
 {
+  namespace decl
+  {
+    struct Effects;
+  }
+
   struct Player
   {
     // Position on the map.
@@ -32,10 +37,15 @@ namespace game
     Vec<int> spawn_pt = {};
 
     short sprite_frame = 0;
+
+    // effect variables
+    int turns_of_haste = 0;
+    int combat_defense = 0;
+    bool flare = false;
   };
 
   void reset_fog(Player&, Vec<int> extents) noexcept;
-  void unfog(Player&) noexcept;
+  void unfog(Player&, decl::Effects&) noexcept;
 
   inline void respawn(Player& p) noexcept
   {

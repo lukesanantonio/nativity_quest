@@ -26,7 +26,8 @@ namespace game
                                    map(sprites, map_json, items_decl_json,
                                        enemies_decl_json),
                                    player(0),
-                                   hud{parse_json(hud_json)}
+                                   hud{parse_json(hud_json)},
+                                   effects{&map.items}
   {
     for(int player_index = 0; player_index < map.players.size();
         ++player_index)

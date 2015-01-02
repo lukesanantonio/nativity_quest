@@ -3,6 +3,6 @@
 # All rights reserved.
 
 add_library(decllib STATIC combat.cpp items.cpp zones.cpp players.cpp
-                           enemies.cpp sprites.cpp)
+                           enemies.cpp sprites.cpp effects.cpp)
 
 target_link_libraries(decllib commonlib)
