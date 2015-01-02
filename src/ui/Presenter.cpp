@@ -204,7 +204,7 @@ namespace game { namespace ui
       else if(elem.element.which() == 2)
       {
         auto spr_elem = boost::get<ui::Sprite>(elem.element);
-        auto sprite = sprites_->get_sprite(spr_elem.src);
+        auto sprite = sprites_->get_sprite(spr_elem.src, spr_elem.frame);
 
         auto src = Volume<int>{{0, 0}, sprite->surface()->w,
                                sprite->surface()->h};

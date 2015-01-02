@@ -70,7 +70,7 @@ namespace game { namespace ui
   template <class Doc>
   Element_Data parse_sprite(Doc const& doc)
   {
-    auto sprite = Sprite{doc["src"].GetString(), doc["scale"].GetDouble()};
+    auto sprite = Sprite{doc["src"].GetString(), 0, doc["scale"].GetDouble()};
     if_has_member(doc, "border",
     [&sprite](auto const& elem)
     {

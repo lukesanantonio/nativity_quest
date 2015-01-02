@@ -32,6 +32,8 @@ namespace game { namespace ui
   struct Sprite
   {
     std::string src;
+    short frame = 0;
+
     double scale = 1.0;
 
     boost::optional<Volume<int> > vol;
