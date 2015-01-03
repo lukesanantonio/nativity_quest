@@ -13,11 +13,7 @@ namespace game
 {
   struct Navigate_State : public Game_State
   {
-    Navigate_State(Game& game, std::string sprite_json,
-                   std::string players_json, std::string map_json,
-                   std::string items_decl_json,
-                   std::string enemies_decl_json,
-                   std::string hud_json) noexcept;
+    Navigate_State(Game& game) noexcept;
 
     decl::Sprites sprites;
     decl::Players players;

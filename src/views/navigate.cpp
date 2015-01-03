@@ -13,6 +13,13 @@
 
 #define PI 3.14159
 
+#define NAVIGATE_SPRITES "assets/navigation_sprites.json"
+#define PLAYERS_JSON "assets/player.json"
+#define MAP_JSON "assets/map.json"
+#define ITEMS_JSON "assets/items.json"
+#define ENEMIES_JSON "assets/enemies.json"
+#define HUD_JSON "assets/navigate_hud.json"
+
 namespace game
 {
   void Navigate_State::next_player() noexcept
@@ -32,19 +39,14 @@ namespace game
     // Push the next-player-animation state.
     push_state(game_, std::make_shared<Player_Switch_State>(game_, *this));
   }
-  Navigate_State::Navigate_State(Game& game, std::string sprite_json,
-                                 std::string players_json,
-                                 std::string map_json,
-                                 std::string items_decl_json,
-                                 std::string enemies_decl_json,
-                                 std::string hud_json) noexcept
+  Navigate_State::Navigate_State(Game& game) noexcept
                                  : Game_State(game, true),
-                                   sprites(sprite_json),
-                                   players(players_json),
-                                   map(sprites, map_json, items_decl_json,
-                                       enemies_decl_json),
+                                   sprites(NAVIGATE_SPRITES),
+                                   players(PLAYERS_JSON),
+                                   map(sprites, MAP_JSON, ITEMS_JSON,
+                                       ENEMIES_JSON),
                                    player(0),
-                                   hud{parse_json(hud_json)},
+                                   hud{parse_json(HUD_JSON)},
                                    effects{&map.items}
   {
     for(int player_index = 0; player_index < map.players.size();

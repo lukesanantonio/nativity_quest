@@ -16,7 +16,7 @@ namespace game
 {
   struct Menu_State : public Game_State
   {
-    Menu_State(Game& game, std::string const& menu_json);
+    Menu_State(Game& game);
 
     ui::Model model;
 

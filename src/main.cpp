@@ -22,17 +22,7 @@
 #include "common/except.h"
 
 #define GAME_DECL_JSON "assets/game.json"
-
-#define SPRITES_JSON "assets/sprites.json"
-
-#define CHAR_JSON "assets/char.json"
-#define ITEMS_JSON "assets/items.json"
-#define ZONES_JSON "assets/zones.json"
-#define ENEMIES_JSON "assets/enemies.json"
-
 #define FONT_FILE "assets/DejaVuSans.ttf"
-
-#define MENU_JSON "assets/menu.json"
 
 int main(int argc, char** argv)
 {
@@ -44,19 +34,9 @@ int main(int argc, char** argv)
 
     auto font = game::Font_Renderer{FONT_FILE};
     auto game = game::Game{std::move(g), std::move(font)};
-#if 0
-                      game::Turn_Data{ITEMS_JSON, ZONES_JSON, CHAR_JSON,
-                                      ENEMIES_JSON} };
-    {
-      auto& turn = boost::get<game::Turn_Data>(state.state_data);
-
-      auto map_sprite = sprites.get_sprite(turn.map->zones.map_asset());
-      turn.map->extents = {map_sprite->surface()->w, map_sprite->surface()->h};
-    }
-#endif
 
     // Our menu is going to be our top level state.
-    push_state(game, std::make_shared<game::Menu_State>(game, MENU_JSON));
+    push_state(game, std::make_shared<game::Menu_State>(game));
 
     pong::Timer<> timer;
 

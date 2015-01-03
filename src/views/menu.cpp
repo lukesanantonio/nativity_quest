@@ -6,26 +6,16 @@
 #include "../common/json.h"
 #include "navigate.h"
 
-#define NAVIGATE_SPRITES "assets/navigation_sprites.json"
-#define PLAYERS_JSON "assets/player.json"
-#define MAP_JSON "assets/map.json"
-#define ITEMS_JSON "assets/items.json"
-#define ENEMIES_JSON "assets/enemies.json"
-#define HUD_JSON "assets/navigate_hud.json"
+#define MENU_JSON "assets/menu.json"
 
 namespace game
 {
-  Menu_State::Menu_State(Game& game, std::string const& menu_json)
-                         : model{parse_json(menu_json)}, Game_State(game, true)
+  Menu_State::Menu_State(Game& game)
+                         : model{parse_json(MENU_JSON)}, Game_State(game, true)
   {
     game.presenter.use_handler("on_start", [this](Vec<int>)
     {
-      push_state(game_,
-                 std::make_shared<Navigate_State>(game_,
-                                                  NAVIGATE_SPRITES,
-                                                  PLAYERS_JSON, MAP_JSON,
-                                                  ITEMS_JSON, ENEMIES_JSON,
-                                                  HUD_JSON));
+      push_state(game_, std::make_shared<Navigate_State>(game_));
     });
     game.presenter.use_handler("on_quit", [this](Vec<int>)
     {
