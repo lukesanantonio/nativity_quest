@@ -56,9 +56,9 @@ namespace game { namespace ui
 
   Color darker_color(Color color) noexcept
   {
-    return {static_cast<Color::component_t>(std::max(0, color.red - 0x55)),
-            static_cast<Color::component_t>(std::max(0, color.green - 0x55)),
-            static_cast<Color::component_t>(std::max(0, color.blue - 0x55))};
+    return {static_cast<Color::component_t>(std::max(0, color.red - 0x88)),
+            static_cast<Color::component_t>(std::max(0, color.green - 0x88)),
+            static_cast<Color::component_t>(std::max(0, color.blue - 0x88))};
   }
 
   void Presenter::present(Model& model, View& view,
