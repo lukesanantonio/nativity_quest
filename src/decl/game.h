@@ -12,7 +12,11 @@ namespace game { namespace decl
   {
     Game(std::string json) noexcept;
 
+    std::string title;
+
     Vec<int> size;
+
     bool fullscreen;
+    bool vsync;
   };
 } }

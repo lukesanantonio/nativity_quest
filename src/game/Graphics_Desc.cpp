@@ -5,22 +5,48 @@
 #include "Graphics_Desc.h"
 namespace game
 {
-  Graphics_Desc::Graphics_Desc(std::string const& title,
-                               Vec<int> const& extents,
-                               bool fullscreen)
-                               : extents_(extents)
+  Graphics_Desc::Graphics_Desc(decl::Game const& game_decl)
+                               : extents_(game_decl.size)
   {
-    auto flags = 0;
-    if(fullscreen)
+    if(SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-      flags |= SDL_WINDOW_FULLSCREEN;
+      throw Bad_Init{};
     }
-    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED,
-                              SDL_WINDOWPOS_UNDEFINED, extents.x, extents.y,
-                              flags);
+
+    // Use the first display mode.
+    if(extents_.x == 0 && extents_.y == 0 && game_decl.fullscreen)
+    {
+      if(SDL_GetNumVideoDisplays() < 1)
+      {
+        throw Bad_Display{};
+      }
+
+      SDL_DisplayMode display;
+      if(SDL_GetCurrentDisplayMode(0, &display) != 0)
+      {
+        throw Bad_Display{};
+      };
+
+      extents_.x = display.w;
+      extents_.y = display.h;
+    }
+
+    auto window_flags = 0;
+    if(game_decl.fullscreen)
+    {
+      window_flags |= SDL_WINDOW_FULLSCREEN;
+    }
+    window = SDL_CreateWindow(game_decl.title.c_str(),
+                              SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                              extents_.x, extents_.y, window_flags);
     if(!window) throw Bad_Window{};
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    auto render_flags = int{SDL_RENDERER_ACCELERATED};
+    if(game_decl.vsync)
+    {
+      render_flags |= SDL_RENDERER_PRESENTVSYNC;
+    }
+    renderer = SDL_CreateRenderer(window, -1, render_flags);
     if(!renderer)
     {
       SDL_DestroyWindow(window);

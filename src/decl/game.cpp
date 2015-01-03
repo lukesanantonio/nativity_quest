@@ -10,9 +10,12 @@ namespace game { namespace decl
   {
     auto doc = parse_json(json);
 
+    title = doc["title"].GetString();
+
     size.x = doc["size"]["width"].GetInt();
     size.y = doc["size"]["height"].GetInt();
 
     fullscreen = doc["fullscreen"].GetBool();
+    vsync = doc["vsync"].GetBool();
   }
 } }

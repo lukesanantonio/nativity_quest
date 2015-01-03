@@ -1,4 +1,6 @@
 {
-  "size": { "width": 1920, "height": 1080 },
-  "fullscreen": true
+  "title": "Nativity Quest",
+  "size": { "width": 0, "height": 0 },
+  "fullscreen": true,
+  "vsync": true
 }

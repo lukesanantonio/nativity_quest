@@ -40,9 +40,8 @@ int main(int argc, char** argv)
   {
     const auto game_decl = game::decl::Game(GAME_DECL_JSON);
 
-    auto g = game::Graphics_Desc{"Tommy's Game",
-                                 game_decl.size,
-                                 game_decl.fullscreen};
+    auto g = game::Graphics_Desc{game_decl};
+
     auto font = game::Font_Renderer{FONT_FILE};
     auto game = game::Game{std::move(g), std::move(font)};
 #if 0

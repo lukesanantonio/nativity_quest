@@ -8,16 +8,20 @@
 #include "SDL.h"
 
 #include "../common/vec.h"
+
+#include "../decl/game.h"
 namespace game
 {
+  struct Bad_Init {};
+
+  struct Bad_Display {};
+
   struct Bad_Window {};
   struct Bad_Renderer {};
 
   struct Graphics_Desc
   {
-    Graphics_Desc(std::string const& title,
-                  Vec<int> const& extents,
-                  bool fullscreen);
+    Graphics_Desc(decl::Game const& game_decl);
     Graphics_Desc(Graphics_Desc&& g) noexcept;
 
     ~Graphics_Desc() noexcept;
