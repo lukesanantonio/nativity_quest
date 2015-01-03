@@ -170,6 +170,10 @@ namespace game
   void Navigate_State::on_enter() noexcept
   {
     ui_dirty = true;
+
+    // Update the zone just in case.
+    update_cur_zone();
+
     game_.presenter.handle_events(true);
   }
   void Navigate_State::on_exit() noexcept
