@@ -6,6 +6,25 @@
 #include "../decl/combat.h"
 namespace game
 {
+  void set_bar_to_life(ui::Bar& bar, Entity_Data& et) noexcept
+  {
+    bar.max = et.max_life;
+    bar.cur = et.cur_life;
+  }
+
+  void set_bar_animating(ui::Bar& bar, Entity_Data& et, int delta_life,
+                         int step, int max_step) noexcept
+  {
+    auto res = 300;
+
+    auto bar_width = double(res / et.max_life);
+
+    bar.max = res;
+    bar.cur = int((bar_width * et.cur_life) +
+                  ((bar_width * delta_life) *
+                  ((max_step - step) / (double) max_step)));
+  }
+
   Combat_State::Combat_State(Game& g, Navigate_State& ns,
                              Enemy_Instance& e) noexcept
                              : Navigate_Sub_State(g, ns), enemy(e),
@@ -26,10 +45,10 @@ namespace game
     switch_to_combat_menu();
 
     auto& enemy_bar = boost::get<ui::Bar>(hud.elements[2].element);
-    auto& player_bar = boost::get<ui::Bar>(hud.elements[3].element);
+    set_bar_to_life(enemy_bar, enemy.entity_data);
 
-    enemy_bar.max = enemy.entity_data.max_life;
-    player_bar.max = active_player().entity_data.max_life;
+    auto& player_bar = boost::get<ui::Bar>(hud.elements[3].element);
+    set_bar_to_life(player_bar, active_player().entity_data);
 
     fight_state = Fight_State::Player_Turn;
   }
@@ -39,85 +58,159 @@ namespace game
   }
   void Combat_State::step() noexcept
   {
-    if(active_player().entity_data.cur_life == 0 ||
-       enemy.entity_data.cur_life == 0)
+    // Check if anyone won yet.
+    if(enemy.entity_data.cur_life == 0 &&
+       fight_state == Fight_State::Enemy_Turn)
     {
-      pop_state(game_);
+      fight_state = Fight_State::Player_Won;
     }
-
-    auto& label_view = boost::get<ui::Label_View>(hud.elements.back().element);
-    if(label_view.done && label_view.selected == 0 &&
-       labels_state == Labels_State::Combat &&
+    if(active_player().entity_data.cur_life == 0 &&
        fight_state == Fight_State::Player_Turn)
     {
-      auto add_attack = navigate.effects.additional_damage(active_player());
-      apply_damage(enemy.entity_data, decl::damage() + add_attack);
-      fight_state = Fight_State::Enemy_Turn;
+      fight_state = Fight_State::Enemy_Won;
     }
-    else if(label_view.done && label_view.selected == 2 &&
-            labels_state == Labels_State::Combat &&
-            fight_state == Fight_State::Player_Turn)
-    {
-      std::mt19937 prng{random_device()};
 
-      std::uniform_int_distribution<int> dist(0, 2);
-      if(dist(prng) == 0)
+    constexpr auto animation_speed = 40;
+
+    switch(fight_state)
+    {
+      case Fight_State::Enemy_Won:
+      case Fight_State::Player_Won:
       {
-        enemy.not_fighting = 6;
+        // The navigation state handles respawning and enemy cleanup!
         pop_state(game_);
+        break;
       }
-      else
+      case Fight_State::Player_Turn:
       {
-        fight_state = Fight_State::Enemy_Turn;
-      }
-    }
-    else if(label_view.done && label_view.selected == 1 &&
-            labels_state == Labels_State::Combat &&
-            fight_state == Fight_State::Player_Turn)
-    {
-      label_view.done = false;
-      switch_to_inventory_view();
-    }
-    else if(label_view.done && labels_state == Labels_State::Inventory)
-    {
-      auto sel_item = active_player().inventory[label_view.selected];
+        auto& label_view =
+                       boost::get<ui::Label_View>(hud.elements.back().element);
 
-      auto& effects = navigate.effects;
-      if(effects.used_in_combat(sel_item))
-      {
-        effects.apply_effect(active_player(), sel_item);
-
-        active_player().inventory[label_view.selected] = decl::no::item;
-
-        if(active_player().flare)
+        // If the player wants to attack.
+        if(label_view.done && label_view.selected == 0 &&
+           labels_state == Labels_State::Combat)
         {
-          enemy.not_fighting = 12;
-          replace_state(game_, std::make_shared<Flare_State>(game_));
+          // Find our additional attack power
+          auto add_attack =navigate.effects.additional_damage(active_player());
 
-          return;
+          // Do the damage
+          last_damage = apply_damage(enemy.entity_data,
+                                     decl::damage() + add_attack);
+          // Animate the enemy bar
+          fight_state = Fight_State::Enemy_Animating;
+          cur_step = 0;
+          max_step = animation_speed * last_damage;
+        }
+        else if(label_view.done && label_view.selected == 2 &&
+                labels_state == Labels_State::Combat)
+        {
+          std::mt19937 prng{random_device()};
+
+          std::uniform_int_distribution<int> dist(0, 2);
+          if(dist(prng) == 0)
+          {
+            enemy.not_fighting = 6;
+            pop_state(game_);
+          }
+          else
+          {
+            // We don't need to animate anything, just go to enemy's turn.
+            fight_state = Fight_State::Enemy_Turn;
+          }
+        }
+        else if(label_view.done && label_view.selected == 1 &&
+                labels_state == Labels_State::Combat)
+        {
+          // Go to inventory view.
+          label_view.done = false;
+          switch_to_inventory_view();
+        }
+        else if(label_view.done && labels_state == Labels_State::Inventory)
+        {
+          auto sel_item = active_player().inventory[label_view.selected];
+
+          auto& effects = navigate.effects;
+          if(effects.used_in_combat(sel_item))
+          {
+            effects.apply_effect(active_player(), sel_item);
+
+            active_player().inventory[label_view.selected] = decl::no::item;
+
+            if(active_player().flare)
+            {
+              enemy.not_fighting = 12;
+              // Replace ourselves with the flare, which will exit the fight.
+              replace_state(game_, std::make_shared<Flare_State>(game_));
+
+              return;
+            }
+
+            switch_to_combat_menu();
+          }
+          label_view.done = false;
+        }
+        break;
+      }
+      case Fight_State::Enemy_Turn:
+      {
+        // Find any additional defense of the player.
+        auto p_def = navigate.effects.additional_defense(active_player());
+        p_def += active_player().combat_defense;
+
+        last_damage = apply_damage(active_player().entity_data,
+                                   decl::damage(), p_def);
+
+        fight_state = Fight_State::Player_Animating;
+
+        auto& label_view =
+                       boost::get<ui::Label_View>(hud.elements.back().element);
+        label_view.done = false;
+
+        cur_step = 0;
+        max_step = animation_speed * last_damage;
+        break;
+      }
+      case Fight_State::Enemy_Animating:
+      {
+        auto& enemy_bar = boost::get<ui::Bar>(hud.elements[2].element);
+
+        if(max_step == cur_step)
+        {
+          fight_state = Fight_State::Enemy_Turn;
+          set_bar_to_life(enemy_bar, enemy.entity_data);
         }
 
-        switch_to_combat_menu();
+        set_bar_animating(enemy_bar, enemy.entity_data, last_damage, cur_step,
+                          max_step);
+
+        ++cur_step;
+
+
+        break;
       }
-      label_view.done = false;
+      case Fight_State::Player_Animating:
+      {
+        auto& player_bar = boost::get<ui::Bar>(hud.elements[3].element);
+
+        if(max_step == cur_step)
+        {
+          fight_state = Fight_State::Player_Turn;
+          set_bar_to_life(player_bar, active_player().entity_data);
+        }
+
+        set_bar_animating(player_bar, active_player().entity_data,
+                          last_damage, cur_step, max_step);
+
+        ++cur_step;
+
+
+        break;
+      }
+      case Fight_State::Running:
+      {
+        break;
+      }
     }
-    else if(fight_state == Fight_State::Enemy_Turn)
-    {
-      // Find any additional defense of the player.
-      auto p_def = navigate.effects.additional_defense(active_player());
-      p_def += active_player().combat_defense;
-
-      apply_damage(active_player().entity_data, decl::damage(), p_def);
-
-      fight_state = Fight_State::Player_Turn;
-      label_view.done = false;
-    }
-
-    auto& enemy_bar = boost::get<ui::Bar>(hud.elements[2].element);
-    enemy_bar.cur = enemy.entity_data.cur_life;
-
-    auto& player_bar = boost::get<ui::Bar>(hud.elements[3].element);
-    player_bar.cur = active_player().entity_data.cur_life;
 
     game_.view.reset();
     game_.presenter.present(hud, game_.view, game_.graphics.size());

@@ -19,6 +19,8 @@ namespace game
     Player_Won,
     Player_Turn,
     Enemy_Turn,
+    Enemy_Animating,
+    Player_Animating,
     Running
   };
 
@@ -53,6 +55,10 @@ namespace game
     void switch_to_combat_menu() noexcept;
 
     Labels_State labels_state;
+
+    int cur_step = 0;
+    int max_step = 0;
+    int last_damage = 0;
   };
 
   inline Player& Combat_State::active_player() noexcept
