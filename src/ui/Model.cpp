@@ -53,6 +53,11 @@ namespace game { namespace ui
     {
       text.col = elem.GetString();
     });
+    if_has_member(doc, "back_color",
+    [&text](auto const& elem)
+    {
+      text.back_col = elem.GetString();
+    });
     return text;
   }
   template <class Doc>

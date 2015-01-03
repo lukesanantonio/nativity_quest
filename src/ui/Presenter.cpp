@@ -201,6 +201,12 @@ namespace game { namespace ui
           view.box({vol, get_color_from_str(button.col), true});
           buttons_.push_back({button.event, vol});
         }
+        else if(boost::get<Text>(elem.element).back_col)
+        {
+          auto& text = boost::get<Text>(elem.element);
+          auto col = get_color_from_str(text.back_col.value());
+          view.box({vol, col, true});
+        }
 
         ++vol.pos.x;
         ++vol.pos.y;

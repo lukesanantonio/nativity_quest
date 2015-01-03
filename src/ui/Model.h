@@ -19,6 +19,7 @@ namespace game { namespace ui
     std::string str;
 
     std::string col;
+    boost::optional<std::string> back_col;
   };
 
   struct Button

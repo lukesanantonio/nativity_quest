@@ -14,7 +14,8 @@
     "alignment": { "vertical": "top", "horizontal": "right" },
     "padding": { "top": 5, "left": 5 },
     "autohide": 0.0,
-    "color": "black"
+    "color": "black",
+    "back_color": "white"
   },
   {
     "type": "button",
