@@ -127,25 +127,32 @@ namespace game
         }
         else if(label_view.done && labels_state == Labels_State::Inventory)
         {
-          auto sel_item = active_player().inventory[label_view.selected];
-
-          auto& effects = navigate.effects;
-          if(effects.used_in_combat(sel_item))
+          if(label_view.selected > 5)
           {
-            effects.apply_effect(active_player(), sel_item);
-
-            active_player().inventory[label_view.selected] = decl::no::item;
-
-            if(active_player().flare)
-            {
-              enemy.not_fighting = 12;
-              // Replace ourselves with the flare, which will exit the fight.
-              replace_state(game_, std::make_shared<Flare_State>(game_));
-
-              return;
-            }
-
             switch_to_combat_menu();
+          }
+          else
+          {
+            auto sel_item = active_player().inventory[label_view.selected];
+
+            auto& effects = navigate.effects;
+            if(effects.used_in_combat(sel_item))
+            {
+              effects.apply_effect(active_player(), sel_item);
+
+              active_player().inventory[label_view.selected] = decl::no::item;
+
+              if(active_player().flare)
+              {
+                enemy.not_fighting = 12;
+                // Replace ourselves with the flare, which will exit the fight.
+                replace_state(game_, std::make_shared<Flare_State>(game_));
+
+                return;
+              }
+
+              switch_to_combat_menu();
+            }
           }
           label_view.done = false;
         }
