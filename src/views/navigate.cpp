@@ -222,11 +222,104 @@ namespace game
     map_corner = viewport_src.pos;
 
     // Render the player.
-    auto player_scr_coord = (active_player.pos - viewport_src.pos) * map.scale;
+    for(int pl_id = 0; pl_id < map.players.size(); ++pl_id)
+    {
+      if(pl_id != player) render_player(map.players[pl_id],
+                                        viewport_src,
+                                        false);
+    }
+
+    render_player(active_player, viewport_src, true);
+
+    // Render any chests.
+    auto chest_sprite = sprites.get_sprite(map.chest_sprite);
+
+    for(auto const& chest : map.chests)
+    {
+      // Only render active chests, others have been opened and shouldn't be
+      // shown, TODO make an opened chest sprite.
+      if(!chest.visible) continue;
+
+      auto chest_extent =
+              Vec<int>{chest_sprite->surface()->w, chest_sprite->surface()->h};
+
+      SDL_Rect chest_dest;
+      chest_dest.x = chest.pos.x - viewport_src.pos.x - chest_extent.x / 2;
+      chest_dest.y = chest.pos.y - viewport_src.pos.y - chest_extent.y / 2;
+
+      // Scale to the viewport
+      chest_dest.x *= map.scale;
+      chest_dest.y *= map.scale;
+
+      chest_dest.w = chest_sprite->surface()->w * map.scale * .8;
+      chest_dest.h = chest_sprite->surface()->h * map.scale * .8;
+      SDL_RenderCopy(game_.graphics.renderer,
+                     chest_sprite->texture(game_.graphics.renderer),
+                     NULL, &chest_dest);
+    }
+
+    for(auto const& enemy : map.enemies) {
+      auto enemy_extents = Vec<int>{15, 15};
+
+      // Render fighting enemies red and non-fighting enemies yellow.
+      SDL_Rect enemy_dest;
+      enemy_dest.x = enemy.pos.x - viewport_src.pos.x - enemy_extents.x / 2;
+      enemy_dest.y = enemy.pos.y - viewport_src.pos.y - enemy_extents.y / 2;
+
+      // Scale to the viewport
+      enemy_dest.x *= map.scale;
+      enemy_dest.y *= map.scale;
+
+      enemy_dest.w = enemy_extents.x;
+      enemy_dest.h = enemy_extents.y;
+
+      if(enemy.not_fighting == 0)
+      {
+        SDL_SetRenderDrawColor(game_.graphics.renderer,
+                               0xff, 0x00, 0x00, 0xff);
+      }
+      else
+      {
+        SDL_SetRenderDrawColor(game_.graphics.renderer,
+                               0xff, 0xff, 0x00, 0xff);
+      }
+
+      SDL_RenderFillRect(game_.graphics.renderer, &enemy_dest);
+
+      --enemy_dest.x;
+      --enemy_dest.y;
+      enemy_dest.w += 2;
+      enemy_dest.h += 2;
+
+      SDL_SetRenderDrawColor(game_.graphics.renderer, 0x00, 0x00, 0x00, 0xff);
+      SDL_RenderDrawRect(game_.graphics.renderer, &enemy_dest);
+    }
+
+    // Render the fog of war.
+    if(active_player.fog.surface())
+    {
+      SDL_RenderCopy(game_.graphics.renderer,
+                     active_player.fog.texture(game_.graphics.renderer),
+                     &viewport_src_rect, NULL);
+    }
+
+    game_.view.render(game_.graphics);
+  }
+  void Navigate_State::render_player(Player const& p,
+                                Volume<int> const& viewport_src,
+                                bool use_orient) const noexcept
+  {
+    auto player_scr_coord = (p.pos - viewport_src.pos) * map.scale;
 
     // Determine the character orientation, then the required rotation in
     // addition to that.
     auto move_unit = normalize(move);
+
+    if(!use_orient)
+    {
+      move_unit = {0, 0};
+    }
+
     auto angle = std::atan2(move_unit.y, move_unit.x);
 
     auto segment_len = (2 * PI) / 4;
@@ -287,86 +380,11 @@ namespace game
     char_center.y = char_info.center.y * map.scale * char_scale;
 
     auto char_sprite = sprites.get_sprite(players.get_sprite(),
-                                          active_player.sprite_frame);
+                                          p.sprite_frame);
 
     SDL_RenderCopyEx(game_.graphics.renderer,
                      char_sprite->texture(game_.graphics.renderer),
                      &char_src, &char_dest,
                      angle / PI * 180, &char_center, SDL_FLIP_NONE);
-
-    // Render any chests.
-    auto chest_sprite = sprites.get_sprite(map.chest_sprite);
-
-    for(auto const& chest : map.chests)
-    {
-      // Only render active chests, others have been opened and shouldn't be
-      // shown, TODO make an opened chest sprite.
-      if(!chest.visible) continue;
-
-      auto chest_extent =
-              Vec<int>{chest_sprite->surface()->w, chest_sprite->surface()->h};
-
-      SDL_Rect chest_dest;
-      chest_dest.x = chest.pos.x - viewport_src.pos.x - chest_extent.x / 2;
-      chest_dest.y = chest.pos.y - viewport_src.pos.y - chest_extent.y / 2;
-
-      // Scale to the viewport
-      chest_dest.x *= map.scale;
-      chest_dest.y *= map.scale;
-
-      chest_dest.w = chest_sprite->surface()->w * map.scale * .8;
-      chest_dest.h = chest_sprite->surface()->h * map.scale * .8;
-      SDL_RenderCopy(game_.graphics.renderer,
-                     chest_sprite->texture(game_.graphics.renderer),
-                     NULL, &chest_dest);
-    }
-
-    for(auto const& enemy : map.enemies)
-    {
-      auto enemy_extents = Vec<int>{15, 15};
-
-      // Render fighting enemies red and non-fighting enemies yellow.
-      SDL_Rect enemy_dest;
-      enemy_dest.x = enemy.pos.x - viewport_src.pos.x - enemy_extents.x / 2;
-      enemy_dest.y = enemy.pos.y - viewport_src.pos.y - enemy_extents.y / 2;
-
-      // Scale to the viewport
-      enemy_dest.x *= map.scale;
-      enemy_dest.y *= map.scale;
-
-      enemy_dest.w = enemy_extents.x;
-      enemy_dest.h = enemy_extents.y;
-
-      if(enemy.not_fighting == 0)
-      {
-        SDL_SetRenderDrawColor(game_.graphics.renderer,
-                               0xff, 0x00, 0x00, 0xff);
-      }
-      else
-      {
-        SDL_SetRenderDrawColor(game_.graphics.renderer,
-                               0xff, 0xff, 0x00, 0xff);
-      }
-
-      SDL_RenderFillRect(game_.graphics.renderer, &enemy_dest);
-
-      --enemy_dest.x;
-      --enemy_dest.y;
-      enemy_dest.w += 2;
-      enemy_dest.h += 2;
-
-      SDL_SetRenderDrawColor(game_.graphics.renderer, 0x00, 0x00, 0x00, 0xff);
-      SDL_RenderDrawRect(game_.graphics.renderer, &enemy_dest);
-    }
-
-    // Render the fog of war.
-    if(active_player.fog.surface())
-    {
-      SDL_RenderCopy(game_.graphics.renderer,
-                     active_player.fog.texture(game_.graphics.renderer),
-                     &viewport_src_rect, NULL);
-    }
-
-    game_.view.render(game_.graphics);
   }
 }
