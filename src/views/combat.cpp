@@ -70,7 +70,7 @@ namespace game
       fight_state = Fight_State::Enemy_Won;
     }
 
-    constexpr auto animation_speed = 20;
+    constexpr auto animation_speed = 75;
 
     switch(fight_state)
     {
@@ -99,7 +99,8 @@ namespace game
           // Animate the enemy bar
           fight_state = Fight_State::Enemy_Animating;
           cur_step = 0;
-          max_step = animation_speed * last_damage;
+          max_step = animation_speed * last_damage /
+                     enemy.entity_data.max_life;
         }
         else if(label_view.done && label_view.selected == 2 &&
                 labels_state == Labels_State::Combat)
@@ -174,7 +175,8 @@ namespace game
         label_view.done = false;
 
         cur_step = 0;
-        max_step = animation_speed * last_damage;
+        max_step = animation_speed * last_damage /
+                   active_player().entity_data.max_life;
         break;
       }
       case Fight_State::Enemy_Animating:
@@ -186,11 +188,13 @@ namespace game
           fight_state = Fight_State::Enemy_Turn;
           set_bar_to_life(enemy_bar, enemy.entity_data);
         }
+        else
+        {
 
-        set_bar_animating(enemy_bar, enemy.entity_data, last_damage, cur_step,
-                          max_step);
-
-        ++cur_step;
+          set_bar_animating(enemy_bar, enemy.entity_data, last_damage,
+                            cur_step, max_step);
+          ++cur_step;
+        }
 
 
         break;
@@ -204,12 +208,12 @@ namespace game
           fight_state = Fight_State::Player_Turn;
           set_bar_to_life(player_bar, active_player().entity_data);
         }
-
-        set_bar_animating(player_bar, active_player().entity_data,
-                          last_damage, cur_step, max_step);
-
-        ++cur_step;
-
+        else
+        {
+          set_bar_animating(player_bar, active_player().entity_data,
+                            last_damage, cur_step, max_step);
+          ++cur_step;
+        }
 
         break;
       }
