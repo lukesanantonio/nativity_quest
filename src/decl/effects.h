@@ -22,7 +22,7 @@ namespace game
       bool character_locked(Item) const noexcept;
       bool used_in_navigation(Item) const noexcept;
       bool used_in_combat(Item) const noexcept;
-      void apply_effect(Player&, Item item) const noexcept;
+      bool apply_effect(Player&, Item item) const noexcept;
 
       Items* items = nullptr;
     };

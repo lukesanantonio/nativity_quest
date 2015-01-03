@@ -102,16 +102,17 @@ namespace game
 
     auto& effects = navigate.effects;
     auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
+
     if(label_view.done && effects.used_in_navigation(item))
     {
-      effects.apply_effect(player, item);
-      player.inventory[sel] = decl::no::item;
-      update_labels();
+      if(effects.apply_effect(player, item))
+      {
+        player.inventory[sel] = decl::no::item;
+        update_labels();
+      }
     }
-    else
-    {
-      label_view.done = false;
-    }
+
+    label_view.done = false;
   }
   void Inventory_View_State::on_extra_label_select() noexcept
   {

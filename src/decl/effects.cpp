@@ -118,10 +118,12 @@ namespace game { namespace decl
 
     return false;
   }
-  void Effects::apply_effect(Player& p, Item item) const noexcept
+  bool Effects::apply_effect(Player& p, Item item) const noexcept
   {
     if(item == items->get_item("Potion of Strength"))
     {
+      if(p.entity_data.cur_life == p.entity_data.max_life)
+      { return false; }
       reset_life(p.entity_data);
     }
     else if(item == items->get_item("Potion of Haste"))
@@ -136,5 +138,6 @@ namespace game { namespace decl
     {
       p.flare = true;
     }
+    return true;
   }
 } }
