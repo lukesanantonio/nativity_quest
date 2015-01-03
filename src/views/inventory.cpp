@@ -14,23 +14,13 @@ namespace game
     auto& player = navigate.map.players[navigate.player];
     auto& inventory = player.inventory;
 
-    for(auto item : inventory)
-    {
-      if(item)
-      {
-        label_view.labels.push_back(item->str);
-      }
-      else
-      {
-        label_view.labels.push_back("No item");
-      }
-    }
-
+    label_view.labels.resize(player.inventory.size());
     label_view.labels.push_back("Back");
     label_view.selected = 0;
     label_view.col = "black";
 
     hud.elements.push_back({label_view, {}, ui::Side::Bottom});
+    update_labels();
 
     auto item_sprite = ui::Sprite{};
     item_sprite.src = navigate.map.items.get_spritesheet();
@@ -58,9 +48,6 @@ namespace game
   void Inventory_View_State::handle_event(SDL_Event const&) noexcept {}
   void Inventory_View_State::step() noexcept
   {
-    game_.view.reset();
-    game_.presenter.present(hud, game_.view, game_.graphics.size());
-
     // Get the currently selected menu item in the label view.
     auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
 
@@ -79,6 +66,9 @@ namespace game
     {
       on_label_view_done();
     }
+
+    game_.view.reset();
+    game_.presenter.present(hud, game_.view, game_.graphics.size());
   }
   void Inventory_View_State::set_sprite_src(decl::Item item) noexcept
   {
@@ -111,14 +101,15 @@ namespace game
     set_sprite_src(item);
 
     auto& effects = navigate.effects;
-    if(effects.used_in_navigation(item))
+    auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
+    if(label_view.done && effects.used_in_navigation(item))
     {
       effects.apply_effect(player, item);
       player.inventory[sel] = decl::no::item;
+      update_labels();
     }
     else
     {
-      auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
       label_view.done = false;
     }
   }
@@ -139,5 +130,19 @@ namespace game
   void Inventory_View_State::on_exit() noexcept
   {
     game_.presenter.handle_events(false);
+  }
+
+  void Inventory_View_State::update_labels() noexcept
+  {
+    auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
+    if(navigate.active_player().inventory.size() <= label_view.labels.size())
+    {
+      for(int i = 0; i < navigate.active_player().inventory.size(); ++i)
+      {
+        auto item = navigate.active_player().inventory[i];
+        if(item) { label_view.labels[i] = item->str; }
+        else { label_view.labels[i] = "No item"; }
+      }
+    }
   }
 }

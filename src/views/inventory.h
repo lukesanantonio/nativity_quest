@@ -25,5 +25,7 @@ namespace game
     virtual void on_label_view_done() noexcept;
     virtual void on_inventory_label_select() noexcept;
     virtual void on_extra_label_select() noexcept;
+
+    void update_labels() noexcept;
   };
 }
