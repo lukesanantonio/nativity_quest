@@ -51,7 +51,7 @@ namespace game
       player.sprite_frame = player_index;
       respawn(player);
 
-      reset_fog(player, game.graphics.size());
+      reset_fog(player, map.size());
       unfog(player, effects);
     }
 
