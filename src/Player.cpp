@@ -6,6 +6,8 @@
 
 #include "common/pi.h"
 #include "decl/effects.h"
+
+#include <cmath>
 namespace game
 {
   void reset_fog(Player& p, Vec<int> extents) noexcept
@@ -76,45 +78,58 @@ namespace game
 
   void unfog(Player& p, decl::Effects& e) noexcept
   {
-    static auto view_radius = 0;
-    static auto pixels = std::vector<Vec<int> >{};
+    auto surface = p.fog.surface();
 
-    auto player_view_radius = e.view_radius(p);
+    SDL_LockSurface(surface);
 
-    if(view_radius != player_view_radius)
+    auto view_radius = int(e.view_radius(p));
+    for(int row = 1; row <= view_radius; ++row)
     {
-      view_radius = player_view_radius;
-      pixels = gen_pixels(view_radius);
+      using std::floor; using std::sqrt;
+      auto half_width = floor(sqrt((2.0 * view_radius * row) - (row * row)));
+
+      auto left_x = int(p.pos.x - half_width);
+
+      auto pos = Vec<int>{p.pos};
+
+      uint8_t* top_row = (uint8_t*) surface->pixels +
+                         (pos.y + view_radius - row) * surface->pitch +
+                         (left_x * surface->format->BytesPerPixel);
+      uint8_t* bottom_row = (uint8_t*) surface->pixels +
+                            (pos.y - view_radius + row) * surface->pitch +
+                            (left_x * surface->format->BytesPerPixel);
+
+      if(surface->h < p.pos.y + view_radius - row)
+      {
+        top_row = nullptr;
+      }
+      if(p.pos.y - view_radius + row < 0)
+      {
+        bottom_row = nullptr;
+      }
+
+      for(int col = 0; col < half_width * 2; ++col)
+      {
+        if(left_x + half_width < 0 || surface->w < left_x + half_width)
+        {
+          continue;
+        }
+
+        if(top_row)
+        {
+          *(uint32_t*)top_row = 0x00000000;
+          top_row += surface->format->BytesPerPixel;
+        }
+        if(bottom_row)
+        {
+          *(uint32_t*)bottom_row = 0x00000000;
+          bottom_row += surface->format->BytesPerPixel;
+        }
+      }
     }
 
-    // Sketch a the border of a circle than do a flood fill.
-    if(!p.fog.surface()) return;
+    SDL_UnlockSurface(surface);
 
-    SDL_Surface* fog = p.fog.surface();
     p.fog.texture(nullptr);
-
-    // This function clears the specified pixel of the fog surface.
-    auto clear_pixel = [fog, &p](Vec<int> pt)
-    {
-      pt.x += p.pos.x;
-      pt.y += p.pos.y;
-
-      if(pt.x < 0 || fog->w < pt.x) return;
-      if(pt.y < 0 || fog->h < pt.y) return;
-
-      constexpr auto clear_color = 0x00000000;
-
-      auto pixel_byte_ptr = (uint8_t*) fog->pixels;
-      pixel_byte_ptr += fog->pitch * int(pt.y);
-      pixel_byte_ptr += fog->format->BytesPerPixel * int(pt.x);
-
-      uint32_t* pixel_ptr = (uint32_t*) pixel_byte_ptr;
-      *pixel_ptr = clear_color;
-    };
-
-    for(auto const& pt : pixels)
-    {
-      clear_pixel(pt);
-    }
   }
 }
