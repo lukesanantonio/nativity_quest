@@ -33,6 +33,7 @@ namespace game
 
     // map coordinates.
     mutable Vec<int> map_corner;
+    bool moving_corner = false;
 
     Vec<double> move = {0,0};
 

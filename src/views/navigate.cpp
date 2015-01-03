@@ -9,6 +9,7 @@
 #include "uncrate.h"
 #include "inventory.h"
 #include "combat.h"
+#include "player_switch.h"
 
 #define PI 3.14159
 
@@ -27,6 +28,9 @@ namespace game
 
     // Change the active player.
     if(++player == map.players.size()) player = 0;
+
+    // Push the next-player-animation state.
+    push_state(game_, std::make_shared<Player_Switch_State>(game_, *this));
   }
   Navigate_State::Navigate_State(Game& game, std::string sprite_json,
                                  std::string players_json,
@@ -205,6 +209,12 @@ namespace game
     // Render the map.
     auto viewport_src = view_pt<int>(game_.graphics.size(), map.size(),
                                      active_player.pos, map.scale);
+    if(moving_corner)
+    {
+      viewport_src.pos = map_corner;
+    }
+
+    map_corner = viewport_src.pos;
 
     auto map_sprite = sprites.get_sprite(map.map_sprite);
 
@@ -219,7 +229,6 @@ namespace game
                    map_overlay_sprite->texture(game_.graphics.renderer),
                    &viewport_src_rect, NULL);
 
-    map_corner = viewport_src.pos;
 
     // Render the player.
     for(int pl_id = 0; pl_id < map.players.size(); ++pl_id)
