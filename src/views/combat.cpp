@@ -70,7 +70,7 @@ namespace game
       fight_state = Fight_State::Enemy_Won;
     }
 
-    constexpr auto animation_speed = 40;
+    constexpr auto animation_speed = 20;
 
     switch(fight_state)
     {
