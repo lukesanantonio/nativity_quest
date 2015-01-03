@@ -99,7 +99,7 @@ namespace game
                             (pos.y - view_radius + row) * surface->pitch +
                             (left_x * surface->format->BytesPerPixel);
 
-      if(surface->h < p.pos.y + view_radius - row)
+      if(surface->h <= p.pos.y + view_radius - row)
       {
         top_row = nullptr;
       }
