@@ -27,6 +27,8 @@ namespace game { namespace decl
 
     inline std::string get_item(short player_index) const noexcept
     { return starting_items_[player_index]; }
+    inline std::string get_name(short player_index) const noexcept
+    { return player_names_[player_index]; }
 
     inline Player_Sprite get_sprite_source(short orientation) const noexcept
     { return sprite_info_[orientation]; }
@@ -36,6 +38,7 @@ namespace game { namespace decl
     double sprite_scale_;
 
     std::array<std::string, 6> starting_items_;
+    std::array<std::string, 6> player_names_;
 
     std::array<Player_Sprite, 4> sprite_info_;
   };

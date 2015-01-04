@@ -30,6 +30,13 @@ namespace game { namespace decl
       starting_items_[4].assign(doc["player4_item"].GetString());
       starting_items_[5].assign(doc["player5_item"].GetString());
 
+      player_names_[0].assign(doc["player0_name"].GetString());
+      player_names_[1].assign(doc["player1_name"].GetString());
+      player_names_[2].assign(doc["player2_name"].GetString());
+      player_names_[3].assign(doc["player3_name"].GetString());
+      player_names_[4].assign(doc["player4_name"].GetString());
+      player_names_[5].assign(doc["player5_name"].GetString());
+
       auto const& decl_arr = doc["decl"];
       for(short index = 0; index < sprite_info_.size(); ++index)
       {
