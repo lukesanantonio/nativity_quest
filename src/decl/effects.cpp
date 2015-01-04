@@ -110,7 +110,8 @@ namespace game { namespace decl
   }
   bool Effects::used_in_combat(Item item) const noexcept
   {
-    if(item == items->get_item("Potion of Defense") ||
+    if(item == items->get_item("Potion of Strength") ||
+       item == items->get_item("Potion of Defense") ||
        item == items->get_item("Flare"))
     {
       return true;
