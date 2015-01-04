@@ -5,8 +5,11 @@
 #include "player_intro.h"
 namespace game
 {
-  Player_Intro::Player_Intro(Game& game, std::string player_name) noexcept
-                             : Game_State(game, false), max_step(50)
+  Player_Intro::Player_Intro(Game& game, Navigate_State& ns,
+                             std::string pn) noexcept
+                             : Navigate_Sub_State(game, ns),
+                               player_name(pn),
+                               max_step(80)
   {
     using namespace std::literals;
 
@@ -33,5 +36,11 @@ namespace game
     game_.view.reset();
     game_.presenter.present(hud, game_.view, game_.graphics.size());
     game_.view.render(game_.graphics);
+  }
+  void Player_Intro::on_exit() noexcept
+  {
+    auto& text = boost::get<ui::Text>(navigate.hud.elements[4].element);
+    text.str = "Player: " + player_name;
+    navigate.ui_dirty = true;
   }
 }

@@ -40,6 +40,10 @@ namespace game
 
     // Push the next-player-animation state.
     push_state(game_, std::make_shared<Player_Switch_State>(game_, *this));
+
+    auto& text = boost::get<ui::Text>(hud.elements[4].element);
+    text.str = " ";
+    ui_dirty = true;
   }
   Navigate_State::Navigate_State(Game& game) noexcept
                                  : Game_State(game, true),
@@ -172,8 +176,8 @@ namespace game
     {
       if(cur_zone->important)
       {
-        auto string = "Player " + std::to_string(player + 1);
-        push_state(game_, std::make_shared<Win_State>(game_, string));
+        auto win =std::make_shared<Win_State>(game_, players.get_name(player));
+        push_state(game_, std::move(win));
       }
     }
   }
@@ -181,7 +185,9 @@ namespace game
   {
     if(first)
     {
-      push_state(game_, std::make_shared<Player_Intro>(game_, "Player"));
+      auto intro =
+        std::make_shared<Player_Intro>(game_, *this, players.get_name(player));
+      push_state(game_, std::move(intro));
       first = false;
     }
 

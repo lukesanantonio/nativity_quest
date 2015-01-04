@@ -34,5 +34,14 @@
     "padding": { "bottom": 10 },
     "autohide": 0.75,
     "color": "black"
+  },
+  {
+    "type": "text",
+    "text": " ",
+    "alignment": { "vertical": "bottom", "horizontal": "left" },
+    "padding": { "bottom": 5, "left": 5 },
+    "autohide": 0.0,
+    "color": "white",
+    "back_color": "black"
   }
 ]

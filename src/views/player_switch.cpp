@@ -25,8 +25,9 @@ namespace game
 
     if(navigate.map_corner == active_player_src.pos)
     {
-      auto player_str = "Player " + std::to_string(navigate.player + 1);
-      replace_state(game_, std::make_shared<Player_Intro>(game_, player_str));
+      auto player_str = navigate.players.get_name(navigate.player);
+      auto intro = std::make_shared<Player_Intro>(game_, navigate, player_str);
+      replace_state(game_, std::move(intro));
     }
   }
 

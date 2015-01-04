@@ -3,21 +3,23 @@
  * All rights reserved.
  */
 #pragma once
-#include "../game/Game.h"
+#include "navigate.h"
 namespace game
 {
-  struct Player_Intro : public Game_State
+  struct Player_Intro : public Navigate_Sub_State
   {
-    Player_Intro(Game& game, std::string player_name) noexcept;
+    Player_Intro(Game& game, Navigate_State& ns,
+                 std::string player_name) noexcept;
 
     void handle_event(SDL_Event const&) noexcept;
     void step() noexcept;
     void render() const noexcept;
 
     inline void on_enter() noexcept {}
-    inline void on_exit() noexcept {}
+    void on_exit() noexcept;
 
     mutable ui::Model hud;
+    std::string player_name;
     int cur_step = 0;
     int max_step;
   };
