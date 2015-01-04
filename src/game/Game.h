@@ -64,8 +64,8 @@ namespace game
   {
     if(g.states.size()) g.states.back()->on_exit();
 
-    gs->on_enter();
     g.states.push_back(gs);
+    gs->on_enter();
   }
   inline void pop_state(Game& g) noexcept
   {
