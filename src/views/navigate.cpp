@@ -101,14 +101,12 @@ namespace game
   }
   void Navigate_State::step() noexcept
   {
-    auto& active_player = map.players[player];
-
     using std::begin; using std::end;
 
     // Remove any dead enemies.
     {
       auto new_end = std::remove_if(begin(map.enemies), end(map.enemies),
-      [](auto const& enemy)
+      [this](auto const& enemy)
       {
         return enemy.entity_data.cur_life == 0;
       });
@@ -117,10 +115,10 @@ namespace game
     }
 
     // Respawn ourselves if necessary.
-    if(active_player.entity_data.cur_life == 0)
+    if(active_player().entity_data.cur_life == 0)
     {
-      active_player.pos = active_player.spawn_pt;
-      reset_life(active_player.entity_data);
+      active_player().pos = active_player().spawn_pt;
+      reset_life(active_player().entity_data);
 
       // Switch player
       next_player();
@@ -129,13 +127,13 @@ namespace game
     // Check for any enemies in our view
     {
       auto enemy_find = std::find_if(begin(map.enemies), end(map.enemies),
-      [&active_player](auto const& enemy)
+      [this](auto const& enemy)
       {
         if(enemy.not_fighting) return false;
 
         // Check if they are a reasonable distance.
-        auto len = length(active_player.pos - Vec<double>{enemy.pos});
-        return len < active_player.view_radius;
+        auto len = length(active_player().pos - Vec<double>{enemy.pos});
+        return len < active_player().view_radius;
       });
 
       if(enemy_find != end(map.enemies))
@@ -150,14 +148,14 @@ namespace game
     // If we cleared the area of enemies, check for chests.
     {
       auto chest_find = std::find_if(begin(map.chests), end(map.chests),
-      [&active_player](auto const& chest)
+      [this](auto const& chest)
       {
         // If the chest isn't visible, don't allow it to be opened/found.
         if(!chest.visible) return false;
 
         // Check if it's a suitable distance.
-        auto len = length(active_player.pos - Vec<double>{chest.pos});
-        return len < active_player.view_radius;
+        auto len = length(active_player().pos - Vec<double>{chest.pos});
+        return len < active_player().view_radius;
       });
 
       if(chest_find != end(map.chests))
