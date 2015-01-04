@@ -49,6 +49,8 @@ namespace game
     inline Player& active_player() noexcept;
     inline Player const& active_player() const noexcept;
 
+    bool first = true;
+
   private:
     void render_player(Player const& p,
                        Volume<int> const& viewport_src,

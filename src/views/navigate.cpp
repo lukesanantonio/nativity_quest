@@ -11,6 +11,7 @@
 #include "combat.h"
 #include "player_switch.h"
 #include "win.h"
+#include "player_intro.h"
 
 #define PI 3.14159
 
@@ -178,6 +179,12 @@ namespace game
   }
   void Navigate_State::on_enter() noexcept
   {
+    if(first)
+    {
+      push_state(game_, std::make_shared<Player_Intro>(game_, "Player"));
+      first = false;
+    }
+
     ui_dirty = true;
 
     // Update the zone just in case.

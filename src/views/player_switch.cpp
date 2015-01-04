@@ -4,6 +4,8 @@
  */
 #include "player_switch.h"
 #include "../common/volume.h"
+
+#include "player_intro.h"
 namespace game
 {
   Player_Switch_State::Player_Switch_State(Game& g,
@@ -23,7 +25,8 @@ namespace game
 
     if(navigate.map_corner == active_player_src.pos)
     {
-      pop_state(game_);
+      auto player_str = "Player " + std::to_string(navigate.player + 1);
+      replace_state(game_, std::make_shared<Player_Intro>(game_, player_str));
     }
   }
 
