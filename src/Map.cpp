@@ -59,7 +59,7 @@ namespace game
 
     for(auto& player : players)
     {
-      player.entity_data.max_life = 10;
+      player.entity_data.max_life = 15;
       reset_life(player.entity_data);
     }
   }
