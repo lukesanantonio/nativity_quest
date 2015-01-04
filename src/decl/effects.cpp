@@ -51,7 +51,7 @@ namespace game { namespace decl
         ret += 2;
       }
     }
-    return ret;
+    return std::min(2, ret);
   }
   int Effects::additional_damage(Player const& p) const noexcept
   {
