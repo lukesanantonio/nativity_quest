@@ -17,6 +17,8 @@ namespace game
     // Max step size for the player.
     auto max_speed = 1.0;
 
+    max_speed /= navigate.cur_zone->speed_cost;
+
     auto max_movement = navigate.effects.max_movement(player);
 
     if(player.turns_of_haste)
@@ -66,7 +68,7 @@ namespace game
 
     // Mark some distance traveled.
     delta -= move_delta;
-    player.moved += move_length;
+    player.moved += move_length * navigate.cur_zone->speed_cost;
 
     unfog(player, navigate.effects);
 
@@ -74,7 +76,7 @@ namespace game
 
     // If we have less than the max units per step, it means we just
     // completed that and we can become static.
-    if(delta_len < max_speed || max_movement <= player.moved)
+    if(delta_len < max_speed || max_movement < player.moved + .9)
     {
       pop_state(game_);
     }

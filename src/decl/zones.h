@@ -126,7 +126,7 @@ namespace game { namespace decl
       }
 
       // Set defaults
-      auto zone = Zone_Impl{"Unknown", no::item, 0, false, 0};
+      auto zone = Zone_Impl{"Unknown", no::item, 1, false, 0};
 
       // Set the str.
       zone.str.assign((*iter)["str"].GetString());
