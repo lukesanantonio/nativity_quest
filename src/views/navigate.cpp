@@ -10,6 +10,7 @@
 #include "inventory.h"
 #include "combat.h"
 #include "player_switch.h"
+#include "win.h"
 
 #define PI 3.14159
 
@@ -168,6 +169,14 @@ namespace game
     }
 
     // Can it be? Have we reached Bethlehem?
+    if(cur_zone != decl::no::zone)
+    {
+      if(cur_zone->important)
+      {
+        auto string = "Player " + std::to_string(player);
+        push_state(game_, std::make_shared<Win_State>(game_, string));
+      }
+    }
   }
   void Navigate_State::on_enter() noexcept
   {
