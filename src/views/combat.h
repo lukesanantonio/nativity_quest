@@ -70,4 +70,9 @@ namespace game
   {
     return navigate.map.players[navigate.player];
   }
+
+  void set_bar_to_life(ui::Bar& bar, Entity_Data& et) noexcept;
+
+  void set_bar_animating(ui::Bar& bar, Entity_Data& et, int delta_life,
+                         int step, int max_step) noexcept;
 }
