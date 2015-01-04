@@ -27,22 +27,15 @@ namespace game { namespace decl
   {
     auto canteen = items->get_item("Canteen");
 
-    // Find a canteen in the player's inventory
-    using std::begin; using std::end;
-    auto item_find = std::find_if(begin(p.inventory), end(p.inventory),
-    [&](Item item)
+    auto ret = p.max_movement;
+    for(auto item : p.inventory)
     {
-      return item == canteen;
-    });
-
-    if(item_find == end(p.inventory))
-    {
-      return p.max_movement;
+      if(item == canteen)
+      {
+        ret += 20.0;
+      }
     }
-    else
-    {
-      return p.max_movement + 20.0;
-    }
+    return ret;
   }
   int Effects::additional_defense(Player const& p) const noexcept
   {
