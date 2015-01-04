@@ -160,7 +160,7 @@ namespace game
 
         // Check if it's a suitable distance.
         auto len = length(active_player().pos - Vec<double>{chest.pos});
-        return len < active_player().view_radius;
+        return len < active_player().view_radius / 10;
       });
 
       if(chest_find != end(map.chests))

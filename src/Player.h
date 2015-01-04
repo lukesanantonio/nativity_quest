@@ -26,7 +26,7 @@ namespace game
 
     std::array<decl::Item, 6> inventory;
 
-    double view_radius = 65.0;
+    double view_radius = 60.0;
     decl::Sprite_Impl fog = {};
 
     Entity_Data entity_data = {0, 0, 0};

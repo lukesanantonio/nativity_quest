@@ -2,7 +2,7 @@
   "sprite": "map",
   "overlay_sprite": "map_overlay",
 
-  "map_scale": 6.0,
+  "map_scale": 6.5,
   "minimap_scale": 0.25,
 
   "player0_spawn": { "x": 762, "y":  53},
