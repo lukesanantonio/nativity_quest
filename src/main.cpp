@@ -11,8 +11,6 @@
 #include "game/Graphics_Desc.h"
 #include "game/Game.h"
 
-#include "Sprite_Container.h"
-
 #include "decl/items.h"
 #include "decl/zones.h"
 #include "decl/game.h"
