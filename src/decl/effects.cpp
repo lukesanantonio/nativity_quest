@@ -13,11 +13,11 @@ namespace game { namespace decl
     {
       if(item == items->get_item("Torch"))
       {
-        more = std::max(more, 40.0);
+        more = std::max(more, 20.0);
       }
       else if(item == items->get_item("Flare"))
       {
-        more = std::max(more, 10.0);
+        more = std::max(more, 5.0);
       }
     }
 
@@ -41,7 +41,7 @@ namespace game { namespace decl
     }
     else
     {
-      return p.max_movement + 50.0;
+      return p.max_movement + 20.0;
     }
   }
   int Effects::additional_defense(Player const& p) const noexcept

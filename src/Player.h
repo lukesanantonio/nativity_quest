@@ -26,13 +26,13 @@ namespace game
 
     std::array<decl::Item, 6> inventory;
 
-    double view_radius = 85.0;
+    double view_radius = 65.0;
     decl::Sprite_Impl fog = {};
 
     Entity_Data entity_data = {0, 0, 0};
 
     double moved = 0.0;
-    double max_movement = 150.0;
+    double max_movement = 75.0;
 
     Vec<int> spawn_pt = {};
 
