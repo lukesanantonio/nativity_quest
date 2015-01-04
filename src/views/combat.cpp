@@ -142,7 +142,19 @@ namespace game
             auto& effects = navigate.effects;
             if(effects.used_in_combat(sel_item))
             {
+              auto et = active_player().entity_data;
               effects.apply_effect(active_player(), sel_item);
+
+              if(et.cur_life != active_player().entity_data.cur_life)
+              {
+                last_damage = et.cur_life -
+                              active_player().entity_data.cur_life;
+                fight_state = Fight_State::Player_Animating;
+                from_anim = Fight_State::Player_Turn;
+                cur_step = 0;
+                max_step = animation_speed * std::abs(last_damage) /
+                           active_player().entity_data.max_life;
+              }
 
               active_player().inventory[label_view.selected] = decl::no::item;
 
