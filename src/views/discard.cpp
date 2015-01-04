@@ -27,10 +27,10 @@ namespace game
   {
     auto sel = boost::get<ui::Label_View>(hud.elements[0].element).selected;
 
-    if(sel != 6)
+    if(sel < 6)
     {
       auto item = navigate.map.players[navigate.player].inventory[sel];
-      if(!navigate.effects.character_locked(item))
+      if(sel < 5)
       {
         navigate.map.players[navigate.player].inventory[sel] = extra_item;
       }

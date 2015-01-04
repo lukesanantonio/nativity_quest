@@ -84,20 +84,6 @@ namespace game { namespace decl
     }
     return ret;
   }
-  bool Effects::character_locked(Item item) const noexcept
-  {
-    if(item == items->get_item("Wool") ||
-       item == items->get_item("Starlight") ||
-       item == items->get_item("Gold")||
-       item == items->get_item("Gemstones") ||
-       item == items->get_item("Myrrh") ||
-       item == items->get_item("Incense"))
-    {
-      return true;
-    }
-
-    return false;
-  }
   bool Effects::used_in_navigation(Item item) const noexcept
   {
     if(item == items->get_item("Potion of Strength") ||
