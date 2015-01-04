@@ -6,6 +6,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <random>
 
 namespace game { namespace decl
 {
@@ -32,10 +33,19 @@ namespace game { namespace decl
     inline Enemy get_enemy(std::string const& str) noexcept;
   private:
     std::vector<Enemy> enemies_;
+
+    std::random_device r_device_;
   };
 
   inline Enemy Enemies::get_enemy(std::string const& str) noexcept
   {
+    if(str == "random")
+    {
+      std::mt19937 prng{r_device_()};
+      std::uniform_int_distribution<int> dist(0, enemies_.size() - 1);
+      return enemies_[dist(prng)];
+    }
+
     using std::begin; using std::end;
     auto e_find = std::find_if(begin(enemies_), end(enemies_),
     [&str](auto const& enemy)

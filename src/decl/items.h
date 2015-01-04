@@ -6,6 +6,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <random>
 
 #include "../common/vec.h"
 namespace game { namespace decl
@@ -34,6 +35,8 @@ namespace game { namespace decl
     Vec<int> sprite_extents_;
 
     std::vector<Item> items_;
+
+    mutable std::random_device r_device_;
   };
 
   namespace no

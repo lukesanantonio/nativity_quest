@@ -38,6 +38,12 @@ namespace game { namespace decl
   }
   Item Items::get_item(std::string const& str) const noexcept
   {
+    if(str == "random")
+    {
+      std::mt19937 prng{r_device_()};
+      std::uniform_int_distribution<int> dist(0, items_.size() - 1);
+      return items_[dist(prng)];
+    }
     using std::begin; using std::end;
     auto item_find = std::find_if(begin(items_), end(items_),
     [&str](auto item)
