@@ -60,12 +60,14 @@ namespace game
   {
     // Check if anyone won yet.
     if(enemy.entity_data.cur_life == 0 &&
-       fight_state == Fight_State::Enemy_Turn)
+       (fight_state == Fight_State::Enemy_Turn ||
+       fight_state == Fight_State::Player_Turn))
     {
       fight_state = Fight_State::Player_Won;
     }
     if(active_player().entity_data.cur_life == 0 &&
-       fight_state == Fight_State::Player_Turn)
+       (fight_state == Fight_State::Player_Turn ||
+       fight_state == Fight_State::Enemy_Turn))
     {
       fight_state = Fight_State::Enemy_Won;
     }
@@ -98,6 +100,7 @@ namespace game
                                      decl::damage() + add_attack);
           // Animate the enemy bar
           fight_state = Fight_State::Enemy_Animating;
+          from_anim = Fight_State::Enemy_Turn;
           cur_step = 0;
           max_step = animation_speed * last_damage /
                      enemy.entity_data.max_life;
@@ -154,6 +157,17 @@ namespace game
 
               switch_to_combat_menu();
             }
+            else if(sel_item == effects.items->get_item("Throwing Axe"))
+            {
+              last_damage = apply_damage(enemy.entity_data,
+                                         enemy.entity_data.defense + 2);
+              fight_state = Fight_State::Enemy_Animating;
+              from_anim = Fight_State::Player_Turn;
+              cur_step = 0;
+              max_step = animation_speed * last_damage /
+                         enemy.entity_data.max_life;
+              active_player().inventory[label_view.selected] = decl::no::item;
+            }
           }
           label_view.done = false;
         }
@@ -169,6 +183,7 @@ namespace game
                                    decl::damage(), p_def);
 
         fight_state = Fight_State::Player_Animating;
+        from_anim = Fight_State::Player_Turn;
 
         auto& label_view =
                        boost::get<ui::Label_View>(hud.elements.back().element);
@@ -185,7 +200,7 @@ namespace game
 
         if(max_step == cur_step)
         {
-          fight_state = Fight_State::Enemy_Turn;
+          fight_state = from_anim;
           set_bar_to_life(enemy_bar, enemy.entity_data);
         }
         else
@@ -196,7 +211,6 @@ namespace game
           ++cur_step;
         }
 
-
         break;
       }
       case Fight_State::Player_Animating:
@@ -205,7 +219,7 @@ namespace game
 
         if(max_step == cur_step)
         {
-          fight_state = Fight_State::Player_Turn;
+          fight_state = from_anim;
           set_bar_to_life(player_bar, active_player().entity_data);
         }
         else

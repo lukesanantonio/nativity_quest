@@ -45,6 +45,7 @@ namespace game
     Enemy_Instance& enemy;
 
     Fight_State fight_state;
+    Fight_State from_anim;
 
     std::random_device random_device;
 
