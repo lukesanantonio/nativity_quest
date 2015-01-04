@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 #include "inventory.h"
+#include "combat.h"
 namespace game
 {
   Inventory_View_State::Inventory_View_State(Game& g,
@@ -48,6 +49,22 @@ namespace game
   void Inventory_View_State::handle_event(SDL_Event const&) noexcept {}
   void Inventory_View_State::step() noexcept
   {
+    auto& bar = boost::get<ui::Bar>(hud.elements[2].element);
+    if(anim)
+    {
+      if(cur_step++ == max_step)
+      {
+        anim = false;
+      }
+
+      set_bar_animating(bar, navigate.active_player().entity_data, delta,
+                        cur_step, max_step);
+    }
+    else
+    {
+      set_bar_to_life(bar, navigate.active_player().entity_data);
+    }
+
     // Get the currently selected menu item in the label view.
     auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
 
@@ -105,10 +122,20 @@ namespace game
 
     if(label_view.done && effects.used_in_navigation(item))
     {
+      auto et = player.entity_data;
       if(effects.apply_effect(player, item))
       {
         player.inventory[sel] = decl::no::item;
         update_labels();
+
+        if(player.entity_data.cur_life != et.cur_life)
+        {
+          // Animate this change
+          anim = true;
+          delta = et.cur_life - player.entity_data.cur_life;
+          cur_step = 0;
+          max_step = std::abs(delta) * 15;
+        }
       }
     }
 

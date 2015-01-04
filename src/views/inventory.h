@@ -18,6 +18,11 @@ namespace game
     void on_exit() noexcept override;
 
     ui::Model hud;
+
+    int delta = 0;
+    int cur_step = 0;
+    int max_step = 0;
+    bool anim = false;
   protected:
     void set_sprite_src(decl::Item item) noexcept;
 
