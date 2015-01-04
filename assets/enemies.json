@@ -12,7 +12,7 @@
     "id": "snake",
     "str": "Mire Boa",
     "defense": 0,
-    "life": 3
+    "life": 4
   },
 
   {
@@ -35,7 +35,7 @@
     "sprite": "giant",
     "id": "giant",
     "str": "Giant",
-    "defense": 0,
+    "defense": 1,
     "life": 4
   },
 
@@ -43,7 +43,7 @@
     "sprite": "myrr",
     "id": "myrr",
     "str": "Myrr",
-    "defense": 2,
+    "defense": 3,
     "life": 5
   }
 ]
