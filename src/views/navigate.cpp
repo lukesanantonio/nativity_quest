@@ -171,7 +171,7 @@ namespace game
     {
       if(cur_zone->important)
       {
-        auto string = "Player " + std::to_string(player);
+        auto string = "Player " + std::to_string(player + 1);
         push_state(game_, std::make_shared<Win_State>(game_, string));
       }
     }
