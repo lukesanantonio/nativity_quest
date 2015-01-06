@@ -5,6 +5,5 @@
 #pragma once
 namespace game { namespace decl
 {
-  struct Invalid_Power_Level {};
   short damage() noexcept;
 } }
