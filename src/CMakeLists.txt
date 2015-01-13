@@ -8,7 +8,7 @@ add_subdirectory(common)
 add_subdirectory(decl)
 add_subdirectory(game)
 add_subdirectory(ui)
-add_subdirectory(views)
+add_subdirectory(states)
 
 add_executable(quest main.cpp Map.cpp Player.cpp)
 target_link_libraries(quest commonlib decllib gamelib uilib viewlib)
