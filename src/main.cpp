@@ -15,7 +15,7 @@
 #include "decl/zones.h"
 #include "decl/game.h"
 
-#include "views/menu.h"
+#include "states/menu.h"
 
 #include "common/except.h"
 
