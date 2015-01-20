@@ -52,20 +52,6 @@ namespace game { namespace ui
       child.view->layout(view_vol);
     }
   }
-  void Linear_Layout::render_() const noexcept
-  {
-    for(auto const& child : children_)
-    {
-      child.view->render();
-    }
-  }
-  void Linear_Layout::dispatch_event(SDL_Event const& event) noexcept
-  {
-    for(auto& child : children_)
-    {
-      child.view->dispatch_event(event);
-    }
-  }
   Vec<int> Linear_Layout::get_minimum_extents() const noexcept
   {
     auto bounds = Vec<int>{};

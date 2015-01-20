@@ -5,6 +5,15 @@
 namespace game { namespace ui
 {
   template <class T>
+  inline void View_Container<T>::dispatch_event(SDL_Event const& e) noexcept
+  {
+    for(auto& child : children_)
+    {
+      child.view->dispatch_event(e);
+    }
+  }
+
+  template <class T>
   void View_Container<T>::push_child(Shared_View v, T l) noexcept
   {
     children_.push_back({v, l});
@@ -72,5 +81,14 @@ namespace game { namespace ui
                                        i) noexcept
   {
     children_.erase(i);
+  }
+
+  template <class T>
+  inline void View_Container<T>::render_() const noexcept
+  {
+    for(auto const& child : children_)
+    {
+      child.view->render();
+    }
   }
 } }

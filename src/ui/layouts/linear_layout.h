@@ -11,7 +11,6 @@ namespace game { namespace ui
     Linear_Layout(Graphics_Desc& g) noexcept : View_Container(g) {}
 
     Vec<int> get_minimum_extents() const noexcept override;
-    void dispatch_event(SDL_Event const&) noexcept override;
 
     enum class Orient
     { Vertical, Horizontal };
@@ -20,6 +19,5 @@ namespace game { namespace ui
 
   private:
     void layout_(Volume<int>) override;
-    void render_() const noexcept override;
   };
 } }
