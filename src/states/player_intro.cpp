@@ -13,7 +13,7 @@ namespace game
   {
     using namespace std::literals;
 
-    auto text = ui::Text{player_name + "'s turn!", "white", 
+    auto text = ui::Text{player_name + "'s turn!", "white",
                          "black"s};
     auto alignment = ui::Alignment{ui::Horizontal_Alignment::Center,
                                    ui::Vertical_Alignment::Center};
