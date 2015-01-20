@@ -9,9 +9,6 @@
 
 #include "Graphics_Desc.h"
 #include "Font_Renderer.h"
-
-#include "../ui/View.h"
-#include "../ui/Presenter.h"
 namespace game
 {
   struct Game_State;
@@ -19,8 +16,7 @@ namespace game
   struct Game
   {
     Game(Graphics_Desc&& g, Font_Renderer&& f) noexcept
-         : graphics(std::move(g)), font(std::move(f)), running(true),
-           view(f) {}
+         : graphics(std::move(g)), font(std::move(f)), running(true) {}
 
     mutable Graphics_Desc graphics;
     Font_Renderer font;
@@ -29,9 +25,6 @@ namespace game
 
     using stack_t = std::vector<std::shared_ptr<Game_State> >;
     stack_t states;
-
-    ui::View view;
-    ui::Presenter presenter;
   };
 
   struct Game_State

@@ -3,83 +3,74 @@
  * All rights reserved.
  */
 #pragma once
-#include <string>
-
-#include "../common/surface.h"
-
-#include "../common/vec.h"
 #include "../common/volume.h"
-#include "../common/Color.h"
-
 #include "../game/Graphics_Desc.h"
-#include "../game/Font_Renderer.h"
 
-#include "../decl/sprites.h"
+#include <memory>
 namespace game { namespace ui
 {
-  struct Label
-  {
-    Label(std::string const& str = {},
-          int size = 0,
-          Vec<int> pos = {},
-          Color c = {}) noexcept
-          : str{str}, size{size}, pos{pos}, color(c) {}
+  struct View;
+  using Shared_View = std::shared_ptr<View>;
 
-    Label(Label const& label) noexcept;
-    Label(Label&& label) noexcept = default;
-
-    Label& operator=(Label const& label) noexcept;
-    Label& operator=(Label&& label) noexcept = default;
-
-    std::string str;
-    int size;
-    Vec<int> pos;
-    Color color;
-
-    mutable Surface_Ptr surface_cache_;
-    mutable Texture_Ptr texture_cache_;
-  };
-
-  struct Box
-  {
-    Volume<int> vol;
-    Color color;
-    bool filled = false;
-  };
-
-  struct Image
-  {
-    decl::Sprite sprite;
-
-    Volume<int> src;
-    Volume<int> dst;
-  };
+  struct Small_Volume_Error {};
 
   struct View
   {
-    View(Font_Renderer& font) noexcept : font_(&font) {}
+    View(Graphics_Desc& graphics) noexcept : graphics_(graphics) {}
+    virtual ~View() {}
 
-    void label(Label const& label) noexcept;
-    void box(Box const& box) noexcept;
-    void image(Image const& image) noexcept;
+    inline bool layout(Vec<int>);
+    inline bool layout(Volume<int>);
+    inline void render() const noexcept;
 
-    inline void font_renderer(Font_Renderer& font) noexcept
-    { font_ = &font; }
-    inline Font_Renderer& font_renderer() const noexcept
-    { return *font_; }
+    virtual Vec<int> get_minimum_extents() const noexcept = 0;
 
-    void reset() noexcept;
-    void render(Graphics_Desc& g) const noexcept;
+    virtual void dispatch_event(SDL_Event const&) noexcept = 0;
 
-    Vec<int> text_size(std::string str, int size) const noexcept;
+  protected:
+    inline Volume<int> const& volume_() const noexcept;
+
+    Graphics_Desc& graphics_;
   private:
-    // Regenerates a label's
-    void generate_label_surface_cache(Label const& l) const noexcept;
+    Volume<int> layed_out_vol_;
+    bool layed_out_ = false;
 
-    Font_Renderer* font_;
-
-    std::vector<Label> label_cache_;
-    std::vector<Box> box_cache_;
-    std::vector<Image> image_cache_;
+    inline virtual void layout_(Volume<int>) {}
+    virtual void render_() const noexcept = 0;
   };
+
+  inline Volume<int> const& View::volume_() const noexcept
+  {
+    return layed_out_vol_;
+  }
+
+  inline bool View::layout(Vec<int> size)
+  {
+    return layout({{0, 0}, size.x, size.y});
+  }
+  inline bool View::layout(Volume<int> vol)
+  {
+    try
+    {
+      layout_(std::move(vol));
+      layed_out_ = true;
+      layed_out_vol_ = vol;
+    }
+    catch(Small_Volume_Error& e)
+    {
+      return false;
+    }
+    catch(...)
+    {
+      throw;
+    }
+    return true;
+  }
+  inline void View::render() const noexcept
+  {
+    if(layed_out_)
+    {
+      render_();
+    }
+  }
 } }

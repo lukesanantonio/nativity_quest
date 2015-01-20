@@ -1,21 +1,24 @@
-[
-  {
-    "type": "text",
-    "text": "Nativity Quest",
-    "alignment": { "vertical": "top", "horizontal": "center" },
-    "padding": { "top": 10 }
-  },
-  {
-    "type": "button",
-    "text": "Start game",
-    "event": "on_start",
-    "alignment": { "vertical": "center", "horizontal": "center" }
-  },
-  {
-    "type": "button",
-    "text": "Quit",
-    "event": "on_quit",
-    "alignment": { "vertical": "bottom", "horizontal": "right" },
-    "padding": { "right": 10, "bottom": 10 }
-  }
-]
+{
+  "type":"linear_layout",
+  "orientation": "vertical",
+  "children":
+  [
+    {
+      "type": "label",
+      "str": "Nativity Quest",
+      "size": 54
+    },
+    {
+      "type": "label",
+      "str": "Start game",
+      "size": 54,
+      "event": "on_start"
+    },
+    {
+      "type": "label",
+      "str": "Quit",
+      "size": 54,
+      "event": "on_quit"
+    }
+  ]
+}

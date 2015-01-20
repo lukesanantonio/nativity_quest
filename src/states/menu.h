@@ -8,9 +8,9 @@
 
 #include "../game/Game.h"
 
-#include "SDL.h"
+#include "../ui/View.h"
 
-#include "../ui/Model.h"
+#include "SDL.h"
 
 namespace game
 {
@@ -18,7 +18,7 @@ namespace game
   {
     Menu_State(Game& game);
 
-    ui::Model model;
+    ui::Shared_View menu_ui;
 
     void handle_event(SDL_Event const&) noexcept override;
     void step() noexcept override;

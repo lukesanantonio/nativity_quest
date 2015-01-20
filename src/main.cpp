@@ -67,10 +67,8 @@ int main(int argc, char** argv)
             continue;
           }
         }
-        if(!game.presenter.event_notify(event))
-        {
-          state->handle_event(event);
-        }
+
+        state->handle_event(event);
       }
 
       // Did an event cause the state to change?
