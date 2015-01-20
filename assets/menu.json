@@ -5,18 +5,18 @@
   [
     {
       "type": "label",
-      "str": "Nativity Quest",
+      "text": "Nativity Quest",
       "size": 54
     },
     {
       "type": "label",
-      "str": "Start game",
+      "text": "Start game",
       "size": 54,
       "event": "on_start"
     },
     {
       "type": "label",
-      "str": "Quit",
+      "text": "Quit",
       "size": 54,
       "event": "on_quit"
     }

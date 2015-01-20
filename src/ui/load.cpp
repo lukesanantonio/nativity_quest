@@ -46,7 +46,7 @@ namespace game { namespace ui
     {
       Label label{game.graphics, game.font};
 
-      label.str(doc["str"].GetString());
+      label.str(doc["text"].GetString());
       label.size(doc["size"].GetInt());
       label.color({0xff, 0xff, 0xff});
 
