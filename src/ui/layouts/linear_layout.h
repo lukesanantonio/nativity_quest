@@ -18,6 +18,6 @@ namespace game { namespace ui
     Orient orientation;
 
   private:
-    void layout_(Volume<int>) override;
+    Volume<int> layout_() override;
   };
 } }

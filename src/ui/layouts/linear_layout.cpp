@@ -5,8 +5,10 @@
 #include "linear_layout.h"
 namespace game { namespace ui
 {
-  void Linear_Layout::layout_(Volume<int> vol)
+  Volume<int> Linear_Layout::layout_()
   {
+    auto vol = parent_volume_();
+
     // Record the data that we will need to change.
     int Vec<int>::* comp = nullptr;
     int Volume<int>::* extent = nullptr;
@@ -51,6 +53,8 @@ namespace game { namespace ui
       auto& child = children_[child_i];
       child.view->layout(view_vol);
     }
+
+    return vol;
   }
   Vec<int> Linear_Layout::get_minimum_extents() const noexcept
   {

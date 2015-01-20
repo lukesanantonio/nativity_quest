@@ -16,6 +16,8 @@ namespace game { namespace ui
     Vec<int> get_minimum_extents() const noexcept override;
     void dispatch_event(SDL_Event const&) noexcept override;
 
+    Volume<int> layout_() override;
+
     inline std::string str() const noexcept { return str_; }
     inline void str(std::string str) noexcept
     {

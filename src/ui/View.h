@@ -21,27 +21,35 @@ namespace game { namespace ui
 
     inline bool layout(Vec<int>);
     inline bool layout(Volume<int>);
-    inline void render() const noexcept;
+
+    inline void render() const noexcept { if(layed_out_) render_(); }
 
     virtual Vec<int> get_minimum_extents() const noexcept = 0;
 
     virtual void dispatch_event(SDL_Event const&) noexcept = 0;
 
   protected:
-    inline Volume<int> const& volume_() const noexcept;
+    inline Volume<int> const& parent_volume_() const noexcept;
+    inline Volume<int> const& this_volume_() const noexcept;
 
     Graphics_Desc& graphics_;
   private:
-    Volume<int> layed_out_vol_;
+    Volume<int> parent_vol_;
+    Volume<int> this_vol_;
+
     bool layed_out_ = false;
 
-    inline virtual void layout_(Volume<int>) {}
+    virtual Volume<int> layout_() = 0;
     virtual void render_() const noexcept = 0;
   };
 
-  inline Volume<int> const& View::volume_() const noexcept
+  inline Volume<int> const& View::parent_volume_() const noexcept
   {
-    return layed_out_vol_;
+    return parent_vol_;
+  }
+  inline Volume<int> const& View::this_volume_() const noexcept
+  {
+    return this_vol_;
   }
 
   inline bool View::layout(Vec<int> size)
@@ -52,9 +60,9 @@ namespace game { namespace ui
   {
     try
     {
-      layout_(std::move(vol));
+      parent_vol_ = std::move(vol);
+      this_vol_ = layout_();
       layed_out_ = true;
-      layed_out_vol_ = vol;
     }
     catch(Small_Volume_Error& e)
     {
@@ -65,12 +73,5 @@ namespace game { namespace ui
       throw;
     }
     return true;
-  }
-  inline void View::render() const noexcept
-  {
-    if(layed_out_)
-    {
-      render_();
-    }
   }
 } }

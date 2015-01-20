@@ -26,20 +26,28 @@ namespace game { namespace ui
 
   void Sprite::dispatch_event(SDL_Event const&) noexcept { }
 
-  void Sprite::render_() const noexcept
+  Volume<int> Sprite::layout_()
   {
-    auto dest = to_sdl_rect(volume_());
+    // TODO:
+    // This is copied from the Label's implementation, find some way to share
+    // this.
+    auto this_vol = parent_volume_();
 
     auto spr_extents = get_minimum_extents();
 
-    dest.x = center(dest.x, dest.w, spr_extents.x);
-    dest.y = center(dest.y, dest.h, spr_extents.y);
+    this_vol.pos.x = center(this_vol.pos.x, this_vol.width,  spr_extents.x);
+    this_vol.pos.y = center(this_vol.pos.y, this_vol.height, spr_extents.y);
 
-    dest.w = spr_extents.x;
-    dest.h = spr_extents.y;
+    this_vol.width = spr_extents.x;
+    this_vol.height = spr_extents.y;
 
+    return this_vol;
+  }
+  void Sprite::render_() const noexcept
+  {
     if(tex_)
     {
+      auto dest = to_sdl_rect(this_volume_());
       SDL_RenderCopy(graphics_.renderer, tex_.get(), NULL, &dest);
     }
   }

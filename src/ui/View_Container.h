@@ -55,7 +55,7 @@ namespace game { namespace ui
 
   private:
     // Left to be implemented by any deriving classes.
-    // void layout_(Volume<int>) override;
+    // Volume<int> layout_() override;
 
     inline void render_() const noexcept override;
   };

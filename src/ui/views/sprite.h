@@ -13,7 +13,8 @@ namespace game { namespace ui
 
     Vec<int> get_minimum_extents() const noexcept override;
     void dispatch_event(SDL_Event const&) noexcept override;
-    void layout_(Volume<int>) override;
+
+    Volume<int> layout_() override;
     void render_() const noexcept override;
 
     inline double scale() const noexcept { return scale_; }
