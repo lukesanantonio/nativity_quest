@@ -3,15 +3,26 @@
  * All rights reserved.
  */
 #include "Font_Renderer.h"
+
+#include <iostream>
+#include <cstdlib>
 namespace game
 {
   Font_Renderer::Font_Renderer(std::string font) noexcept : file_(font)
   {
-    if(!TTF_WasInit()) TTF_Init();
+    if(!TTF_WasInit())
+    {
+      if(TTF_Init() == -1)
+      {
+        std::cerr << "Failed to initialize SDL2_ttf: " << TTF_GetError()
+                  << std::endl;
+        std::abort();
+      }
+    }
   }
   Font_Renderer::~Font_Renderer() noexcept
   {
-    TTF_Quit();
+    if(TTF_WasInit()) TTF_Quit();
   }
   SDL_Surface* Font_Renderer::render_text(std::string text, int size,
                                           Color color) const noexcept
@@ -28,6 +39,12 @@ namespace game
     {
       font_cache_.push_back({TTF_OpenFont(file_.data(), size), size});
       ttf_font = std::get<0>(font_cache_.back());
+      if(!ttf_font)
+      {
+        std::cerr << "Failed to open font: " << TTF_GetError()
+                  << std::endl;
+        std::abort();
+      }
     }
     else
     {
