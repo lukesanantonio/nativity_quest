@@ -7,7 +7,7 @@ namespace game { namespace ui
 {
   Volume<int> Linear_Layout::layout_()
   {
-    auto vol = parent_volume_();
+    auto vol = parent_volume();
 
     // Record the data that we will need to change.
     int Vec<int>::* comp = nullptr;

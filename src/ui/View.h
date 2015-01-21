@@ -28,9 +28,8 @@ namespace game { namespace ui
 
     virtual void dispatch_event(SDL_Event const&) noexcept = 0;
 
-  protected:
-    inline Volume<int> const& parent_volume_() const noexcept;
-    inline Volume<int> const& this_volume_() const noexcept;
+    inline Volume<int> const& parent_volume() const noexcept;
+    inline Volume<int> const& this_volume() const noexcept;
 
     Graphics_Desc& graphics_;
   private:
@@ -43,11 +42,11 @@ namespace game { namespace ui
     virtual void render_() const noexcept = 0;
   };
 
-  inline Volume<int> const& View::parent_volume_() const noexcept
+  inline Volume<int> const& View::parent_volume() const noexcept
   {
     return parent_vol_;
   }
-  inline Volume<int> const& View::this_volume_() const noexcept
+  inline Volume<int> const& View::this_volume() const noexcept
   {
     return this_vol_;
   }

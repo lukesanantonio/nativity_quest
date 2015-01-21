@@ -21,7 +21,7 @@ namespace game { namespace ui
     if(event.type == SDL_MOUSEBUTTONDOWN &&
        event.button.button == SDL_BUTTON_LEFT)
     {
-      if(is_in(this_volume_(), Vec<int>{event.button.x, event.button.y}))
+      if(is_in(this_volume(), Vec<int>{event.button.x, event.button.y}))
       {
         
       }
@@ -29,7 +29,7 @@ namespace game { namespace ui
   }
   Volume<int> Label::layout_()
   {
-    auto this_vol = parent_volume_();
+    auto this_vol = parent_volume();
 
     auto spr_extents = get_minimum_extents();
 
@@ -48,7 +48,7 @@ namespace game { namespace ui
     // something.
     if(texture_cache_)
     {
-      auto dest = to_sdl_rect(this_volume_());
+      auto dest = to_sdl_rect(this_volume());
       SDL_RenderCopy(graphics_.renderer, texture_cache_.get(), NULL, &dest);
     }
   }

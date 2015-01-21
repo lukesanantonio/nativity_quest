@@ -31,7 +31,7 @@ namespace game { namespace ui
     // TODO:
     // This is copied from the Label's implementation, find some way to share
     // this.
-    auto this_vol = parent_volume_();
+    auto this_vol = parent_volume();
 
     auto spr_extents = get_minimum_extents();
 
@@ -47,7 +47,7 @@ namespace game { namespace ui
   {
     if(tex_)
     {
-      auto dest = to_sdl_rect(this_volume_());
+      auto dest = to_sdl_rect(this_volume());
       SDL_RenderCopy(graphics_.renderer, tex_.get(), NULL, &dest);
     }
   }
