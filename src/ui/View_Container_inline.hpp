@@ -84,6 +84,22 @@ namespace game { namespace ui
   }
 
   template <class T>
+  Shared_View View_Container<T>::find_child(std::string str_id) const noexcept
+  {
+    using std::begin; using std::end;
+    auto find_iter = std::find_if(begin(children_), end(children_),
+    [&str_id](auto const& c)
+    {
+      c.view.id == str_id;
+    });
+    if(find_iter != end(children_))
+    {
+      return find_iter->view;
+    }
+    else return {nullptr};
+  }
+
+  template <class T>
   inline void View_Container<T>::render_() const noexcept
   {
     for(auto const& child : children_)
