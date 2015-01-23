@@ -31,6 +31,7 @@ namespace game { namespace ui
     inline Volume<int> const& parent_volume() const noexcept;
     inline Volume<int> const& this_volume() const noexcept;
 
+  protected:
     Graphics_Desc& graphics_;
   private:
     Volume<int> parent_vol_;
