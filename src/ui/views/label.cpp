@@ -16,16 +16,10 @@ namespace game { namespace ui
   }
   void Label::dispatch_event(SDL_Event const& event) noexcept
   {
-    if(event_str_.empty()) return;
+    // We must be click able.
+    if(!click_) return;
 
-    if(event.type == SDL_MOUSEBUTTONDOWN &&
-       event.button.button == SDL_BUTTON_LEFT)
-    {
-      if(is_in(this_volume(), Vec<int>{event.button.x, event.button.y}))
-      {
-        
-      }
-    }
+    click_trigger_.check_trigger(*this, event);
   }
   Volume<int> Label::layout_()
   {
