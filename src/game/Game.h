@@ -60,6 +60,17 @@ namespace game
     g.states.push_back(gs);
     gs->on_enter();
   }
+
+  // S must satisfy the StandardGameState concept. It has the following
+  // requirements:
+  // - A constructor with the first parameter being a reference to a Game
+  // struct. There can be any number of arguments following.
+  template <class S, class... Args>
+  inline void push_state(Game& g, Args&&... args) noexcept
+  {
+    push_state(g, std::make_shared<S>(g, std::forward<Args>(args)...));
+  }
+
   inline void pop_state(Game& g) noexcept
   {
     g.states.back()->on_exit();
