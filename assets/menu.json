@@ -4,21 +4,24 @@
   "children":
   [
     {
+      "id": "title",
       "type": "label",
       "text": "Nativity Quest",
       "size": 54
     },
     {
+      "id": "start",
       "type": "label",
       "text": "Start game",
       "size": 54,
-      "event": "on_start"
+      "click": true
     },
     {
+      "id": "quit",
       "type": "label",
       "text": "Quit",
       "size": 54,
-      "event": "on_quit"
+      "click": true
     }
   ]
 }

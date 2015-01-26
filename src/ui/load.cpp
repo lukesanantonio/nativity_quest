@@ -31,9 +31,13 @@ namespace game { namespace ui
   template <class T>
   Shared_View load_view(Game& game, T const& doc) noexcept
   {
+    std::string id = doc.HasMember("id") ? doc["id"].GetString() : "";
+
     if(typeof(doc) == "linear_layout")
     {
       Linear_Layout view{game.graphics};
+      view.id = id;
+
       auto const& children = doc["children"];
       view.orientation = orientof(doc);
       for(auto iter = children.Begin(); iter != children.End(); ++iter)
@@ -45,10 +49,12 @@ namespace game { namespace ui
     else if(typeof(doc) == "label")
     {
       Label label{game.graphics, game.font};
+      label.id = id;
 
       label.str(doc["text"].GetString());
       label.size(doc["size"].GetInt());
       label.color({0xff, 0xff, 0xff});
+      label.click(doc.HasMember("click") ? doc["click"].GetBool() : false);
 
       return std::make_shared<Label>(std::move(label));
     }
