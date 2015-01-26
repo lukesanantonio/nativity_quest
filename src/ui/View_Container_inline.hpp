@@ -2,6 +2,7 @@
  * Copyright (C) 2014 Luke San Antonio
  * All rights reserved.
  */
+#include "cast.h"
 namespace game { namespace ui
 {
   template <class T>
@@ -90,13 +91,21 @@ namespace game { namespace ui
     auto find_iter = std::find_if(begin(children_), end(children_),
     [&str_id](auto const& c)
     {
-      c.view.id == str_id;
+      return c.view->id == str_id;
     });
     if(find_iter != end(children_))
     {
       return find_iter->view;
     }
     else return {nullptr};
+  }
+
+  template <class T>
+  template <class U>
+  std::shared_ptr<U>
+  View_Container<T>::find_child(std::string str) const noexcept
+  {
+    return as<U>(this->find_child(str));
   }
 
   template <class T>

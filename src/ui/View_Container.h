@@ -52,6 +52,9 @@ namespace game { namespace ui
 
     inline Shared_View find_child(std::string) const noexcept;
 
+    template <class T>
+    inline std::shared_ptr<T> find_child(std::string str) const noexcept;
+
   protected:
     child_vec_t children_;
 
