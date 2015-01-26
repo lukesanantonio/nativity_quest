@@ -1,47 +1,62 @@
-[
+{
+  "type":"side_layout",
+  "children":
   {
     "type": "sprite",
     "src": "map",
+    "border": "black",
+
+    "id": "map",
     "scale": 0.2,
+    "autohide": 0.0,
+
     "alignment": { "vertical": "top", "horizontal": "left" },
-    "padding": { "top": 5, "left": 5 },
-    "autohide": 0.0,
-    "border": "black"
+    "padding": { "top": 5, "left": 5 }
   },
   {
-    "type": "text",
+    "type": "label",
     "text": "Unknown Zone",
+    "color": "white",
+    "back_color": "black",
+
+    "id": "zone",
+    "autohide": 0.0,
+
     "alignment": { "vertical": "top", "horizontal": "right" },
-    "padding": { "top": 5, "left": 5 },
-    "autohide": 0.0,
-    "color": "white",
-    "back_color": "black"
+    "padding": { "top": 5, "left": 5 }
   },
   {
-    "type": "button",
+    "type": "label",
     "text": "Next Player",
-    "event": "on_next_player",
+    "click": true,
+    "color": "black",
+
+    "autohide": 0.75,
+
     "alignment": { "vertical": "bottom", "horizontal": "right" },
-    "padding": { "right": 10, "bottom": 10 },
-    "autohide": 0.75,
-    "color": "black"
+    "padding": { "right": 10, "bottom": 10 }
   },
   {
-    "type": "button",
+    "type": "label",
     "text": "Use item",
-    "event": "on_inventory_view",
-    "alignment": { "vertical": "bottom", "horizontal": "center" },
-    "padding": { "bottom": 10 },
+    "color": "black",
+    "click": true,
+
+    "id": "use_inventory",
     "autohide": 0.75,
-    "color": "black"
+
+    "alignment": { "vertical": "bottom", "horizontal": "center" },
+    "padding": { "bottom": 10 }
   },
   {
-    "type": "text",
-    "text": " ",
-    "alignment": { "vertical": "bottom", "horizontal": "left" },
-    "padding": { "bottom": 5, "left": 5 },
-    "autohide": 0.0,
+    "type": "label",
+    "text": "",
     "color": "white",
-    "back_color": "black"
+    "back_color": "black",
+
+    "autohide": 0.0,
+
+    "alignment": { "vertical": "bottom", "horizontal": "left" },
+    "padding": { "bottom": 5, "left": 5 }
   }
-]
+}
