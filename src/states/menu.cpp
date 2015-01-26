@@ -6,7 +6,10 @@
 #include "../common/json.h"
 //#include "navigate.h"
 
+#include "../ui/cast.h"
 #include "../ui/load.h"
+#include "../ui/layouts/linear_layout.h"
+#include "../ui/views/label.h"
 
 #define MENU_JSON "assets/menu.json"
 
@@ -16,16 +19,20 @@ namespace game
                          : menu_ui{ui::load(game, MENU_JSON)},
                            Game_State(game, true)
   {
-#if 0
-    game.presenter.use_handler("on_start", [this](Vec<int>)
+
+    auto layout = ui::as<ui::Linear_Layout>(menu_ui);
+    layout->find_child<ui::Label>("start")->use_click_handler(
+    [](Vec<int>)
     {
-      push_state(game_, std::make_shared<Navigate_State>(game_));
+      // start
     });
-    game.presenter.use_handler("on_quit", [this](Vec<int>)
+    layout->find_child<ui::Label>("quit")->use_click_handler(
+    [&](Vec<int>)
     {
+      // quit
       pop_state(game_);
     });
-#endif
+
     menu_ui->layout(game.graphics.size());
   }
 
