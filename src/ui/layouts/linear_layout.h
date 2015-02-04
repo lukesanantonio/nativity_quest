@@ -6,7 +6,12 @@
 #include "../View_Container.h"
 namespace game { namespace ui
 {
-  struct Linear_Layout : public View_Container<null_layout_t>
+  struct Linear_Layout_Params
+  {
+    int weight = 1;
+  };
+
+  struct Linear_Layout : public View_Container<Linear_Layout_Params>
   {
     Linear_Layout(Graphics_Desc& g) noexcept : View_Container(g) {}
 

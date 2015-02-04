@@ -37,25 +37,39 @@ namespace game { namespace ui
     }
     else { /* I'm retarded? */ }
 
+    using std::begin; using std::end;
+    auto divisions = std::accumulate(begin(children_), end(children_), 0,
+    [](int sum, auto const& child)
+    {
+      return sum + child.layout.weight;
+    });
+
     // The cell extent is the length of the axis that is going to be needing
     // an adjustment.
     // For example, if the orientation is vertical, the height is going to need
     // to change, while the width will stay constant for each child's cell.
-    int cell_extent = vol.*extent / children_.size();
+    int cell_extent = vol.*extent / divisions;
 
-    for(int child_i = 0; child_i < children_.size(); ++child_i)
+    for(unsigned int cur_weight = 0, child_i = 0;
+        child_i < children_.size();
+        ++child_i)
     {
       auto view_vol = vol;
 
-      view_vol.*extent = cell_extent;
-      view_vol.pos.*comp += cell_extent * child_i;
-
       auto& child = children_[child_i];
+
+      view_vol.*extent = cell_extent * child.layout.weight;
+      view_vol.pos.*comp += cell_extent * cur_weight;
+
+      cur_weight += child.layout.weight;
+
       child.view->layout(view_vol);
     }
 
     return vol;
   }
+
+  // This implementation is currently broken.
   Vec<int> Linear_Layout::get_minimum_extents() const noexcept
   {
     auto bounds = Vec<int>{};

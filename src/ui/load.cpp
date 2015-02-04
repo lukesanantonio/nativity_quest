@@ -42,7 +42,11 @@ namespace game { namespace ui
       view.orientation = orientof(doc);
       for(auto iter = children.Begin(); iter != children.End(); ++iter)
       {
-        view.push_child(load_view(game, *iter));
+        Linear_Layout_Params layout;
+        // Load the weight if provided.
+        layout.weight =
+                   iter->HasMember("weight") ?  (*iter)["weight"].GetInt() : 1;
+        view.push_child(load_view(game, *iter), layout);
       }
       return std::make_shared<Linear_Layout>(std::move(view));
     }
