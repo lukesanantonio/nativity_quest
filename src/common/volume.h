@@ -78,4 +78,10 @@ namespace game
     }
     return false;
   }
+
+  template <typename T>
+  Volume<T> vol_from_extents(Vec<T> const& v)
+  {
+    return {{0, 0}, v.x, v.y};
+  }
 }
