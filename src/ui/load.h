@@ -12,6 +12,11 @@ namespace game { namespace ui
 {
   struct Bad_Orientation{};
 
+  struct Invalid_Alignment
+  {
+    std::string align_str;
+  };
+
   Shared_View load(Game&, std::string file) noexcept;
 
   template <typename T>

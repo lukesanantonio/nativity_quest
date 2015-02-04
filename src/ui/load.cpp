@@ -5,6 +5,7 @@
 #include "load.h"
 #include "../common/json.h"
 #include "layouts/linear_layout.h"
+#include "layouts/side_layout.h"
 #include "views/label.h"
 namespace game { namespace ui
 {
@@ -29,6 +30,90 @@ namespace game { namespace ui
   }
 
   template <class T>
+  Padding load_padding(T const& doc)
+  {
+    auto ret = Padding{};
+    if(!doc.HasMember("padding")) return ret;
+
+    auto pad_obj = doc["padding"];
+    if_has_member(pad_obj, "left",
+    [&](auto const& val)
+    {
+      ret.left = val.AsInt();
+    });
+    if_has_member(pad_obj, "right",
+    [&](auto const& val)
+    {
+      ret.right = val.AsInt();
+    });
+    if_has_member(pad_obj, "top",
+    [&](auto const& val)
+    {
+      ret.top = val.AsInt();
+    });
+    if_has_member(pad_obj, "bottom",
+    [&](auto const& val)
+    {
+      ret.bottom = val.AsInt();
+    });
+
+    return ret;
+  }
+
+  template <class T>
+  Alignment load_alignment(T const& doc)
+  {
+    auto align = Alignment{};
+
+    // Set defaults.
+    align.horizontal = Horizontal_Alignment::Center;
+    align.vertical = Vertical_Alignment::Center;
+
+    auto align_obj = doc["alignment"];
+
+    if(align_obj.HasMember("vertical"))
+    {
+      if(strcmp(align_obj["vertical"].GetString(), "top") == 0)
+      {
+        align.vertical = Vertical_Alignment::Top;
+      }
+      else if(strcmp(align_obj["vertical"].GetString(), "center") == 0)
+      {
+        align.vertical = Vertical_Alignment::Center;
+      }
+      else if(strcmp(align_obj["vertical"].GetString(), "bottom") == 0)
+      {
+        align.vertical = Vertical_Alignment::Bottom;
+      }
+      else
+      {
+        throw Invalid_Alignment{align_obj["vertical"].GetString()};
+      }
+    }
+    if(align_obj.HasMember("horizontal"))
+    {
+      if(strcmp(align_obj["horizontal"].GetString(), "left") == 0)
+      {
+        align.horizontal = Horizontal_Alignment::Left;
+      }
+      else if(strcmp(align_obj["horizontal"].GetString(), "center") == 0)
+      {
+        align.horizontal = Horizontal_Alignment::Center;
+      }
+      else if(strcmp(align_obj["horizontal"].GetString(), "right") == 0)
+      {
+        align.horizontal = Horizontal_Alignment::Right;
+      }
+      else
+      {
+        throw Invalid_Alignment{align_obj["vertical"].GetString()};
+      }
+    }
+
+    return align;
+  }
+
+  template <class T>
   Shared_View load_view(Game& game, T const& doc) noexcept
   {
     std::string id = doc.HasMember("id") ? doc["id"].GetString() : "";
@@ -49,6 +134,24 @@ namespace game { namespace ui
         view.push_child(load_view(game, *iter), layout);
       }
       return std::make_shared<Linear_Layout>(std::move(view));
+    }
+    else if(typeof(doc) == "side_layout")
+    {
+      Side_Layout view{game.graphics};
+      view.id = id;
+
+      auto const& children = doc["children"];
+      for(auto iter = children.Begin(); iter != children.End(); ++iter)
+      {
+        Side_Layout_Params layout;
+
+        layout.padding = load_padding(*iter);
+        layout.alignment = load_alignment(*iter);
+
+        view.push_child(load_view(game, *iter), layout);
+      }
+
+      return std::make_shared<Side_Layout>(std::move(view));
     }
     else if(typeof(doc) == "label")
     {
