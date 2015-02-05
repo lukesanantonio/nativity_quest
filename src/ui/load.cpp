@@ -35,26 +35,26 @@ namespace game { namespace ui
     auto ret = Padding{};
     if(!doc.HasMember("padding")) return ret;
 
-    auto pad_obj = doc["padding"];
+    auto const& pad_obj = doc["padding"];
     if_has_member(pad_obj, "left",
     [&](auto const& val)
     {
-      ret.left = val.AsInt();
+      ret.left = val.GetInt();
     });
     if_has_member(pad_obj, "right",
     [&](auto const& val)
     {
-      ret.right = val.AsInt();
+      ret.right = val.GetInt();
     });
     if_has_member(pad_obj, "top",
     [&](auto const& val)
     {
-      ret.top = val.AsInt();
+      ret.top = val.GetInt();
     });
     if_has_member(pad_obj, "bottom",
     [&](auto const& val)
     {
-      ret.bottom = val.AsInt();
+      ret.bottom = val.GetInt();
     });
 
     return ret;
@@ -69,7 +69,7 @@ namespace game { namespace ui
     align.horizontal = Horizontal_Alignment::Center;
     align.vertical = Vertical_Alignment::Center;
 
-    auto align_obj = doc["alignment"];
+    auto const& align_obj = doc["alignment"];
 
     if(align_obj.HasMember("vertical"))
     {
