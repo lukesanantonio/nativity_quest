@@ -1,62 +1,71 @@
 {
   "type":"side_layout",
   "children":
-  {
-    "type": "sprite",
-    "src": "map",
-    "border": "black",
+  [
+    {
+      "type": "sprite",
+      "src": "assets/map.png",
+      "border": "black",
 
-    "id": "map",
-    "scale": 0.2,
-    "autohide": 0.0,
+      "id": "map",
+      "scale": 0.2,
+      "autohide": 0.0,
 
-    "alignment": { "vertical": "top", "horizontal": "left" },
-    "padding": { "top": 5, "left": 5 }
-  },
-  {
-    "type": "label",
-    "text": "Unknown Zone",
-    "color": "white",
-    "back_color": "black",
+      "alignment": { "vertical": "top", "horizontal": "left" },
+      "padding": { "top": 5, "left": 5 }
+    },
+    {
+      "type": "label",
+      "text": "Unknown Zone",
+      "size": 32,
+      "color": "white",
+      "back_color": "black",
 
-    "id": "zone",
-    "autohide": 0.0,
+      "id": "zone",
+      "autohide": 0.0,
 
-    "alignment": { "vertical": "top", "horizontal": "right" },
-    "padding": { "top": 5, "left": 5 }
-  },
-  {
-    "type": "label",
-    "text": "Next Player",
-    "click": true,
-    "color": "black",
+      "alignment": { "vertical": "top", "horizontal": "right" },
+      "padding": { "top": 5, "right": 5 }
+    },
+    {
+      "type": "label",
+      "text": "Next Player",
+      "size": 32,
+      "click": true,
+      "color": "black",
 
-    "autohide": 0.75,
+      "autohide": 0.75,
 
-    "alignment": { "vertical": "bottom", "horizontal": "right" },
-    "padding": { "right": 10, "bottom": 10 }
-  },
-  {
-    "type": "label",
-    "text": "Use item",
-    "color": "black",
-    "click": true,
+      "alignment": { "vertical": "bottom", "horizontal": "right" },
+      "padding": { "right": 5, "bottom": 5 }
+    },
+    {
+      "type": "label",
+      "text": "Use item",
+      "size": 32,
+      "color": "black",
+      "click": true,
 
-    "id": "use_inventory",
-    "autohide": 0.75,
+      "id": "use_inventory",
+      "autohide": 0.75,
 
-    "alignment": { "vertical": "bottom", "horizontal": "center" },
-    "padding": { "bottom": 10 }
-  },
-  {
-    "type": "label",
-    "text": "",
-    "color": "white",
-    "back_color": "black",
+      "alignment": { "vertical": "bottom", "horizontal": "center" },
+      "padding": { "bottom": 5 }
+    },
+    {
+      "type": "label",
+      "text": "",
+      "size": 32,
+      "color": "white",
+      "back_color": "black",
 
-    "autohide": 0.0,
+      "autohide": 0.0,
 
-    "alignment": { "vertical": "bottom", "horizontal": "left" },
-    "padding": { "bottom": 5, "left": 5 }
-  }
+      "alignment": { "vertical": "bottom", "horizontal": "left" },
+      "padding": { "bottom": 5, "left": 5 }
+    }
+  ]
 }
+
+
+
