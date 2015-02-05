@@ -7,6 +7,7 @@
 #include "layouts/linear_layout.h"
 #include "layouts/side_layout.h"
 #include "views/label.h"
+#include "views/empty.h"
 namespace game { namespace ui
 {
   template <class T>
@@ -164,6 +165,12 @@ namespace game { namespace ui
       label.click(doc.HasMember("click") ? doc["click"].GetBool() : false);
 
       return std::make_shared<Label>(std::move(label));
+    }
+    else if(typeof(doc) == "empty")
+    {
+      auto view = Empty{game.graphics};
+      view.id = id;
+      return std::make_shared<Empty>(std::move(view));
     }
     return nullptr;
   }

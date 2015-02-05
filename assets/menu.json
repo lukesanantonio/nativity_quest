@@ -10,6 +10,9 @@
       "size": 54
     },
     {
+      "type": "empty"
+    },
+    {
       "id": "start",
       "type": "label",
       "text": "Start game",
