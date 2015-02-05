@@ -11,6 +11,7 @@ namespace game { namespace ui
    */
   struct Empty : public View
   {
+    inline Empty(Graphics_Desc& g) : View(g) {}
     inline Vec<int> get_minimum_extents() const noexcept override;
     inline void dispatch_event(SDL_Event const&) noexcept override;
     inline Volume<int> layout_() override;
