@@ -8,6 +8,7 @@
 #include "layouts/side_layout.h"
 #include "views/label.h"
 #include "views/empty.h"
+#include "views/sprite.h"
 namespace game { namespace ui
 {
   template <class T>
@@ -165,6 +166,14 @@ namespace game { namespace ui
       label.click(doc.HasMember("click") ? doc["click"].GetBool() : false);
 
       return std::make_shared<Label>(std::move(label));
+    }
+    else if(typeof(doc) == "sprite")
+    {
+      auto sprite = Sprite{game.graphics, doc["src"].GetString()};
+
+      sprite.scale(doc["scale"].GetDouble());
+
+      return std::make_shared<Sprite>(std::move(sprite));
     }
     else if(typeof(doc) == "empty")
     {
