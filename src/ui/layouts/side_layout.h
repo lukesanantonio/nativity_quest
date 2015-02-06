@@ -36,7 +36,7 @@ namespace game { namespace ui
 
   struct Side_Layout : View_Container<Side_Layout_Params>
   {
-    Side_Layout(Graphics_Desc& g) noexcept : View_Container(g) {}
+    explicit Side_Layout(Graphics_Desc& g) noexcept : View_Container(g) {}
 
     Vec<int> get_minimum_extents() const noexcept override;
   private:

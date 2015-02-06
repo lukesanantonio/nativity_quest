@@ -13,7 +13,7 @@ namespace game { namespace ui
 
   struct Linear_Layout : public View_Container<Linear_Layout_Params>
   {
-    Linear_Layout(Graphics_Desc& g) noexcept : View_Container(g) {}
+    explicit Linear_Layout(Graphics_Desc& g) noexcept : View_Container(g) {}
 
     Vec<int> get_minimum_extents() const noexcept override;
 
