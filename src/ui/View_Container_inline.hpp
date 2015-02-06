@@ -105,6 +105,7 @@ namespace game { namespace ui
   std::shared_ptr<U>
   View_Container<T>::find_child(std::string str) const noexcept
   {
+    // TODO maybe add some error handling?!
     return as<U>(this->find_child(str));
   }
 
