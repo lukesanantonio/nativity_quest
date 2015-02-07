@@ -6,6 +6,7 @@
 #include "../common/json.h"
 #include "layouts/linear_layout.h"
 #include "layouts/side_layout.h"
+#include "layouts/grid_layout.h"
 #include "views/label.h"
 #include "views/empty.h"
 #include "views/sprite.h"
@@ -154,6 +155,23 @@ namespace game { namespace ui
       }
 
       return std::make_shared<Side_Layout>(std::move(view));
+    }
+    else if(typeof(doc) == "grid_layout")
+    {
+      Grid_Layout view{game.graphics};
+
+      auto const& children = doc["children"];
+      for(auto iter = children.Begin(); iter != children.End(); ++iter)
+      {
+        Grid_Layout_Params layout;
+
+        layout.row = (*iter)["row"].GetInt();
+        layout.col = (*iter)["col"].GetInt();
+
+        view.push_child(load_view(game, *iter), layout);
+      }
+
+      return std::make_shared<Grid_Layout>(std::move(view));
     }
     else if(typeof(doc) == "label")
     {
