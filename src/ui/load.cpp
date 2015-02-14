@@ -10,6 +10,7 @@
 #include "views/label.h"
 #include "views/empty.h"
 #include "views/sprite.h"
+#include "views/bar.h"
 namespace game { namespace ui
 {
   template <class T>
@@ -204,6 +205,12 @@ namespace game { namespace ui
       sprite.scale(doc["scale"].GetDouble());
 
       return std::make_shared<Sprite>(std::move(sprite));
+    }
+    else if(typeof(doc) == "bar")
+    {
+      auto bar = Bar{game.graphics};
+
+      return std::make_shared<Bar>(std::move(bar));
     }
     else if(typeof(doc) == "empty")
     {
