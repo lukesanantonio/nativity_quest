@@ -117,6 +117,18 @@ namespace game { namespace ui
   }
 
   template <class T>
+  Color load_color(T const& doc)
+  {
+    Color c;
+
+    c.red   = doc["red"].GetChar();
+    c.green = doc["green"].GetChar();
+    c.blue  = doc["blue"].GetChar();
+
+    return c;
+  }
+
+  template <class T>
   Shared_View load_view(Game& game, T const& doc) noexcept
   {
     std::string id = doc.HasMember("id") ? doc["id"].GetString() : "";
