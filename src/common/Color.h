@@ -14,6 +14,12 @@ namespace game
     component_t blue;
   };
 
+  namespace colors
+  {
+    constexpr Color white{0xff, 0xff, 0xff};
+    constexpr Color black{0x00, 0x00, 0x00};
+  }
+
   inline bool operator==(Color const& c1, Color const& c2) noexcept
   {
     return c1.red == c2.red && c1.green == c2.green && c1.blue == c2.blue;
