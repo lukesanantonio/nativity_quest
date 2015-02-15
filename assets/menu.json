@@ -16,15 +16,13 @@
       "id": "start",
       "type": "label",
       "text": "Start game",
-      "size": 54,
-      "click": true
+      "size": 54
     },
     {
       "id": "quit",
       "type": "label",
       "text": "Quit",
-      "size": 54,
-      "click": true
+      "size": 54
     }
   ]
 }
