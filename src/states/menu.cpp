@@ -13,8 +13,8 @@
 namespace game
 {
   Menu_State::Menu_State(Game& game)
-                         : menu_ui{ui::load(game, MENU_JSON)},
-                           Game_State(game, true)
+                         : Game_State(game, true),
+                           menu_ui{ui::load(game, MENU_JSON)}
   {
 
     auto layout = ui::as<ui::Linear_Layout>(menu_ui);
