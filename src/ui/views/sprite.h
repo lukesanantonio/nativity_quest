@@ -12,7 +12,6 @@ namespace game { namespace ui
     Sprite(Graphics_Desc& graphics, std::string src) noexcept;
 
     Vec<int> get_minimum_extents() const noexcept override;
-    void dispatch_event(SDL_Event const&) noexcept override;
 
     Volume<int> layout_() override;
     void render_() const noexcept override;

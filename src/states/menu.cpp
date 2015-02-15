@@ -6,10 +6,7 @@
 #include "../common/json.h"
 //#include "navigate.h"
 
-#include "../ui/cast.h"
-#include "../ui/load.h"
-#include "../ui/layouts/linear_layout.h"
-#include "../ui/views/label.h"
+#include "../ui/ui.h"
 
 #define MENU_JSON "assets/menu.json"
 
@@ -21,12 +18,12 @@ namespace game
   {
 
     auto layout = ui::as<ui::Linear_Layout>(menu_ui);
-    layout->find_child<ui::Label>("start")->use_click_handler(
-    [](Vec<int>)
+    layout->find_child("start")->add_event_trigger<ui::Mouse_Click>(
+    [&](Vec<int>)
     {
       // start
     });
-    layout->find_child<ui::Label>("quit")->use_click_handler(
+    layout->find_child("quit")->add_event_trigger<ui::Mouse_Click>(
     [&](Vec<int>)
     {
       // quit

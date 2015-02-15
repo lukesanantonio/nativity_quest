@@ -13,7 +13,6 @@ namespace game { namespace ui
   {
     inline Empty(Graphics_Desc& g) : View(g) {}
     inline Vec<int> get_minimum_extents() const noexcept override;
-    inline void dispatch_event(SDL_Event const&) noexcept override;
     inline Volume<int> layout_() override;
     inline void render_() const noexcept override;
   };
@@ -21,8 +20,6 @@ namespace game { namespace ui
   {
     return {0, 0};
   }
-  inline void Empty::dispatch_event(SDL_Event const&) noexcept
-  { }
   inline Volume<int> Empty::layout_()
   {
     return parent_volume();

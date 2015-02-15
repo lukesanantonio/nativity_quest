@@ -24,8 +24,6 @@ namespace game { namespace ui
     return extents;
   }
 
-  void Sprite::dispatch_event(SDL_Event const&) noexcept { }
-
   Volume<int> Sprite::layout_()
   {
     // TODO:

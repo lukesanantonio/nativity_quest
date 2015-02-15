@@ -194,7 +194,6 @@ namespace game { namespace ui
       label.str(doc["text"].GetString());
       label.size(doc["size"].GetInt());
       label.color({0xff, 0xff, 0xff});
-      label.click(doc.HasMember("click") ? doc["click"].GetBool() : false);
 
       return std::make_shared<Label>(std::move(label));
     }

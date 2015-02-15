@@ -14,13 +14,6 @@ namespace game { namespace ui
     SDL_QueryTexture(texture_cache_.get(), NULL, NULL, &vec.x, &vec.y);
     return vec;
   }
-  void Label::dispatch_event(SDL_Event const& event) noexcept
-  {
-    // We must be click able.
-    if(!click_) return;
-
-    click_trigger_.check_trigger(*this, event);
-  }
   Volume<int> Label::layout_()
   {
     auto this_vol = parent_volume();

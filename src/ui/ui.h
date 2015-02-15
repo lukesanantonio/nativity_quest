@@ -12,6 +12,9 @@
 #include "views/label.h"
 #include "views/sprite.h"
 
+#include "Event_Trigger.h"
+#include "triggers/Mouse_Click.h"
+
 #include "cast.h"
 #include "load.h"
 #include "View.h"

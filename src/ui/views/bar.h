@@ -11,7 +11,6 @@ namespace game { namespace ui
     Bar(Graphics_Desc& g) noexcept : View(g) {}
 
     Vec<int> get_minimum_extents() const noexcept override;
-    inline void dispatch_event(SDL_Event const&) noexcept override {}
 
     inline void cur(int) noexcept;
     inline int cur() const noexcept;
