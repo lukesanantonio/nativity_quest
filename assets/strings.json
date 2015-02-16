@@ -1,0 +1,57 @@
+{
+  "game_title": "Nativity Quest",
+  "start_game": "Start Game",
+  "quit_game": "Quit",
+
+  "zone_great_sea": "The Great Sea",
+  "zone_arabian_desert": "The Arabian Desert",
+  "zone_jerusalem": "Jerusalem",
+  "zone_bethlehem": "Bethlehem",
+  "zone_gloomy_desert": "Gloomy Swamp",
+  "zone_desert_of_despair": "Desert of Despair",
+  "zone_mountains_of_madness": "Mountains of Madness",
+  "zone_cedars_of_lebanon": "Cedars of Lebanon",
+  "zone_sea_of_gallilee": "Sea of Gillilee",
+  "zone_jordon_river": "Jordon River",
+  "zone_desert_straight": "Desert Straight",
+  "zone_mountain_range": "Mountain Range",
+
+  "item_rope": "Rope",
+  "item_boat": "Boat",
+  "item_ring_of_protection": "Ring of Protection",
+  "item_dagger": "Dagger",
+  "item_longsword": "Longsword",
+  "item_flare": "Flare",
+  "item_cloak_of_protection": "Cloak of Protection",
+  "item_canteen": "Canteen",
+  "item_torch": "Torch",
+  "item_throwing_axe": "Throwing Axe",
+  "item_bow": "Bow",
+  "item_strength_potion": "Potion of Strength",
+  "item_haste_potion": "Potion of Haste",
+  "item_defense_potion": "Potion of Defense",
+  "item_wool": "Wool",
+  "item_starlight": "Starlight",
+  "item_gold": "Gold",
+  "item_gemstones": "Gemstones",
+  "item_myrrh": "Myrrh",
+  "item_incense": "Incense",
+
+  "enemy_wolf": "Wild Mongrel",
+  "enemy_snake": "Mire Boa",
+  "enemy_creeper": "Blind Creeper",
+  "enemy_soldier": "Roman Soldier",
+  "enemy_giant": "Giant",
+  "enemy_myrr": "Myrr",
+
+  "next_player": "Next Player",
+
+  "attack": "Attack",
+  "use_item": "Use item",
+  "run": "Run",
+
+  "won_msg": "Player % won",
+
+  "item_found": "You found a %",
+  "enemy_encountered": "You encountered a %"
+}
