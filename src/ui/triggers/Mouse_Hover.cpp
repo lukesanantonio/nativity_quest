@@ -11,7 +11,12 @@ namespace game { namespace ui
     if(event.type == SDL_MOUSEMOTION)
     {
       auto pt = Vec<int>{event.motion.x, event.motion.y};
-      if(is_in(v.this_volume(), pt))
+
+      auto volume = Volume<int>{};
+      if(use_parent_vol_) volume = v.parent_volume();
+      else volume = v.this_volume();
+
+      if(is_in(volume, pt))
       {
         func_(pt);
         return true;

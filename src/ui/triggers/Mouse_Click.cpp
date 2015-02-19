@@ -12,7 +12,12 @@ namespace game { namespace ui
        event.button.button == SDL_BUTTON_LEFT)
     {
       auto pt = Vec<int>{event.button.x, event.button.y};
-      if(is_in(v.this_volume(), pt))
+
+      auto volume = Volume<int>{};
+      if(use_parent_vol_) volume = v.parent_volume();
+      else volume = v.this_volume();
+
+      if(is_in(volume, pt))
       {
         func_(pt);
         return true;
