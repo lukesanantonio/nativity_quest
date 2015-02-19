@@ -5,6 +5,7 @@
 #include "player_switch.h"
 #include "../common/volume.h"
 
+#include "../game/Game.h"
 #include "player_intro.h"
 namespace game
 {

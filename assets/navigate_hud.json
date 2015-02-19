@@ -29,6 +29,7 @@
       "padding": { "top": 5, "right": 5 }
     },
     {
+      "id": "next_player",
       "type": "label",
       "text": "Next Player",
       "size": 32,

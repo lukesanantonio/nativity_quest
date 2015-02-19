@@ -9,6 +9,8 @@
 #include "../decl/sprites.h"
 #include "../decl/players.h"
 #include "../decl/effects.h"
+
+#include "../ui/View.h"
 namespace game
 {
   struct Navigate_State : public Game_State
@@ -18,7 +20,7 @@ namespace game
     decl::Sprites sprites;
     decl::Players players;
 
-    mutable ui::Model hud;
+    mutable ui::Shared_View hud;
     mutable bool ui_dirty = true;
 
     decl::Zone cur_zone;

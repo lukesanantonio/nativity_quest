@@ -3,6 +3,8 @@
  * All rights reserved.
  */
 #pragma once
+#include "../ui/views/label.h"
+
 #include "navigate.h"
 namespace game
 {
@@ -18,7 +20,7 @@ namespace game
     inline void on_enter() noexcept {}
     void on_exit() noexcept;
 
-    mutable ui::Model hud;
+    mutable ui::Label label_;
     std::string player_name;
     int cur_step = 0;
     int max_step;

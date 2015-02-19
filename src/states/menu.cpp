@@ -4,7 +4,7 @@
  */
 #include "menu.h"
 #include "../common/json.h"
-//#include "navigate.h"
+#include "navigate.h"
 
 #include "../ui/ui.h"
 
@@ -22,6 +22,7 @@ namespace game
     [&](Vec<int>)
     {
       // start
+      push_state<Navigate_State>(game_);
     });
     layout->find_child("quit")->add_event_trigger<ui::Mouse_Click>(
     [&](Vec<int>)

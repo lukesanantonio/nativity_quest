@@ -3,21 +3,18 @@
  * All rights reserved.
  */
 #include "player_intro.h"
+#include "../ui/ui.h"
 namespace game
 {
   Player_Intro::Player_Intro(Game& game, Navigate_State& ns,
                              std::string pn) noexcept
                              : Navigate_Sub_State(game, ns),
+                               label_(game.graphics, game.font),
                                player_name(pn),
                                max_step(80)
   {
-    using namespace std::literals;
-
-    auto text = ui::Text{player_name + "'s turn!", "white",
-                         "black"s};
-    auto alignment = ui::Alignment{ui::Horizontal_Alignment::Center,
-                                   ui::Vertical_Alignment::Center};
-    hud.elements.push_back({text, {}, alignment});
+    label_.str(player_name + "'s turn!");
+    label_.layout(game.graphics.size());
   }
   void Player_Intro::handle_event(SDL_Event const& event) noexcept
   {
@@ -33,14 +30,12 @@ namespace game
   }
   void Player_Intro::render() const noexcept
   {
-    game_.view.reset();
-    game_.presenter.present(hud, game_.view, game_.graphics.size());
-    game_.view.render(game_.graphics);
+    label_.render();
   }
   void Player_Intro::on_exit() noexcept
   {
-    auto& text = boost::get<ui::Text>(navigate.hud.elements[4].element);
-    text.str = "Player: " + player_name;
-    navigate.ui_dirty = true;
+    auto navigate_hud = ui::as<ui::Side_Layout>(navigate.hud);
+    auto text = navigate_hud->find_child<ui::Label>("player_name");
+    text->str("Player: " + player_name);
   }
 }

@@ -4,7 +4,7 @@
  */
 #include "uncrate.h"
 #include "../decl/items.h"
-#include "discard.h"
+// #include "discard.h"
 namespace game
 {
   template <typename C>
@@ -43,8 +43,10 @@ namespace game
         }
         else
         {
+#if 0
           replace_state(game_, std::make_shared<Discard_State>(game_, navigate,
                         chest.item));
+#endif
         }
       }
     }

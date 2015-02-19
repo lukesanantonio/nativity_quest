@@ -5,13 +5,25 @@
 #include "navigate.h"
 #include "../common/volume.h"
 
+#include "../ui/ui.h"
+
+#if 0
+
 #include "move.h"
-#include "uncrate.h"
 #include "inventory.h"
 #include "combat.h"
+
+#endif
+
+#include "uncrate.h"
 #include "player_switch.h"
+
+#if 0
+
 #include "win.h"
 #include "player_intro.h"
+
+#endif
 
 #define PI 3.14159
 
@@ -41,8 +53,10 @@ namespace game
     // Push the next-player-animation state.
     push_state(game_, std::make_shared<Player_Switch_State>(game_, *this));
 
-    auto& text = boost::get<ui::Text>(hud.elements[4].element);
-    text.str = " ";
+    auto layout = ui::as<ui::Side_Layout>(hud);
+    auto player_name = layout->find_child<ui::Label>("player_name");
+
+    player_name->str("Player #" + std::to_string(player));;
     ui_dirty = true;
   }
   Navigate_State::Navigate_State(Game& game) noexcept
@@ -52,9 +66,11 @@ namespace game
                                    map(sprites, MAP_JSON, ITEMS_JSON,
                                        ENEMIES_JSON),
                                    player(0),
-                                   hud{parse_json(HUD_JSON)},
+                                   hud{ui::load(game, HUD_JSON)},
                                    effects{&map.items}
   {
+    hud->layout(game.graphics.size());
+
     for(int player_index = 0; player_index < map.players.size();
         ++player_index)
     {
@@ -67,24 +83,29 @@ namespace game
       unfog(player, effects);
     }
 
-    game_.presenter.sprites(&sprites);
+    auto hud_layout = ui::as<ui::Side_Layout>(hud);
 
-    game_.presenter.use_handler("on_next_player",
+    hud_layout->find_child("next_player")->add_event_trigger<ui::Mouse_Click>(
     [this](auto const&)
     {
       next_player();
     });
+
+#if 0
     game_.presenter.use_handler("on_inventory_view",
     [this](auto const&)
     {
       push_state(game_, std::make_shared<Inventory_View_State>(game_, *this));
     });
+#endif
 
     update_cur_zone();
   }
 
   void Navigate_State::handle_event(SDL_Event const& event) noexcept
   {
+    hud->dispatch_event(event);
+#if 0
     if(event.type == SDL_MOUSEBUTTONDOWN)
     {
       if(event.button.button == SDL_BUTTON_LEFT)
@@ -103,6 +124,7 @@ namespace game
         push_state(game_, move);
       }
     }
+#endif
   }
   void Navigate_State::step() noexcept
   {
@@ -144,8 +166,10 @@ namespace game
       if(enemy_find != end(map.enemies))
       {
         // Go into combat.
+#if 0
         push_state(game_,
                    std::make_shared<Combat_State>(game_, *this, *enemy_find));
+#endif
         return;
       }
     }
@@ -176,8 +200,10 @@ namespace game
     {
       if(cur_zone->important)
       {
+#if 0
         auto win =std::make_shared<Win_State>(game_, players.get_name(player));
         push_state(game_, std::move(win));
+#endif
       }
     }
   }
@@ -185,9 +211,11 @@ namespace game
   {
     if(first)
     {
+#if 0
       auto intro =
         std::make_shared<Player_Intro>(game_, *this, players.get_name(player));
       push_state(game_, std::move(intro));
+#endif
       first = false;
     }
 
@@ -196,11 +224,15 @@ namespace game
     // Update the zone just in case.
     update_cur_zone();
 
+#if 0
     game_.presenter.handle_events(true);
+#endif
   }
   void Navigate_State::on_exit() noexcept
   {
+#if 0
     game_.presenter.handle_events(false);
+#endif
   }
 
   void Navigate_State::update_cur_zone() noexcept
@@ -214,9 +246,11 @@ namespace game
       cur_zone = new_zone;
 
       // Update the ui.
-      auto& text = boost::get<ui::Text>(hud.elements[1].element);
-      text.str = cur_zone->str;
+      auto layout = ui::as<ui::Side_Layout>(hud);
 
+      // Find the zone label and change it's string to that of the current
+      // zone.
+      layout->find_child<ui::Label>("zone_label")->str(cur_zone->str);
       ui_dirty = true;
     }
   }
@@ -225,8 +259,6 @@ namespace game
   {
     if(ui_dirty)
     {
-      game_.view.reset();
-      game_.presenter.present(hud, game_.view, game_.graphics.size());
       ui_dirty = false;
     }
 
@@ -338,7 +370,8 @@ namespace game
                      &viewport_src_rect, NULL);
     }
 
-    game_.view.render(game_.graphics);
+    // Render the Hud.
+    hud->render();
   }
   void Navigate_State::render_player(Player const& p,
                                 Volume<int> const& viewport_src,
