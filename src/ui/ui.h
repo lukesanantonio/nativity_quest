@@ -14,6 +14,7 @@
 
 #include "Event_Trigger.h"
 #include "triggers/Mouse_Click.h"
+#include "triggers/Mouse_Hover.h"
 
 #include "cast.h"
 #include "load.h"
