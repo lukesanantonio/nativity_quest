@@ -88,29 +88,28 @@ namespace game
       using std::floor; using std::sqrt;
       auto half_width = floor(sqrt((2.0 * view_radius * row) - (row * row)));
 
-      auto left_x = int(p.pos.x - half_width);
-
       auto pos = Vec<int>{p.pos};
+      auto left_x = int(pos.x - half_width);
 
       uint8_t* top_row = (uint8_t*) surface->pixels +
-                         (pos.y + view_radius - row) * surface->pitch +
+                         (pos.y - (view_radius - row)) * surface->pitch +
                          (left_x * surface->format->BytesPerPixel);
       uint8_t* bottom_row = (uint8_t*) surface->pixels +
-                            (pos.y - view_radius + row) * surface->pitch +
+                            (pos.y + (view_radius - row)) * surface->pitch +
                             (left_x * surface->format->BytesPerPixel);
 
-      if(surface->h <= p.pos.y + view_radius - row)
+      if(pos.y - (view_radius - row) < 0)
       {
         top_row = nullptr;
       }
-      if(p.pos.y - view_radius + row < 0)
+      if(surface->h <= pos.y + (view_radius - row))
       {
         bottom_row = nullptr;
       }
 
       for(int col = 0; col < half_width * 2; ++col)
       {
-        if(left_x + half_width < 0 || surface->w < left_x + half_width)
+        if(left_x + col < 0 || surface->w <= left_x + col)
         {
           continue;
         }
@@ -127,6 +126,7 @@ namespace game
         }
       }
     }
+
 
     SDL_UnlockSurface(surface);
 
