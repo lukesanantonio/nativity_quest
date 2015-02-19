@@ -217,6 +217,18 @@ namespace game { namespace ui
       view.id = id;
       return std::make_shared<Empty>(std::move(view));
     }
+    else if(typeof(doc) == "embed")
+    {
+      auto view = load(game, doc["src"].GetString());
+
+      // Use the id in the inheriting file, unless there is none.
+      if(id != "")
+      {
+        view->id = id;
+      }
+
+      return view;
+    }
     return nullptr;
   }
   Shared_View load(Game& g, std::string file) noexcept
