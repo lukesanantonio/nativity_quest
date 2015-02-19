@@ -1,0 +1,70 @@
+{
+  "id": "inventory_grid",
+  "type": "grid_layout",
+  "children":
+  [
+    {
+      "id": "item0",
+      "type": "label",
+      "text": "",
+      "size": 35,
+
+      "row": 0,
+      "col": 0
+    },
+    {
+      "id": "item1",
+      "type": "label",
+      "text": "",
+      "size": 35,
+
+      "row": 0,
+      "col": 1
+    },
+    {
+      "id": "item2",
+      "type": "label",
+      "text": "",
+      "size": 35,
+
+      "row": 0,
+      "col": 2
+    },
+    {
+      "id": "item3",
+      "type": "label",
+      "text": "",
+      "size": 35,
+
+      "row": 1,
+      "col": 0
+    },
+    {
+      "id": "item4",
+      "type": "label",
+      "text": "",
+      "size": 35,
+
+      "row": 1,
+      "col": 1
+    },
+    {
+      "id": "item5",
+      "type": "label",
+      "text": "",
+      "size": 35,
+
+      "row": 1,
+      "col": 2
+    },
+    {
+      "id": "back",
+      "type": "label",
+      "text": "Back",
+      "size": 35,
+
+      "row": 1,
+      "col": 2
+    }
+  ]
+}

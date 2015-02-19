@@ -1,0 +1,19 @@
+{
+  "type": "linear_layout",
+  "children":
+  [
+    {
+      "type": "sprite",
+      "src": "",
+      "scale": 1.0,
+
+      "weight": 7
+    },
+    {
+      "type": "embed",
+      "src": "assets/inventory_grid.json",
+
+      "weight": 1
+    }
+  ]
+}
