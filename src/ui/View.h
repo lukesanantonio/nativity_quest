@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 #pragma once
+#include "../common/Color.h"
 #include "../common/volume.h"
 #include "../game/Graphics_Desc.h"
 
@@ -10,6 +11,8 @@
 
 #include <memory>
 #include <vector>
+
+#include <boost/optional.hpp>
 namespace game { namespace ui
 {
   struct View;
@@ -23,6 +26,11 @@ namespace game { namespace ui
     void disconnect() noexcept {}
   };
 
+  enum class Border_Volume
+  {
+    Parent, This
+  };
+
   struct View
   {
     View(Graphics_Desc& graphics) noexcept : graphics_(graphics) {}
@@ -31,7 +39,7 @@ namespace game { namespace ui
     inline bool layout(Vec<int>);
     inline bool layout(Volume<int>);
 
-    inline void render() const noexcept { if(layed_out_) render_(); }
+    void render() const noexcept;
 
     virtual Vec<int> get_minimum_extents() const noexcept = 0;
 
@@ -48,6 +56,9 @@ namespace game { namespace ui
 
     std::string id;
 
+    void set_border(Border_Volume, Color color) noexcept;
+    bool remove_border(Border_Volume) noexcept;
+
   protected:
     Graphics_Desc& graphics_;
   private:
@@ -60,6 +71,9 @@ namespace game { namespace ui
     virtual void render_() const noexcept = 0;
 
     std::vector<std::shared_ptr<Event_Trigger> > event_triggers_;
+
+    boost::optional<Color> this_border_;
+    boost::optional<Color> parent_border_;
   };
 
   inline void View::dispatch_event(SDL_Event const& e) noexcept
