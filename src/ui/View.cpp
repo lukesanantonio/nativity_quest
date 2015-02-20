@@ -3,28 +3,35 @@
  * All rights reserved.
  */
 #include "View.h"
+#include "../common/render.h"
 namespace game { namespace ui
 {
   void View::render() const noexcept
   {
-    auto render_border = [&](Volume<int> const& vol, Color const& col)
-    {
-      SDL_SetRenderDrawColor(graphics_.renderer,
-                             col.red, col.green, col.blue, 0xff);
-      auto sdl_vol = to_sdl_rect(vol);
-      SDL_RenderDrawRect(graphics_.renderer, &sdl_vol);
-    };
-
     if(layed_out_)
     {
+      // Render background
+      if(parent_background_)
+      {
+        fill_volume(graphics_.renderer, parent_volume(),
+                    parent_background_.value());
+      }
+      if(this_background_)
+      {
+        fill_volume(graphics_.renderer, this_volume(),
+                    this_background_.value());
+      }
+
       // Render borders
       if(parent_border_)
       {
-        render_border(parent_volume(), parent_border_.value());
+        draw_volume(graphics_.renderer, parent_volume(),
+                    parent_border_.value());
       }
       if(this_border_)
       {
-        render_border(this_volume(), this_border_.value());
+        draw_volume(graphics_.renderer, this_volume(),
+                    this_border_.value());
       }
 
       // Render the view.
@@ -32,38 +39,85 @@ namespace game { namespace ui
     }
   }
 
-  /*!
-   * \brief Creates or sets an existing border around the view.
-   */
-  void View::set_border(Border_Volume vol, Color color) noexcept
+  void View::set_border(View_Volume vol, Color color) noexcept
   {
     switch(vol)
     {
-      case Border_Volume::This:
+      case View_Volume::This:
       {
-        parent_border_ = color;
-        break;
+        this_border_ = color;
       }
-      case Border_Volume::Parent:
+      case View_Volume::Parent:
       {
         parent_border_ = color;
-        break;
       }
     }
   }
-
-  /*!
-   * \brief Removes a specific border by volume classification.
-   *
-   * \returns True if something was changed, false otherwise.
-   */
-  bool View::remove_border(Border_Volume vol) noexcept
+  boost::optional<Color> View::query_border(View_Volume v) const noexcept
   {
-    auto& border = vol == Border_Volume::This ? this_border_ : parent_border_;
+    switch(v)
+    {
+      case View_Volume::This:
+      {
+        return this_border_;
+      }
+      case View_Volume::Parent:
+      {
+        return parent_border_;
+      }
+    }
+  }
+  bool View::remove_border(View_Volume v) noexcept
+  {
+    auto& border =
+      v == View_Volume::This ?  this_border_ : parent_border_;
 
     if(border)
     {
       border = boost::none;
+      return true;
+    }
+    return false;
+  }
+
+  void View::set_background(View_Volume v, Color color) noexcept
+  {
+    switch(v)
+    {
+      case View_Volume::This:
+      {
+        this_background_ = color;
+        break;
+      }
+      case View_Volume::Parent:
+      {
+        parent_background_ = color;
+        break;
+      }
+    }
+  }
+  boost::optional<Color> View::query_background(View_Volume v) const noexcept
+  {
+    switch(v)
+    {
+      case View_Volume::This:
+      {
+        return this_background_;
+      }
+      case View_Volume::Parent:
+      {
+        return parent_background_;
+      }
+    }
+  }
+  bool View::remove_background(View_Volume v) noexcept
+  {
+    auto& background =
+      v == View_Volume::This ?  this_background_ : parent_background_;
+
+    if(background)
+    {
+      background = boost::none;
       return true;
     }
     return false;

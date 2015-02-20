@@ -26,9 +26,9 @@ namespace game { namespace ui
     void disconnect() noexcept {}
   };
 
-  enum class Border_Volume
+  enum class View_Volume
   {
-    Parent, This
+    This, Parent
   };
 
   struct View
@@ -56,8 +56,13 @@ namespace game { namespace ui
 
     std::string id;
 
-    void set_border(Border_Volume, Color color) noexcept;
-    bool remove_border(Border_Volume) noexcept;
+    void set_border(View_Volume, Color color) noexcept;
+    boost::optional<Color> query_border(View_Volume) const noexcept;
+    bool remove_border(View_Volume) noexcept;
+
+    void set_background(View_Volume, Color color) noexcept;
+    boost::optional<Color> query_background(View_Volume) const noexcept;
+    bool remove_background(View_Volume) noexcept;
 
   protected:
     Graphics_Desc& graphics_;
@@ -74,6 +79,9 @@ namespace game { namespace ui
 
     boost::optional<Color> this_border_;
     boost::optional<Color> parent_border_;
+
+    boost::optional<Color> this_background_;
+    boost::optional<Color> parent_background_;
   };
 
   inline void View::dispatch_event(SDL_Event const& e) noexcept
