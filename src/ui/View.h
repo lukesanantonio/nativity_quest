@@ -7,6 +7,7 @@
 #include "../common/volume.h"
 #include "../game/Graphics_Desc.h"
 
+#include "cast.h"
 #include "Event_Trigger.h"
 
 #include <memory>
@@ -64,6 +65,18 @@ namespace game { namespace ui
     boost::optional<Color> query_background(View_Volume) const noexcept;
     bool remove_background(View_Volume) noexcept;
 
+    inline Shared_View
+    find_child(std::string id, bool recursive = false) const noexcept;
+
+    inline Shared_View
+    find_child_r(std::string id, bool recursive = true) const noexcept;
+
+    template <class T> inline std::shared_ptr<T>
+    find_child(std::string, bool = false) const noexcept;
+
+    template <class T> inline std::shared_ptr<T>
+    find_child_r(std::string, bool = true) const noexcept;
+
   protected:
     Graphics_Desc& graphics_;
   private:
@@ -82,6 +95,8 @@ namespace game { namespace ui
 
     boost::optional<Color> this_background_;
     boost::optional<Color> parent_background_;
+
+    inline virtual Shared_View find_child_(std::string, bool) const noexcept;
   };
 
   inline void View::dispatch_event(SDL_Event const& e) noexcept
@@ -137,5 +152,31 @@ namespace game { namespace ui
       throw;
     }
     return true;
+  }
+
+  inline Shared_View View::find_child(std::string id, bool r) const noexcept
+  {
+    return find_child_(id, r);
+  }
+  inline Shared_View View::find_child_r(std::string id, bool r) const noexcept
+  {
+    return find_child_(id, r);
+  }
+
+
+  template <class T> inline std::shared_ptr<T>
+  View::find_child(std::string id, bool r) const noexcept
+  {
+    return as<T>(find_child(id, r));
+  }
+  template <class T> inline std::shared_ptr<T>
+  View::find_child_r(std::string id, bool r) const noexcept
+  {
+    return as<T>(find_child(id, r));
+  }
+
+  inline Shared_View View::find_child_(std::string, bool) const noexcept
+  {
+    return nullptr;
   }
 } }

@@ -84,29 +84,24 @@ namespace game { namespace ui
     children_.erase(i);
   }
 
-  template <class T>
-  Shared_View View_Container<T>::find_child(std::string str_id) const noexcept
+  template <class T> Shared_View
+  View_Container<T>::find_child_(std::string id, bool r) const noexcept
   {
-    using std::begin; using std::end;
-    auto find_iter = std::find_if(begin(children_), end(children_),
-    [&str_id](auto const& c)
+    for(auto const& child : children_)
     {
-      return c.view->id == str_id;
-    });
-    if(find_iter != end(children_))
-    {
-      return find_iter->view;
+      // Check our direct child to see if *it* has the id we need.
+      if(child.view->id == id) return child.view;
+      // If it doesn't and we are recursively trying to look.
+      else if(r)
+      {
+        // Look in it's children like this. Regular views will always fail
+        // to find anything, while view container implementations will
+        // check each child and their children as we are doing.
+        auto found = child.view->find_child(id, r);
+        if(found) return found;
+      }
     }
-    else return {nullptr};
-  }
-
-  template <class T>
-  template <class U>
-  std::shared_ptr<U>
-  View_Container<T>::find_child(std::string str) const noexcept
-  {
-    // TODO maybe add some error handling?!
-    return as<U>(this->find_child(str));
+    return nullptr;
   }
 
   template <class T>

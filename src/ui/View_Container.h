@@ -50,11 +50,6 @@ namespace game { namespace ui
     inline void remove_child(typename child_vec_t::iterator) noexcept;
     inline void remove_child(typename child_vec_t::const_iterator) noexcept;
 
-    inline Shared_View find_child(std::string) const noexcept;
-
-    template <class T>
-    inline std::shared_ptr<T> find_child(std::string str) const noexcept;
-
   protected:
     child_vec_t children_;
 
@@ -63,7 +58,8 @@ namespace game { namespace ui
     // Volume<int> layout_() override;
 
     inline void render_() const noexcept override;
+    Shared_View find_child_(std::string, bool) const noexcept override;
   };
 } }
 
-#include "View_Container_inline.hpp"
+#include "View_Container_impl.hpp"
