@@ -199,8 +199,9 @@ namespace game { namespace ui
     }
     else if(typeof(doc) == "sprite")
     {
-      auto sprite = Sprite{game.graphics, doc["src"].GetString()};
+      auto sprite = Sprite{game.graphics};
 
+      sprite.src(doc["src"].GetString());
       sprite.scale(doc["scale"].GetDouble());
 
       return std::make_shared<Sprite>(std::move(sprite));
