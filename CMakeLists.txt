@@ -20,7 +20,7 @@ find_package(SDL2_image REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 
-find_package(Boost 1.50.0 REQUIRED)
+find_package(Boost 1.50.0 REQUIRED COMPONENTS filesystem system)
 include_directories(${Boost_INCLUDE_DIRS})
 
 find_package(Freetype REQUIRED)
