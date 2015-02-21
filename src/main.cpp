@@ -18,6 +18,7 @@
 #include "states/menu.h"
 
 #include "common/except.h"
+#include "common/log.h"
 
 #define GAME_DECL_JSON "assets/game.json"
 #define FONT_FILE "assets/DejaVuSans.ttf"
@@ -32,6 +33,8 @@ int main(int argc, char** argv)
 
     auto font = game::Font_Renderer{FONT_FILE};
     auto game = game::Game{std::move(g), std::move(font)};
+
+    game::Scoped_Log_Init scoped_log_init{};
 
     // Our menu is going to be our top level state.
     push_state(game, std::make_shared<game::Menu_State>(game));
@@ -78,6 +81,7 @@ int main(int argc, char** argv)
 
       game::render_all(game);
 
+      game::flush_log();
       std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
   }
