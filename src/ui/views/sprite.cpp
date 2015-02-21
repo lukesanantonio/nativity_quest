@@ -27,20 +27,7 @@ namespace game { namespace ui
 
   Volume<int> Sprite::layout_()
   {
-    // TODO:
-    // This is copied from the Label's implementation, find some way to share
-    // this.
-    auto this_vol = parent_volume();
-
-    auto spr_extents = get_minimum_extents();
-
-    this_vol.pos.x = center(this_vol.pos.x, this_vol.width,  spr_extents.x);
-    this_vol.pos.y = center(this_vol.pos.y, this_vol.height, spr_extents.y);
-
-    this_vol.width = spr_extents.x;
-    this_vol.height = spr_extents.y;
-
-    return this_vol;
+    return center_volume(parent_volume(), get_minimum_extents());
   }
   void Sprite::render_() const noexcept
   {

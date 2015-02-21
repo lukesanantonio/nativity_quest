@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 #include "label.h"
-#include "../../common/center.hpp"
 namespace game { namespace ui
 {
   Vec<int> Label::get_minimum_extents() const noexcept
@@ -16,17 +15,7 @@ namespace game { namespace ui
   }
   Volume<int> Label::layout_()
   {
-    auto this_vol = parent_volume();
-
-    auto spr_extents = get_minimum_extents();
-
-    this_vol.pos.x = center(this_vol.pos.x, this_vol.width,  spr_extents.x);
-    this_vol.pos.y = center(this_vol.pos.y, this_vol.height, spr_extents.y);
-
-    this_vol.width = spr_extents.x;
-    this_vol.height = spr_extents.y;
-
-    return this_vol;
+    return center_volume(parent_volume(), get_minimum_extents());
   }
   void Label::render_() const noexcept
   {

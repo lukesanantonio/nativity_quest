@@ -4,6 +4,7 @@
  */
 #pragma once
 
+#include "center.hpp"
 #include "vec.h"
 #include <algorithm>
 
@@ -83,5 +84,17 @@ namespace game
   Volume<T> vol_from_extents(Vec<T> const& v)
   {
     return {{0, 0}, v.x, v.y};
+  }
+
+  template <typename T>
+  Volume<T> center_volume(Volume<T> parent, Vec<T> child_extents)
+  {
+    parent.pos.x = center<T>(parent.pos.x, parent.width,  child_extents.x);
+    parent.pos.y = center<T>(parent.pos.y, parent.height, child_extents.y);
+
+    parent.width = child_extents.x;
+    parent.height = child_extents.y;
+
+    return parent;
   }
 }
