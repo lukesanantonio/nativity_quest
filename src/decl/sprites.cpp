@@ -5,6 +5,7 @@
 #include "sprites.h"
 
 #include <vector>
+#include <algorithm>
 
 #include "SDL_image.h"
 

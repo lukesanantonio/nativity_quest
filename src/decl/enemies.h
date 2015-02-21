@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 #include <random>
+#include <algorithm>
 
 namespace game { namespace decl
 {

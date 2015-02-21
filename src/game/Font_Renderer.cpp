@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <algorithm>
 namespace game
 {
   Font_Renderer::Font_Renderer(std::string font) noexcept : file_(font)
@@ -37,7 +38,7 @@ namespace game
     TTF_Font* ttf_font;
     if(font_find == end(font_cache_))
     {
-      font_cache_.push_back({TTF_OpenFont(file_.data(), size), size});
+      font_cache_.emplace_back(TTF_OpenFont(file_.data(), size), size);
       ttf_font = std::get<0>(font_cache_.back());
       if(!ttf_font)
       {

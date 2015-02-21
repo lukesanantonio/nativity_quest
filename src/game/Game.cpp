@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 #include "Game.h"
+#include <algorithm>
 namespace game
 {
   template <class InputIt, class UnaryPredicate>
