@@ -17,14 +17,13 @@ namespace game
                            menu_ui{ui::load(game, MENU_JSON)}
   {
 
-    auto layout = ui::as<ui::Linear_Layout>(menu_ui);
-    layout->find_child("start")->add_event_trigger<ui::Mouse_Click>(
+    menu_ui->find_child_r("start")->add_event_trigger<ui::Mouse_Click>(
     [&](Vec<int>)
     {
       // start
       push_state<Navigate_State>(game_);
     });
-    layout->find_child("quit")->add_event_trigger<ui::Mouse_Click>(
+    menu_ui->find_child_r("quit")->add_event_trigger<ui::Mouse_Click>(
     [&](Vec<int>)
     {
       // quit

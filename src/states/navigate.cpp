@@ -83,21 +83,19 @@ namespace game
       unfog(player, effects);
     }
 
-    auto hud_layout = ui::as<ui::Side_Layout>(hud);
-
-    hud_layout->find_child("next_player")->add_event_trigger<ui::Mouse_Click>(
+    hud->find_child_r("next_player")->add_event_trigger<ui::Mouse_Click>(
     [this](auto const&)
     {
       next_player();
     });
 
-#if 0
-    game_.presenter.use_handler("on_inventory_view",
+    hud->find_child_r("use_inventory")->add_event_trigger<ui::Mouse_Click>(
     [this](auto const&)
     {
+#if 0
       push_state(game_, std::make_shared<Inventory_View_State>(game_, *this));
-    });
 #endif
+    });
 
     update_cur_zone();
   }
