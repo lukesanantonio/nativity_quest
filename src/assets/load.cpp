@@ -24,6 +24,7 @@ namespace game { namespace assets
       // Get the info about it.
       auto file = path.stem().native();
       auto ext = path.extension().native();
+      ext.erase(ext.begin());
 
       auto fn = path.native();
 
