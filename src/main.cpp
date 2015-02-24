@@ -37,6 +37,7 @@ int main(int argc, char** argv)
     auto font = game::Font_Renderer{FONT_FILE};
     auto game = game::Game{std::move(g), std::move(font)};
 
+    // TODO: Make this threadsafe maybe?
     game::Scoped_Log_Init scoped_log_init{};
 
     // Load assets
