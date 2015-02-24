@@ -41,7 +41,7 @@ namespace game { namespace assets
         catch(Bad_Asset& e)
         {
           // Log an error.
-          log_e("Failed to load json file ('" + fn + "')\n" + e.diagnostic);
+          log_e("Failed to load json ('" + fn + "')\n" + e.diagnostic);
           continue;
         }
 
@@ -57,7 +57,7 @@ namespace game { namespace assets
         // Log for failure.
         if(!image_asset->image)
         {
-          log_e("Failed to load image file ('" + fn + "')");
+          log_e("Failed to load image ('" + fn + "')");
           continue;
         }
 
@@ -65,7 +65,7 @@ namespace game { namespace assets
       }
       else
       {
-        log_e("Invalid asset with extensions: '" + ext + "'");
+        log_e("Invalid extension: '" + ext + "'");
         continue;
       }
 
@@ -73,7 +73,7 @@ namespace game { namespace assets
       asset_ptr->name = (path.parent_path() / fs::path{file}).native();
       asset_ptr->ext = ext;
 
-      log_i("Successfully loaded asset '" + fn + "'");
+      log_i("Successfully loaded '" + fn + "'");
 
       game.assets.push_back(asset_ptr);
     }
