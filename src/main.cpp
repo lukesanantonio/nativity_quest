@@ -18,6 +18,7 @@
 #include "states/menu.h"
 
 #include "assets/discovery.h"
+#include "assets/load.h"
 
 #include "common/except.h"
 #include "common/log.h"
@@ -39,7 +40,8 @@ int main(int argc, char** argv)
     game::Scoped_Log_Init scoped_log_init{};
 
     // Load assets
-    game::assets::discover("assets");
+    auto assets = game::assets::discover("assets");
+    game::assets::load(game, assets);
 
     // Our menu is going to be our top level state.
     push_state(game, std::make_shared<game::Menu_State>(game));

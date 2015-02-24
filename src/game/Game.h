@@ -9,6 +9,8 @@
 
 #include "Graphics_Desc.h"
 #include "Font_Renderer.h"
+
+#include "../assets/asset.h"
 namespace game
 {
   struct Game_State;
@@ -25,6 +27,8 @@ namespace game
 
     using stack_t = std::vector<std::shared_ptr<Game_State> >;
     stack_t states;
+
+    std::vector<std::shared_ptr<assets::Asset> > assets;
   };
 
   struct Game_State
