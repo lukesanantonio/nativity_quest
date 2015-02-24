@@ -6,6 +6,8 @@
 #include <chrono>
 #include <iostream>
 
+#include <uv.h>
+
 #include "pong/common/Timer.hpp"
 
 #include "game/Graphics_Desc.h"
@@ -41,8 +43,16 @@ int main(int argc, char** argv)
     game::Scoped_Log_Init scoped_log_init{};
 
     // Load assets
-    auto assets = game::assets::discover("assets");
-    game::assets::load(game, assets);
+    if(uv_chdir("assets"))
+    {
+      game::log_e("Failed to enter asset directory.");
+    }
+    namespace assets = game::assets;
+
+    auto asset_vector = assets::discover(".");
+    assets::load(game, asset_vector);
+
+    uv_chdir("..");
 
     // Our menu is going to be our top level state.
     push_state(game, std::make_shared<game::Menu_State>(game));
