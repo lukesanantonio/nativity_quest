@@ -68,7 +68,8 @@ namespace game { namespace assets
         continue;
       }
 
-      asset_ptr->filename = file;
+      // Uses every part of the path except the extension.
+      asset_ptr->name = (path.parent_path() / fs::path{file}).native();
       asset_ptr->ext = ext;
 
       log_i("Successfully loaded asset '" + fn + "'");

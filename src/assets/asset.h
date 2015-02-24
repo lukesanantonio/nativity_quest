@@ -18,7 +18,7 @@ namespace game { namespace assets
   {
     virtual ~Asset() noexcept {}
 
-    std::string filename;
+    std::string name;
     std::string ext;
   };
 
