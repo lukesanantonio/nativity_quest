@@ -1,0 +1,57 @@
+{
+  "game_title": "Itiner Nativitas",
+  "start_game": "Ludum Incipe",
+  "quit_game": "Exitus",
+
+  "zone_great_sea": "Mare Magnum",
+  "zone_arabian_desert": "Desertus Arabicus",
+  "zone_jerusalem": "Hierusalem",
+  "zone_bethlehem": "Bethlehem",
+  "zone_gloomy_desert": "Palus Tristis",
+  "zone_desert_of_despair": "Desertus Desperationis",
+  "zone_mountains_of_madness": "Montes Insaniae",
+  "zone_cedars_of_lebanon": "Cedri Lebanonis",
+  "zone_sea_of_gallilee": "Mare Galilaeae",
+  "zone_jordon_river": "Flumen Jordanis",
+  "zone_desert_straight": "Terra Deserta",
+  "zone_mountain_range": "Montes Nebulosi",
+
+  "item_rope": "Linum",
+  "item_boat": "Linter",
+  "item_ring_of_protection": "Anulus Defensionis",
+  "item_dagger": "Pugio",
+  "item_longsword": "Gladius",
+  "item_flare": "Fulgor",
+  "item_cloak_of_protection": "Sagulum Defensionis",
+  "item_canteen": "Ampulla",
+  "item_torch": "Lampas",
+  "item_throwing_axe": "Securis Iacendi",
+  "item_bow": "Arcus Sagittaeque",
+  "item_strength_potion": "Sucus Potestatis",
+  "item_haste_potion": "Sucus Celeretatis",
+  "item_defense_potion": "Sucus Defensionis",
+  "item_wool": "Lanitium",
+  "item_starlight": "Lux Astri",
+  "item_gold": "Aurum",
+  "item_gemstones": "Gemmae",
+  "item_myrrh": "Myrrha",
+  "item_incense": "Incensum",
+
+  "enemy_wolf": "Lupus",
+  "enemy_snake": "Serpens",
+  "enemy_creeper": "Limax Magnus",
+  "enemy_soldier": "Miles Romanus",
+  "enemy_giant": "Gigans",
+  "enemy_myrr": "Extraterrestrialis",
+
+  "next_player": "Factor Proximus",
+
+  "attack": "Pugna",
+  "use_item": "Uti item",
+  "run": "Fuge",
+
+  "won_msg": "% vicit",
+
+  "item_found": " % invenisti",
+  "enemy_encountered": " % congressus es"
+}
