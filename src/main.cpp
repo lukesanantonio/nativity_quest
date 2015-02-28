@@ -50,7 +50,7 @@ int main(int argc, char** argv)
     namespace assets = game::assets;
 
     auto asset_vector = assets::discover(".");
-    assets::load(game, asset_vector);
+    game.assets = assets::load(asset_vector);
 
     uv_chdir("..");
 

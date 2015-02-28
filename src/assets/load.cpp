@@ -15,8 +15,10 @@ namespace game { namespace assets
 {
   namespace fs = boost::filesystem;
 
-  void load(Game& game, std::vector<std::string> const& assets) noexcept
+  assets::Vector load(std::vector<std::string> const& assets) noexcept
   {
+    auto ret = std::vector<std::shared_ptr<Asset> >{};
+
     for(auto asset : assets)
     {
       auto path = fs::path{asset};
@@ -75,8 +77,9 @@ namespace game { namespace assets
 
       log_i("Successfully loaded '" + fn + "'");
 
-      game.assets.push_back(asset_ptr);
+      ret.push_back(asset_ptr);
     }
+    return ret;
   }
 } }
 
