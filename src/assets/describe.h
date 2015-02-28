@@ -17,7 +17,7 @@ namespace game { namespace assets
   Tag describe(Ptr ptr) noexcept
   {
     Tag tag;
-    decl(ptr, tag);
+    describe(ptr, tag);
     return tag;
   }
 
