@@ -68,7 +68,7 @@ namespace game { namespace assets
           // We have a file that we can presumably load.
           // Store the relative path.
           auto path = fs::absolute(iter->path());
-          path = make_relative(fs::current_path(), path);
+          path = make_relative(fs::path{subdir}, path);
           assets.push_back(path.native());
           log_i("Found: " + assets.back());
         }
