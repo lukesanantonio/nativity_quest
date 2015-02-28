@@ -11,6 +11,7 @@
 #include "Font_Renderer.h"
 
 #include "../assets/asset.h"
+#include "../assets/find.h"
 namespace game
 {
   struct Game_State;
@@ -86,6 +87,12 @@ namespace game
   {
     pop_state(g);
     push_state(g, gs);
+  }
+
+  template <class T>
+  inline std::shared_ptr<T> get_asset(Game& game, std::string name) noexcept
+  {
+    return assets::find<T>(game.assets, name);
   }
 
   void render_all(Game const& game) noexcept;
