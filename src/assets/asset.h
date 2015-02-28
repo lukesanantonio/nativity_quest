@@ -38,6 +38,13 @@ namespace game { namespace assets
     rapidjson::Document json;
   };
 
+  struct Font_Asset : public Asset
+  {
+    DECLARE_EXTENSION(ttf);
+
+    std::string abs_path;
+  };
+
   using Vector = std::vector<std::shared_ptr<Asset> >;
 } }
 #undef DECLARE_EXTENSION

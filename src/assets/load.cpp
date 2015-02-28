@@ -65,6 +65,14 @@ namespace game { namespace assets
 
         asset_ptr = image_asset;
       }
+      else if(ext == "ttf")
+      {
+        auto font_asset = std::make_shared<Font_Asset>();
+
+        font_asset->abs_path = fs::absolute(path).native();
+
+        asset_ptr = font_asset;
+      }
       else
       {
         log_e("Invalid extension: '" + ext + "'");
