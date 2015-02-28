@@ -112,4 +112,13 @@ namespace game { namespace ui
       child.view->render();
     }
   }
+
+  template <class T>
+  inline void View_Container<T>::invalidate() noexcept
+  {
+    for(auto const& child : children_)
+    {
+      child.view->invalidate();
+    }
+  }
 } }

@@ -23,7 +23,7 @@ namespace game { namespace ui
       if(str_ != str)
       {
         str_ = str;
-        invalidate_cache_();
+        invalidate();
       }
     }
 
@@ -33,7 +33,7 @@ namespace game { namespace ui
       if(size_ != size)
       {
         size_ = size;
-        invalidate_cache_();
+        invalidate();
       }
     }
 
@@ -43,9 +43,13 @@ namespace game { namespace ui
       if(col_ != col)
       {
         col_ = col;
-        invalidate_cache_();
+        invalidate();
       }
     }
+
+    inline void invalidate() noexcept override
+    { texture_cache_.reset(nullptr); }
+
   private:
     std::string str_ = "";
     int size_ = 40;
@@ -57,8 +61,5 @@ namespace game { namespace ui
 
     mutable Texture_Ptr texture_cache_;
     void gen_cache_() const noexcept;
-
-    inline void invalidate_cache_() const noexcept
-    { texture_cache_.reset(nullptr); }
   };
 } }

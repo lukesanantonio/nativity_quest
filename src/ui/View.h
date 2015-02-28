@@ -42,6 +42,8 @@ namespace game { namespace ui
 
     void render() const noexcept;
 
+    virtual void invalidate() noexcept {}
+
     virtual Vec<int> get_minimum_extents() const noexcept = 0;
 
     inline virtual void dispatch_event(SDL_Event const&) noexcept;

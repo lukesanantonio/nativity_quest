@@ -50,6 +50,8 @@ namespace game { namespace ui
     inline void remove_child(typename child_vec_t::iterator) noexcept;
     inline void remove_child(typename child_vec_t::const_iterator) noexcept;
 
+    void invalidate() noexcept override;
+
   protected:
     child_vec_t children_;
 
