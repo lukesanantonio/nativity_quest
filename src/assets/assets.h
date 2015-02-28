@@ -5,6 +5,7 @@
 #pragma once
 
 #include "desc/game.h"
+#include "desc/lang.h"
 #include "asset.h"
 #include "describe.h"
 #include "discovery.h"
