@@ -28,7 +28,7 @@ namespace game
     using stack_t = std::vector<std::shared_ptr<Game_State> >;
     stack_t states;
 
-    std::vector<std::shared_ptr<assets::Asset> > assets;
+    assets::Vector assets;
   };
 
   struct Game_State

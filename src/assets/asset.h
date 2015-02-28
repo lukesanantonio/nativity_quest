@@ -4,6 +4,8 @@
  */
 #pragma once
 #include <string>
+#include <vector>
+#include <memory>
 
 #include "rapidjson/document.h"
 
@@ -35,5 +37,7 @@ namespace game { namespace assets
 
     rapidjson::Document json;
   };
+
+  using Vector = std::vector<std::shared_ptr<Asset> >;
 } }
 #undef DECLARE_EXTENSION
