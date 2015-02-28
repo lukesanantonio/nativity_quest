@@ -9,7 +9,7 @@
 
 #include "../common/vec.h"
 
-#include "../decl/game.h"
+#include "../assets/desc/game.h"
 namespace game
 {
   struct Bad_Init {};
@@ -21,7 +21,7 @@ namespace game
 
   struct Graphics_Desc
   {
-    Graphics_Desc(decl::Game const& game_decl);
+    Graphics_Desc(assets::Game const& game_decl);
     Graphics_Desc(Graphics_Desc&& g) noexcept;
 
     ~Graphics_Desc() noexcept;

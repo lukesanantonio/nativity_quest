@@ -19,40 +19,47 @@
 
 #include "states/menu.h"
 
-#include "assets/discovery.h"
-#include "assets/load.h"
+#include "assets/assets.h"
 
 #include "common/except.h"
 #include "common/log.h"
 
-#define GAME_DECL_JSON "assets/game.json"
+#define GAME_JSON "game"
 #define FONT_FILE "assets/DejaVuSans.ttf"
 
 int main(int argc, char** argv)
 {
   try
   {
-    const auto game_decl = game::decl::Game(GAME_DECL_JSON);
+    // TODO: Make this threadsafe maybe?
+    game::Scoped_Log_Init scoped_log_init{};
+
+    // Enter the assets directory.
+    if(uv_chdir("assets"))
+    {
+      game::log_e("Failed to enter asset directory.");
+      return EXIT_FAILURE;
+    }
+
+    // Load any assets discovered in the current directory (assets/).
+    namespace asts = game::assets;
+    auto assets = asts::load(asts::discover("."));
+
+    // Go up a directory.
+    if(uv_chdir(".."))
+    {
+      game::log_e("Failed to return to original directory.");
+      return EXIT_FAILURE;
+    }
+
+    const auto game_decl = asts::describe<asts::Game>(assets, GAME_JSON);
 
     auto g = game::Graphics_Desc{game_decl};
 
     auto font = game::Font_Renderer{FONT_FILE};
     auto game = game::Game{std::move(g), std::move(font)};
 
-    // TODO: Make this threadsafe maybe?
-    game::Scoped_Log_Init scoped_log_init{};
-
-    // Load assets
-    if(uv_chdir("assets"))
-    {
-      game::log_e("Failed to enter asset directory.");
-    }
-    namespace assets = game::assets;
-
-    auto asset_vector = assets::discover(".");
-    game.assets = assets::load(asset_vector);
-
-    uv_chdir("..");
+    game.assets = std::move(assets);
 
     // Our menu is going to be our top level state.
     push_state(game, std::make_shared<game::Menu_State>(game));

@@ -5,7 +5,7 @@
 #include "Graphics_Desc.h"
 namespace game
 {
-  Graphics_Desc::Graphics_Desc(decl::Game const& game_decl)
+  Graphics_Desc::Graphics_Desc(assets::Game const& game_decl)
                                : extents_(game_decl.size)
   {
     if(SDL_Init(SDL_INIT_VIDEO) != 0)
