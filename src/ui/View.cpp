@@ -8,7 +8,7 @@ namespace game { namespace ui
 {
   void View::render() const noexcept
   {
-    if(layed_out_)
+    if(layed_out_ && visible_)
     {
       // Render background
       if(parent_background_)

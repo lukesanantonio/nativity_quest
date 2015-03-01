@@ -67,6 +67,9 @@ namespace game { namespace ui
     boost::optional<Color> query_background(View_Volume) const noexcept;
     bool remove_background(View_Volume) noexcept;
 
+    inline void visible(bool visible) noexcept;
+    inline bool visible() const noexcept;
+
     inline Shared_View
     find_child(std::string id, bool recursive = false) const noexcept;
 
@@ -86,6 +89,7 @@ namespace game { namespace ui
     Volume<int> this_vol_;
 
     bool layed_out_ = false;
+    bool visible_ = true;
 
     virtual Volume<int> layout_() = 0;
     virtual void render_() const noexcept = 0;
@@ -131,6 +135,15 @@ namespace game { namespace ui
     auto ptr = std::make_shared<T>(std::forward<Args>(args)...);
     event_triggers_.push_back(std::move(ptr));
     return {};
+  }
+
+  inline void View::visible(bool visible) noexcept
+  {
+    visible_ = visible;
+  }
+  inline bool View::visible() const noexcept
+  {
+    return visible_;
   }
 
   inline bool View::layout(Vec<int> size)
