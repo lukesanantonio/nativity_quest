@@ -23,9 +23,16 @@
 
 #include "common/except.h"
 #include "common/log.h"
+#include "common/translate.h"
 
 #define GAME_JSON "game"
 #define FONT_FILE "assets/DejaVuSans.ttf"
+
+#ifdef LANG_LATIN
+  #define INITIAL_LANG_ASSET "lang/latin"
+#else
+  #define INITIAL_LANG_ASSET "lang/english"
+#endif
 
 int main(int argc, char** argv)
 {
@@ -58,6 +65,8 @@ int main(int argc, char** argv)
 
     auto font = game::Font_Renderer{FONT_FILE};
     auto game = game::Game{std::move(g), std::move(font)};
+
+    game::set_lang(asts::describe<asts::Lang>(assets, INITIAL_LANG_ASSET));
 
     game.assets = std::move(assets);
 
