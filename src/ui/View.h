@@ -46,7 +46,7 @@ namespace game { namespace ui
 
     virtual Vec<int> get_minimum_extents() const noexcept = 0;
 
-    inline virtual void dispatch_event(SDL_Event const&) noexcept;
+    inline void dispatch_event(SDL_Event const&) noexcept;
 
     inline Volume<int> const& parent_volume() const noexcept;
     inline Volume<int> const& this_volume() const noexcept;
@@ -70,6 +70,9 @@ namespace game { namespace ui
     inline void visible(bool visible) noexcept;
     inline bool visible() const noexcept;
 
+    inline void handle_events(bool h) noexcept;
+    inline bool handle_events() noexcept;
+
     inline Shared_View
     find_child(std::string id, bool recursive = false) const noexcept;
 
@@ -90,7 +93,9 @@ namespace game { namespace ui
 
     bool layed_out_ = false;
     bool visible_ = true;
+    bool handle_events_ = true;
 
+    virtual void dispatch_event_(SDL_Event const& event) noexcept;
     virtual Volume<int> layout_() = 0;
     virtual void render_() const noexcept = 0;
 
@@ -107,10 +112,7 @@ namespace game { namespace ui
 
   inline void View::dispatch_event(SDL_Event const& e) noexcept
   {
-    for(auto shared_trigger : event_triggers_)
-    {
-      shared_trigger->try_trigger(*this, e);
-    }
+    if(handle_events_) dispatch_event_(e);
   }
 
   inline Volume<int> const& View::parent_volume() const noexcept
@@ -144,6 +146,14 @@ namespace game { namespace ui
   inline bool View::visible() const noexcept
   {
     return visible_;
+  }
+  inline void View::handle_events(bool h) noexcept
+  {
+    handle_events_ = h;
+  }
+  inline bool View::handle_events() noexcept
+  {
+    return handle_events_;
   }
 
   inline bool View::layout(Vec<int> size)
@@ -193,5 +203,13 @@ namespace game { namespace ui
   inline Shared_View View::find_child_(std::string, bool) const noexcept
   {
     return nullptr;
+  }
+
+  inline void View::dispatch_event_(SDL_Event const& event) noexcept
+  {
+    for(auto shared_trigger : event_triggers_)
+    {
+      shared_trigger->try_trigger(*this, event);
+    }
   }
 } }

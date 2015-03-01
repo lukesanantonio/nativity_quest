@@ -6,7 +6,7 @@
 namespace game { namespace ui
 {
   template <class T>
-  inline void View_Container<T>::dispatch_event(SDL_Event const& e) noexcept
+  inline void View_Container<T>::dispatch_event_(SDL_Event const& e) noexcept
   {
     for(auto& child : children_)
     {
