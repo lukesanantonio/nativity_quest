@@ -19,6 +19,11 @@ namespace game { namespace ui
     auto extents = Vec<int>{};
     SDL_QueryTexture(tex_.get(), NULL, NULL, &extents.x, &extents.y);
 
+    if(src_vol_)
+    {
+      extents = { src_vol_.value().width, src_vol_.value().height };
+    }
+
     extents *= scale_;
     return extents;
   }
@@ -27,6 +32,21 @@ namespace game { namespace ui
   {
     src_ = src;
     generate();
+  }
+
+  void Sprite::set_src_rect(Volume<int> vol) noexcept
+  {
+    src_vol_ = vol;
+  }
+  Volume<int> Sprite::get_src_rect() const noexcept
+  {
+    auto vol = Volume<int>{};
+    if(src_vol_) vol = src_vol_.value();
+    return vol;
+  }
+  void Sprite::remove_src_rect() noexcept
+  {
+    src_vol_ = boost::none;
   }
 
   void Sprite::generate() noexcept
@@ -47,7 +67,15 @@ namespace game { namespace ui
     if(tex_)
     {
       auto dest = to_sdl_rect(this_volume());
-      SDL_RenderCopy(graphics_.renderer, tex_.get(), NULL, &dest);
+      if(src_vol_)
+      {
+        auto src_rect = to_sdl_rect(src_vol_.value());
+        SDL_RenderCopy(graphics_.renderer, tex_.get(), &src_rect, &dest);
+      }
+      else
+      {
+        SDL_RenderCopy(graphics_.renderer, tex_.get(), NULL, &dest);
+      }
     }
   }
 

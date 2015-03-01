@@ -23,11 +23,17 @@ namespace game { namespace ui
     void src(Image_Asset_Ptr ptr) noexcept;
     inline Image_Asset_Ptr src() const noexcept { return src_; }
 
+    void set_src_rect(Volume<int> vol) noexcept;
+    Volume<int> get_src_rect() const noexcept;
+    void remove_src_rect() noexcept;
+
   private:
     void generate() noexcept;
 
     Volume<int> layout_() override;
     void render_() const noexcept override;
+
+    boost::optional<Volume<int> > src_vol_;
 
     Image_Asset_Ptr src_;
     Texture_Ptr tex_;
