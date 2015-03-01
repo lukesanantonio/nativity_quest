@@ -32,7 +32,7 @@
 #define MAP_JSON "assets/map.json"
 #define ITEMS_JSON "assets/items.json"
 #define ENEMIES_JSON "assets/enemies.json"
-#define HUD_JSON "assets/navigate_hud.json"
+#define HUD_JSON "ui/navigate"
 
 namespace game
 {

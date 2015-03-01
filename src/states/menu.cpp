@@ -8,7 +8,7 @@
 
 #include "../ui/ui.h"
 
-#define MENU_JSON "assets/menu.json"
+#define MENU_JSON "ui/menu"
 
 namespace game
 {

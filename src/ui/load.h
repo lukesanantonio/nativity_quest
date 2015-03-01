@@ -17,11 +17,11 @@ namespace game { namespace ui
     std::string align_str;
   };
 
-  Shared_View load(Game&, std::string file) noexcept;
+  Shared_View load(Game&, std::string name) noexcept;
 
   template <typename T>
-  inline std::shared_ptr<T> load_as(Game& g, std::string file) noexcept
+  inline std::shared_ptr<T> load_as(Game& g, std::string name) noexcept
   {
-    return as<T>(load(g, file));
+    return as<T>(load(g, name));
   }
 } }

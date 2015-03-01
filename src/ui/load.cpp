@@ -232,9 +232,8 @@ namespace game { namespace ui
     }
     return nullptr;
   }
-  Shared_View load(Game& g, std::string file) noexcept
+  Shared_View load(Game& g, std::string name) noexcept
   {
-    auto doc = parse_json(file);
-    return load_view(g, doc);
+    return load_view(g, get_asset<assets::Json_Asset>(g, name)->json);
   }
 } }
