@@ -3,29 +3,35 @@
  * All rights reserved.
  */
 #pragma once
+#include <memory>
 #include "../View.h"
 #include "../../common/surface.h"
+#include "../../assets/assets.h"
 namespace game { namespace ui
 {
   struct Sprite : public View
   {
-    explicit Sprite(Graphics_Desc& graphics) noexcept : View(graphics) {}
+    using Image_Asset_Ptr = std::shared_ptr<assets::Image_Asset>;
+
+    Sprite(Graphics_Desc& g, Image_Asset_Ptr asset = nullptr) noexcept;
 
     Vec<int> get_minimum_extents() const noexcept override;
 
     inline double scale() const noexcept { return scale_; }
     inline void scale(double scale) noexcept { scale_ = scale; }
 
-    void src(std::string str) noexcept;
-    inline std::string src() const noexcept { return src_; }
+    void src(Image_Asset_Ptr ptr) noexcept;
+    inline Image_Asset_Ptr src() const noexcept { return src_; }
 
   private:
+    void generate() noexcept;
+
     Volume<int> layout_() override;
     void render_() const noexcept override;
 
+    Image_Asset_Ptr src_;
     Texture_Ptr tex_;
 
-    std::string src_;
     double scale_ = 1.0;
   };
 } }

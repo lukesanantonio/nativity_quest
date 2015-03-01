@@ -8,6 +8,11 @@
 #include "../../common/center.hpp"
 namespace game { namespace ui
 {
+  Sprite::Sprite(Graphics_Desc& g, Image_Asset_Ptr image) noexcept
+                 : View(g), src_(image)
+  {
+    generate();
+  }
 
   Vec<int> Sprite::get_minimum_extents() const noexcept
   {
@@ -18,11 +23,19 @@ namespace game { namespace ui
     return extents;
   }
 
-  void Sprite::src(std::string str) noexcept
+  void Sprite::src(Image_Asset_Ptr src) noexcept
   {
-    src_ = str;
-    auto surface = IMG_Load(src_.data());
-    tex_.reset(SDL_CreateTextureFromSurface(graphics_.renderer, surface));
+    src_ = src;
+    generate();
+  }
+
+  void Sprite::generate() noexcept
+  {
+    if(src_)
+    {
+      auto surface = src_->image;
+      tex_.reset(SDL_CreateTextureFromSurface(graphics_.renderer, surface));
+    }
   }
 
   Volume<int> Sprite::layout_()

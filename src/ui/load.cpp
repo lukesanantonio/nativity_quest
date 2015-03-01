@@ -201,7 +201,8 @@ namespace game { namespace ui
     {
       auto sprite = Sprite{game.graphics};
 
-      sprite.src(doc["src"].GetString());
+      auto img = get_asset<assets::Image_Asset>(game, doc["src"].GetString());
+      sprite.src(img);
       sprite.scale(doc["scale"].GetDouble());
 
       return std::make_shared<Sprite>(std::move(sprite));
