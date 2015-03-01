@@ -31,7 +31,17 @@ namespace game { namespace ui
   void Label::gen_cache_() const noexcept
   {
     if(texture_cache_) return;
-    auto surface = fr_.render_text(str_, size_, col_);
+
+    std::string str = str_;
+    if(1 <= str.size()) if(str[0] == '@')
+    {
+      // We have a string name from the lang file.
+      // So do the translation.
+
+      str = args_->translate(str.substr(1));
+    }
+    auto surface = fr_.render_text(str, size_, col_);
+
     auto texture = SDL_CreateTextureFromSurface(graphics_.renderer, surface);
     texture_cache_.reset(texture);
   }

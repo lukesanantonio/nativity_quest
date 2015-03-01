@@ -6,7 +6,7 @@
     {
       "id": "title",
       "type": "label",
-      "text": "Nativity Quest",
+      "text": "@game_title",
       "size": 54
     },
     {
@@ -15,13 +15,13 @@
     {
       "id": "start",
       "type": "label",
-      "text": "Start game",
+      "text": "@start_game",
       "size": 54
     },
     {
       "id": "quit",
       "type": "label",
-      "text": "Quit",
+      "text": "@quit_game",
       "size": 54
     }
   ]
