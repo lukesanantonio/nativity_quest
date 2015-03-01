@@ -132,12 +132,11 @@ namespace game { namespace ui
   template <class T>
   Shared_View load_view(Game& game, T const& doc) noexcept
   {
-    std::string id = doc.HasMember("id") ? doc["id"].GetString() : "";
+    auto view_ptr = Shared_View{};
 
     if(typeof(doc) == "linear_layout")
     {
       Linear_Layout view{game.graphics};
-      view.id = id;
 
       auto const& children = doc["children"];
       view.orientation = orientof(doc);
@@ -149,12 +148,11 @@ namespace game { namespace ui
                    iter->HasMember("weight") ?  (*iter)["weight"].GetInt() : 1;
         view.push_child(load_view(game, *iter), layout);
       }
-      return std::make_shared<Linear_Layout>(std::move(view));
+      view_ptr = std::make_shared<Linear_Layout>(std::move(view));
     }
     else if(typeof(doc) == "side_layout")
     {
       Side_Layout view{game.graphics};
-      view.id = id;
 
       auto const& children = doc["children"];
       for(auto iter = children.Begin(); iter != children.End(); ++iter)
@@ -167,7 +165,7 @@ namespace game { namespace ui
         view.push_child(load_view(game, *iter), layout);
       }
 
-      return std::make_shared<Side_Layout>(std::move(view));
+      view_ptr = std::make_shared<Side_Layout>(std::move(view));
     }
     else if(typeof(doc) == "grid_layout")
     {
@@ -184,18 +182,17 @@ namespace game { namespace ui
         view.push_child(load_view(game, *iter), layout);
       }
 
-      return std::make_shared<Grid_Layout>(std::move(view));
+      view_ptr = std::make_shared<Grid_Layout>(std::move(view));
     }
     else if(typeof(doc) == "label")
     {
       Label label{game.graphics, game.font};
-      label.id = id;
 
       label.str(doc["text"].GetString());
       label.size(doc["size"].GetInt());
       label.color({0xff, 0xff, 0xff});
 
-      return std::make_shared<Label>(std::move(label));
+      view_ptr = std::make_shared<Label>(std::move(label));
     }
     else if(typeof(doc) == "sprite")
     {
@@ -205,32 +202,34 @@ namespace game { namespace ui
       sprite.src(img);
       sprite.scale(doc["scale"].GetDouble());
 
-      return std::make_shared<Sprite>(std::move(sprite));
+      view_ptr = std::make_shared<Sprite>(std::move(sprite));
     }
     else if(typeof(doc) == "bar")
     {
-      auto bar = Bar{game.graphics};
-
-      return std::make_shared<Bar>(std::move(bar));
+      view_ptr = std::make_shared<Bar>(game.graphics);
     }
     else if(typeof(doc) == "empty")
     {
-      auto view = Empty{game.graphics};
-      view.id = id;
-      return std::make_shared<Empty>(std::move(view));
+      view_ptr = std::make_shared<Empty>(game.graphics);
     }
     else if(typeof(doc) == "embed")
     {
-      auto view = load(game, doc["src"].GetString());
-
-      // Use the id in the inheriting file, unless there is none.
-      if(id != "")
-      {
-        view->id = id;
-      }
-
-      return view;
+      view_ptr = load(game, doc["src"].GetString());
+      // This will use the id of the file that inherited (using embed) unless
+      // there is no id given in the parent file, in which case the id in the
+      // embedded file will be used.
     }
+
+    if(view_ptr)
+    {
+      if(doc.HasMember("id"))
+      {
+        // Set the id if it was in the json.
+        view_ptr->id = doc["id"].GetString();
+      }
+      return view_ptr;
+    }
+
     return nullptr;
   }
   Shared_View load(Game& g, std::string name) noexcept
