@@ -19,6 +19,7 @@ namespace game
   }
 
   uv_loop_t* loop_ = nullptr;
+  Log_Severity level_ = Log_Severity::Info;
 
   void init_log() noexcept
   {
@@ -73,6 +74,11 @@ namespace game
     delete req;
   }
 
+  void set_log_level(Log_Severity level) noexcept
+  {
+    level_ = level;
+  }
+
   void log(std::string severity, std::string msg) noexcept
   {
     // Create the final message.
@@ -88,12 +94,24 @@ namespace game
     req->buf = uv_buf_init(msg_data, final_msg.size());
     uv_fs_write(loop_, &req->req, 1, &req->buf, 1, -1, after_log);
   }
-  void log_i(std::string msg) noexcept
-  {
-    log("info", msg);
-  }
   void log_e(std::string msg) noexcept
   {
-    log("error", msg);
+    if(static_cast<int>(level_) <= static_cast<int>(Log_Severity::Error))
+      log("error", msg);
+  }
+  void log_w(std::string msg) noexcept
+  {
+    if(static_cast<int>(level_) <= static_cast<int>(Log_Severity::Warning))
+      log("warning", msg);
+  }
+  void log_i(std::string msg) noexcept
+  {
+    if(static_cast<int>(level_) <= static_cast<int>(Log_Severity::Info))
+      log("info", msg);
+  }
+  void log_d(std::string msg) noexcept
+  {
+    if(static_cast<int>(level_) <= static_cast<int>(Log_Severity::Debug))
+      log("debug", msg);
   }
 }

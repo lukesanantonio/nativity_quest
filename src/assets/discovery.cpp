@@ -70,7 +70,7 @@ namespace game { namespace assets
           auto path = fs::absolute(iter->path());
           path = make_relative(fs::path{subdir}, path);
           assets.push_back(path.native());
-          log_i("Found: " + assets.back());
+          log_d("Found: " + assets.back());
         }
       }
     }

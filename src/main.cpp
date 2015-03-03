@@ -40,6 +40,7 @@ int main(int argc, char** argv)
   {
     // TODO: Make this threadsafe maybe?
     game::Scoped_Log_Init scoped_log_init{};
+    game::set_log_level(game::Log_Severity::Info);
 
     // Enter the assets directory.
     if(uv_chdir("assets"))

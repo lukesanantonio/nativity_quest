@@ -75,7 +75,7 @@ namespace game { namespace assets
       }
       else
       {
-        log_e("Invalid extension: '" + ext + "'");
+        log_d("Invalid extension: '" + ext + "'; Not loading.");
         continue;
       }
 

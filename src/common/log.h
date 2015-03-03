@@ -15,7 +15,15 @@ namespace game
   void uninit_log() noexcept;
   void flush_log() noexcept;
 
-  void log(std::string severity, std::string msg) noexcept;
-  void log_i(std::string msg) noexcept;
+  enum class Log_Severity
+  {
+    Debug, Info, Warning, Error
+  };
+
+  void set_log_level(Log_Severity level) noexcept;
+
   void log_e(std::string msg) noexcept;
+  void log_w(std::string msg) noexcept;
+  void log_i(std::string msg) noexcept;
+  void log_d(std::string msg) noexcept;
 }
