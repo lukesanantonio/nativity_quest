@@ -120,11 +120,18 @@ namespace game { namespace ui
   template <class T>
   Color load_color(T const& doc)
   {
+    if(doc.IsString())
+    {
+      auto color_str = std::string{doc.GetString()};
+      if(color_str == "white") return colors::white;
+      if(color_str == "black") return colors::black;
+    }
+
     Color c;
 
-    c.red   = doc["red"].GetChar();
-    c.green = doc["green"].GetChar();
-    c.blue  = doc["blue"].GetChar();
+    c.red   = doc["red"].GetInt();
+    c.green = doc["green"].GetInt();
+    c.blue  = doc["blue"].GetInt();
 
     return c;
   }
@@ -190,7 +197,12 @@ namespace game { namespace ui
 
       label.str(doc["text"].GetString());
       label.size(doc["size"].GetInt());
+
       label.color({0xff, 0xff, 0xff});
+      if_has_member(doc, "color", [&](auto const& val)
+      {
+        label.color(load_color(doc["color"]));
+      });
 
       view_ptr = std::make_shared<Label>(std::move(label));
     }
@@ -227,6 +239,23 @@ namespace game { namespace ui
         // Set the id if it was in the json.
         view_ptr->id = doc["id"].GetString();
       }
+      if_has_member(doc, "this_background", [&](auto const& val)
+      {
+        view_ptr->set_background(ui::View_Volume::This, load_color(val));
+      });
+      if_has_member(doc, "parent_background", [&](auto const& val)
+      {
+        view_ptr->set_background(ui::View_Volume::Parent, load_color(val));
+      });
+      if_has_member(doc, "this_border", [&](auto const& val)
+      {
+        view_ptr->set_border(ui::View_Volume::This, load_color(val));
+      });
+      if_has_member(doc, "parent_border", [&](auto const& val)
+      {
+        view_ptr->set_border(ui::View_Volume::Parent, load_color(val));
+      });
+
       return view_ptr;
     }
 
