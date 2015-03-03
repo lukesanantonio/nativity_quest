@@ -18,13 +18,15 @@ namespace game { namespace ui
     }
 
     // Measure the cells
-    auto cell_extents = Vec<int>{vol.width / max_row, vol.height / max_col};
+    ++max_row; ++max_col;
+    auto cell_extents = Vec<int>{vol.width / max_col, vol.height / max_row};
 
     for(auto const& child : children_)
     {
-      auto child_vol = Volume<int>{{0,0}, cell_extents.x, cell_extents.y};
-      child_vol.pos.x = child.layout.row * cell_extents.x;
-      child_vol.pos.y = child.layout.col * cell_extents.y;
+      auto child_vol = Volume<int>{vol.pos, cell_extents.x, cell_extents.y};
+      child_vol.pos.x += child.layout.col * cell_extents.x;
+      child_vol.pos.y += child.layout.row * cell_extents.y;
+      child.view->layout(child_vol);
     }
 
     return vol;
