@@ -3,10 +3,15 @@
  * All rights reserved.
  */
 #pragma once
+#include <algorithm>
 namespace game
 {
   struct Entity_Data
   {
+    Entity_Data() noexcept {}
+    Entity_Data(int cur_life, int max_life, int defense) noexcept
+                : cur_life(cur_life), max_life(max_life), defense(defense) {}
+
     int cur_life = 0;
     int max_life = 0;
 

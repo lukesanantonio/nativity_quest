@@ -13,6 +13,8 @@ namespace game
   {
     struct Effects
     {
+      explicit Effects(Items* items = nullptr) noexcept : items(items) {}
+
       double view_radius(Player const&) const noexcept;
       double max_movement(Player const&) const noexcept;
 
@@ -23,7 +25,7 @@ namespace game
       bool used_in_combat(Item) const noexcept;
       bool apply_effect(Player&, Item item) const noexcept;
 
-      Items* items = nullptr;
+      Items* items;
     };
   }
 }

@@ -29,7 +29,7 @@ namespace game
     double view_radius = 60.0;
     decl::Sprite_Impl fog = {};
 
-    Entity_Data entity_data = {0, 0, 0};
+    Entity_Data entity_data;
 
     double moved = 0.0;
     double max_movement = 75.0;
