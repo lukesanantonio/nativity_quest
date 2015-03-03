@@ -6,16 +6,16 @@
   { "str":  "chest",  "source": ["assets/chest0.png", "assets/chest1.png",
                                  "assets/chest2.png", "assets/chest3.png"]},
 
-  { "str":       "items", "source": "assets/items.png"       },
+  { "str":       "items", "source": "assets/images/items.png" },
 
-  { "str":         "map", "source": "assets/map.png"         },
-  { "str": "map_overlay", "source": "assets/map_overlay.png" },
-  { "str":       "zones", "source": "assets/zones.png"       },
+  { "str":         "map", "source": "assets/map.png"          },
+  { "str": "map_overlay", "source": "assets/map_overlay.png"  },
+  { "str":       "zones", "source": "assets/zones.png"        },
 
-  { "str":    "wolf", "source": "assets/enemies/wolf.png"    },
-  { "str":   "snake", "source": "assets/enemies/snake.png"   },
-  { "str": "creeper", "source": "assets/enemies/worm.png"    },
-  { "str": "soldier", "source": "assets/enemies/soldier.png" },
-  { "str":    "myrr", "source": "assets/enemies/myrr.png"    },
-  { "str":   "giant", "source": "assets/enemies/giant.png"   }
+  { "str":    "wolf", "source": "assets/enemies/wolf.png"     },
+  { "str":   "snake", "source": "assets/enemies/snake.png"    },
+  { "str": "creeper", "source": "assets/enemies/worm.png"     },
+  { "str": "soldier", "source": "assets/enemies/soldier.png"  },
+  { "str":    "myrr", "source": "assets/enemies/myrr.png"     },
+  { "str":   "giant", "source": "assets/enemies/giant.png"    }
 ]
