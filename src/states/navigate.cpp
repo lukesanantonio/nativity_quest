@@ -10,11 +10,11 @@
 #if 0
 
 #include "move.h"
-#include "inventory.h"
 #include "combat.h"
 
 #endif
 
+#include "inventory.h"
 #include "uncrate.h"
 #include "player_switch.h"
 
@@ -30,7 +30,7 @@
 #define NAVIGATE_SPRITES "assets/navigation_sprites.json"
 #define PLAYERS_JSON "assets/player.json"
 #define MAP_JSON "assets/map.json"
-#define ITEMS_JSON "assets/items.json"
+#define ITEMS_JSON "assets/decl/items.json"
 #define ENEMIES_JSON "assets/enemies.json"
 #define HUD_JSON "ui/navigate"
 
@@ -79,22 +79,20 @@ namespace game
       player.sprite_frame = player_index;
       respawn(player);
 
-      reset_fog(player, map.size());
-      unfog(player, effects);
+      //reset_fog(player, map.size());
+      //unfog(player, effects);
     }
 
     hud->find_child_r("next_player")->add_event_trigger<ui::Mouse_Click>(
     [this](auto const&)
     {
-      next_player();
+      this->next_player();
     });
 
     hud->find_child_r("use_inventory")->add_event_trigger<ui::Mouse_Click>(
     [this](auto const&)
     {
-#if 0
       push_state(game_, std::make_shared<Inventory_View_State>(game_, *this));
-#endif
     });
 
     update_cur_zone();
@@ -142,8 +140,8 @@ namespace game
     // Respawn ourselves if necessary.
     if(active_player().entity_data.cur_life == 0)
     {
-      active_player().pos = active_player().spawn_pt;
-      reset_life(active_player().entity_data);
+      active_player().pos = this->active_player().spawn_pt;
+      reset_life(this->active_player().entity_data);
 
       // Switch player
       next_player();
@@ -157,8 +155,8 @@ namespace game
         if(enemy.not_fighting) return false;
 
         // Check if they are a reasonable distance.
-        auto len = length(active_player().pos - Vec<double>{enemy.pos});
-        return len < active_player().view_radius;
+        auto len = length(this->active_player().pos - Vec<double>{enemy.pos});
+        return len < this->active_player().view_radius;
       });
 
       if(enemy_find != end(map.enemies))
@@ -181,8 +179,8 @@ namespace game
         if(!chest.visible) return false;
 
         // Check if it's a suitable distance.
-        auto len = length(active_player().pos - Vec<double>{chest.pos});
-        return len < active_player().view_radius / 10;
+        auto len = length(this->active_player().pos - Vec<double>{chest.pos});
+        return len < this->active_player().view_radius / 10;
       });
 
       if(chest_find != end(map.chests))
@@ -222,15 +220,13 @@ namespace game
     // Update the zone just in case.
     update_cur_zone();
 
-#if 0
-    game_.presenter.handle_events(true);
-#endif
+    hud->visible(true);
+    hud->handle_events(true);
   }
   void Navigate_State::on_exit() noexcept
   {
-#if 0
-    game_.presenter.handle_events(false);
-#endif
+    hud->visible(false);
+    hud->handle_events(false);
   }
 
   void Navigate_State::update_cur_zone() noexcept

@@ -3,53 +3,92 @@
  * All rights reserved.
  */
 #include "inventory.h"
-#include "combat.h"
+//#include "combat.h"
+
+#define INVENTORY_VIEW_HUD "ui/inventory"
+
 namespace game
 {
-  Inventory_View_State::Inventory_View_State(Game& g,
-                                             Navigate_State& ns) noexcept
-                                             : Navigate_Sub_State(g, ns)
+  constexpr int ids_size = 7;
+  constexpr char const* const ids[] =
   {
-    auto label_view = ui::Label_View{};
+    "item0",
+    "item1",
+    "item2",
+    "item3",
+    "item4",
+    "item5",
+    "back"
+  };
 
-    auto& player = navigate.map.players[navigate.player];
-    auto& inventory = player.inventory;
-
-    label_view.labels.resize(player.inventory.size());
-    label_view.labels.push_back("Back");
-    label_view.selected = 0;
-    label_view.col = "black";
-
-    hud.elements.push_back({label_view, {}, ui::Side::Bottom});
+  Inventory_View_State::
+  Inventory_View_State(Game& g, Navigate_State& ns) noexcept
+                       : Navigate_Sub_State(g, ns),
+                         hud(ui::load(g, INVENTORY_VIEW_HUD))
+  {
+    // Update all the labels with the users inventory.
     update_labels();
 
-    auto item_sprite = ui::Sprite{};
-    item_sprite.src = navigate.map.items.get_spritesheet();
-    item_sprite.scale = 1.0;
+    // Lay out the ui.
+    hud->layout(game_.graphics.size());
 
-    item_sprite.vol = Volume<int>{{0, 0},
-                                  navigate.map.items.get_sprite_extents().x,
-                                  navigate.map.items.get_sprite_extents().y};
+    auto spritesheet =
+             get_asset<assets::Image_Asset>(g, ns.map.items.get_spritesheet());
+    auto hud_sprite = hud->find_child_r<ui::Sprite>("item_sprite");
 
-    auto alignment = ui::Alignment{};
-    alignment.horizontal = ui::Horizontal_Alignment::Center;
-    alignment.vertical = ui::Vertical_Alignment::Center;
+    // Set the sprite up correctly. Set it to hidden initialially.
+    hud_sprite->src(spritesheet);
+    hud_sprite->visible(false);
 
-    hud.elements.push_back({item_sprite, {}, alignment});
+    auto set_selected = [this](int index, auto const&)
+    {
+      selected = index;
+    };
 
-    alignment.horizontal = ui::Horizontal_Alignment::Left;
-    alignment.vertical = ui::Vertical_Alignment::Bottom;
+    // Have each label tell us when it's selected. The call to bind binds it's
+    // index to it so it nows what to advertise to us when the time comes.
+    selected = 6;
+    for(std::size_t i = 0; i < ids_size; ++i)
+    {
+      auto item = hud->find_child_r(ids[i]);
+      item->add_event_trigger<ui::Mouse_Hover>(
+        std::bind(set_selected, i, std::placeholders::_1), true);
 
-    auto bar = ui::Bar{player.entity_data.max_life,
-                       player.entity_data.cur_life,
-                       "green", true};
-    hud.elements.push_back({bar, {5, 0, 0, 5}, alignment});
+      item->add_event_trigger<ui::Mouse_Click>(
+      [&](auto const&)
+      {
+        clicked = true;
+      });
+    }
   }
 
-  void Inventory_View_State::handle_event(SDL_Event const&) noexcept {}
+  void Inventory_View_State::handle_event(SDL_Event const& e) noexcept
+  {
+    hud->dispatch_event(e);
+  }
   void Inventory_View_State::step() noexcept
   {
-    auto& bar = boost::get<ui::Bar>(hud.elements[2].element);
+    auto bar = hud->find_child_r<ui::Bar>("player_health");
+
+    bar->max(navigate.active_player().entity_data.max_life);
+    bar->cur(navigate.active_player().entity_data.cur_life);
+
+    // Set the border around the selected item, removing borders around
+    // unselected label views.
+    for(int i = 0; i < ids_size; ++i)
+    {
+      auto child = hud->find_child_r(ids[i]);
+      if(selected == i)
+      {
+        child->set_border(ui::View_Volume::Parent, {0x00, 0x00, 0x00});
+      }
+      else
+      {
+        child->remove_border(ui::View_Volume::Parent);
+      }
+    }
+
+#if 0
     if(anim)
     {
       if(cur_step++ == max_step)
@@ -64,13 +103,11 @@ namespace game
     {
       set_bar_to_life(bar, navigate.active_player().entity_data);
     }
+#endif
 
     // Get the currently selected menu item in the label view.
-    auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
-
     // Find that corrosponding item from the user's inventory.
-    auto sel = label_view.selected;
-    if(sel < 6)
+    if(selected < 6)
     {
       on_inventory_label_select();
     }
@@ -78,56 +115,53 @@ namespace game
     {
       on_extra_label_select();
     }
-
-    if(label_view.done)
-    {
-      on_label_view_done();
-    }
-
-    game_.view.reset();
-    game_.presenter.present(hud, game_.view, game_.graphics.size());
   }
   void Inventory_View_State::set_sprite_src(decl::Item item) noexcept
   {
-    if(!item)
+    auto sprite = hud->find_child_r<ui::Sprite>("item_sprite");
+    if(item)
     {
-      hud.elements[1].is_visible = false;
+      sprite->visible(true);
+    }
+    else
+    {
+      sprite->visible(false);
       return;
     }
 
-    auto& sprite_element = boost::get<ui::Sprite>(hud.elements[1].element);
+    // Just change the src rect and relayout.
+    auto sprite_extents = navigate.map.items.get_sprite_extents();
+    auto src_rect = vol_from_extents(sprite_extents);
+    src_rect.pos.x = item->sprite_pos.x * src_rect.width;
+    src_rect.pos.x = item->sprite_pos.x * src_rect.height;;
+    sprite->set_src_rect(src_rect);
 
-    // Modify the image displayed using that item.
-    auto& vol = sprite_element.vol.value();
-    vol.pos.x = item->sprite_pos.x * vol.width;
-    vol.pos.y = item->sprite_pos.y * vol.height;
-
-    hud.elements[1].is_visible = true;
+    hud->layout(game_.graphics.size());
   }
   void Inventory_View_State::on_label_view_done() noexcept
   {
-    auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
     pop_state(game_);
   }
   void Inventory_View_State::on_inventory_label_select() noexcept
   {
-    auto sel = boost::get<ui::Label_View>(hud.elements[0].element).selected;
-
     auto& player = navigate.map.players[navigate.player];
-    auto item = player.inventory[sel];
+    auto item = player.inventory[selected];
     set_sprite_src(item);
 
     auto& effects = navigate.effects;
-    auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
 
-    if(label_view.done && effects.used_in_navigation(item))
+    // Use the item if possible.
+    if(clicked && effects.used_in_navigation(item))
     {
       auto et = player.entity_data;
       if(effects.apply_effect(player, item))
       {
-        player.inventory[sel] = decl::no::item;
+        // Remove the item from the users inventory.
+        player.inventory[selected] = decl::no::item;
+        // Update the hud.
         update_labels();
 
+        // Animate the life (if it has been changed).
         if(player.entity_data.cur_life != et.cur_life)
         {
           // Animate this change
@@ -139,37 +173,45 @@ namespace game
       }
     }
 
-    label_view.done = false;
+    clicked = false;
   }
   void Inventory_View_State::on_extra_label_select() noexcept
   {
     set_sprite_src(decl::no::item);
+    if(clicked) pop_state(game_);
   }
 
   void Inventory_View_State::render() const noexcept
   {
-    game_.view.render(game_.graphics);
+    hud->render();
   }
 
   void Inventory_View_State::on_enter() noexcept
   {
-    game_.presenter.handle_events(true);
+    hud->visible(true);
+    hud->handle_events(true);
   }
   void Inventory_View_State::on_exit() noexcept
   {
-    game_.presenter.handle_events(false);
+    hud->visible(false);
+    hud->handle_events(false);
   }
 
   void Inventory_View_State::update_labels() noexcept
   {
-    auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
-    if(navigate.active_player().inventory.size() <= label_view.labels.size())
+    auto& invent = navigate.active_player().inventory;
+
+    for(int i = 0; i < static_cast<int>(invent.size()); ++i)
     {
-      for(int i = 0; i < navigate.active_player().inventory.size(); ++i)
+      using namespace std::literals;
+      auto ui_id = "item"s + std::to_string(i);
+
+      auto item = invent[i];
+      if(item)
       {
-        auto item = navigate.active_player().inventory[i];
-        if(item) { label_view.labels[i] = item->str; }
-        else { label_view.labels[i] = "No item"; }
+        auto item_str = item->str.empty() ? "No item" : item->str;
+
+        hud->find_child_r<ui::Label>(ui_id)->str(item_str);
       }
     }
   }

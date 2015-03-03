@@ -3,6 +3,8 @@
  * All rights reserved.
  */
 #pragma once
+#include "../ui/ui.h"
+
 #include "navigate.h"
 namespace game
 {
@@ -17,7 +19,11 @@ namespace game
     void on_enter() noexcept override;
     void on_exit() noexcept override;
 
-    ui::Model hud;
+    ui::Shared_View hud;
+
+    bool clicked = false;
+
+    int selected;
 
     int delta = 0;
     int cur_step = 0;
