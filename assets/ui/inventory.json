@@ -1,0 +1,40 @@
+{
+  "type": "linear_layout",
+  "orientation": "vertical",
+  "children":
+  [
+    {
+      "id": "item_sprite",
+      "type": "sprite",
+      "src": "images/items",
+      "scale": 6.0,
+
+      "weight": 6
+    },
+    {
+      "weight": 1,
+
+      "type": "linear_layout",
+      "orientation": "horizontal",
+
+      "children":
+      [
+        {
+          "id": "player_health",
+          "type": "bar",
+          "weight": 4
+        },
+        {
+          "type": "empty",
+          "weight": 6
+        }
+      ]
+    },
+    {
+      "type": "embed",
+      "src": "ui_part/inventory_grid",
+
+      "weight": 2
+    }
+  ]
+}
