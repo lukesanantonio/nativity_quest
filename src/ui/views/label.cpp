@@ -15,6 +15,7 @@ namespace game { namespace ui
   }
   Volume<int> Label::layout_()
   {
+    gen_cache_();
     return center_volume(parent_volume(), get_minimum_extents());
   }
   void Label::render_() const noexcept
