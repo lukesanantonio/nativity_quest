@@ -53,8 +53,7 @@ namespace game
     // Push the next-player-animation state.
     push_state(game_, std::make_shared<Player_Switch_State>(game_, *this));
 
-    auto layout = ui::as<ui::Side_Layout>(hud);
-    auto player_name = layout->find_child<ui::Label>("player_name");
+    auto player_name = hud->find_child_r<ui::Label>("player_name");
 
     player_name->str("Player #" + std::to_string(player));;
     ui_dirty = true;
@@ -244,7 +243,13 @@ namespace game
 
       // Find the zone label and change it's string to that of the current
       // zone.
-      layout->find_child<ui::Label>("zone_label")->str(cur_zone->str);
+      auto zone_label = hud->find_child<ui::Label>("zone_label");
+      zone_label->str(cur_zone->str);
+
+      // We coulldd just layout the parent, but this is I guess safer for
+      // possibly any unexpected future changes.
+      hud->layout(game_.graphics.size());
+
       ui_dirty = true;
     }
   }
