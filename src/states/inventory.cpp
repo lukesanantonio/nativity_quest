@@ -207,12 +207,9 @@ namespace game
       auto ui_id = "item"s + std::to_string(i);
 
       auto item = invent[i];
-      if(item)
-      {
-        auto item_str = item->str.empty() ? "No item" : item->str;
 
-        hud->find_child_r<ui::Label>(ui_id)->str(item_str);
-      }
+      auto item_str = item ? item->str : "No item";
+      hud->find_child_r<ui::Label>(ui_id)->str(item_str);
     }
   }
 }
