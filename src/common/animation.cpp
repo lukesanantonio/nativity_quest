@@ -15,8 +15,11 @@ namespace game
 
   void Animation::step() noexcept
   {
-    int segment = segment_size_ / cur_;
-    int substep = segment_size_ % cur_;
+    int segment = 0;
+    if(cur_ != 0) segment = cur_ / segment_size_;
+
+    int substep = 0;
+    if(cur_ != 0) substep = cur_ % segment_size_;
 
     // When our substep is 0 it means we just started a new segment.
     if(substep == 0)
