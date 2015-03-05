@@ -62,6 +62,14 @@ namespace game { namespace ui
       view_vol.*extent = cell_extent * child.layout.weight;
       view_vol.pos.*comp += cell_extent * cur_weight;
 
+      // If this is the last child
+      if(child_i == children_.size() - 1 && force_fill)
+      {
+        // Fill the rest of the volume, unconditionally. Doesn't seem to cause
+        // problems so it is enabled by default.
+        view_vol.*extent = (vol.pos.*comp + vol.*extent) - view_vol.pos.*comp;
+      }
+
       cur_weight += child.layout.weight;
 
       child.view->layout(view_vol);

@@ -21,6 +21,7 @@ namespace game { namespace ui
     { Vertical, Horizontal };
 
     Orient orientation;
+    bool force_fill = true;
 
   private:
     Volume<int> layout_() override;

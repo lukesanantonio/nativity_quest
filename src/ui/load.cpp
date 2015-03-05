@@ -145,8 +145,12 @@ namespace game { namespace ui
     {
       Linear_Layout view{game.graphics};
 
-      auto const& children = doc["children"];
       view.orientation = orientof(doc);
+      if_has_member(doc, "force_fill", [&view](auto const& val)
+      {
+        view.force_fill = val.GetBool();
+      });
+      auto const& children = doc["children"];
       for(auto iter = children.Begin(); iter != children.End(); ++iter)
       {
         Linear_Layout_Params layout;
