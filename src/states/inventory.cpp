@@ -138,10 +138,6 @@ namespace game
 
     hud->layout(game_.graphics.size());
   }
-  void Inventory_View_State::on_label_view_done() noexcept
-  {
-    pop_state(game_);
-  }
   void Inventory_View_State::on_inventory_label_select() noexcept
   {
     auto& player = navigate.map.players[navigate.player];
