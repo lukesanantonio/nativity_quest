@@ -7,9 +7,9 @@
       "id": "item_sprite",
       "type": "sprite",
       "src": "images/items",
-      "scale": 6.0,
+      "scale": 6.5,
 
-      "weight": 6
+      "weight": 14
     },
     {
       "weight": 1,
@@ -26,7 +26,7 @@
         },
         {
           "type": "empty",
-          "weight": 6
+          "weight": 9
         }
       ]
     },
@@ -34,7 +34,7 @@
       "type": "embed",
       "src": "ui_part/inventory_grid",
 
-      "weight": 2
+      "weight": 3
     }
   ]
 }
