@@ -11,7 +11,12 @@ namespace game { namespace decl
 {
   Zone Zones::get_zone(Vec<int> pos) const noexcept
   {
-    SDL_Surface* png = sprite_->surface();
+    SDL_Surface* sprite = sprite_->surface();
+    if(!sprite) return no::zone;
+
+    // Convert the png to a format we can use.
+    SDL_Surface* png = SDL_ConvertSurfaceFormat(sprite, SDL_PIXELFORMAT_RGB888,
+                                                0);
     if(!png) return no::zone;
 
     // Bad position!
@@ -36,6 +41,8 @@ namespace game { namespace decl
     {
       return no::zone;
     }
+
+    SDL_FreeSurface(png);
 
     return *zone_find;
   }
