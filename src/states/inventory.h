@@ -16,8 +16,8 @@ namespace game
     void step() noexcept;
     void render() const noexcept;
 
-    void on_enter() noexcept override;
-    void on_exit() noexcept override;
+    inline void on_enter() noexcept override {}
+    inline void on_exit() noexcept override {}
 
     ui::Shared_View hud;
 

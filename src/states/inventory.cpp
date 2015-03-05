@@ -38,7 +38,6 @@ namespace game
 
     // Set the sprite up correctly. Set it to hidden initialially.
     hud_sprite->src(spritesheet);
-    hud_sprite->visible(false);
 
     auto set_selected = [this](int index, auto const&)
     {
@@ -180,17 +179,6 @@ namespace game
   void Inventory_View_State::render() const noexcept
   {
     hud->render();
-  }
-
-  void Inventory_View_State::on_enter() noexcept
-  {
-    hud->visible(true);
-    hud->handle_events(true);
-  }
-  void Inventory_View_State::on_exit() noexcept
-  {
-    hud->visible(false);
-    hud->handle_events(false);
   }
 
   void Inventory_View_State::update_labels() noexcept
