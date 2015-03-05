@@ -3,8 +3,10 @@
                                  "assets/char2.png", "assets/char3.png",
                                  "assets/char4.png", "assets/char5.png"]},
 
-  { "str":  "chest",  "source": ["assets/chest0.png", "assets/chest1.png",
-                                 "assets/chest2.png", "assets/chest3.png"]},
+  { "str":  "chest",  "source": ["assets/anim/chest/0.png",
+                                 "assets/anim/chest/1.png",
+                                 "assets/anim/chest/2.png",
+                                 "assets/anim/chest/3.png"]},
 
   { "str":       "items", "source": "assets/images/items.png" },
 
