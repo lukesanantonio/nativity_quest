@@ -182,6 +182,15 @@ namespace game { namespace ui
     {
       Grid_Layout view{game.graphics};
 
+      if_has_member(doc, "force_fill_width", [&](auto const& val)
+      {
+        view.force_fill_width = val.GetBool();
+      });
+      if_has_member(doc, "force_fill_height", [&](auto const& val)
+      {
+        view.force_fill_height = val.GetBool();
+      });
+
       auto const& children = doc["children"];
       for(auto iter = children.Begin(); iter != children.End(); ++iter)
       {

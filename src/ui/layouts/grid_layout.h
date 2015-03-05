@@ -21,6 +21,9 @@ namespace game { namespace ui
     inline Vec<int> get_minimum_extents() const noexcept override
     { return {0,0}; }
 
+    bool force_fill_width = true;
+    bool force_fill_height = true;
+
   private:
     Volume<int> layout_() override;
   };

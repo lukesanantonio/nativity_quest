@@ -21,11 +21,23 @@ namespace game { namespace ui
     ++max_row; ++max_col;
     auto cell_extents = Vec<int>{vol.width / max_col, vol.height / max_row};
 
-    for(auto const& child : children_)
+    for(auto& child : children_)
     {
       auto child_vol = Volume<int>{vol.pos, cell_extents.x, cell_extents.y};
       child_vol.pos.x += child.layout.col * cell_extents.x;
+
+      if(force_fill_width && child.layout.col == max_col - 1)
+      {
+        child_vol.width = (vol.pos.x + vol.width) - child_vol.pos.x;
+      }
+
       child_vol.pos.y += child.layout.row * cell_extents.y;
+
+      if(force_fill_height && child.layout.row == max_row - 1)
+      {
+        child_vol.height = (vol.pos.y + vol.height) - child_vol.pos.y;
+      }
+
       child.view->layout(child_vol);
     }
 
