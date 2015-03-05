@@ -79,6 +79,7 @@ namespace game
   void unfog(Player& p, decl::Effects& e) noexcept
   {
     auto surface = p.fog.surface();
+    if(!surface) return;
 
     SDL_LockSurface(surface);
 
