@@ -1,0 +1,62 @@
+/*
+ * Copyright (C) 2014 Luke San Antonio
+ * All rights reserved.
+ */
+#pragma once
+#include <functional>
+namespace game
+{
+  /*!
+   * If the segment size is 5 and the amount of segments is 2:
+   * **Start of segment 1**
+   * segment_fn(0)
+
+   * substep_fn(0)
+   * substep_fn(1)
+   * substep_fn(2)
+   * substep_fn(3)
+   * substep_fn(4)
+
+   * **Start of segment 2**
+   * segment_fn(1)
+
+   * substep_fn(0)
+   * substep_fn(1)
+   * substep_fn(2)
+   * substep_fn(3)
+   * substep_fn(4)
+   */
+  struct Animation
+  {
+    using segment_fn_t = std::function<void (int)>;
+    using substep_fn_t = segment_fn_t;
+
+    Animation(int segment_size, int segments,
+              segment_fn_t segment_fn = nullptr,
+              substep_fn_t substep_fn = nullptr) noexcept;
+
+    inline void set_segment_fn(segment_fn_t segment_fn) noexcept;
+    inline void set_substep_fn(substep_fn_t substep_fn) noexcept;
+
+    void step() noexcept;
+
+    bool done() const noexcept;
+
+  private:
+    int cur_ = 0;
+
+    int segment_size_;
+    int segments_;
+    segment_fn_t segment_fn_;
+    substep_fn_t substep_fn_;
+  };
+
+  inline void Animation::set_segment_fn(segment_fn_t segment_fn) noexcept
+  {
+    segment_fn_ = segment_fn;;
+  }
+  inline void Animation::set_substep_fn(substep_fn_t substep_fn) noexcept
+  {
+    substep_fn_ = substep_fn;
+  }
+}
