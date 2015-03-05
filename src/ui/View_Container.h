@@ -58,7 +58,7 @@ namespace game { namespace ui
     // Left to be implemented by any deriving classes.
     // Volume<int> layout_() override;
 
-    inline void dispatch_event_(SDL_Event const&) noexcept override;
+    inline bool dispatch_event_(SDL_Event const&) noexcept override;
 
     inline void render_() const noexcept override;
     Shared_View find_child_(std::string, bool) const noexcept override;

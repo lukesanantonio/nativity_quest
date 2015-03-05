@@ -46,7 +46,7 @@ namespace game { namespace ui
 
     virtual Vec<int> get_minimum_extents() const noexcept = 0;
 
-    inline void dispatch_event(SDL_Event const&) noexcept;
+    inline bool dispatch_event(SDL_Event const&) noexcept;
 
     inline Volume<int> const& parent_volume() const noexcept;
     inline Volume<int> const& this_volume() const noexcept;
@@ -95,7 +95,7 @@ namespace game { namespace ui
     bool visible_ = true;
     bool handle_events_ = true;
 
-    virtual void dispatch_event_(SDL_Event const& event) noexcept;
+    virtual bool dispatch_event_(SDL_Event const& event) noexcept;
     virtual Volume<int> layout_() = 0;
     virtual void render_() const noexcept = 0;
 
@@ -110,9 +110,10 @@ namespace game { namespace ui
     inline virtual Shared_View find_child_(std::string, bool) const noexcept;
   };
 
-  inline void View::dispatch_event(SDL_Event const& e) noexcept
+  inline bool View::dispatch_event(SDL_Event const& e) noexcept
   {
-    if(handle_events_) dispatch_event_(e);
+    if(handle_events_) return dispatch_event_(e);
+    return false;
   }
 
   inline Volume<int> const& View::parent_volume() const noexcept
@@ -205,11 +206,13 @@ namespace game { namespace ui
     return nullptr;
   }
 
-  inline void View::dispatch_event_(SDL_Event const& event) noexcept
+  inline bool View::dispatch_event_(SDL_Event const& event) noexcept
   {
+    bool ret = false;
     for(auto shared_trigger : event_triggers_)
     {
-      shared_trigger->try_trigger(*this, event);
+      ret = ret || shared_trigger->try_trigger(*this, event);
     }
+    return ret;
   }
 } }
