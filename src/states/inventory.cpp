@@ -133,7 +133,7 @@ namespace game
     auto sprite_extents = navigate.map.items.get_sprite_extents();
     auto src_rect = vol_from_extents(sprite_extents);
     src_rect.pos.x = item->sprite_pos.x * src_rect.width;
-    src_rect.pos.x = item->sprite_pos.x * src_rect.height;;
+    src_rect.pos.y = item->sprite_pos.y * src_rect.height;
     sprite->set_src_rect(src_rect);
 
     hud->layout(game_.graphics.size());
