@@ -69,7 +69,7 @@
     {
       "id": "back",
       "type": "label",
-      "text": "Back",
+      "text": "@back",
       "size": 50,
       "color": "black",
 
