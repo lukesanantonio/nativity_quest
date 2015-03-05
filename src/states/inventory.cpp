@@ -58,7 +58,7 @@ namespace game
       [&](auto const&)
       {
         clicked = true;
-      });
+      }, true);
     }
   }
 
