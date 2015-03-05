@@ -50,6 +50,9 @@
   "use_item": "Use item",
   "run": "Run",
 
+  "back": "Back",
+  "discard_item": "Discard",
+
   "won_msg": "Player % won",
 
   "item_found": "You found a %",
