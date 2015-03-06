@@ -12,7 +12,7 @@ namespace game
     Discard_State(Game& g, Navigate_State& ns, decl::Item item) noexcept;
 
     void on_inventory_label_select() noexcept override;
-    void on_label_view_done() noexcept override;
+    void on_label_view_done() noexcept;
     void on_extra_label_select() noexcept override;
 
     decl::Item extra_item;

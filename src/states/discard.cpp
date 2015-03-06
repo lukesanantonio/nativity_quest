@@ -9,35 +9,32 @@ namespace game
                                decl::Item item) noexcept
                                : Inventory_View_State(g, ns), extra_item(item)
   {
-    auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
+    auto label = hud->find_child_r<ui::Label>("back");
 
-    label_view.labels[6] = "Discard";
-    label_view.selected = 6;
-
-    hud.elements.erase(hud.elements.end() - 1);
+    label->str_name("discard_item");
   }
 
   void Discard_State::on_inventory_label_select() noexcept
   {
-    auto sel = boost::get<ui::Label_View>(hud.elements[0].element).selected;
-    set_sprite_src(navigate.map.players[navigate.player].inventory[sel]);
+    set_sprite_src(navigate.map.players[navigate.player].inventory[selected]);
+    if(clicked) on_label_view_done();
   }
 
   void Discard_State::on_label_view_done() noexcept
   {
-    auto sel = boost::get<ui::Label_View>(hud.elements[0].element).selected;
-
-    if(sel < 6)
+    if(selected < 6)
     {
-      auto item = navigate.map.players[navigate.player].inventory[sel];
-      if(sel < 5)
+      if(selected < 5)
       {
-        navigate.map.players[navigate.player].inventory[sel] = extra_item;
+        // Replace the item in the user's inventory.
+        auto& item = navigate.map.players[navigate.player].inventory[selected];
+        item = extra_item;
       }
       else
       {
-        auto& label_view = boost::get<ui::Label_View>(hud.elements[0].element);
-        label_view.done = false;
+        // Cannot replace the last item in the player's inventory.
+        clicked = false;
+        return;
       }
     }
     pop_state(game_);
@@ -45,5 +42,6 @@ namespace game
   void Discard_State::on_extra_label_select() noexcept
   {
     set_sprite_src(extra_item);
+    if(clicked) on_label_view_done();
   }
 }
