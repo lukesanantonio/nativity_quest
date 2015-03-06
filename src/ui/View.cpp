@@ -22,6 +22,9 @@ namespace game { namespace ui
                     this_background_.value());
       }
 
+      // Render the view.
+      render_();
+
       // Render borders
       if(parent_border_)
       {
@@ -33,9 +36,6 @@ namespace game { namespace ui
         draw_volume(graphics_.renderer, this_volume(),
                     this_border_.value());
       }
-
-      // Render the view.
-      render_();
     }
   }
 
