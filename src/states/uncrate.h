@@ -13,7 +13,7 @@ namespace game
   {
     Uncrate_State(Game& game, Navigate_State& ns, Chest& chest) noexcept;
 
-    inline void handle_event(SDL_Event const&) noexcept override {}
+    void handle_event(SDL_Event const&) noexcept override;
     void step() noexcept override;
     void render() const noexcept override;
 
@@ -25,6 +25,7 @@ namespace game
     ui::Shared_View hud;
 
     Animation anim;
+    bool user_continue = false;
 
   private:
     void on_anim_segment(int segment) noexcept;

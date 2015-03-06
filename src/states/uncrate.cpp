@@ -44,11 +44,16 @@ namespace game
     anim.set_segment_fn(std::bind(&Uncrate_State::on_anim_segment, this, _1));
   }
 
+  void Uncrate_State::handle_event(SDL_Event const& event) noexcept
+  {
+    hud->dispatch_event(event);
+  }
+
   void Uncrate_State::step() noexcept
   {
     anim.step();
 
-    if(anim.done())
+    if(anim.done() && user_continue)
     {
       // Disable the chest still on the ground.
       chest.visible = false;
@@ -116,6 +121,11 @@ namespace game
       label->str_args(chest.item->str);
 
       // Make the continue button work.
+      hud->find_child_r("continue_button")->add_event_trigger<ui::Mouse_Click>(
+      [&](auto const&)
+      {
+        user_continue = true;
+      }, true);
     }
 
     hud->layout(game_.graphics.size());
