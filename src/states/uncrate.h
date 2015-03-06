@@ -4,13 +4,14 @@
  */
 #pragma once
 #include "../game/Game.h"
+#include "../common/animation.h"
 #include "navigate.h"
+#include "../ui/ui.h"
 namespace game
 {
   struct Uncrate_State : public Navigate_Sub_State
   {
-    Uncrate_State(Game& game, Navigate_State& ns, Chest& chest) noexcept
-                  : Navigate_Sub_State(game, ns), chest(chest) {}
+    Uncrate_State(Game& game, Navigate_State& ns, Chest& chest) noexcept;
 
     inline void handle_event(SDL_Event const&) noexcept override {}
     void step() noexcept override;
@@ -21,8 +22,12 @@ namespace game
 
     Chest& chest;
 
-    int anim_frame = 0;
-    int intermediate_counter = 0;
+    ui::Shared_View hud;
+
+    Animation anim;
+
+  private:
+    void on_anim_segment(int segment) noexcept;
   };
 }
 

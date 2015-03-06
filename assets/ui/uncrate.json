@@ -1,0 +1,25 @@
+{
+  "type": "linear_layout",
+  "orientation": "vertical",
+  "children":
+  [
+    {
+      "id": "box_sprite",
+      "type": "sprite",
+      "src": "images/items",
+      "scale": 25,
+
+      "weight": 9
+    },
+    {
+      "id": "found_msg",
+      "type": "label",
+      "text": "@item_found",
+      "size": 50,
+      "color": "black",
+      "parent_background": "white",
+
+      "weight": 1
+    }
+  ]
+}

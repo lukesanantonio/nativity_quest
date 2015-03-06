@@ -4,9 +4,23 @@
  */
 #include "uncrate.h"
 #include "../decl/items.h"
-// #include "discard.h"
+#include "discard.h"
+#include "../common/log.h"
+
+#define HUD_JSON "ui/uncrate"
+#define ITEMS_IMAGE "images/items"
+
 namespace game
 {
+  constexpr int anim_size = 4;
+  constexpr char const* const anim_sprites[] =
+  {
+    "anim/chest/0",
+    "anim/chest/1",
+    "anim/chest/2",
+    "anim/chest/3",
+  };
+
   template <typename C>
   auto find_inventory_space(C& container) noexcept -> decltype(auto)
   {
@@ -19,86 +33,91 @@ namespace game
 
     return no_item_find;
   }
+
+  Uncrate_State::Uncrate_State(Game& game, Navigate_State& ns,
+                               Chest& chest) noexcept
+                               : Navigate_Sub_State(game, ns), chest(chest),
+                                 hud{ui::load(game, HUD_JSON)},
+                                 anim{45, 5}
+  {
+    using namespace std::placeholders;
+    anim.set_segment_fn(std::bind(&Uncrate_State::on_anim_segment, this, _1));
+  }
+
   void Uncrate_State::step() noexcept
   {
-    // TODO Get these constants from json or something.
-    constexpr auto max_frame = 4;
-    constexpr auto frames_between = 45;
-    constexpr auto frames_end = 90;
+    anim.step();
 
-    if(anim_frame == max_frame)
+    if(anim.done())
     {
-      if(++intermediate_counter == frames_end)
+      // Disable the chest still on the ground.
+      chest.visible = false;
+
+      // Now change the users inventory.
+      Player& player = navigate.map.players[navigate.player];
+      auto inventory = find_inventory_space(player.inventory);
+      if(inventory != std::end(player.inventory))
       {
-        chest.visible = false;
+        // Inventory not full!
+        *inventory = chest.item;
 
-        Player& player = navigate.map.players[navigate.player];
-        auto inventory = find_inventory_space(player.inventory);
-        if(inventory != std::end(player.inventory))
-        {
-          // Inventory not full!
-          *inventory = chest.item;
-
-          pop_state(game_);
-        }
-        else
-        {
-#if 0
-          replace_state(game_, std::make_shared<Discard_State>(game_, navigate,
-                        chest.item));
-#endif
-        }
+        // Leave.
+        pop_state(game_);
       }
-    }
-    else if(++intermediate_counter == frames_between)
-    {
-      ++anim_frame;
-      intermediate_counter = 0;
-    }
-    else
-    {
-      ++intermediate_counter;
+      else
+      {
+        replace_state(game_, std::make_shared<Discard_State>(game_, navigate,
+                      chest.item));
+      }
     }
   }
   void Uncrate_State::render() const noexcept
   {
-    auto& sprites = navigate.sprites;
-
-    // Render the large crate in the center of the screen.
-    auto fr = anim_frame < 4 ? anim_frame : 3;
-    decl::Sprite chest_spr = sprites.get_sprite(navigate.map.chest_sprite, fr);
-
-    // Center the large chest.
-    SDL_Rect chest_dest;
-    chest_dest.h = game_.graphics.size().y / 2;
-    chest_dest.w = chest_dest.h;
-    chest_dest.x = game_.graphics.size().x / 2 - chest_dest.w / 2;
-    chest_dest.y = game_.graphics.size().y / 2 - chest_dest.h / 2;
-    SDL_RenderCopy(game_.graphics.renderer,
-                   chest_spr->texture(game_.graphics.renderer),
-                   NULL, &chest_dest);
-
-    if(anim_frame == 4)
-    {
-      // Render the item atop everything just about as big.
-      auto& items = navigate.map.items;
-      decl::Sprite item_sprites = sprites.get_sprite(items.get_spritesheet());
-
-      SDL_Rect item_src;
-      item_src.w = items.get_sprite_extents().x;
-      item_src.h = items.get_sprite_extents().y;
-
-      decl::Item uncovered_item = chest.item;
-      item_src.x = uncovered_item->sprite_pos.x * item_src.w;
-      item_src.y = uncovered_item->sprite_pos.y * item_src.h;
-
-      SDL_RenderCopy(game_.graphics.renderer,
-                     item_sprites->texture(game_.graphics.renderer),
-                     &item_src, &chest_dest);
-    }
+    hud->render();
   }
   void Uncrate_State::on_exit() noexcept
   {
+    // In case the item made the player have more view radius (ie a torch).
     unfog(navigate.active_player(), navigate.effects);
+  }
+
+  void Uncrate_State::on_anim_segment(int segment) noexcept
+  {
+    // Set the chest animation.
+    auto sprite = hud->find_child_r<ui::Sprite>("box_sprite");
+    auto label = hud->find_child_r<ui::Label>("found_msg");
+    if(segment < 4)
+    {
+      // New animation frame.
+
+      // Set the sprite to the correct frame from the chest-opening animation.
+      auto asset =
+             get_asset<assets::Image_Asset>(game_, anim_sprites[segment]);
+      sprite->src(asset);
+
+      // Don't reveal the item yet.
+      label->str_args(std::string{"..."});
+    }
+    else if(segment == 4)
+    {
+      sprite->scale(sprite->scale() * .25);
+
+      // Load the items image into the sprite.
+      sprite->src(get_asset<assets::Image_Asset>(game_, ITEMS_IMAGE));
+
+      // Then set the src rect. TODO this is copied from inventory.cpp
+      // find a way to share this code.
+      auto sprite_extents = navigate.map.items.get_sprite_extents();
+      auto src_rect = vol_from_extents(sprite_extents);
+      src_rect.pos.x = chest.item->sprite_pos.x * src_rect.width;
+      src_rect.pos.y = chest.item->sprite_pos.y * src_rect.height;
+      sprite->set_src_rect(src_rect);
+
+      label->str_args(chest.item->str);
+
+      // Make the continue button work.
+    }
+
+    hud->layout(game_.graphics.size());
   }
 }
