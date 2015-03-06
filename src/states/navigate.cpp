@@ -9,11 +9,11 @@
 
 #if 0
 
-#include "move.h"
 #include "combat.h"
 
 #endif
 
+#include "move.h"
 #include "inventory.h"
 #include "uncrate.h"
 #include "player_switch.h"
@@ -99,27 +99,28 @@ namespace game
 
   void Navigate_State::handle_event(SDL_Event const& event) noexcept
   {
-    hud->dispatch_event(event);
-#if 0
-    if(event.type == SDL_MOUSEBUTTONDOWN)
+    if(!hud->dispatch_event(event))
     {
-      if(event.button.button == SDL_BUTTON_LEFT)
+      if(event.type == SDL_MOUSEBUTTONDOWN)
       {
-        // Get the mouse in screen coordinates.
-        auto mouse = Vec<int>{event.button.x, event.button.y};
+        if(event.button.button == SDL_BUTTON_LEFT)
+        {
+          // Get the mouse in screen coordinates.
+          auto mouse = Vec<int>{event.button.x, event.button.y};
 
-        // Use the map scale and current top-left corner to calculate the
-        // map coordinates.
-        auto map_coord = (mouse / map.scale) + map_corner;
+          // Use the map scale and current top-left corner to calculate the
+          // map coordinates.
+          auto map_coord = static_cast<Vec<double> >(mouse) / map.scale;
+          map_coord += map_corner;
 
-        // Calculate our delta movement.
-        auto delta = map_coord - map.players[player].pos;
+          // Calculate our delta movement.
+          auto delta = map_coord - map.players[player].pos;
 
-        auto move = std::make_shared<Movement_State>(game_, *this, delta);
-        push_state(game_, move);
+          auto move = std::make_shared<Movement_State>(game_, *this, delta);
+          push_state(game_, move);
+        }
       }
     }
-#endif
   }
   void Navigate_State::step() noexcept
   {
