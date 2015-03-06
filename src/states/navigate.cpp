@@ -164,8 +164,8 @@ namespace game
 #if 0
         push_state(game_,
                    std::make_shared<Combat_State>(game_, *this, *enemy_find));
-#endif
         return;
+#endif
       }
     }
 
