@@ -15,6 +15,9 @@ namespace game
 
   void Animation::step() noexcept
   {
+    // If we are done, no reason to do anything.
+    if(done()) return;
+
     int segment = 0;
     if(cur_ != 0) segment = cur_ / segment_size_;
 
@@ -37,6 +40,6 @@ namespace game
   }
   bool Animation::done() const noexcept
   {
-    return cur_ == segments_ * segment_size_;
+    return cur_ >= segments_ * segment_size_;
   }
 }
