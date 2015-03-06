@@ -51,6 +51,7 @@
   "run": "Run",
 
   "back": "Back",
+  "continue": "Continue",
   "discard_item": "Discard",
 
   "won_msg": "Player % won",

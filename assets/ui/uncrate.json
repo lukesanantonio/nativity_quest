@@ -12,14 +12,32 @@
       "weight": 9
     },
     {
-      "id": "found_msg",
-      "type": "label",
-      "text": "@item_found",
-      "size": 50,
-      "color": "black",
-      "parent_background": "white",
+      "type": "linear_layout",
+      "orientation": "horizontal",
+      "children":
+      [
+        {
+          "id": "found_msg",
+          "type": "label",
+          "text": "@item_found",
+          "size": 52,
+          "color": "black",
+          "parent_background": "white",
 
-      "weight": 1
+          "weight": 6
+        },
+        {
+          "id": "continue_button",
+          "type": "label",
+          "text": "@continue",
+          "size": 28,
+          "color": "black",
+          "parent_background": "white",
+          "parent_border": "black",
+
+          "weight": 1
+        }
+      ]
     }
   ]
 }
