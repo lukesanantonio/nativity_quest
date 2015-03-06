@@ -17,11 +17,11 @@
 #include "inventory.h"
 #include "uncrate.h"
 #include "player_switch.h"
+#include "player_intro.h"
 
 #if 0
 
 #include "win.h"
-#include "player_intro.h"
 
 #endif
 
@@ -206,11 +206,9 @@ namespace game
   {
     if(first)
     {
-#if 0
       auto intro =
         std::make_shared<Player_Intro>(game_, *this, players.get_name(player));
       push_state(game_, std::move(intro));
-#endif
       first = false;
     }
 
