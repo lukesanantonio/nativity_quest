@@ -21,6 +21,10 @@ namespace game { namespace ui
     template <class... Args>
     struct Tuple_String_Args : public String_Args
     {
+      template <class... NArgs>
+      Tuple_String_Args(NArgs&&... args) noexcept
+                        : tup{std::forward<NArgs>(args)...} {}
+
       std::string translate(std::string name) const noexcept override;
 
       std::tuple<Args...> tup;
@@ -31,14 +35,15 @@ namespace game { namespace ui
     {
       // Call the function with a first argument equal to name followed by the
       // contents of the tuple.
-      return call(game::translate<Args...>, tup, name);
+      return call(&game::translate<const Args&...>, tup, name);
     }
+
   }
   struct Label : public View
   {
     Label(Graphics_Desc& g, Font_Renderer& fr) noexcept : View(g), fr_(fr)
     {
-      args_.reset(new detail::Tuple_String_Args<>{});
+      args_.reset(new detail::Tuple_String_Args<>());
     }
 
     Vec<int> get_minimum_extents() const noexcept override;
@@ -72,10 +77,22 @@ namespace game { namespace ui
     }
 
     template <class... Args>
-    inline void str_args(std::tuple<Args...> const& tup) noexcept
+    inline void str_args(Args&&... args) noexcept
     {
+      // ^^ Accept both lvalues and rvalues (so we can possibly move into the
+      // tuple).
+
       // Initialize our arguments.
-      args_.reset(new detail::Tuple_String_Args<Args...>{tup});
+
+      // Make the tuple string args tuple without any references, so that we
+      // don't have to worry about storing any references that may expire.
+      using tuple_string_args_t =
+              detail::Tuple_String_Args<std::remove_reference_t<Args>...>;
+
+      // Initialize the tuple with our args, while moving any values that can
+      // be moved.
+      args_ = std::make_unique<tuple_string_args_t>(
+                                                  std::forward<Args>(args)...);
       invalidate();
     }
 
