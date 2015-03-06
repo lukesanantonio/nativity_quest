@@ -4,11 +4,12 @@
  */
 #pragma once
 #include "../game/Game.h"
+#include "../common/animation.h"
 namespace game
 {
   struct Flare_State : public Game_State
   {
-    Flare_State(Game& g) noexcept : Game_State(g, false) {}
+    Flare_State(Game& g) noexcept;
 
     inline void handle_event(SDL_Event const&) noexcept override {}
 
@@ -18,6 +19,9 @@ namespace game
     inline void on_enter() noexcept override {}
     inline void on_exit() noexcept override {}
 
+    Animation anim;
+
+    static constexpr int factor = 5;
     int alpha = 0;
   };
 }
