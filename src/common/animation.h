@@ -6,6 +6,13 @@
 #include <functional>
 namespace game
 {
+  enum Anim_Repeat_Mode
+  {
+    No_Repeat,
+    Begin_Repeat,
+    Reverse_Repeat
+  };
+
   /*!
    * If the segment size is 5 and the amount of segments is 2:
    * **Start of segment 1**
@@ -32,6 +39,7 @@ namespace game
     using substep_fn_t = segment_fn_t;
 
     Animation(int segment_size, int segments,
+              Anim_Repeat_Mode repeat = Anim_Repeat_Mode::No_Repeat,
               segment_fn_t segment_fn = nullptr,
               substep_fn_t substep_fn = nullptr) noexcept;
 
@@ -45,8 +53,14 @@ namespace game
   private:
     int cur_ = 0;
 
+    bool going_reverse_ = false;
+
+    bool at_endpoint_() const noexcept;
+    void incremement_() noexcept;
+
     int segment_size_;
     int segments_;
+    Anim_Repeat_Mode repeat_;
     segment_fn_t segment_fn_;
     substep_fn_t substep_fn_;
   };
