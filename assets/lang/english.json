@@ -54,7 +54,7 @@
   "continue": "Continue",
   "discard_item": "Discard",
 
-  "won_msg": "Player % won",
+  "win_msg": "Player % won",
 
   "item_found": "You found a %",
   "enemy_encountered": "You encountered a %"

@@ -50,7 +50,7 @@
   "use_item": "Uti item",
   "run": "Fuge",
 
-  "won_msg": "% vicit",
+  "win_msg": "% vicit",
 
   "item_found": " % invenisti",
   "enemy_encountered": " % congressus es"
