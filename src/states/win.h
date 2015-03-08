@@ -4,7 +4,7 @@
  */
 #pragma once
 #include "../game/Game.h"
-#include "../ui/Model.h"
+#include "../ui/ui.h"
 namespace game
 {
   struct Win_State : public Game_State
@@ -18,6 +18,6 @@ namespace game
     void on_enter() noexcept;
     inline void on_exit() noexcept {}
 
-    ui::Model hud;
+    ui::Shared_View hud;
   };
 }

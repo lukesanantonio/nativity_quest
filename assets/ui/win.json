@@ -1,0 +1,25 @@
+{
+  "type": "side_layout",
+  "children":
+  [
+    {
+      "id": "msg",
+      "type": "label",
+      "text": "@win_msg",
+      "size": 78,
+      "alignment": { "vertical": "center", "horizontal": "center" },
+      "color": "black",
+      "back_color": "white"
+    },
+    {
+      "id": "menu_return_button",
+      "type": "label",
+      "text": "@return_to_menu",
+      "size": 45,
+      "alignment": { "vertical": "bottom", "horizontal": "center" },
+      "padding": { "bottom": 10 },
+      "color": "black",
+      "parent_background": "white"
+    }
+  ]
+}
