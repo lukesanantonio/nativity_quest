@@ -1,6 +1,6 @@
 [
   {
-    "sprite": "wolf",
+    "sprite": "enemies/wolf",
     "id": "wolf",
     "str": "Wild Mongrel",
     "defense": 0,
@@ -8,7 +8,7 @@
   },
 
   {
-    "sprite": "snake",
+    "sprite": "enemies/snake",
     "id": "snake",
     "str": "Mire Boa",
     "defense": 0,
@@ -16,7 +16,7 @@
   },
 
   {
-    "sprite": "creeper",
+    "sprite": "enemies/creeper",
     "id": "creeper",
     "str": "Blind Creeper",
     "defense": 1,
@@ -24,7 +24,7 @@
   },
 
   {
-    "sprite": "soldier",
+    "sprite": "enemies/soldier",
     "id": "soldier",
     "str": "Roman Soldier",
     "defense": 2,
@@ -32,7 +32,7 @@
   },
 
   {
-    "sprite": "giant",
+    "sprite": "enemies/giant",
     "id": "giant",
     "str": "Giant",
     "defense": 1,
@@ -40,7 +40,7 @@
   },
 
   {
-    "sprite": "myrr",
+    "sprite": "enemies/myrr",
     "id": "myrr",
     "str": "Myrr",
     "defense": 3,
