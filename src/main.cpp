@@ -18,6 +18,7 @@
 #include "decl/game.h"
 
 #include "states/menu.h"
+#include "states/view_hud.h"
 
 #include "assets/assets.h"
 
@@ -71,8 +72,17 @@ int main(int argc, char** argv)
 
     game.assets = std::move(assets);
 
-    // Our menu is going to be our top level state.
-    push_state(game, std::make_shared<game::Menu_State>(game));
+    if(argc > 1)
+    {
+      // Load that ui asset and view it.
+      push_state(game, std::make_shared<game::View_Hud_State>(game, argv[1]));
+    }
+    else
+    {
+      // Otherwise start a standard game in which our menu is going to be our
+      // top level state.
+      push_state(game, std::make_shared<game::Menu_State>(game));
+    }
 
     pong::Timer<> timer;
 
