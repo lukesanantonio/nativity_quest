@@ -42,4 +42,13 @@ namespace game
 
     return sc;
   }
+
+  inline Color color_from_intensity(double r, double g, double b) noexcept
+  {
+    auto ret = Color{};
+    ret.red = r * 0xff;
+    ret.green = g * 0xff;
+    ret.blue = b * 0xff;
+    return ret;
+  }
 }
