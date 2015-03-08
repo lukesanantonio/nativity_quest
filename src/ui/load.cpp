@@ -231,7 +231,14 @@ namespace game { namespace ui
     }
     else if(typeof(doc) == "bar")
     {
-      view_ptr = std::make_shared<Bar>(game.graphics);
+      auto bar = Bar{game.graphics};
+
+      // Set these to one so it's still considered full and we don't have to
+      // deal with divide-by-zero errors and crashes.
+      bar.max(1);
+      bar.cur(1);
+
+      view_ptr = std::make_shared<Bar>(std::move(bar));
     }
     else if(typeof(doc) == "empty")
     {
