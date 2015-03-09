@@ -37,15 +37,22 @@ namespace game { namespace decl
       player_names_[4].assign(doc["player4_name"].GetString());
       player_names_[5].assign(doc["player5_name"].GetString());
 
+      sprite_info_[0].src.assign(doc["player0_sprite"].GetString());
+      sprite_info_[1].src.assign(doc["player1_sprite"].GetString());
+      sprite_info_[2].src.assign(doc["player2_sprite"].GetString());
+      sprite_info_[3].src.assign(doc["player3_sprite"].GetString());
+      sprite_info_[4].src.assign(doc["player4_sprite"].GetString());
+      sprite_info_[5].src.assign(doc["player5_sprite"].GetString());
+
       auto const& decl_arr = doc["decl"];
-      for(short index = 0; index < sprite_info_.size(); ++index)
+      for(short index = 0; index < (short) sprite_info_.size(); ++index)
       {
         auto& sprite_info = sprite_info_[index];
 
-        sprite_info.src.width = doc["width"].GetInt();
-        sprite_info.src.height = doc["height"].GetInt();
-        sprite_info.src.pos.x = decl_arr[index]["start"]["x"].GetInt();
-        sprite_info.src.pos.y = decl_arr[index]["start"]["y"].GetInt();
+        sprite_info.src_vol.width = doc["width"].GetInt();
+        sprite_info.src_vol.height = doc["height"].GetInt();
+        sprite_info.src_vol.pos.x = decl_arr[index]["start"]["x"].GetInt();
+        sprite_info.src_vol.pos.y = decl_arr[index]["start"]["y"].GetInt();
 
         sprite_info.center.x = decl_arr[index]["center"]["x"].GetInt();
         sprite_info.center.y = decl_arr[index]["center"]["y"].GetInt();

@@ -1,6 +1,4 @@
 {
-  "sprite": "player",
-
   "width": 32,
   "height": 48,
   "scale": 0.25,
@@ -18,6 +16,13 @@
   "player3_item": "Gemstones",
   "player4_item": "Myrrh",
   "player5_item": "Incense",
+
+  "player0_sprite": "images/players/0",
+  "player1_sprite": "images/players/1",
+  "player2_sprite": "images/players/2",
+  "player3_sprite": "images/players/3",
+  "player4_sprite": "images/players/4",
+  "player5_sprite": "images/players/5",
 
   "decl": [
     {"start": {"x": 0, "y":   0}, "center": {"x": 16, "y": 45}},

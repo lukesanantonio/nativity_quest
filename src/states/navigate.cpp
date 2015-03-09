@@ -419,14 +419,14 @@ namespace game
         angle = angle - -segment_len * 2;
     }
 
-    auto char_info = players.get_sprite_source(orient);
+    auto char_info = players.get_sprite(orient);
     auto char_scale = players.get_sprite_scale();
 
     SDL_Rect char_src;
-    char_src.x = char_info.src.pos.x;
-    char_src.y = char_info.src.pos.y;
-    char_src.w = char_info.src.width;
-    char_src.h = char_info.src.height;
+    char_src.x = char_info.src_vol.pos.x;
+    char_src.y = char_info.src_vol.pos.y;
+    char_src.w = char_info.src_vol.width;
+    char_src.h = char_info.src_vol.height;
 
     SDL_Rect char_dest;
     char_dest.x = player_scr_coord.x;
@@ -438,15 +438,15 @@ namespace game
 
     // The width is scaled first by the map scale, then by the sprite-specific
     // scale.
-    char_dest.w = char_info.src.width * map.scale * char_scale;
-    char_dest.h = char_info.src.height * map.scale * char_scale;
+    char_dest.w = char_info.src_vol.width * map.scale * char_scale;
+    char_dest.h = char_info.src_vol.height * map.scale * char_scale;
 
     SDL_Point char_center;
     char_center.x = char_info.center.x * map.scale * char_scale;
     char_center.y = char_info.center.y * map.scale * char_scale;
 
-    auto char_sprite = sprites.get_sprite(players.get_sprite(),
-                                          p.sprite_frame);
+    auto char_sprite = get_asset<assets::Image_Asset>(game_,
+                                       players.get_sprite(p.sprite_frame).src);
 
     SDL_RenderCopyEx(game_.graphics.renderer,
                      char_sprite->texture(game_.graphics.renderer),
