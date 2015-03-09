@@ -12,7 +12,7 @@
 #define DECLARE_EXTENSION(ext_str) \
 constexpr static char const* const ext = #ext_str;
 
-struct SDL_Surface;
+#include "SDL.h"
 
 namespace game { namespace assets
 {
@@ -29,6 +29,11 @@ namespace game { namespace assets
     DECLARE_EXTENSION(png);
 
     SDL_Surface* image;
+
+    SDL_Texture* texture(SDL_Renderer* r) noexcept;
+  private:
+    SDL_Texture* texture_;
+    SDL_Renderer* renderer_;
   };
 
   struct Json_Asset : public Asset
