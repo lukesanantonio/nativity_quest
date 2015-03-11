@@ -1,0 +1,41 @@
+{
+  "id": "combat_grid",
+  "type": "grid_layout",
+
+  "parent_background": "white",
+
+  "children":
+  [
+    {
+      "id": "attack",
+      "type": "label",
+      "text": "@attack",
+      "size": 40,
+      "color": "black",
+
+      "row": 0,
+      "col": 0
+    },
+    {
+      "id": "use_item",
+      "type": "label",
+      "text": "@use_item",
+      "size": 40,
+      "color": "black",
+
+      "row": 0,
+      "col": 1
+    },
+    {
+      "id": "run",
+      "type": "label",
+      "text": "@run",
+      "size": 40,
+      "color": "black",
+
+      "row": 1,
+      "col": 1
+    }
+  ]
+}
+
