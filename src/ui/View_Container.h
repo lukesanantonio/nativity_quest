@@ -62,6 +62,7 @@ namespace game { namespace ui
 
     inline void render_() const noexcept override;
     Shared_View find_child_(std::string, bool) const noexcept override;
+    bool replace_child_(std::string, Shared_View, bool) noexcept override;
   };
 } }
 

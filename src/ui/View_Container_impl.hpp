@@ -105,6 +105,30 @@ namespace game { namespace ui
     }
     return nullptr;
   }
+  template <class T> bool View_Container<T>::
+  replace_child_(std::string id, Shared_View v, bool r) noexcept
+  {
+    for(auto& child : children_)
+    {
+      // Check our direct child to see if *it* has the id we need.
+      if(child.view->id == id)
+      {
+        // Replace it's view with the one that needs replacing.
+        child.view = v;
+        // stop
+        return true;
+      }
+      // If it doesn't and we are recursively trying to look.
+      else if(r)
+      {
+        // Look in it's children like this. Regular views will always fail
+        // to replcae anything, while view container implementations will
+        // check each child and their children as we are doing.
+        if(child.view->replace_child(id, v, r)) return true;
+      }
+    }
+    return false;
+  }
 
   template <class T>
   inline void View_Container<T>::render_() const noexcept

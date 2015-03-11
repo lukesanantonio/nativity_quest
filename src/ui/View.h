@@ -85,6 +85,11 @@ namespace game { namespace ui
     template <class T> inline std::shared_ptr<T>
     find_child_r(std::string, bool = true) const noexcept;
 
+    inline bool
+    replace_child(std::string, Shared_View, bool r = false) noexcept;
+
+    inline bool
+    replace_child_r(std::string, Shared_View, bool r = true) noexcept;
   protected:
     Graphics_Desc& graphics_;
   private:
@@ -108,6 +113,8 @@ namespace game { namespace ui
     boost::optional<Color> parent_background_;
 
     inline virtual Shared_View find_child_(std::string, bool) const noexcept;
+    inline virtual bool
+    replace_child_(std::string, Shared_View, bool) noexcept;
   };
 
   inline bool View::dispatch_event(SDL_Event const& e) noexcept
@@ -201,9 +208,25 @@ namespace game { namespace ui
     return as<T>(find_child(id, r));
   }
 
+  inline bool
+  View::replace_child(std::string i, Shared_View v, bool r) noexcept
+  {
+    return replace_child_(i, v, r);
+  }
+
+  inline bool
+  View::replace_child_r(std::string i, Shared_View v, bool r) noexcept
+  {
+    return replace_child_(i, v, r);
+  }
+
   inline Shared_View View::find_child_(std::string, bool) const noexcept
   {
     return nullptr;
+  }
+  inline bool View::replace_child_(std::string, Shared_View, bool) noexcept
+  {
+    return false;
   }
 
   inline bool View::dispatch_event_(SDL_Event const& event) noexcept
