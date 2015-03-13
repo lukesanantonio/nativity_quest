@@ -58,6 +58,21 @@ namespace game
     return cur_ >= segments_ * segment_size_ &&
            repeat_ == Anim_Repeat_Mode::No_Repeat;
   }
+
+  void Animation::reset() noexcept
+  {
+    cur_ = 0;
+    going_reverse_ = false;
+  }
+  void Animation::reset(int segment_size, int segments,
+                        Anim_Repeat_Mode repeat) noexcept
+  {
+    reset();
+
+    segment_size_ = segment_size;
+    segments_ = segments;
+    repeat_ = repeat;
+  }
   bool Animation::at_endpoint_() const noexcept
   {
     // Endpoints are checked inclusively, while the animation cur_ loops to

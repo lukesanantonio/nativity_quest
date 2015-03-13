@@ -50,6 +50,10 @@ namespace game
 
     bool done() const noexcept;
 
+    void reset() noexcept;
+    void reset(int segment_size, int segments,
+               Anim_Repeat_Mode repeat) noexcept;
+
   private:
     int cur_ = 0;
 
