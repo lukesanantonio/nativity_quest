@@ -23,9 +23,16 @@ namespace game
    */
   struct Player_Health_Mediator
   {
-    Player_Health_Mediator(Entity_Data& ed, ui::Bar& b) noexcept;
+    Player_Health_Mediator(Entity_Data* ed = nullptr,
+                           ui::Bar* b = nullptr) noexcept;
 
     void step() noexcept;
+
+    Entity_Data* entity_data() const noexcept;
+    void entity_data(Entity_Data*) noexcept;
+
+    ui::Bar* bar() const noexcept;
+    void bar(ui::Bar*) noexcept;
 
   private:
     int cached_cur_health_ = 0;
@@ -35,5 +42,7 @@ namespace game
 
     detail::Mediator_State state_;
     Animation anim;
+
+    void reset_bar() noexcept;
   };
 }
