@@ -18,18 +18,23 @@ namespace game { namespace ui
 
   void Bar::render_() const noexcept
   {
-    auto vol = parent_volume();
+    auto vol = this_volume();
 
-    auto rect = to_sdl_rect(parent_volume());
+    if(max_ == 0)
+    {
+      // Make it totally empty when we don't have a maximum
+      vol.width = 0;
+    }
+    else
+    {
+      // Reduce the parent volume by a certain amount.
+      // Divide the width into equal segments.
+      auto seg_size = vol.width / max_;
+      vol.width -= seg_size * (max_ - cur_);
+    }
 
+    auto rect = to_sdl_rect(vol);
     set_render_draw_color(graphics_.renderer, color_);
-    SDL_RenderFillRect(graphics_.renderer, &rect);
-
-    // Reduce the parent volume by a certain amount.
-    // Divide the width into equal segments.
-    auto seg_size = rect.w / max_;
-    vol.width -= seg_size * (max_ - cur_);
-    rect = to_sdl_rect(parent_volume());
     SDL_RenderFillRect(graphics_.renderer, &rect);
   }
 } }
