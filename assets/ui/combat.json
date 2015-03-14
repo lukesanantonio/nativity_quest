@@ -24,24 +24,28 @@
           "alignment": { "vertical": "bottom", "horizontal": "left" }
         },
         {
-          "id": "enemy_health",
+          "id": "enemy_bar",
           "type": "bar",
-          "max": 1,
           "cur": 0,
+          "max": 1,
           "padding": { "right": 5 },
           "alignment": { "vertical": "center", "horizontal": "right" },
+          "min_size": {"width": 200, "height": 50 },
           "color": "green",
-          "border": true
+          "this_background": "black",
+          "this_border": "black"
         },
         {
-          "id": "player_health",
+          "id": "player_bar",
           "type": "bar",
-          "max": 1,
           "cur": 0,
+          "max": 1,
           "padding": { "right": 5, "bottom": 5 },
           "alignment": { "vertical": "bottom", "horizontal": "right" },
+          "min_size": {"width": 200, "height": 50 },
           "color": "green",
-          "border": true
+          "this_background": "black",
+          "this_border": "black"
         }
       ]
     },
