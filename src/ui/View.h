@@ -67,8 +67,8 @@ namespace game { namespace ui
     boost::optional<Color> query_background(View_Volume) const noexcept;
     bool remove_background(View_Volume) noexcept;
 
-    Vec<int> size() const noexcept;
-    void size(Vec<int>) noexcept;
+    Vec<int> min_size() const noexcept;
+    void min_size(Vec<int>) noexcept;
 
     inline void visible(bool visible) noexcept;
     inline bool visible() const noexcept;
@@ -116,7 +116,7 @@ namespace game { namespace ui
     boost::optional<Color> this_background_;
     boost::optional<Color> parent_background_;
 
-    Vec<int> size_ = {0,0};
+    Vec<int> min_size_ = {0,0};
 
     inline virtual Shared_View find_child_(std::string, bool) const noexcept;
     inline virtual bool

@@ -293,9 +293,9 @@ namespace game { namespace ui
         view_ptr->set_border(ui::View_Volume::Parent, load_color(val));
       });
 
-      if_has_member(doc, "size", [&](auto const& val)
+      if_has_member(doc, "min_size", [&](auto const& val)
       {
-        view_ptr->size(load_size(val));
+        view_ptr->min_size(load_size(val));
       });
 
       return view_ptr;
