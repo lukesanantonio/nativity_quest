@@ -19,10 +19,10 @@ namespace game { namespace ui
     inline void color(Color const& c) noexcept;
     inline Color color() const noexcept;
   private:
-    int cur_;
-    int max_;
+    int cur_ = 0;
+    int max_ = 0;
 
-    Color color_;
+    Color color_ = colors::white;
 
     Vec<int> get_minimum_extents_() const noexcept override;
     Volume<int> layout_() override;

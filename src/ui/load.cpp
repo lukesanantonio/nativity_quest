@@ -245,10 +245,10 @@ namespace game { namespace ui
     {
       auto bar = Bar{game.graphics};
 
-      // Set these to one so it's still considered full and we don't have to
-      // deal with divide-by-zero errors and crashes.
-      bar.max(1);
-      bar.cur(1);
+      if_has_member(doc, "max", [&bar](auto const& val)
+      { bar.max(val.GetInt()); });
+      if_has_member(doc, "cur", [&bar](auto const& val)
+      { bar.cur(val.GetInt()); });
 
       if_has_member(doc, "color", [&bar](auto const& val)
       {
