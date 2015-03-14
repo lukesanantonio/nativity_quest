@@ -17,9 +17,14 @@ namespace game { namespace ui
 
     inline void max(int) noexcept;
     inline int max() const noexcept;
+
+    inline void color(Color const& c) noexcept;
+    inline Color color() const noexcept;
   private:
     int cur_;
     int max_;
+
+    Color color_;
 
     Volume<int> layout_() override;
     void render_() const noexcept override;
@@ -43,5 +48,14 @@ namespace game { namespace ui
   inline int Bar::max() const noexcept
   {
     return max_;
+  }
+
+  inline void Bar::color(Color const& c) noexcept
+  {
+    color_ = c;
+  }
+  inline Color Bar::color() const noexcept
+  {
+    return color_;
   }
 } }

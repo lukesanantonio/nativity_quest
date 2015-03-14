@@ -125,6 +125,7 @@ namespace game { namespace ui
       auto color_str = std::string{doc.GetString()};
       if(color_str == "white") return colors::white;
       if(color_str == "black") return colors::black;
+      if(color_str == "green") return colors::green;
     }
 
     Color c;
@@ -237,6 +238,11 @@ namespace game { namespace ui
       // deal with divide-by-zero errors and crashes.
       bar.max(1);
       bar.cur(1);
+
+      if_has_member(doc, "color", [&bar](auto const& val)
+      {
+        bar.color(load_color(val));
+      });
 
       view_ptr = std::make_shared<Bar>(std::move(bar));
     }

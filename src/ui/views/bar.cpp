@@ -22,8 +22,7 @@ namespace game { namespace ui
 
     auto rect = to_sdl_rect(parent_volume());
 
-    SDL_SetRenderDrawColor(graphics_.renderer, colors::black.red,
-                           colors::black.green, colors::black.blue, 0xff);
+    set_render_draw_color(graphics_.renderer, color_);
     SDL_RenderFillRect(graphics_.renderer, &rect);
 
     // Reduce the parent volume by a certain amount.
