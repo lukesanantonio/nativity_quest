@@ -34,26 +34,41 @@ namespace game
   {
     if(!entity_ || !bar_) return;
 
-    // If our cache matches the entity, ie nothing has changed: return.
-    if(cached_cur_health_ == entity_->cur_life &&
-       state_ == detail::Mediator_State::None) return;
-    else if(anim.done() && state_ == detail::Mediator_State::Anim)
+    if(state_ == detail::Mediator_State::None)
     {
-      // Control flows here if we are done animating the bar.
-      // Set the bar.
-      bar_->cur(entity_->cur_life);
-      // We're not animating anymore.
-      state_ = detail::Mediator_State::None;
-      // Everything is up to date.
-      cached_cur_health_ = entity_->cur_life;
-    }
+      // If our cache matches the entity, ie nothing has changed: return.
+      if(cached_cur_health_ == entity_->cur_life)
+      {
+        return;
+      }
+      else
+      {
+        // We need to start animating!
+        anim.reset(1, std::abs(cached_cur_health_ - entity_->cur_life),
+                   Anim_Repeat_Mode::No_Repeat);
 
-    // Otherwise set ourselves in an animating state, the cache will be updated
-    // on the last frame of the animation.
-    state_ = detail::Mediator_State::Anim;
-    anim.reset(1, std::abs(cached_cur_health_ - entity_->cur_life),
-               Anim_Repeat_Mode::No_Repeat);
-    anim.step();
+        state_ = detail::Mediator_State::Anim;
+      }
+    }
+    else if(state_ == detail::Mediator_State::Anim)
+    {
+      // If our animation is done.
+      if(anim.done())
+      {
+        // Control flows here if we are done animating the bar.
+        // Set the bar.
+        bar_->cur(entity_->cur_life);
+        // We're not animating anymore.
+        state_ = detail::Mediator_State::None;
+        // Everything is up to date.
+        cached_cur_health_ = entity_->cur_life;
+      }
+      else
+      {
+        // Keep going otherwise
+        anim.step();
+      }
+    }
   }
 
   Entity_Data* Player_Health_Mediator::entity_data() const noexcept
