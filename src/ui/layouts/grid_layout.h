@@ -18,13 +18,13 @@ namespace game { namespace ui
   {
     explicit Grid_Layout(Graphics_Desc& g) noexcept : View_Container(g) {}
 
-    inline Vec<int> get_minimum_extents() const noexcept override
-    { return {0,0}; }
-
     bool force_fill_width = true;
     bool force_fill_height = true;
 
   private:
+    inline Vec<int> get_minimum_extents_() const noexcept override
+    { return {0,0}; }
+
     Volume<int> layout_() override;
   };
 } }

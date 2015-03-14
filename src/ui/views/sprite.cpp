@@ -14,7 +14,7 @@ namespace game { namespace ui
     generate();
   }
 
-  Vec<int> Sprite::get_minimum_extents() const noexcept
+  Vec<int> Sprite::get_minimum_extents_() const noexcept
   {
     auto extents = Vec<int>{};
     SDL_QueryTexture(tex_.get(), NULL, NULL, &extents.x, &extents.y);

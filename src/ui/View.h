@@ -44,7 +44,7 @@ namespace game { namespace ui
 
     virtual void invalidate() noexcept {}
 
-    virtual Vec<int> get_minimum_extents() const noexcept = 0;
+    Vec<int> get_minimum_extents() const noexcept;
 
     inline bool dispatch_event(SDL_Event const&) noexcept;
 
@@ -66,6 +66,9 @@ namespace game { namespace ui
     void set_background(View_Volume, Color color) noexcept;
     boost::optional<Color> query_background(View_Volume) const noexcept;
     bool remove_background(View_Volume) noexcept;
+
+    Vec<int> size() const noexcept;
+    void size(Vec<int>) noexcept;
 
     inline void visible(bool visible) noexcept;
     inline bool visible() const noexcept;
@@ -103,6 +106,7 @@ namespace game { namespace ui
     virtual bool dispatch_event_(SDL_Event const& event) noexcept;
     virtual Volume<int> layout_() = 0;
     virtual void render_() const noexcept = 0;
+    virtual Vec<int> get_minimum_extents_() const noexcept = 0;
 
     std::vector<std::shared_ptr<Event_Trigger> > event_triggers_;
 
@@ -111,6 +115,8 @@ namespace game { namespace ui
 
     boost::optional<Color> this_background_;
     boost::optional<Color> parent_background_;
+
+    Vec<int> size_ = {0,0};
 
     inline virtual Shared_View find_child_(std::string, bool) const noexcept;
     inline virtual bool

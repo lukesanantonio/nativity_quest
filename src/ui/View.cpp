@@ -39,6 +39,12 @@ namespace game { namespace ui
     }
   }
 
+  Vec<int> View::get_minimum_extents() const noexcept
+  {
+    auto min = this->get_minimum_extents_();
+    return {std::max(min.x, size_.x), std::max(min.y, size_.y)};
+  }
+
   void View::set_border(View_Volume vol, Color color) noexcept
   {
     switch(vol)
@@ -121,5 +127,14 @@ namespace game { namespace ui
       return true;
     }
     return false;
+  }
+
+  Vec<int> View::size() const noexcept
+  {
+    return size_;
+  }
+  void View::size(Vec<int> s) noexcept
+  {
+    size_ = s;
   }
 } }

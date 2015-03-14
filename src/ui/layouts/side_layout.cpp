@@ -6,7 +6,7 @@
 #include "../../common/center.hpp"
 namespace game { namespace ui
 {
-    Vec<int> Side_Layout::get_minimum_extents() const noexcept
+    Vec<int> Side_Layout::get_minimum_extents_() const noexcept
     {
       // I don't fucking know how small this thing can be minimum how am I
       // supposed to know that loll

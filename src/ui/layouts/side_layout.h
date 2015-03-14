@@ -38,8 +38,8 @@ namespace game { namespace ui
   {
     explicit Side_Layout(Graphics_Desc& g) noexcept : View_Container(g) {}
 
-    Vec<int> get_minimum_extents() const noexcept override;
   private:
+    Vec<int> get_minimum_extents_() const noexcept override;
     Volume<int> layout_() override;
   };
 } }

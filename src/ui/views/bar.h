@@ -10,8 +10,6 @@ namespace game { namespace ui
   {
     Bar(Graphics_Desc& g) noexcept : View(g) {}
 
-    Vec<int> get_minimum_extents() const noexcept override;
-
     inline void cur(int) noexcept;
     inline int cur() const noexcept;
 
@@ -26,6 +24,7 @@ namespace game { namespace ui
 
     Color color_;
 
+    Vec<int> get_minimum_extents_() const noexcept override;
     Volume<int> layout_() override;
     void render_() const noexcept override;
   };

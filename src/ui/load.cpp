@@ -34,6 +34,17 @@ namespace game { namespace ui
   }
 
   template <class T>
+  Vec<int> load_size(T const& doc)
+  {
+    auto ret = Vec<int>{};
+
+    ret.x = doc["width"].GetInt();
+    ret.y = doc["height"].GetInt();
+
+    return ret;
+  }
+
+  template <class T>
   Padding load_padding(T const& doc)
   {
     auto ret = Padding{};
@@ -280,6 +291,11 @@ namespace game { namespace ui
       if_has_member(doc, "parent_border", [&](auto const& val)
       {
         view_ptr->set_border(ui::View_Volume::Parent, load_color(val));
+      });
+
+      if_has_member(doc, "size", [&](auto const& val)
+      {
+        view_ptr->size(load_size(val));
       });
 
       return view_ptr;

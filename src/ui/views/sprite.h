@@ -15,8 +15,6 @@ namespace game { namespace ui
 
     Sprite(Graphics_Desc& g, Image_Asset_Ptr asset = nullptr) noexcept;
 
-    Vec<int> get_minimum_extents() const noexcept override;
-
     inline double scale() const noexcept { return scale_; }
     inline void scale(double scale) noexcept { scale_ = scale; }
 
@@ -30,6 +28,7 @@ namespace game { namespace ui
   private:
     void generate() noexcept;
 
+    Vec<int> get_minimum_extents_() const noexcept override;
     Volume<int> layout_() override;
     void render_() const noexcept override;
 

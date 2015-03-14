@@ -15,8 +15,6 @@ namespace game { namespace ui
   {
     explicit Linear_Layout(Graphics_Desc& g) noexcept : View_Container(g) {}
 
-    Vec<int> get_minimum_extents() const noexcept override;
-
     enum class Orient
     { Vertical, Horizontal };
 
@@ -24,6 +22,7 @@ namespace game { namespace ui
     bool force_fill = true;
 
   private:
+    Vec<int> get_minimum_extents_() const noexcept override;
     Volume<int> layout_() override;
   };
 } }

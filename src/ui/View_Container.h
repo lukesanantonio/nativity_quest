@@ -23,9 +23,6 @@ namespace game { namespace ui
   {
     View_Container(Graphics_Desc& g) noexcept : View(g) {}
 
-    // Left to be implemented by any deriving classes.
-    // Vec<int> get_minimum_extents() const noexcept override;
-
     using child_t = View_Child<Layout_Type>;
     using child_vec_t = std::vector<child_t>;
 
@@ -57,6 +54,7 @@ namespace game { namespace ui
   private:
     // Left to be implemented by any deriving classes.
     // Volume<int> layout_() override;
+    // Vec<int> get_minimum_extents_() const noexcept override;
 
     inline bool dispatch_event_(SDL_Event const&) noexcept override;
 

@@ -5,7 +5,7 @@
 #include "label.h"
 namespace game { namespace ui
 {
-  Vec<int> Label::get_minimum_extents() const noexcept
+  Vec<int> Label::get_minimum_extents_() const noexcept
   {
     gen_cache_();
 

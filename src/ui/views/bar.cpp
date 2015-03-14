@@ -7,7 +7,7 @@
 #include "../../common/Color.h"
 namespace game { namespace ui
 {
-  Vec<int> Bar::get_minimum_extents() const noexcept
+  Vec<int> Bar::get_minimum_extents_() const noexcept
   {
     return {0, 0};
   }

@@ -79,7 +79,7 @@ namespace game { namespace ui
   }
 
   // This implementation is currently broken.
-  Vec<int> Linear_Layout::get_minimum_extents() const noexcept
+  Vec<int> Linear_Layout::get_minimum_extents_() const noexcept
   {
     auto bounds = Vec<int>{};
 

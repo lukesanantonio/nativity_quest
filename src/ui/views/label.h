@@ -46,8 +46,6 @@ namespace game { namespace ui
       args_.reset(new detail::Tuple_String_Args<>());
     }
 
-    Vec<int> get_minimum_extents() const noexcept override;
-
     Volume<int> layout_() override;
 
     inline std::string str() const noexcept { return str_; }
@@ -129,6 +127,7 @@ namespace game { namespace ui
 
     Font_Renderer& fr_;
 
+    Vec<int> get_minimum_extents_() const noexcept override;
     void render_() const noexcept override;
 
     mutable Texture_Ptr texture_cache_;
