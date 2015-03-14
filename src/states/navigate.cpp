@@ -28,7 +28,7 @@
 #define PI 3.14159
 
 #define NAVIGATE_SPRITES "assets/navigation_sprites.json"
-#define PLAYERS_JSON "assets/player.json"
+#define PLAYERS_JSON "assets/decl/players.json"
 #define MAP_JSON "assets/map.json"
 #define ITEMS_JSON "assets/decl/items.json"
 #define ENEMIES_JSON "assets/enemies.json"
@@ -419,18 +419,19 @@ namespace game
         angle = angle - -segment_len * 2;
     }
 
-    auto char_info = players.get_sprite(orient);
-    auto char_scale = players.get_sprite_scale();
+    auto char_info = players.get_orientation_info(orient);
 
     SDL_Rect char_src;
-    char_src.x = char_info.src_vol.pos.x;
-    char_src.y = char_info.src_vol.pos.y;
-    char_src.w = char_info.src_vol.width;
-    char_src.h = char_info.src_vol.height;
+    char_src.x = char_info.src.pos.x;
+    char_src.y = char_info.src.pos.y;
+    char_src.w = char_info.src.width;
+    char_src.h = char_info.src.height;
 
     SDL_Rect char_dest;
     char_dest.x = player_scr_coord.x;
     char_dest.y = player_scr_coord.y;
+
+    auto char_scale = players.get_sprite_scale();
 
     // The center point of the sprite should be the player position.
     char_dest.x -= char_info.center.x * map.scale * char_scale;
@@ -438,15 +439,15 @@ namespace game
 
     // The width is scaled first by the map scale, then by the sprite-specific
     // scale.
-    char_dest.w = char_info.src_vol.width * map.scale * char_scale;
-    char_dest.h = char_info.src_vol.height * map.scale * char_scale;
+    char_dest.w = char_info.src.width * map.scale * char_scale;
+    char_dest.h = char_info.src.height * map.scale * char_scale;
 
     SDL_Point char_center;
     char_center.x = char_info.center.x * map.scale * char_scale;
     char_center.y = char_info.center.y * map.scale * char_scale;
 
     auto char_sprite = get_asset<assets::Image_Asset>(game_,
-                                       players.get_sprite(p.sprite_frame).src);
+                                           players.get_sprite(p.sprite_frame));
 
     SDL_RenderCopyEx(game_.graphics.renderer,
                      char_sprite->texture(game_.graphics.renderer),

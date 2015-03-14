@@ -9,10 +9,9 @@
 #include "../common/volume.h"
 namespace game { namespace decl
 {
-  struct Player_Sprite
+  struct Orientation_Info
   {
-    std::string src;
-    Volume<int> src_vol;
+    Volume<int> src;
     Vec<int> center;
   };
 
@@ -29,16 +28,18 @@ namespace game { namespace decl
     inline std::string get_name(short player_index) const noexcept
     { return player_names_[player_index]; }
 
-    inline Player_Sprite get_sprite(short orientation) const noexcept
-    { return sprite_info_[orientation]; }
-  private:
-    std::string sprite_;
+    inline std::string get_sprite(short player_index) const noexcept
+    { return sprite_srcs_[player_index]; }
 
+    inline Orientation_Info get_orientation_info(short o) const noexcept
+    { return orient_info_[o]; }
+  private:
     double sprite_scale_;
 
     std::array<std::string, 6> starting_items_;
     std::array<std::string, 6> player_names_;
 
-    std::array<Player_Sprite, 4> sprite_info_;
+    std::array<std::string, 6> sprite_srcs_;
+    std::array<Orientation_Info, 4> orient_info_;
   };
 } }
