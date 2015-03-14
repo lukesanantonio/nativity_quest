@@ -16,8 +16,12 @@ namespace game
 
   namespace colors
   {
-    constexpr Color white{0xff, 0xff, 0xff};
-    constexpr Color black{0x00, 0x00, 0x00};
+    constexpr Color white {0xff, 0xff, 0xff};
+    constexpr Color black {0x00, 0x00, 0x00};
+
+    constexpr Color red   {0xff, 0x00, 0x00};
+    constexpr Color green {0x00, 0xff, 0x00};
+    constexpr Color blue  {0x00, 0x00, 0xff};
   }
 
   inline bool operator==(Color const& c1, Color const& c2) noexcept
