@@ -11,7 +11,7 @@ add_subdirectory(game)
 add_subdirectory(ui)
 add_subdirectory(states)
 
-add_executable(quest main.cpp Map.cpp Player.cpp)
+add_executable(quest main.cpp Map.cpp Player.cpp Player_Health_Mediator.cpp)
 target_link_libraries(quest commonlib decllib gamelib uilib viewlib assetslib)
 
 target_link_libraries(quest ${SDL2_LIBRARIES})
