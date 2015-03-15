@@ -23,6 +23,8 @@ namespace game { namespace ui
   {
     View_Container(Graphics_Desc& g) noexcept : View(g) {}
 
+    virtual bool is_container() const noexcept { return true; }
+
     using child_t = View_Child<Layout_Type>;
     using child_vec_t = std::vector<child_t>;
 
@@ -47,6 +49,8 @@ namespace game { namespace ui
     inline void remove_child(typename child_vec_t::const_iterator) noexcept;
 
     void invalidate() noexcept override;
+
+    std::vector<Shared_View> children() noexcept override;
 
   protected:
     child_vec_t children_;

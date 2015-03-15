@@ -86,6 +86,20 @@ namespace game { namespace ui
     children_.erase(i);
   }
 
+  template <class T>
+  std::vector<Shared_View> View_Container<T>::children() noexcept
+  {
+    // Not the most efficient way to do this.
+    // TODO This will be an interface change to some iterator begin/end
+    // function pair
+    auto ret = std::vector<Shared_View>{};
+    for(auto child : children_)
+    {
+      ret.push_back(child.view);
+    }
+    return ret;
+  }
+
   template <class T> Shared_View
   View_Container<T>::find_child_(std::string id, bool r) const noexcept
   {

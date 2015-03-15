@@ -37,6 +37,8 @@ namespace game { namespace ui
     View(Graphics_Desc& graphics) noexcept : graphics_(graphics) {}
     virtual ~View() {}
 
+    virtual bool is_container() const noexcept { return false; }
+
     inline bool layout(Vec<int>);
     inline bool layout(Volume<int>);
 
@@ -93,6 +95,8 @@ namespace game { namespace ui
 
     inline bool
     replace_child_r(std::string, Shared_View, bool r = true) noexcept;
+
+    virtual std::vector<Shared_View> children() noexcept { return {}; }
   protected:
     Graphics_Desc& graphics_;
   private:
