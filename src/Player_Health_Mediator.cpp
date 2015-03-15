@@ -5,6 +5,33 @@
 #include "Player_Health_Mediator.h"
 namespace game
 {
+  void set_bar_to_life(ui::Bar& bar, Entity_Data& et) noexcept
+  {
+    bar.max(et.max_life);
+    bar.cur(et.cur_life);
+  }
+  void set_bar_animating(ui::Bar& bar, Entity_Data& et, int orig_health,
+                         int step, int max_step, int res) noexcept
+  {
+    // We know where we are and we know where we need to be. Use the
+    // progress step / max_step to update the bar, basically.
+
+    // Find the ratio we have.
+    auto cur_ratio = (double) orig_health / et.max_life;
+
+    // Find the ratio we want.
+    auto next_ratio = (double) et.cur_life / et.max_life;
+
+    // The difference.
+    auto delta_ratio = next_ratio - cur_ratio;
+
+    bar.max(res);
+
+    // Start from the current point.
+    // Then add a certain amount of the delta ratio based on step / max_step.
+    bar.cur((res * cur_ratio) + (res * delta_ratio * step / max_step));
+  }
+
   Player_Health_Mediator::
   Player_Health_Mediator(Entity_Data* ed, ui::Bar* b) noexcept
                          : entity_(ed), bar_(b),
@@ -15,19 +42,8 @@ namespace game
 
     anim.set_segment_fn([this](int seg)
     {
-      // The segment is the distance traveled from our cached current health
-      // to our actual current health.
-      int cur;
-      if(cached_cur_health_ < entity_->cur_life)
-      {
-        cur = cached_cur_health_ + seg;
-      }
-      if(entity_->cur_life < cached_cur_health_)
-      {
-        cur = cached_cur_health_ - seg;
-      }
-
-      bar_->cur(cur);
+      set_bar_animating(*bar_, *entity_, cached_cur_health_,
+                        seg, anim.segments() - 1, 300);
     });
   }
   void Player_Health_Mediator::step() noexcept
@@ -44,9 +60,7 @@ namespace game
       else
       {
         // We need to start animating!
-        anim.reset(1, std::abs(cached_cur_health_ - entity_->cur_life),
-                   Anim_Repeat_Mode::No_Repeat);
-
+        anim.reset(1, 45, Anim_Repeat_Mode::No_Repeat);
         state_ = detail::Mediator_State::Anim;
       }
     }
@@ -56,12 +70,14 @@ namespace game
       if(anim.done())
       {
         // Control flows here if we are done animating the bar.
-        // Set the bar.
-        bar_->cur(entity_->cur_life);
         // We're not animating anymore.
         state_ = detail::Mediator_State::None;
+
         // Everything is up to date.
         cached_cur_health_ = entity_->cur_life;
+
+        // Set the bar.
+        set_bar_to_life(*bar_, *entity_);
       }
       else
       {
