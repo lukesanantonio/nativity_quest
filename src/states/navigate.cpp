@@ -31,7 +31,7 @@
 #define PLAYERS_JSON "assets/decl/players.json"
 #define MAP_JSON "assets/map.json"
 #define ITEMS_JSON "assets/decl/items.json"
-#define ENEMIES_JSON "assets/enemies.json"
+#define ENEMIES_JSON "assets/decl/enemies.json"
 #define HUD_JSON "ui/navigate"
 
 namespace game
