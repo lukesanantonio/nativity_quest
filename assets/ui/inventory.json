@@ -22,6 +22,7 @@
         {
           "id": "player_health",
           "type": "bar",
+          "color": "green",
           "weight": 4
         },
         {
