@@ -73,8 +73,8 @@ namespace game
       player.sprite_frame = player_index;
       respawn(player);
 
-      //reset_fog(player, map.size());
-      //unfog(player, effects);
+      reset_fog(player, map.size());
+      unfog(player, effects);
     }
 
     hud->find_child_r("next_player")->add_event_trigger<ui::Mouse_Click>(
