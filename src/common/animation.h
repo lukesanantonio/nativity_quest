@@ -46,6 +46,10 @@ namespace game
     inline void set_segment_fn(segment_fn_t segment_fn) noexcept;
     inline void set_substep_fn(substep_fn_t substep_fn) noexcept;
 
+    inline int segment_size() const noexcept;
+    inline int segments() const noexcept;
+    inline Anim_Repeat_Mode repeat_mode() const noexcept;
+
     void step() noexcept;
 
     bool done() const noexcept;
@@ -76,5 +80,18 @@ namespace game
   inline void Animation::set_substep_fn(substep_fn_t substep_fn) noexcept
   {
     substep_fn_ = substep_fn;
+  }
+
+  inline int Animation::segment_size() const noexcept
+  {
+    return segment_size_;
+  }
+  inline int Animation::segments() const noexcept
+  {
+    return segments_;
+  }
+  inline Anim_Repeat_Mode Animation::repeat_mode() const noexcept
+  {
+    return repeat_;
   }
 }
