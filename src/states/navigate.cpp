@@ -7,7 +7,7 @@
 
 #include "../ui/ui.h"
 
-#include "combat.h"
+#include "combat_intro.h"
 #include "move.h"
 #include "inventory.h"
 #include "uncrate.h"
@@ -158,7 +158,7 @@ namespace game
       {
         // Go into combat.
         push_state(game_,
-                   std::make_shared<Combat_State>(game_, *this, *enemy_find));
+                   std::make_shared<Combat_Intro>(game_, *this, *enemy_find));
         return;
       }
     }
