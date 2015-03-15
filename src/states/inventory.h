@@ -6,6 +6,7 @@
 #include "../ui/ui.h"
 
 #include "navigate.h"
+#include "../Entity_Health_Mediator.h"
 namespace game
 {
   struct Inventory_View_State : public Navigate_Sub_State
@@ -37,5 +38,7 @@ namespace game
     virtual void on_extra_label_select() noexcept;
 
     void update_labels() noexcept;
+
+    Entity_Health_Mediator mediator_;
   };
 }

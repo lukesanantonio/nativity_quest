@@ -59,6 +59,9 @@ namespace game
         clicked = true;
       }, true);
     }
+
+    mediator_.entity_data(&ns.active_player().entity_data);
+    mediator_.bar(hud->find_child_r<ui::Bar>("player_health").get());
   }
 
   void Inventory_View_State::handle_event(SDL_Event const& e) noexcept
@@ -67,10 +70,8 @@ namespace game
   }
   void Inventory_View_State::step() noexcept
   {
-    auto bar = hud->find_child_r<ui::Bar>("player_health");
-
-    bar->max(navigate.active_player().entity_data.max_life);
-    bar->cur(navigate.active_player().entity_data.cur_life);
+    // Keep the health bar up to date.
+    mediator_.step();
 
     // Set the border around the selected item, removing borders around
     // unselected label views.
