@@ -16,7 +16,7 @@
   },
 
   {
-    "sprite": "images/enemies/creeper",
+    "sprite": "images/enemies/worm",
     "id": "creeper",
     "str": "Blind Creeper",
     "defense": 1,
