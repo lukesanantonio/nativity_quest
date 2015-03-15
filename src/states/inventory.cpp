@@ -88,23 +88,6 @@ namespace game
       }
     }
 
-#if 0
-    if(anim)
-    {
-      if(cur_step++ == max_step)
-      {
-        anim = false;
-      }
-
-      set_bar_animating(bar, navigate.active_player().entity_data, delta,
-                        cur_step, max_step);
-    }
-    else
-    {
-      set_bar_to_life(bar, navigate.active_player().entity_data);
-    }
-#endif
-
     // Get the currently selected menu item in the label view.
     // Find that corrosponding item from the user's inventory.
     if(selected < 6)
