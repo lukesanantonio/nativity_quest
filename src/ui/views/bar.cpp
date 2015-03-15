@@ -29,7 +29,7 @@ namespace game { namespace ui
     {
       // Reduce the parent volume by a certain amount.
       // Divide the width into equal segments.
-      auto seg_size = vol.width / max_;
+      auto seg_size = (double) vol.width / max_;
       vol.width -= seg_size * (max_ - cur_);
     }
 
