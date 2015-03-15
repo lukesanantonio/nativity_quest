@@ -6,11 +6,12 @@
 #include "navigate.h"
 #include "../Enemy_Instance.h"
 
-#include "../ui/Model.h"
+#include "../ui/ui.h"
 
 #include <random>
 
 #include "flare.h"
+#include "../Entity_Health_Mediator.h"
 namespace game
 {
   enum class Fight_State
@@ -19,8 +20,6 @@ namespace game
     Player_Won,
     Player_Turn,
     Enemy_Turn,
-    Enemy_Animating,
-    Player_Animating,
     Running
   };
 
@@ -40,7 +39,12 @@ namespace game
     void on_enter() noexcept override;
     void on_exit() noexcept override;
 
-    ui::Model hud;
+    ui::Shared_View hud;
+    ui::Shared_View combat_grid;
+    ui::Shared_View inventory_grid;
+
+    int inventory_sel;
+    bool clicked = false;
 
     Enemy_Instance& enemy;
 
@@ -52,14 +56,17 @@ namespace game
     inline Player& active_player() noexcept;
     inline Player const& active_player() const noexcept;
 
-    void switch_to_inventory_view() noexcept;
-    void switch_to_combat_menu() noexcept;
+    void switch_to_inventory() noexcept;
+    void switch_to_combat() noexcept;
 
     Labels_State labels_state;
 
     int cur_step = 0;
     int max_step = 0;
     int last_damage = 0;
+
+    Entity_Health_Mediator player_health_mediator;
+    Entity_Health_Mediator enemy_health_mediator;
   };
 
   inline Player& Combat_State::active_player() noexcept

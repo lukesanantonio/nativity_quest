@@ -50,8 +50,8 @@
       ]
     },
     {
-      "type": "embed",
-      "src": "ui_part/combat_grid",
+      "id": "menu_empty",
+      "type": "empty",
 
       "weight": 1
     }

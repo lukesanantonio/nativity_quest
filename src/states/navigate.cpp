@@ -7,12 +7,7 @@
 
 #include "../ui/ui.h"
 
-#if 0
-
 #include "combat.h"
-
-#endif
-
 #include "move.h"
 #include "inventory.h"
 #include "uncrate.h"
@@ -162,11 +157,9 @@ namespace game
       if(enemy_find != end(map.enemies))
       {
         // Go into combat.
-#if 0
         push_state(game_,
                    std::make_shared<Combat_State>(game_, *this, *enemy_find));
         return;
-#endif
       }
     }
 
