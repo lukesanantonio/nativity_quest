@@ -2,7 +2,7 @@
  * Copyright (C) 2014 Luke San Antonio
  * All rights reserved.
  */
-#include "Player_Health_Mediator.h"
+#include "Entity_Health_Mediator.h"
 namespace game
 {
   void set_bar_to_life(ui::Bar& bar, Entity_Data& et) noexcept
@@ -32,8 +32,8 @@ namespace game
     bar.cur((res * cur_ratio) + (res * delta_ratio * step / max_step));
   }
 
-  Player_Health_Mediator::
-  Player_Health_Mediator(Entity_Data* ed, ui::Bar* b) noexcept
+  Entity_Health_Mediator::
+  Entity_Health_Mediator(Entity_Data* ed, ui::Bar* b) noexcept
                          : entity_(ed), bar_(b),
                            anim(1, 1, Anim_Repeat_Mode::No_Repeat)
   {
@@ -46,7 +46,7 @@ namespace game
                         seg, anim.segments() - 1, 300);
     });
   }
-  void Player_Health_Mediator::step() noexcept
+  void Entity_Health_Mediator::step() noexcept
   {
     if(!entity_ || !bar_) return;
 
@@ -87,27 +87,27 @@ namespace game
     }
   }
 
-  Entity_Data* Player_Health_Mediator::entity_data() const noexcept
+  Entity_Data* Entity_Health_Mediator::entity_data() const noexcept
   {
     return entity_;
   }
-  void Player_Health_Mediator::entity_data(Entity_Data* ed) noexcept
+  void Entity_Health_Mediator::entity_data(Entity_Data* ed) noexcept
   {
     entity_ = ed;
     reset_bar();
   }
 
-  ui::Bar* Player_Health_Mediator::bar() const noexcept
+  ui::Bar* Entity_Health_Mediator::bar() const noexcept
   {
     return bar_;
   }
-  void Player_Health_Mediator::bar(ui::Bar* bar) noexcept
+  void Entity_Health_Mediator::bar(ui::Bar* bar) noexcept
   {
     bar_ = bar;
     reset_bar();
   }
 
-  void Player_Health_Mediator::reset_bar() noexcept
+  void Entity_Health_Mediator::reset_bar() noexcept
   {
     // If we don't have a valid bar or anything don't do anything.
     if(!bar_ || !entity_) return;

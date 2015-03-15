@@ -21,9 +21,9 @@ namespace game
    * to match the player's health.
    *
    */
-  struct Player_Health_Mediator
+  struct Entity_Health_Mediator
   {
-    Player_Health_Mediator(Entity_Data* ed = nullptr,
+    Entity_Health_Mediator(Entity_Data* ed = nullptr,
                            ui::Bar* b = nullptr) noexcept;
 
     void step() noexcept;
