@@ -118,7 +118,8 @@ namespace game
       src_rect.pos.y = chest.item->sprite_pos.y * src_rect.height;
       sprite->set_src_rect(src_rect);
 
-      label->str_args(chest.item->str);
+      // TODO Make this automatic somehow!
+      label->str_args(t(chest.item->str));
 
       // Make the continue button work.
       hud->find_child_r("continue_button")->add_event_trigger<ui::Mouse_Click>(

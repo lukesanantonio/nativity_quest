@@ -176,8 +176,15 @@ namespace game
 
       auto item = invent[i];
 
-      auto item_str = item ? item->str : "No item";
-      hud->find_child_r<ui::Label>(ui_id)->str(item_str);
+      auto label = hud->find_child_r<ui::Label>(ui_id);
+      if(item)
+      {
+        label->str_name(item->str);
+      }
+      else
+      {
+        label->str("No item");
+      }
     }
   }
 }
