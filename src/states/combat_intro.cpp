@@ -12,7 +12,7 @@ namespace game
     {
       auto l = ui::Label{g.graphics, g.font};
       l.str_name("enemy_encountered");
-      l.str_args(game::t("enemy_" + e.decl->id));
+      l.str_args(game::t(e.decl->str));
       return l;
     }
   }

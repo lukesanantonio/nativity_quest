@@ -2,7 +2,7 @@
   {
     "sprite": "images/enemies/wolf",
     "id": "wolf",
-    "str": "Wild Mongrel",
+    "str": "enemy_wolf",
     "defense": 0,
     "life": 2
   },
@@ -10,7 +10,7 @@
   {
     "sprite": "images/enemies/snake",
     "id": "snake",
-    "str": "Mire Boa",
+    "str": "enemy_snake",
     "defense": 0,
     "life": 4
   },
@@ -18,7 +18,7 @@
   {
     "sprite": "images/enemies/worm",
     "id": "creeper",
-    "str": "Blind Creeper",
+    "str": "enemy_creeper",
     "defense": 1,
     "life": 4
   },
@@ -26,7 +26,7 @@
   {
     "sprite": "images/enemies/soldier",
     "id": "soldier",
-    "str": "Roman Soldier",
+    "str": "enemy_soldier",
     "defense": 2,
     "life": 2
   },
@@ -34,7 +34,7 @@
   {
     "sprite": "images/enemies/giant",
     "id": "giant",
-    "str": "Giant",
+    "str": "enemy_giant",
     "defense": 1,
     "life": 4
   },
@@ -42,7 +42,7 @@
   {
     "sprite": "images/enemies/myrr",
     "id": "myrr",
-    "str": "Myrr",
+    "str": "enemy_myrr",
     "defense": 3,
     "life": 5
   }
