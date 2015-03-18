@@ -118,4 +118,8 @@ namespace game
     bar_->cur(cached_cur_health_);
     bar_->max(entity_->max_life);
   }
+  bool Entity_Health_Mediator::animating() const noexcept
+  {
+    return state_ == detail::Mediator_State::Anim;
+  }
 }

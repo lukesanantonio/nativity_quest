@@ -34,6 +34,8 @@ namespace game
     ui::Bar* bar() const noexcept;
     void bar(ui::Bar*) noexcept;
 
+    bool animating() const noexcept;
+
   private:
     int cached_cur_health_ = 0;
 
