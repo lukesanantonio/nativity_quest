@@ -15,6 +15,83 @@ namespace game { namespace assets
 {
   namespace fs = boost::filesystem;
 
+  template <class T, class A>
+  void do_cross_reference(T& json,
+                          std::vector<std::shared_ptr<Asset> >& vec,
+                          A& allocator) noexcept
+  {
+    if(json.IsObject())
+    {
+      for(auto iter = json.MemberBegin(); iter != json.MemberEnd(); ++iter)
+      {
+        do_cross_reference(iter->value, vec, allocator);
+      }
+    }
+    else if(json.IsArray())
+    {
+      for(auto iter = json.Begin(); iter != json.End(); ++iter)
+      {
+        do_cross_reference(*iter, vec, allocator);
+      }
+    }
+    else if(json.IsString())
+    {
+      // Match the string?
+      auto str = std::string{json.GetString()};
+
+      auto asset_name = std::string{};
+
+      size_t loc;
+      auto key_name = std::string{};
+
+      if(str[0] == '@')
+      {
+        // Go to the colon.
+        for(loc = 1; loc < str.size() && str[loc] != ':'; ++loc)
+        {
+          asset_name.push_back(str[loc]);
+        }
+        // Go to the end of the string.
+        for(++loc; loc < str.size(); ++loc)
+        {
+          key_name.push_back(str[loc]);
+        }
+
+        // Set the new string, so we first need to find the referring asset.
+        // Bail out on error
+        for(auto asset : vec)
+        {
+          if(asset->name != asset_name) continue;
+
+          // The asset is the one we are looking for.
+
+          // Make sure it's json
+          auto json_asset = std::dynamic_pointer_cast<Json_Asset>(asset);
+          if(json_asset)
+          {
+            if(json_asset->json.HasMember(key_name.data()))
+            {
+              auto const& match = json_asset->json[key_name.data()];
+              if(match.IsString())
+              {
+                auto match_str = std::string{match.GetString()};
+                log_d("Found: '" + str + "' = '" + match_str + "'");
+              }
+              else
+              {
+                log_d("Found: '" + str + "'");
+              }
+              json.CopyFrom(match, allocator);
+            }
+            else break;
+          }
+          // We can break because no other asset could have this name.
+          else break;
+        }
+      }
+
+    }
+  }
   assets::Vector load(std::vector<std::string> const& assets) noexcept
   {
     auto ret = std::vector<std::shared_ptr<Asset> >{};
@@ -87,6 +164,27 @@ namespace game { namespace assets
 
       ret.push_back(asset_ptr);
     }
+
+    // Do any "cross-referencing." This is where we check for any string values
+    // in the json with a format of @asset:key. The asset is retrieved and the
+    // value of that key is put in place of that code in the original json file
+    // if that makes sense.
+    // TODO: write this down, this is some solid "algorithmic thinking" if I do
+    // say so myself.
+    for(auto asset : ret)
+    {
+      auto json = std::dynamic_pointer_cast<Json_Asset>(asset);
+      if(json)
+      {
+        if(!json->json.IsObject()) continue;
+        if(!json->json.HasMember("cross_reference")) continue;
+        if(json->json["cross_reference"].GetBool() == false) continue;
+
+        log_d("Cross-referencing for " + asset->name);
+        do_cross_reference(json->json, ret, json->json.GetAllocator());
+      }
+    }
+
     return ret;
   }
 } }

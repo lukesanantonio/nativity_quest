@@ -1,4 +1,6 @@
 {
+  "cross_reference": true,
+
   "type": "linear_layout",
   "orientation": "vertical",
   "children":
@@ -6,7 +8,7 @@
     {
       "id": "item_sprite",
       "type": "sprite",
-      "src": "images/items",
+      "src": "@decl/items:spritesheet",
       "scale": 6.5,
 
       "weight": 14
