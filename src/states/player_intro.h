@@ -3,26 +3,16 @@
  * All rights reserved.
  */
 #pragma once
-#include "../ui/views/label.h"
-
-#include "navigate.h"
+#include "intro.h"
 namespace game
 {
-  struct Player_Intro : public Navigate_Sub_State
+  struct Player_Intro : public Intro_State
   {
-    Player_Intro(Game& game, Navigate_State& ns,
-                 std::string player_name) noexcept;
+    Player_Intro(Game&, Navigate_State&, std::string) noexcept;
 
-    void handle_event(SDL_Event const&) noexcept;
-    void step() noexcept;
-    void render() const noexcept;
-
-    inline void on_enter() noexcept {}
+    void on_enter() noexcept;
     void on_exit() noexcept;
-
-    mutable ui::Label label_;
-    std::string player_name;
-    int cur_step = 0;
-    int max_step;
+  private:
+    std::string pn_;
   };
 }

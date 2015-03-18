@@ -6,37 +6,27 @@
 #include "combat.h"
 namespace game
 {
-  Combat_Intro::Combat_Intro(Game& g, Navigate_State& ns,
-                             Enemy_Instance& e) noexcept
-                             : Navigate_Sub_State(g, ns),
-                               label_(g.graphics, g.font),
-                               enemy_(e),
-                               max_step(80)
+  namespace
   {
-    label_.str_name("enemy_encountered");
-    label_.str_args(game::t("enemy_" + e.decl->id));
-    label_.layout(g.graphics.size());
-  }
-
-  void Combat_Intro::handle_event(SDL_Event const& e) noexcept
-  {
-    if((e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_KEYDOWN) &&
-       max_step / 2 < cur_step)
+    ui::Label make_l(Game& g, Enemy_Instance& e) noexcept
     {
-      this->push_state();
+      auto l = ui::Label{g.graphics, g.font};
+      l.str_name("enemy_encountered");
+      l.str_args(game::t("enemy_" + e.decl->id));
+      return l;
     }
   }
-  void Combat_Intro::step() noexcept
+  Combat_Intro::Combat_Intro(Game& g, Navigate_State& ns,
+                             Enemy_Instance& e) noexcept
+                             : Intro_State(g, ns, make_l(g, e)), enemy_(e) { }
+
+  void Combat_Intro::done_() noexcept
   {
-    if(cur_step++ == max_step) this->push_state();
+    push_state();
   }
   void Combat_Intro::push_state() noexcept
   {
     replace_state(game_,
                   std::make_shared<Combat_State>(game_, navigate, enemy_));
-  }
-  void Combat_Intro::render() const noexcept
-  {
-    label_.render();
   }
 }
