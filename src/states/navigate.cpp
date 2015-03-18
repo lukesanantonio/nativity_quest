@@ -289,7 +289,7 @@ namespace game
 
     render_player(active_player, viewport_src, true);
 
-    // Render any chests.
+    // Render any chests. TODO Get rid of this sprite reference!
     auto chest_sprite = sprites.get_sprite(map.chest_sprite);
 
     for(auto const& chest : map.chests)
