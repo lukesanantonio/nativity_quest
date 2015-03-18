@@ -11,11 +11,11 @@ namespace game { namespace decl
     double more = 0.0;
     for(auto& item : p.inventory)
     {
-      if(item == items->get_item("item_torch"))
+      if(item == items->get_item("torch"))
       {
         more = std::max(more, 20.0);
       }
-      else if(item == items->get_item("item_flare"))
+      else if(item == items->get_item("flare"))
       {
         more = std::max(more, 5.0);
       }
@@ -25,7 +25,7 @@ namespace game { namespace decl
   }
   double Effects::max_movement(Player const& p) const noexcept
   {
-    auto canteen = items->get_item("item_canteen");
+    auto canteen = items->get_item("canteen");
 
     auto ret = p.max_movement;
     for(auto item : p.inventory)
@@ -42,11 +42,11 @@ namespace game { namespace decl
     int ret = 0;
     for(auto item : p.inventory)
     {
-      if(item == items->get_item("item_ring_of_protection"))
+      if(item == items->get_item("ring_of_protection"))
       {
         ret += 1;
       }
-      if(item == items->get_item("item_cloak_of_protection"))
+      if(item == items->get_item("cloak_of_protection"))
       {
         ret += 2;
       }
@@ -58,19 +58,19 @@ namespace game { namespace decl
     int ret = 0;
     for(auto item : p.inventory)
     {
-      if(item == items->get_item("item_dagger"))
+      if(item == items->get_item("dagger"))
       {
         ret += 1;
       }
-      if(item == items->get_item("item_longsword"))
+      if(item == items->get_item("longsword"))
       {
         ret += 2;
       }
-      if(item == items->get_item("item_throwing_axe"))
+      if(item == items->get_item("throwing_axe"))
       {
         ret += 1;
       }
-      if(item == items->get_item("item_bow"))
+      if(item == items->get_item("bow"))
       {
         ret += 1;
       }
@@ -79,8 +79,8 @@ namespace game { namespace decl
   }
   bool Effects::used_in_navigation(Item item) const noexcept
   {
-    if(item == items->get_item("item_potion_of_strength") ||
-       item == items->get_item("item_potion_of_haste"))
+    if(item == items->get_item("potion_of_strength") ||
+       item == items->get_item("potion_of_haste"))
     {
       return true;
     }
@@ -89,9 +89,9 @@ namespace game { namespace decl
   }
   bool Effects::used_in_combat(Item item) const noexcept
   {
-    if(item == items->get_item("item_potion_of_strength") ||
-       item == items->get_item("item_potion_of_defense") ||
-       item == items->get_item("item_flare"))
+    if(item == items->get_item("potion_of_strength") ||
+       item == items->get_item("potion_of_defense") ||
+       item == items->get_item("flare"))
     {
       return true;
     }
@@ -100,21 +100,21 @@ namespace game { namespace decl
   }
   bool Effects::apply_effect(Player& p, Item item) const noexcept
   {
-    if(item == items->get_item("item_potion_of_strength"))
+    if(item == items->get_item("potion_of_strength"))
     {
       if(p.entity_data.cur_life == p.entity_data.max_life)
       { return false; }
       reset_life(p.entity_data);
     }
-    else if(item == items->get_item("item_potion_of_haste"))
+    else if(item == items->get_item("potion_of_haste"))
     {
       p.turns_of_haste += 3;
     }
-    else if(item == items->get_item("item_potion_of_defense"))
+    else if(item == items->get_item("potion_of_defense"))
     {
       p.combat_defense = 2;
     }
-    else if(item == items->get_item("item_flare"))
+    else if(item == items->get_item("flare"))
     {
       p.flare = true;
     }

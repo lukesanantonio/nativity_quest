@@ -10,12 +10,12 @@
   "player4_name": "Melchior",
   "player5_name": "Casper",
 
-  "player0_item": "Wool",
-  "player1_item": "Starlight",
-  "player2_item": "Gold",
-  "player3_item": "Gemstones",
-  "player4_item": "Myrrh",
-  "player5_item": "Incense",
+  "player0_item": "wool",
+  "player1_item": "starlight",
+  "player2_item": "gold",
+  "player3_item": "gemstones",
+  "player4_item": "myrrh",
+  "player5_item": "incense",
 
   "player0_sprite": "images/players/0",
   "player1_sprite": "images/players/1",

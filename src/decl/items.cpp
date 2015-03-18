@@ -12,7 +12,7 @@ namespace game { namespace decl
 {
   Item_Impl parse_item(rapidjson::Value const& val) noexcept
   {
-    return Item_Impl{val["str"].GetString(),
+    return Item_Impl{val["id"].GetString(), val["str"].GetString(),
                      {val["x"].GetInt(), val["y"].GetInt()}};
   }
   Items::Items(std::string const& filename)
@@ -48,7 +48,7 @@ namespace game { namespace decl
     auto item_find = std::find_if(begin(items_), end(items_),
     [&str](auto item)
     {
-      return str == item->str;
+      return str == item->id;
     });
 
     if(item_find == end(items_))

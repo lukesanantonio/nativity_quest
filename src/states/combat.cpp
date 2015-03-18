@@ -52,7 +52,7 @@ namespace game
 
         this->switch_to_combat();
       }
-      else if(sel_item == effects.items->get_item("item_throwing_axe"))
+      else if(sel_item == effects.items->get_item("throwing_axe"))
       {
         apply_damage(enemy.entity_data, enemy.entity_data.defense + 2);
         this->active_player().inventory[selected] = decl::no::item;

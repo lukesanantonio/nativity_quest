@@ -4,26 +4,127 @@
   "sprite_width":64,
   "sprite_height":64,
 
-  "items":[
-    {"str": "item_rope",                "x": 0, "y": 3},
-    {"str": "item_boat",                "x": 3, "y": 0},
-    {"str": "item_ring_of_protection",  "x": 1, "y": 2},
-    {"str": "item_dagger",              "x": 2, "y": 2},
-    {"str": "item_longsword",           "x": 0, "y": 1},
-    {"str": "item_flare",               "x": 1, "y": 3},
-    {"str": "item_cloak_of_protection", "x": 4, "y": 3},
-    {"str": "item_canteen",             "x": 3, "y": 2},
-    {"str": "item_torch",               "x": 4, "y": 0},
-    {"str": "item_throwing_axe",        "x": 3, "y": 3},
-    {"str": "item_bow",                 "x": 4, "y": 2},
-    {"str": "item_potion_of_strength",  "x": 0, "y": 0},
-    {"str": "item_potion_of_haste",     "x": 1, "y": 0},
-    {"str": "item_potion_of_defense",   "x": 2, "y": 0},
-    {"str": "item_wool",                "x": 1, "y": 1},
-    {"str": "item_starlight",           "x": 2, "y": 1},
-    {"str": "item_gold",                "x": 3, "y": 1},
-    {"str": "item_gemstones",           "x": 4, "y": 1},
-    {"str": "item_myrrh",               "x": 2, "y": 3},
-    {"str": "item_incense",             "x": 0, "y": 2}
+  "items":
+  [
+    {
+      "id": "rope",
+      "str": "item_rope",
+      "x": 0,
+      "y": 3
+    },
+    {
+      "id": "boat",
+      "str": "item_boat",
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": "rope_of_protection",
+      "str": "item_ring_of_protection",
+      "x": 1,
+      "y": 2
+    },
+    {
+      "id": "dagger",
+      "str": "item_dagger",
+      "x": 2,
+      "y": 2
+    },
+    {
+      "id": "longsword",
+      "str": "item_longsword",
+      "x": 0,
+      "y": 1
+    },
+    {
+      "id": "flare",
+      "str": "item_flare",
+      "x": 1,
+      "y": 3
+    },
+    {
+      "id": "cloak_of_protection",
+      "str": "item_cloak_of_protection",
+      "x": 4,
+      "y": 3
+    },
+    {
+      "id": "canteen",
+      "str": "item_canteen",
+      "x": 3,
+      "y": 2
+    },
+    {
+      "id": "torch",
+      "str": "item_torch",
+      "x": 4,
+      "y": 0
+    },
+    {
+      "id": "throwing_axe",
+      "str": "item_throwing_axe",
+      "x": 3,
+      "y": 3
+    },
+    {
+      "id": "bow",
+      "str": "item_bow",
+      "x": 4,
+      "y": 2
+    },
+    {
+      "id": "potion_of_strength",
+      "str": "item_potion_of_strength",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "potion_of_haste",
+      "str": "item_potion_of_haste",
+      "x": 1,
+      "y": 0
+    },
+    {
+      "id": "potion_of_defense",
+      "str": "item_potion_of_defense",
+      "x": 2,
+      "y": 0
+    },
+    {
+      "id": "wool",
+      "str": "item_wool",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "id": "starlight",
+      "str": "item_starlight",
+      "x": 2,
+      "y": 1
+    },
+    {
+      "id": "gold",
+      "str": "item_gold",
+      "x": 3,
+      "y": 1
+    },
+    {
+      "id": "gemstones",
+      "str": "item_gemstones",
+      "x": 4,
+      "y": 1
+    },
+    {
+      "id": "myrrh",
+      "str": "item_myrrh",
+      "x": 2,
+      "y": 3
+    },
+    {
+      "id": "incense",
+      "str": "item_incense",
+      "x": 0,
+      "y": 2
+    }
   ]
 }

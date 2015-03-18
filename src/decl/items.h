@@ -13,6 +13,7 @@ namespace game { namespace decl
 {
   struct Item_Impl
   {
+    std::string id;
     std::string str;
     Vec<int> sprite_pos;
   };
