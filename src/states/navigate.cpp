@@ -236,7 +236,7 @@ namespace game
       // Find the zone label and change it's string to that of the current
       // zone.
       auto zone_label = hud->find_child<ui::Label>("zone_label");
-      zone_label->str(cur_zone->str);
+      zone_label->str_name(cur_zone->str);
 
       // We coulldd just layout the parent, but this is I guess safer for
       // possibly any unexpected future changes.

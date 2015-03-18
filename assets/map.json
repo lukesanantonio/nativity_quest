@@ -181,17 +181,71 @@
 
   "zones":
   [
-    { "str": "The Great Sea",        "class":"Water",     "color":   0 },
-    { "str": "The Arabian Desert",                        "color":  17 },
-    { "str": "Jerusalem",                                 "color":  34 },
-    { "str": "Bethlehem",            "class":"Win",       "color":  51 },
-    { "str": "Gloomy Swamp",                              "color":  68 },
-    { "str": "Desert of Despair",                         "color":  85 },
-    { "str": "Mountains of Madness", "class":"Mountains", "color": 102 },
-    { "str": "Cedars of Lebanon",                         "color": 119 },
-    { "str": "Sea of Gallilee",      "class":"Water",     "color": 136 },
-    { "str": "Jordon River",         "class":"Water",     "color": 153 },
-    { "str": "Desert Straight",                           "color": 170 },
-    { "str": "Mountain Range",       "class":"Mountains", "color": 187 }
+    {
+      "id": "great_sea",
+      "str": "zone_great_sea",
+      "class": "Water",
+      "color": 0
+    },
+    {
+      "id": "arabian_desert",
+      "str": "zone_arabian_desert",
+      "color": 17
+    },
+    {
+      "id": "jerusalem",
+      "str": "zone_jerusalem",
+      "color": 34
+    },
+    {
+      "id": "bethlehem",
+      "str": "zone_bethlehem",
+      "class": "Win",
+      "color": 51
+    },
+    {
+      "id": "gloomy_desert",
+      "str": "zone_gloomy_desert",
+      "color": 68
+    },
+    {
+      "id": "desert_of_despair",
+      "str": "zone_desert_of_despair",
+      "color": 85
+      },
+    {
+      "id": "mountains_of_madness",
+      "str": "zone_mountains_of_madness",
+      "class": "Mountains",
+      "color": 102
+    },
+    {
+      "id": "cedars_of_lebanon",
+      "str": "zone_cedars_of_lebanon",
+      "color": 119
+    },
+    {
+      "id": "sea_of_gallilee",
+      "str": "zone_sea_of_gallilee",
+      "class": "Water",
+      "color": 136
+    },
+    {
+      "id": "jordon_river",
+      "str": "zone_jordon_river",
+      "class": "Water",
+      "color": 153
+    },
+    {
+      "id": "desert_straight",
+      "str": "zone_desert_straight",
+      "color": 170
+    },
+    {
+      "id": "mountain_range",
+      "str": "zone_mountain_range",
+      "class": "Mountains",
+      "color": 187
+    }
   ]
 }
