@@ -8,7 +8,7 @@ namespace game { namespace ui
   bool Mouse_Click::
   try_trigger(View& v, SDL_Event const& event) const noexcept
   {
-    if(event.type == SDL_MOUSEBUTTONDOWN &&
+    if((event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)&&
        event.button.button == SDL_BUTTON_LEFT)
     {
       auto pt = Vec<int>{event.button.x, event.button.y};
@@ -19,7 +19,14 @@ namespace game { namespace ui
 
       if(is_in(volume, pt))
       {
-        func_(pt);
+        if(event.type == SDL_MOUSEBUTTONDOWN)
+        {
+          if(on_click_) on_click_(pt);
+        }
+        else
+        {
+          if(on_unclick_) on_unclick_(pt);
+        }
         return true;
       }
     }

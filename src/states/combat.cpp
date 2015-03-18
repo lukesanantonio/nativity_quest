@@ -64,14 +64,15 @@ namespace game
     {
       using namespace std::placeholders;
       inventory_grid->find_child_r(item_prefix + std::to_string(i))
-        ->add_event_trigger<ui::Mouse_Click>(std::bind(use_item_func, i, _1));
+        ->add_event_trigger<ui::Mouse_Click>(std::bind(use_item_func, i, _1),
+                                             nullptr);
     }
 
     inventory_grid->find_child_r("back")->add_event_trigger<ui::Mouse_Click>(
     [this](auto const&)
     {
       this->switch_to_combat();
-    }, true);
+    }, nullptr, true);
 
     combat_grid->find_child_r("attack")->add_event_trigger<ui::Mouse_Click>(
     [this](auto)
@@ -87,13 +88,13 @@ namespace game
                                  decl::damage() + add_attack);
 
       fight_state = Fight_State::Enemy_Turn;
-    }, true);
+    }, nullptr, true);
     combat_grid->find_child_r("use_item")->add_event_trigger<ui::Mouse_Click>(
     [this](auto)
     {
       // Switch to an inventory view.
       this->switch_to_inventory();
-    }, true);
+    }, nullptr, true);
     combat_grid->find_child_r("run")->add_event_trigger<ui::Mouse_Click>(
     [this](auto)
     {
@@ -111,7 +112,7 @@ namespace game
         // We don't need to animate anything, just go to enemy's turn.
         fight_state = Fight_State::Enemy_Turn;
       }
-    }, true);
+    }, nullptr, true);
 
     switch_to_combat();
 

@@ -9,14 +9,17 @@ namespace game { namespace ui
 {
   struct Mouse_Click : public Event_Trigger
   {
-    template <class F>
-    explicit Mouse_Click(F const& f, bool use_parent_vol = false) noexcept
-                         : func_(f), use_parent_vol_(use_parent_vol) {}
+    template <class F1, class F2>
+    explicit Mouse_Click(F1 const& c, F2 const& uc,
+                         bool use_parent_vol = false) noexcept
+                         : on_click_(c), on_unclick_(uc),
+                           use_parent_vol_(use_parent_vol) {}
 
     bool try_trigger(View& v,
                        SDL_Event const& event) const noexcept override;
   private:
-    std::function<void (Vec<int>)> func_;
+    std::function<void (Vec<int>)> on_click_;
+    std::function<void (Vec<int>)> on_unclick_;
     bool use_parent_vol_;
   };
 } }

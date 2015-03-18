@@ -125,7 +125,7 @@ namespace game
       [&](auto const&)
       {
         user_continue = true;
-      }, true);
+      }, nullptr, true);
     }
 
     hud->layout(game_.graphics.size());

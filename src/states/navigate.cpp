@@ -81,13 +81,13 @@ namespace game
     [this](auto const&)
     {
       this->next_player();
-    });
+    }, nullptr);
 
     hud->find_child_r("use_inventory")->add_event_trigger<ui::Mouse_Click>(
     [this](auto const&)
     {
       push_state(game_, std::make_shared<Inventory_View_State>(game_, *this));
-    });
+    }, nullptr);
 
     update_cur_zone();
   }

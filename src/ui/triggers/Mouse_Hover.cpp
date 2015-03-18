@@ -16,9 +16,16 @@ namespace game { namespace ui
       if(use_parent_vol_) volume = v.parent_volume();
       else volume = v.this_volume();
 
-      if(is_in(volume, pt))
+      if(is_in(volume, pt) && !is_hovering_)
       {
-        func_(pt);
+        if(on_hover_) on_hover_(pt);
+        is_hovering_ = true;
+        return true;
+      }
+      else if(!is_in(volume, pt) && is_hovering_)
+      {
+        if(on_unhover_) on_unhover_(pt);
+        is_hovering_ = false;
         return true;
       }
     }

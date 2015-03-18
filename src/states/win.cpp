@@ -22,7 +22,7 @@ namespace game
       // navigation state // anyway.
       pop_state(game_);
       pop_state(game_);
-    }, true);
+    }, nullptr, true);
   }
   void Win_State::on_enter() noexcept {}
   void Win_State::render() const noexcept

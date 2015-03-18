@@ -51,13 +51,13 @@ namespace game
     {
       auto item = hud->find_child_r(ids[i]);
       item->add_event_trigger<ui::Mouse_Hover>(
-        std::bind(set_selected, i, std::placeholders::_1), true);
+        std::bind(set_selected, i, std::placeholders::_1), nullptr, true);
 
       item->add_event_trigger<ui::Mouse_Click>(
       [&](auto const&)
       {
         clicked = true;
-      }, true);
+      }, nullptr, true);
     }
 
     mediator_.entity_data(&ns.active_player().entity_data);

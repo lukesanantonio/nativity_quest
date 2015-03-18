@@ -22,13 +22,13 @@ namespace game
     {
       // start
       push_state<Navigate_State>(game_);
-    });
+    }, nullptr);
     menu_ui->find_child_r("quit")->add_event_trigger<ui::Mouse_Click>(
     [&](Vec<int>)
     {
       // quit
       pop_state(game_);
-    });
+    }, nullptr);
 
     menu_ui->layout(game.graphics.size());
   }
