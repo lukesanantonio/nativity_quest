@@ -67,6 +67,8 @@ namespace game
 
     Entity_Health_Mediator player_health_mediator;
     Entity_Health_Mediator enemy_health_mediator;
+
+    inline bool bars_animating() const noexcept;
   };
 
   inline Player& Combat_State::active_player() noexcept
@@ -76,6 +78,12 @@ namespace game
   inline Player const& Combat_State::active_player() const noexcept
   {
     return navigate.map.players[navigate.player];
+  }
+
+  inline bool Combat_State::bars_animating() const noexcept
+  {
+    return player_health_mediator.animating() ||
+           enemy_health_mediator.animating();
   }
 
   void set_bar_to_life(ui::Bar& bar, Entity_Data& et) noexcept;

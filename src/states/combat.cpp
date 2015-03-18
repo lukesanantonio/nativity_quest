@@ -127,12 +127,23 @@ namespace game
 
   void Combat_State::handle_event(SDL_Event const& e) noexcept
   {
-    hud->dispatch_event(e);
+    // Don't handle any events for the user until both health bars have
+    // stopped. This should prevent spamming the attack button on the user's
+    // end when they are going against a tough enemy that they rarely do
+    // damage do, for instance.
+    if(!bars_animating())
+    {
+      hud->dispatch_event(e);
+    }
   }
   void Combat_State::step() noexcept
   {
     player_health_mediator.step();
     enemy_health_mediator.step();
+
+    // Basically don't let the enemy move or the combat to be won until both
+    // healthbars correctly reflect their respective entity's health.
+    if(bars_animating()) { return; }
 
     // Check if anyone won yet.
     // TODO make sure the animation finished.
