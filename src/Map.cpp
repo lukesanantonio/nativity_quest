@@ -5,6 +5,8 @@
 #include "Map.h"
 #include "common/except.h"
 
+#include "assets/assets.h"
+
 #include "SDL_image.h"
 namespace game
 {
@@ -14,15 +16,21 @@ namespace game
     return {doc["x"].GetInt(), doc["y"].GetInt()};
   }
 
-  Map::Map(Game& game, std::string map_json,
+  using assets::describe;
+  using assets::Items;
+  using assets::Image_Asset;
+
+  Map::Map(Game& g, std::string map_json,
            std::string items_json, std::string enemies_json) noexcept
-           : game(game), items(items_json), enemies_decl(enemies_json)
+           : game(g), items(describe<Items>(g.assets, items_json)),
+             enemies_decl(enemies_json)
   {
     auto map = parse_json(map_json);
 
-    map_sprite.assign(map["sprite"].GetString());
-    map_overlay_sprite.assign(map["overlay_sprite"].GetString());
-    chest_sprite.assign(map["chest_sprite"].GetString());
+    map_sprite = get_asset<Image_Asset>(g, map["sprite"].GetString());
+    map_overlay_sprite =
+                  get_asset<Image_Asset>(g, map["overlay_sprite"].GetString());
+    chest_sprite = get_asset<Image_Asset>(g, map["chest_sprite"].GetString());
 
     // Spawns
     auto& map_spawns = map["spawns"];

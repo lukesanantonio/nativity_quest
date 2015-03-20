@@ -5,7 +5,8 @@
 #include "lang.h"
 namespace game { namespace assets
 {
-  void describe(Asset_Ptr<Lang> const& json, Lang& lang) noexcept
+  void describe(Asset_Ptr<Lang> const& json, Lang& lang,
+                assets::Vector&) noexcept
   {
     auto const& doc = json->json;
 

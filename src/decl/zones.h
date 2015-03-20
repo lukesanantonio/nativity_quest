@@ -10,9 +10,9 @@
 #include "../common/except.h"
 #include "../common/json.h"
 
-#include "rapidjson/document.h"
+#include "../assets/desc/items.h"
 
-#include "items.h"
+#include "rapidjson/document.h"
 
 #include <boost/optional.hpp>
 
@@ -32,7 +32,7 @@ namespace game { namespace decl
   struct Zone_Impl
   {
     std::string str;
-    Item required_item;
+    assets::Item required_item;
     short speed_cost;
     bool important;
     short color;
@@ -48,7 +48,7 @@ namespace game { namespace decl
   struct Zones
   {
     template <class Doc>
-    void initialize_zones(Items const& items, Doc const& classes,
+    void initialize_zones(assets::Items const& items, Doc const& classes,
                           Doc const& zones) noexcept;
 
     inline SDL_Surface* sprite() const noexcept
@@ -67,12 +67,12 @@ namespace game { namespace decl
     struct Zone_Class
     {
       std::string str;
-      boost::optional<Item> required_item;
+      boost::optional<assets::Item> required_item;
       boost::optional<short> speed_cost;
       boost::optional<bool> important;
     };
 
-    Zone_Class parse_class(Items const& items,
+    Zone_Class parse_class(assets::Items const& items,
                            rapidjson::Value const& val) noexcept
     {
       auto c = Zone_Class{};
@@ -110,7 +110,7 @@ namespace game { namespace decl
   }
 
   template <class Doc>
-  void Zones::initialize_zones(Items const& items,
+  void Zones::initialize_zones(assets::Items const& items,
                                Doc const& classes, Doc const& zones) noexcept
   {
     auto zone_classes = std::vector<Zone_Class>{};
@@ -127,7 +127,7 @@ namespace game { namespace decl
       }
 
       // Set defaults
-      auto zone = Zone_Impl{"Unknown", no::item, 1, false, 0};
+      auto zone = Zone_Impl{"Unknown", assets::no::item, 1, false, 0};
 
       // Set the str.
       zone.str.assign((*iter)["str"].GetString());

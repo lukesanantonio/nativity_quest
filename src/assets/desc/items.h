@@ -26,14 +26,11 @@ namespace game { namespace assets
   {
     using asset_t = Json_Asset;
 
-    std::string spritesheet;
+    std::shared_ptr<Image_Asset> spritesheet;
     Vec<int> sprite_extents;
 
     Item get_item(std::string const& str) const noexcept;
     std::vector<Item> items;
-
-  private:
-    mutable std::random_device r_device_;
   };
 
   namespace no
@@ -41,5 +38,5 @@ namespace game { namespace assets
     const Item item;
   }
 
-  void describe(Asset_Ptr<Items> const&, Items&) noexcept;
+  void describe(Asset_Ptr<Items> const&, Items&, assets::Vector&) noexcept;
 } }

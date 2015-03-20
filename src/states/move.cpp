@@ -41,7 +41,7 @@ namespace game
     navigate.update_cur_zone();
 
     // Check to make sure we can be in this zone.
-    if(navigate.cur_zone->required_item != decl::no::item)
+    if(navigate.cur_zone->required_item != assets::no::item)
     {
       using std::begin; using std::end;
       auto item_find =

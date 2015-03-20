@@ -14,5 +14,5 @@ namespace game { namespace assets
     std::unordered_map<std::string, std::string> dict;
   };
 
-  void describe(Asset_Ptr<Lang> const&, Lang&) noexcept;
+  void describe(Asset_Ptr<Lang> const&, Lang&, assets::Vector&) noexcept;
 } }

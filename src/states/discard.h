@@ -4,17 +4,17 @@
  */
 #pragma once
 #include "inventory.h"
-#include "../decl/items.h"
+#include "../assets/desc/items.h"
 namespace game
 {
   struct Discard_State : public Inventory_View_State
   {
-    Discard_State(Game& g, Navigate_State& ns, decl::Item item) noexcept;
+    Discard_State(Game& g, Navigate_State& ns, assets::Item item) noexcept;
 
     void on_inventory_label_select() noexcept override;
     void on_label_view_done() noexcept;
     void on_extra_label_select() noexcept override;
 
-    decl::Item extra_item;
+    assets::Item extra_item;
   };
 }

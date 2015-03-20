@@ -6,7 +6,7 @@
 namespace game
 {
   Discard_State::Discard_State(Game& g, Navigate_State& ns,
-                               decl::Item item) noexcept
+                               assets::Item item) noexcept
                                : Inventory_View_State(g, ns), extra_item(item)
   {
     auto label = hud->find_child_r<ui::Label>("back");

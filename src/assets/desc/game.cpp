@@ -5,7 +5,8 @@
 #include "game.h"
 namespace game { namespace assets
 {
-  void describe(Asset_Ptr<Game> const& asset, Game& game) noexcept
+  void describe(Asset_Ptr<Game> const& asset, Game& game,
+                assets::Vector&) noexcept
   {
     auto const& doc = asset->json;
 

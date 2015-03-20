@@ -19,7 +19,7 @@
 
 #define PLAYERS_JSON "assets/decl/players.json"
 #define MAP_JSON "assets/map.json"
-#define ITEMS_JSON "assets/decl/items.json"
+#define ITEMS_JSON "decl/items"
 #define ENEMIES_JSON "assets/decl/enemies.json"
 #define HUD_JSON "ui/navigate"
 

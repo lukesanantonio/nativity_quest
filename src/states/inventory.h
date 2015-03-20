@@ -31,7 +31,7 @@ namespace game
     int max_step = 0;
     bool anim = false;
   protected:
-    void set_sprite_src(decl::Item item) noexcept;
+    void set_sprite_src(assets::Item item) noexcept;
 
   private:
     virtual void on_inventory_label_select() noexcept;

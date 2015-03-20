@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+#include "../find.h"
+
 #include "../../common/json.h"
 #include "../../common/log.h"
 namespace game { namespace assets
@@ -23,11 +25,12 @@ namespace game { namespace assets
     item.sprite_pos.y = val["y"].GetInt();
     return true;
   }
-  void describe(Asset_Ptr<Items> const& asset, Items& items) noexcept
+  void describe(Asset_Ptr<Items> const& asset, Items& items,
+                assets::Vector& assets) noexcept
   {
     if_has_member(asset->json, "spritesheet", [&](auto const& val)
     {
-      items.spritesheet = val.GetString();
+      items.spritesheet = find<Image_Asset>(assets, val.GetString());
     });
     if_has_member(asset->json, "sprite_width", [&](auto const& val)
     {
@@ -38,7 +41,7 @@ namespace game { namespace assets
       items.sprite_extents.y = val.GetInt();
     });
 
-    if_has_member(asset->json, "sprite_height", [&](auto const& val)
+    if_has_member(asset->json, "items", [&](auto const& val)
     {
       for(auto iter = val.Begin(); iter != val.End(); ++iter)
       {
@@ -60,7 +63,8 @@ namespace game { namespace assets
     // The random string just picks a random item.
     if(str == "random")
     {
-      std::mt19937 prng{r_device_()};
+      static std::random_device r_device;
+      std::mt19937 prng{r_device()};
       std::uniform_int_distribution<int> dist(0, items.size() - 1);
       return items[dist(prng)];
     }

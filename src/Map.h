@@ -11,7 +11,6 @@
 #include "Player.h"
 #include "Enemy_Instance.h"
 
-#include "decl/items.h"
 #include "decl/zones.h"
 #include "decl/enemies.h"
 
@@ -24,7 +23,7 @@ namespace game
 
   struct Chest
   {
-    decl::Item item;
+    assets::Item item;
     bool visible;
     Vec<int> pos;
   };
@@ -36,15 +35,18 @@ namespace game
    */
   struct Map
   {
-    Map(Game& game, std::string map_json, std::string items_decl_json,
-        std::string enemy_decl_json) noexcept;
+    Map(Game& game, std::string map, std::string items,
+        std::string enemy_decl) noexcept;
 
-    decl::Items items;
+    Game& game;
+
+    assets::Items items;
     decl::Enemies enemies_decl;
+    decl::Zones zones;
 
-    std::string map_sprite;
-    std::string map_overlay_sprite;
-    std::string chest_sprite;
+    std::shared_ptr<assets::Image_Asset> map_sprite;
+    std::shared_ptr<assets::Image_Asset> map_overlay_sprite;
+    std::shared_ptr<assets::Image_Asset> chest_sprite;
 
     std::vector<Chest> chests;
     std::vector<Enemy_Instance> enemies;
@@ -54,17 +56,11 @@ namespace game
     double scale; // screen pixels / map pixel
     double mini_scale;
 
-    decl::Zones zones;
-
-    Game& game;
-
     inline Vec<int> size() const noexcept;
   };
 
   inline Vec<int> Map::size() const noexcept
   {
-    auto surf =
-         get_asset<assets::Image_Asset>(game, map_sprite)->image.surface.get();
-    return {surf->w, surf->h};
+    return {map_sprite->image.surface->w, map_sprite->image.surface->h};
   }
 }

@@ -7,7 +7,7 @@
 #include "SDL.h"
 
 #include "common/vec.h"
-#include "decl/items.h"
+#include "assets/desc/items.h"
 #include "common/surface.h"
 
 #include "Entity_Data.h"
@@ -24,7 +24,7 @@ namespace game
     // Position on the map.
     Vec<double> pos = {};
 
-    std::array<decl::Item, 6> inventory;
+    std::array<assets::Item, 6> inventory;
 
     double view_radius = 60.0;
     Drawable_Surface fog = {};

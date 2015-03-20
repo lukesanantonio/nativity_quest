@@ -22,5 +22,6 @@ namespace game { namespace assets
     bool vsync;
   };
 
-  void describe(Asset_Ptr<Game> const& vec, Game& game) noexcept;
+  void describe(Asset_Ptr<Game> const& vec, Game& game,
+                assets::Vector&) noexcept;
 } }

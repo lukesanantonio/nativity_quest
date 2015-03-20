@@ -3,7 +3,9 @@
  * All rights reserved.
  */
 #include "uncrate.h"
-#include "../decl/items.h"
+
+#include "../assets/desc/items.h"
+
 #include "discard.h"
 #include "../common/log.h"
 
@@ -28,7 +30,7 @@ namespace game
     auto no_item_find = std::find_if(begin(container), end(container),
     [](auto const& i)
     {
-      return i == decl::no::item;
+      return i == assets::no::item;
     });
 
     return no_item_find;
@@ -112,7 +114,7 @@ namespace game
 
       // Then set the src rect. TODO this is copied from inventory.cpp
       // find a way to share this code.
-      auto sprite_extents = navigate.map.items.get_sprite_extents();
+      auto sprite_extents = navigate.map.items.sprite_extents;
       auto src_rect = vol_from_extents(sprite_extents);
       src_rect.pos.x = chest.item->sprite_pos.x * src_rect.width;
       src_rect.pos.y = chest.item->sprite_pos.y * src_rect.height;

@@ -32,8 +32,7 @@ namespace game
     // Lay out the ui.
     hud->layout(game_.graphics.size());
 
-    auto spritesheet =
-             get_asset<assets::Image_Asset>(g, ns.map.items.get_spritesheet());
+    auto spritesheet = ns.map.items.spritesheet;
     auto hud_sprite = hud->find_child_r<ui::Sprite>("item_sprite");
 
     // Set the sprite up correctly. Set it to hidden initialially.
@@ -99,7 +98,7 @@ namespace game
       on_extra_label_select();
     }
   }
-  void Inventory_View_State::set_sprite_src(decl::Item item) noexcept
+  void Inventory_View_State::set_sprite_src(assets::Item item) noexcept
   {
     auto sprite = hud->find_child_r<ui::Sprite>("item_sprite");
     if(item)
@@ -113,7 +112,7 @@ namespace game
     }
 
     // Just change the src rect and relayout.
-    auto sprite_extents = navigate.map.items.get_sprite_extents();
+    auto sprite_extents = navigate.map.items.sprite_extents;
     auto src_rect = vol_from_extents(sprite_extents);
     src_rect.pos.x = item->sprite_pos.x * src_rect.width;
     src_rect.pos.y = item->sprite_pos.y * src_rect.height;
@@ -136,7 +135,7 @@ namespace game
       if(effects.apply_effect(player, item))
       {
         // Remove the item from the users inventory.
-        player.inventory[selected] = decl::no::item;
+        player.inventory[selected] = assets::no::item;
         // Update the hud.
         update_labels();
 
@@ -156,7 +155,7 @@ namespace game
   }
   void Inventory_View_State::on_extra_label_select() noexcept
   {
-    set_sprite_src(decl::no::item);
+    set_sprite_src(assets::no::item);
     if(clicked) pop_state(game_);
   }
 

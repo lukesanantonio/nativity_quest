@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 #pragma once
-#include "items.h"
+#include "../assets/desc/items.h"
 
 namespace game
 {
@@ -11,6 +11,9 @@ namespace game
 
   namespace decl
   {
+    using assets::Item;
+    using assets::Items;
+
     struct Effects
     {
       explicit Effects(Items* items = nullptr) noexcept : items(items) {}
@@ -25,7 +28,7 @@ namespace game
       bool used_in_combat(Item) const noexcept;
       bool apply_effect(Player&, Item item) const noexcept;
 
-      Items* items;
+      assets::Items* items;
     };
   }
 }

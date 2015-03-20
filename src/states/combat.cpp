@@ -40,7 +40,7 @@ namespace game
       {
         // The player-health mediator will do the animation for us.
         effects.apply_effect(this->active_player(), sel_item);
-        this->active_player().inventory[selected] = decl::no::item;
+        this->active_player().inventory[selected] = assets::no::item;
 
         if(this->active_player().flare)
         {
@@ -55,7 +55,7 @@ namespace game
       else if(sel_item == effects.items->get_item("throwing_axe"))
       {
         apply_damage(enemy.entity_data, enemy.entity_data.defense + 2);
-        this->active_player().inventory[selected] = decl::no::item;
+        this->active_player().inventory[selected] = assets::no::item;
       }
     };
 
