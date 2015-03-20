@@ -13,12 +13,7 @@
 #include "uncrate.h"
 #include "player_switch.h"
 #include "player_intro.h"
-
-#if 0
-
 #include "win.h"
-
-#endif
 
 #define PI 3.14159
 
@@ -187,10 +182,8 @@ namespace game
     {
       if(cur_zone->important)
       {
-#if 0
         auto win =std::make_shared<Win_State>(game_, players.get_name(player));
         push_state(game_, std::move(win));
-#endif
       }
     }
   }
