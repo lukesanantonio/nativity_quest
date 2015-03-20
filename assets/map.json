@@ -1,6 +1,6 @@
 {
-  "sprite": "map",
-  "overlay_sprite": "map_overlay",
+  "sprite": "images/map",
+  "overlay_sprite": "images/map_overlay",
 
   "map_scale": 6.5,
   "minimap_scale": 0.25,
