@@ -19,7 +19,6 @@ namespace game
     decl::Players players;
 
     mutable ui::Shared_View hud;
-    mutable bool ui_dirty = true;
 
     decl::Zone cur_zone;
 

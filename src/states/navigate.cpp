@@ -50,7 +50,7 @@ namespace game
     auto player_name = hud->find_child_r<ui::Label>("player_name");
 
     player_name->str("Player #" + std::to_string(player));;
-    ui_dirty = true;
+    hud->layout(game_.graphics.size());
   }
   Navigate_State::Navigate_State(Game& game) noexcept
                                  : Game_State(game, true),
@@ -204,8 +204,6 @@ namespace game
       first = false;
     }
 
-    ui_dirty = true;
-
     // Update the zone just in case.
     update_cur_zone();
 
@@ -239,18 +237,11 @@ namespace game
       // We coulldd just layout the parent, but this is I guess safer for
       // possibly any unexpected future changes.
       hud->layout(game_.graphics.size());
-
-      ui_dirty = true;
     }
   }
 
   void Navigate_State::render() const noexcept
   {
-    if(ui_dirty)
-    {
-      ui_dirty = false;
-    }
-
     auto& active_player = map.players[player];
 
     // Render the map.
