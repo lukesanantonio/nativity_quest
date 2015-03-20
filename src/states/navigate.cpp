@@ -22,7 +22,6 @@
 
 #define PI 3.14159
 
-#define NAVIGATE_SPRITES "assets/navigation_sprites.json"
 #define PLAYERS_JSON "assets/decl/players.json"
 #define MAP_JSON "assets/map.json"
 #define ITEMS_JSON "assets/decl/items.json"
@@ -55,9 +54,8 @@ namespace game
   }
   Navigate_State::Navigate_State(Game& game) noexcept
                                  : Game_State(game, true),
-                                   sprites(NAVIGATE_SPRITES),
                                    players(PLAYERS_JSON),
-                                   map(sprites, MAP_JSON, ITEMS_JSON,
+                                   map(game, MAP_JSON, ITEMS_JSON,
                                        ENEMIES_JSON),
                                    player(0),
                                    hud{ui::load(game, HUD_JSON)},
@@ -265,7 +263,7 @@ namespace game
 
     map_corner = viewport_src.pos;
 
-    auto map_sprite = sprites.get_sprite(map.map_sprite);
+    auto map_sprite = get_asset<assets::Image_Asset>(game_, "map");
 
     auto viewport_src_rect = to_sdl_rect(viewport_src);
     SDL_RenderCopy(game_.graphics.renderer,
@@ -273,9 +271,9 @@ namespace game
                    &viewport_src_rect, NULL);
 
     // Render the map overlay
-    auto map_overlay_sprite = sprites.get_sprite(map.map_overlay_sprite);
+    auto map_overlay = get_asset<assets::Image_Asset>(game_, "map_overlay");
     SDL_RenderCopy(game_.graphics.renderer,
-                   map_overlay_sprite->texture(game_.graphics.renderer),
+                   map_overlay->texture(game_.graphics.renderer),
                    &viewport_src_rect, NULL);
 
 
@@ -290,7 +288,7 @@ namespace game
     render_player(active_player, viewport_src, true);
 
     // Render any chests. TODO Get rid of this sprite reference!
-    auto chest_sprite = sprites.get_sprite(map.chest_sprite);
+    auto chest_sprite = get_asset<assets::Image_Asset>(game_, "anim/chest/0");
 
     for(auto const& chest : map.chests)
     {
@@ -299,7 +297,7 @@ namespace game
       if(!chest.visible) continue;
 
       auto chest_extent =
-              Vec<int>{chest_sprite->surface()->w, chest_sprite->surface()->h};
+                      Vec<int>{chest_sprite->image->w, chest_sprite->image->h};
 
       SDL_Rect chest_dest;
       chest_dest.x = chest.pos.x - viewport_src.pos.x - chest_extent.x / 2;
@@ -309,8 +307,8 @@ namespace game
       chest_dest.x *= map.scale;
       chest_dest.y *= map.scale;
 
-      chest_dest.w = chest_sprite->surface()->w * map.scale * .8;
-      chest_dest.h = chest_sprite->surface()->h * map.scale * .8;
+      chest_dest.w = chest_sprite->image->w * map.scale * .8;
+      chest_dest.h = chest_sprite->image->h * map.scale * .8;
       SDL_RenderCopy(game_.graphics.renderer,
                      chest_sprite->texture(game_.graphics.renderer),
                      NULL, &chest_dest);
@@ -354,7 +352,7 @@ namespace game
     }
 
     // Render the fog of war.
-    if(active_player.fog.surface())
+    if(active_player.fog.surface.get())
     {
       SDL_RenderCopy(game_.graphics.renderer,
                      active_player.fog.texture(game_.graphics.renderer),

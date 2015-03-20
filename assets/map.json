@@ -100,15 +100,15 @@
     { "enemy": "random", "pos": { "x": 648, "y": 180 } },
 
 
-    { "chest": "Rope",   "pos": { "x": 920, "y": 420 } },
-    { "chest": "Rope",   "pos": { "x": 872, "y":   5 } },
-    { "chest": "Rope",   "pos": { "x": 559, "y":   8 } },
-    { "chest": "Rope",   "pos": { "x": 556, "y": 286 } },
+    { "chest": "rope",   "pos": { "x": 920, "y": 420 } },
+    { "chest": "rope",   "pos": { "x": 872, "y":   5 } },
+    { "chest": "rope",   "pos": { "x": 559, "y":   8 } },
+    { "chest": "rope",   "pos": { "x": 556, "y": 286 } },
 
-    { "chest": "Boat",   "pos": { "x": 238, "y": 679 } },
-    { "chest": "Boat",   "pos": { "x":   8, "y": 584 } },
-    { "chest": "Boat",   "pos": { "x": 165, "y":  16 } },
-    { "chest": "Boat",   "pos": { "x": 614, "y": 681 } },
+    { "chest": "boat",   "pos": { "x": 238, "y": 679 } },
+    { "chest": "boat",   "pos": { "x":   8, "y": 584 } },
+    { "chest": "boat",   "pos": { "x": 165, "y":  16 } },
+    { "chest": "boat",   "pos": { "x": 614, "y": 681 } },
 
     { "chest": "random", "pos": { "x": 836, "y": 496 } },
     { "chest": "random", "pos": { "x": 480, "y": 487 } },
@@ -165,12 +165,12 @@
   [
     {
       "str": "Water",
-      "required_item": "Boat",
+      "required_item": "boat",
       "speed_cost": 2
     },
     {
       "str": "Mountains",
-      "required_item": "Rope",
+      "required_item": "rope",
       "speed_cost": 2
     },
     {

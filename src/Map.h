@@ -14,7 +14,10 @@
 #include "decl/items.h"
 #include "decl/zones.h"
 #include "decl/enemies.h"
-#include "decl/sprites.h"
+
+#include "assets/assets.h"
+
+#include "game/Game.h"
 namespace game
 {
   using player_id = short;
@@ -33,10 +36,8 @@ namespace game
    */
   struct Map
   {
-    Map(decl::Sprites& sprites, std::string map_json,
-        std::string items_decl_json, std::string enemy_decl_json) noexcept;
-
-    decl::Sprites& sprites;
+    Map(Game& game, std::string map_json, std::string items_decl_json,
+        std::string enemy_decl_json) noexcept;
 
     decl::Items items;
     decl::Enemies enemies_decl;
@@ -55,12 +56,14 @@ namespace game
 
     decl::Zones zones;
 
+    Game& game;
+
     inline Vec<int> size() const noexcept;
   };
 
   inline Vec<int> Map::size() const noexcept
   {
-    auto surf = sprites.get_sprite(map_sprite)->surface();
+    auto surf = get_asset<assets::Image_Asset>(game, map_sprite)->image;
     return {surf->w, surf->h};
   }
 }

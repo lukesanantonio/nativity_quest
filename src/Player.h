@@ -8,7 +8,7 @@
 
 #include "common/vec.h"
 #include "decl/items.h"
-#include "decl/sprites.h"
+#include "common/surface.h"
 
 #include "Entity_Data.h"
 
@@ -19,6 +19,16 @@ namespace game
     struct Effects;
   }
 
+  struct Surface_Cache
+  {
+    Surface_Ptr surface;
+
+    SDL_Texture* texture(SDL_Renderer* r) const noexcept;
+  private:
+    mutable SDL_Texture* texture_;
+    mutable SDL_Renderer* renderer_;
+  };
+
   struct Player
   {
     // Position on the map.
@@ -27,7 +37,7 @@ namespace game
     std::array<decl::Item, 6> inventory;
 
     double view_radius = 60.0;
-    decl::Sprite_Impl fog = {};
+    Surface_Cache fog = {};
 
     Entity_Data entity_data;
 

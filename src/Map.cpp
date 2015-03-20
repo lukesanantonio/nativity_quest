@@ -14,9 +14,9 @@ namespace game
     return {doc["x"].GetInt(), doc["y"].GetInt()};
   }
 
-  Map::Map(decl::Sprites& sprites, std::string map_json,
+  Map::Map(Game& game, std::string map_json,
            std::string items_json, std::string enemies_json) noexcept
-           : sprites(sprites), items(items_json), enemies_decl(enemies_json)
+           : game(game), items(items_json), enemies_decl(enemies_json)
   {
     auto map = parse_json(map_json);
 
@@ -54,7 +54,8 @@ namespace game
     scale = map["map_scale"].GetDouble();
     mini_scale = map["minimap_scale"].GetDouble();
 
-    zones.sprite(sprites.get_sprite(map["zones_sprite"].GetString()));
+    zones.sprite(get_asset<assets::Image_Asset>(game,
+                                             map["zones_sprite"].GetString()));
     zones.initialize_zones(items, map["zone_classes"], map["zones"]);
 
     for(auto& player : players)

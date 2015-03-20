@@ -10,16 +10,23 @@
 #include <cmath>
 namespace game
 {
+  // TODO Share this code
+  SDL_Texture* Surface_Cache::texture(SDL_Renderer* r) const noexcept
+  {
+    if(renderer_ != r)
+    {
+      texture_ = SDL_CreateTextureFromSurface(r, surface.get());
+      renderer_ = r;
+    }
+    return texture_;
+  }
   void reset_fog(Player& p, Vec<int> extents) noexcept
   {
-    p.fog.reset(SDL_CreateRGBSurface(0, extents.x, extents.y,
-                                     32,
-                                     0xff000000,
-                                     0x00ff0000,
-                                     0x0000ff00,
-                                     0x000000ff));
+    p.fog.surface.reset(SDL_CreateRGBSurface(0, extents.x, extents.y, 32,
+                                             0xff000000, 0x00ff0000,
+                                             0x0000ff00, 0x000000ff));
 
-    auto surf = p.fog.surface();
+    auto surf = p.fog.surface.get();
     if(surf)
     {
       auto pixel = (uint8_t*) surf->pixels;
@@ -78,7 +85,7 @@ namespace game
 
   void unfog(Player& p, decl::Effects& e) noexcept
   {
-    auto surface = p.fog.surface();
+    auto surface = p.fog.surface.get();
     if(!surface) return;
 
     SDL_LockSurface(surface);

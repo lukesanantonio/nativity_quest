@@ -13,7 +13,7 @@
 #include "rapidjson/document.h"
 
 #include "items.h"
-#include "sprites.h"
+#include "../assets/assets.h"
 
 #include <boost/optional.hpp>
 namespace game { namespace decl
@@ -50,15 +50,15 @@ namespace game { namespace decl
     void initialize_zones(Items const& items, Doc const& classes,
                           Doc const& zones) noexcept;
 
-    inline Sprite sprite() const noexcept
+    inline std::shared_ptr<assets::Image_Asset> sprite() const noexcept
     { return sprite_; }
-    inline void sprite(Sprite sprite) noexcept
+    inline void sprite(std::shared_ptr<assets::Image_Asset> sprite) noexcept
     { sprite_ = sprite; }
 
     Zone get_zone(Vec<int> pos) const noexcept;
   private:
     std::vector<Zone> zones_;
-    Sprite sprite_;
+    std::shared_ptr<assets::Image_Asset> sprite_;
   };
 
   namespace

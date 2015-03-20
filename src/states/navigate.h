@@ -6,7 +6,6 @@
 #include "../game/Game.h"
 #include "../Map.h"
 #include "../common/vec.h"
-#include "../decl/sprites.h"
 #include "../decl/players.h"
 #include "../decl/effects.h"
 
@@ -17,7 +16,6 @@ namespace game
   {
     Navigate_State(Game& game) noexcept;
 
-    decl::Sprites sprites;
     decl::Players players;
 
     mutable ui::Shared_View hud;
