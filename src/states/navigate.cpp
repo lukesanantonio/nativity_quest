@@ -267,13 +267,13 @@ namespace game
 
     auto viewport_src_rect = to_sdl_rect(viewport_src);
     SDL_RenderCopy(game_.graphics.renderer,
-                   map_sprite->texture(game_.graphics.renderer),
+                   map_sprite->image.texture(game_.graphics.renderer),
                    &viewport_src_rect, NULL);
 
     // Render the map overlay
     auto map_overlay = get_asset<assets::Image_Asset>(game_, "map_overlay");
     SDL_RenderCopy(game_.graphics.renderer,
-                   map_overlay->texture(game_.graphics.renderer),
+                   map_overlay->image.texture(game_.graphics.renderer),
                    &viewport_src_rect, NULL);
 
 
@@ -296,8 +296,8 @@ namespace game
       // shown, TODO make an opened chest sprite.
       if(!chest.visible) continue;
 
-      auto chest_extent =
-                      Vec<int>{chest_sprite->image->w, chest_sprite->image->h};
+      auto chest_extent = Vec<int>{chest_sprite->image.surface->w,
+                                   chest_sprite->image.surface->h};
 
       SDL_Rect chest_dest;
       chest_dest.x = chest.pos.x - viewport_src.pos.x - chest_extent.x / 2;
@@ -307,10 +307,10 @@ namespace game
       chest_dest.x *= map.scale;
       chest_dest.y *= map.scale;
 
-      chest_dest.w = chest_sprite->image->w * map.scale * .8;
-      chest_dest.h = chest_sprite->image->h * map.scale * .8;
+      chest_dest.w = chest_sprite->image.surface->w * map.scale * .8;
+      chest_dest.h = chest_sprite->image.surface->h * map.scale * .8;
       SDL_RenderCopy(game_.graphics.renderer,
-                     chest_sprite->texture(game_.graphics.renderer),
+                     chest_sprite->image.texture(game_.graphics.renderer),
                      NULL, &chest_dest);
     }
 
@@ -441,7 +441,7 @@ namespace game
                                            players.get_sprite(p.sprite_frame));
 
     SDL_RenderCopyEx(game_.graphics.renderer,
-                     char_sprite->texture(game_.graphics.renderer),
+                     char_sprite->image.texture(game_.graphics.renderer),
                      &char_src, &char_dest,
                      angle / PI * 180, &char_center, SDL_FLIP_NONE);
   }

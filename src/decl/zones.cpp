@@ -11,7 +11,7 @@ namespace game { namespace decl
 {
   Zone Zones::get_zone(Vec<int> pos) const noexcept
   {
-    SDL_Surface* sprite = sprite_->image;
+    SDL_Surface* sprite = sprite_;
     if(!sprite) return no::zone;
 
     // Convert the png to a format we can use.

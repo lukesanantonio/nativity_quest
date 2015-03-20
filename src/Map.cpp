@@ -54,8 +54,10 @@ namespace game
     scale = map["map_scale"].GetDouble();
     mini_scale = map["minimap_scale"].GetDouble();
 
-    zones.sprite(get_asset<assets::Image_Asset>(game,
-                                             map["zones_sprite"].GetString()));
+    auto zsasst = get_asset<assets::Image_Asset>(game,
+                                              map["zones_sprite"].GetString());
+    zones.sprite(zsasst->image.surface.get());
+
     zones.initialize_zones(items, map["zone_classes"], map["zones"]);
 
     for(auto& player : players)

@@ -11,13 +11,13 @@ namespace game { namespace ui
   Sprite::Sprite(Graphics_Desc& g, Image_Asset_Ptr image) noexcept
                  : View(g), src_(image)
   {
-    generate();
   }
 
   Vec<int> Sprite::get_minimum_extents_() const noexcept
   {
     auto extents = Vec<int>{};
-    SDL_QueryTexture(tex_.get(), NULL, NULL, &extents.x, &extents.y);
+    SDL_QueryTexture(src_->image.texture(graphics_.renderer),
+                     NULL, NULL, &extents.x, &extents.y);
 
     if(src_vol_)
     {
@@ -31,7 +31,6 @@ namespace game { namespace ui
   void Sprite::src(Image_Asset_Ptr src) noexcept
   {
     src_ = src;
-    generate();
   }
 
   void Sprite::set_src_rect(Volume<int> vol) noexcept
@@ -49,32 +48,24 @@ namespace game { namespace ui
     src_vol_ = boost::none;
   }
 
-  void Sprite::generate() noexcept
-  {
-    if(src_)
-    {
-      auto surface = src_->image;
-      tex_.reset(SDL_CreateTextureFromSurface(graphics_.renderer, surface));
-    }
-  }
-
   Volume<int> Sprite::layout_()
   {
     return center_volume(parent_volume(), get_minimum_extents());
   }
   void Sprite::render_() const noexcept
   {
-    if(tex_)
+    auto tex = src_->image.texture(graphics_.renderer);
+    if(tex)
     {
       auto dest = to_sdl_rect(this_volume());
       if(src_vol_)
       {
         auto src_rect = to_sdl_rect(src_vol_.value());
-        SDL_RenderCopy(graphics_.renderer, tex_.get(), &src_rect, &dest);
+        SDL_RenderCopy(graphics_.renderer, tex, &src_rect, &dest);
       }
       else
       {
-        SDL_RenderCopy(graphics_.renderer, tex_.get(), NULL, &dest);
+        SDL_RenderCopy(graphics_.renderer, tex, NULL, &dest);
       }
     }
   }

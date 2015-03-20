@@ -13,9 +13,10 @@
 #include "rapidjson/document.h"
 
 #include "items.h"
-#include "../assets/assets.h"
 
 #include <boost/optional.hpp>
+
+#include "SDL.h"
 namespace game { namespace decl
 {
   struct Invalid_Decl_Filename
@@ -50,15 +51,15 @@ namespace game { namespace decl
     void initialize_zones(Items const& items, Doc const& classes,
                           Doc const& zones) noexcept;
 
-    inline std::shared_ptr<assets::Image_Asset> sprite() const noexcept
+    inline SDL_Surface* sprite() const noexcept
     { return sprite_; }
-    inline void sprite(std::shared_ptr<assets::Image_Asset> sprite) noexcept
+    inline void sprite(SDL_Surface* sprite) noexcept
     { sprite_ = sprite; }
 
     Zone get_zone(Vec<int> pos) const noexcept;
   private:
     std::vector<Zone> zones_;
-    std::shared_ptr<assets::Image_Asset> sprite_;
+    SDL_Surface* sprite_;
   };
 
   namespace

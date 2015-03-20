@@ -7,6 +7,8 @@
 #include <vector>
 #include <memory>
 
+#include "../common/surface.h"
+
 #include "rapidjson/document.h"
 
 #define DECLARE_EXTENSION(ext_str) \
@@ -28,12 +30,7 @@ namespace game { namespace assets
   {
     DECLARE_EXTENSION(png);
 
-    SDL_Surface* image;
-
-    SDL_Texture* texture(SDL_Renderer* r) noexcept;
-  private:
-    SDL_Texture* texture_;
-    SDL_Renderer* renderer_;
+    Drawable_Surface image;
   };
 
   struct Json_Asset : public Asset

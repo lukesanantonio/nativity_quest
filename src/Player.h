@@ -19,16 +19,6 @@ namespace game
     struct Effects;
   }
 
-  struct Surface_Cache
-  {
-    Surface_Ptr surface;
-
-    SDL_Texture* texture(SDL_Renderer* r) const noexcept;
-  private:
-    mutable SDL_Texture* texture_;
-    mutable SDL_Renderer* renderer_;
-  };
-
   struct Player
   {
     // Position on the map.
@@ -37,7 +27,7 @@ namespace game
     std::array<decl::Item, 6> inventory;
 
     double view_radius = 60.0;
-    Surface_Cache fog = {};
+    Drawable_Surface fog = {};
 
     Entity_Data entity_data;
 

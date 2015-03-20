@@ -63,7 +63,8 @@ namespace game
 
   inline Vec<int> Map::size() const noexcept
   {
-    auto surf = get_asset<assets::Image_Asset>(game, map_sprite)->image;
+    auto surf =
+         get_asset<assets::Image_Asset>(game, map_sprite)->image.surface.get();
     return {surf->w, surf->h};
   }
 }

@@ -131,10 +131,10 @@ namespace game { namespace assets
         auto image_asset = std::make_shared<Image_Asset>();
 
         // Load the image.
-        image_asset->image = IMG_Load(fn.c_str());
+        image_asset->image.surface.reset(IMG_Load(fn.c_str()));
 
         // Log for failure.
-        if(!image_asset->image)
+        if(!image_asset->image.surface)
         {
           log_e("Failed to load image ('" + fn + "')");
           continue;

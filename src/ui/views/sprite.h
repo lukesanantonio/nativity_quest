@@ -26,8 +26,6 @@ namespace game { namespace ui
     void remove_src_rect() noexcept;
 
   private:
-    void generate() noexcept;
-
     Vec<int> get_minimum_extents_() const noexcept override;
     Volume<int> layout_() override;
     void render_() const noexcept override;
@@ -35,7 +33,6 @@ namespace game { namespace ui
     boost::optional<Volume<int> > src_vol_;
 
     Image_Asset_Ptr src_;
-    Texture_Ptr tex_;
 
     double scale_ = 1.0;
   };

@@ -23,6 +23,21 @@ namespace game
     return Shared_Surface_Ptr(ptr, Surface_Deleter{});
   }
 
+  /*!
+   * \brief This class owns a surface and caches its texture to ease rendering.
+   */
+  struct Drawable_Surface
+  {
+    // The class isn't too strict about the up-to-dateness of the texture.
+    // Call with a null renderer pointer to basically refresh the cache.
+    Surface_Ptr surface;
+
+    SDL_Texture* texture(SDL_Renderer* r) const noexcept;
+  private:
+    mutable SDL_Texture* texture_;
+    mutable SDL_Renderer* renderer_;
+  };
+
   struct Texture_Deleter
   {
     void operator()(SDL_Texture* texture) noexcept
