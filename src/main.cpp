@@ -28,6 +28,7 @@
 #define GAME_JSON "game"
 #define FONT_FILE "assets/DejaVuSans.ttf"
 
+#define LANG_LATIN
 #ifdef LANG_LATIN
   #define INITIAL_LANG_ASSET "lang/latin"
 #else
