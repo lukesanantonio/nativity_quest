@@ -11,6 +11,10 @@ namespace game
                              label(std::move(l)),
                              cur_step(0), max_step(ms)
   {
+    // Set the border/background.
+    label.set_border(ui::View_Volume::This, colors::black);
+    label.set_background(ui::View_Volume::This, colors::white);
+
     label.layout(game.graphics.size());
   }
   void Intro_State::handle_event(SDL_Event const& event) noexcept
