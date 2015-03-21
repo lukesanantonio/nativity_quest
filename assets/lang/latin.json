@@ -51,12 +51,12 @@
   "use_item": "Uti item",
   "run": "Fuge",
 
-  "back": "Back",
-  "continue": "Continue",
-  "discard_item": "Discard",
+  "back": "redi",
+  "continue": "protinus",
+  "discard_item": "derelinque",
 
   "win_msg": "% vicit",
-  "return_to_menu": "Return to menu",
+  "return_to_menu": "redi ad menu",
 
   "item_found": " % invenisti",
   "enemy_encountered": " % congressus es"
