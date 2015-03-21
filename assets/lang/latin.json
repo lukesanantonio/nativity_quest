@@ -50,7 +50,12 @@
   "use_item": "Uti item",
   "run": "Fuge",
 
+  "back": "Back",
+  "continue": "Continue",
+  "discard_item": "Discard",
+
   "win_msg": "% vicit",
+  "return_to_menu": "Return to menu",
 
   "item_found": " % invenisti",
   "enemy_encountered": " % congressus es"
