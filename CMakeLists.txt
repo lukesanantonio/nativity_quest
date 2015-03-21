@@ -16,9 +16,11 @@ include_directories(${CMAKE_SOURCE_DIR}/jsoncpp)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
+include_directories(${SDL2_TTF_INCLUDE_DIR})
 
 find_package(Boost 1.50.0 REQUIRED COMPONENTS filesystem system)
 include_directories(${Boost_INCLUDE_DIRS})
