@@ -57,6 +57,6 @@
   "win_msg": "Player % won",
   "return_to_menu": "Return to menu",
 
-  "item_found": "You found a %",
+  "item_found": "You found %",
   "enemy_encountered": "You encountered a %"
 }
