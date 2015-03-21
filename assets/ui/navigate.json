@@ -1,10 +1,12 @@
 {
+  "cross_reference": true,
+
   "type":"side_layout",
   "children":
   [
     {
       "type": "sprite",
-      "src": "map",
+      "src": "@map:sprite",
       "this_border": "black",
 
       "id": "map",
