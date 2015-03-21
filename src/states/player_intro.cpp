@@ -27,6 +27,9 @@ namespace game
     // When the intro is finished, set the player name in the navigation hud.
     auto navigate_hud = ui::as<ui::Side_Layout>(navigate.hud);
     auto text = navigate_hud->find_child<ui::Label>("player_name");
-    text->str("Player: " + pn_);
+    text->str_name("player_name");
+    text->str_args(pn_);
+
+    navigate.hud->layout(game_.graphics.size());
   }
 }

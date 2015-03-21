@@ -46,6 +46,7 @@
 
   "next_player": "Factor Proximus",
   "player_turn_intro": "%'s turn",
+  "player_name": "Factor: %",
 
   "attack": "Pugna",
   "use_item": "Uti item",

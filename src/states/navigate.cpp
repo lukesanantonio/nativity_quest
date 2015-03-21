@@ -41,11 +41,6 @@ namespace game
 
     // Push the next-player-animation state.
     push_state(game_, std::make_shared<Player_Switch_State>(game_, *this));
-
-    auto player_name = hud->find_child_r<ui::Label>("player_name");
-
-    player_name->str("Player #" + std::to_string(player));;
-    hud->layout(game_.graphics.size());
   }
   Navigate_State::Navigate_State(Game& game) noexcept
                                  : Game_State(game, true),

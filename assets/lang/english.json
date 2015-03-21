@@ -46,6 +46,7 @@
 
   "next_player": "Next Player",
   "player_turn_intro": "%'s turn",
+  "player_name": "Player: %",
 
   "attack": "Attack",
   "use_item": "Use item",
