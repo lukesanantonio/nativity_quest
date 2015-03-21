@@ -43,7 +43,7 @@ namespace game
     ui::Shared_View combat_grid;
     ui::Shared_View inventory_grid;
 
-    int inventory_sel;
+    int selected;
     bool clicked = false;
 
     Enemy_Instance& enemy;

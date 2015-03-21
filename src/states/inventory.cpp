@@ -166,8 +166,12 @@ namespace game
 
   void Inventory_View_State::update_labels() noexcept
   {
-    auto& invent = navigate.active_player().inventory;
+    game::update_labels(navigate.active_player().inventory, hud);
+  }
 
+  void update_labels(decltype(Player::inventory) const& invent,
+                     ui::Shared_View hud) noexcept
+  {
     for(int i = 0; i < static_cast<int>(invent.size()); ++i)
     {
       using namespace std::literals;

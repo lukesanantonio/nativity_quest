@@ -4,12 +4,27 @@
  */
 #include "combat.h"
 #include "../decl/combat.h"
+#include "inventory.h"
 
 #define COMBAT_JSON "ui/combat"
 #define COMBAT_PART "ui_part/combat_grid"
 #define INVENTORY_PART "ui_part/inventory_grid"
 namespace game
 {
+  // Shamelessly copied from inventory.cpp. Find a way to share the
+  // hover-border code. This should be done in json if possible.
+  constexpr int ids_size = 7;
+  constexpr char const* const ids[] =
+  {
+    "item0",
+    "item1",
+    "item2",
+    "item3",
+    "item4",
+    "item5",
+    "back"
+  };
+
   Combat_State::Combat_State(Game& g, Navigate_State& ns,
                              Enemy_Instance& e) noexcept
                              : Navigate_Sub_State(g, ns),
@@ -59,20 +74,34 @@ namespace game
       }
     };
 
+    auto set_sel = [this](int sel, auto const&)
+    {
+      selected = sel;
+    };
+
+    using namespace std::placeholders;
+
     const std::string item_prefix = "item";
     for(int i = 0; i < 6; ++i)
     {
-      using namespace std::placeholders;
       inventory_grid->find_child_r(item_prefix + std::to_string(i))
         ->add_event_trigger<ui::Mouse_Click>(std::bind(use_item_func, i, _1),
-                                             nullptr);
+                                             nullptr, true);
+
+      inventory_grid->find_child_r(item_prefix + std::to_string(i))
+        ->add_event_trigger<ui::Mouse_Hover>(std::bind(set_sel, i, _1),
+                                             nullptr, true);
     }
 
-    inventory_grid->find_child_r("back")->add_event_trigger<ui::Mouse_Click>(
+    auto back_child = inventory_grid->find_child_r("back");
+    back_child->add_event_trigger<ui::Mouse_Click>(
     [this](auto const&)
     {
       this->switch_to_combat();
     }, nullptr, true);
+
+    back_child->add_event_trigger<ui::Mouse_Hover>(std::bind(set_sel, 6, _1),
+                                                   nullptr, true);
 
     combat_grid->find_child_r("attack")->add_event_trigger<ui::Mouse_Click>(
     [this](auto)
@@ -89,6 +118,8 @@ namespace game
 
       fight_state = Fight_State::Enemy_Turn;
     }, nullptr, true);
+
+
     combat_grid->find_child_r("use_item")->add_event_trigger<ui::Mouse_Click>(
     [this](auto)
     {
@@ -114,6 +145,13 @@ namespace game
       }
     }, nullptr, true);
 
+    combat_grid->find_child_r("attack")->add_event_trigger<ui::Mouse_Hover>(
+      std::bind(set_sel, 0, _1), nullptr, true);
+    combat_grid->find_child_r("use_item")->add_event_trigger<ui::Mouse_Hover>(
+      std::bind(set_sel, 1, _1), nullptr, true);
+    combat_grid->find_child_r("run")->add_event_trigger<ui::Mouse_Hover>(
+      std::bind(set_sel, 2, _1), nullptr, true);
+
     switch_to_combat();
 
     player_health_mediator.entity_data(&active_player().entity_data);
@@ -131,13 +169,57 @@ namespace game
     // stopped. This should prevent spamming the attack button on the user's
     // end when they are going against a tough enemy that they rarely do
     // damage do, for instance.
-    if(!bars_animating())
+    // TODO figure out a way to let mouse motion events through.
+    // Well, then again... I could just do this.
+    if(!bars_animating() || e.type == SDL_MOUSEMOTION)
     {
       hud->dispatch_event(e);
     }
   }
   void Combat_State::step() noexcept
   {
+    // Set the border around the selected item, removing borders around
+    // unselected label views.
+    if(hud->find_child_r("inventory_grid"))
+    {
+      for(int i = 0; i < ids_size; ++i)
+      {
+        auto child = hud->find_child_r(ids[i]);
+        if(selected == i)
+        {
+          child->set_border(ui::View_Volume::Parent, {0x00, 0x00, 0x00});
+        }
+        else
+        {
+          child->remove_border(ui::View_Volume::Parent);
+        }
+      }
+    }
+    else if(hud->find_child_r("combat_grid"))
+    {
+      static size_t combat_ids_size = 3;
+      static constexpr char const* const combat_ids[] =
+      {
+        "attack",
+        "use_item",
+        "run"
+      };
+      for(int i = 0; i < combat_ids_size; ++i)
+      {
+        auto child = hud->find_child_r(combat_ids[i]);
+        if(selected == i)
+        {
+          child->set_border(ui::View_Volume::Parent, {0x00, 0x00, 0x00});
+        }
+        else
+        {
+          child->remove_border(ui::View_Volume::Parent);
+        }
+      }
+    }
+
+    // TODO add hover to the combat_grid.
+
     player_health_mediator.step();
     enemy_health_mediator.step();
 
@@ -204,6 +286,10 @@ namespace game
       hud->replace_child_r(grid, inventory_grid);
     }
 
+    update_labels(active_player().inventory, hud);
+
+    selected = 6;
+
     hud->layout(game_.graphics.size());
   }
   void Combat_State::switch_to_combat() noexcept
@@ -215,6 +301,8 @@ namespace game
     {
       hud->replace_child_r(grid, combat_grid);
     }
+
+    selected = 1;
 
     hud->layout(game_.graphics.size());
   }

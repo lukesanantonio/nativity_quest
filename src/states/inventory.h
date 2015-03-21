@@ -41,4 +41,7 @@ namespace game
 
     Entity_Health_Mediator mediator_;
   };
+
+  void update_labels(decltype(Player::inventory) const& inv,
+                     ui::Shared_View view) noexcept;
 }
