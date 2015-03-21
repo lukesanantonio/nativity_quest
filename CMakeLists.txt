@@ -26,6 +26,9 @@ include_directories(${Boost_INCLUDE_DIRS})
 find_package(Freetype REQUIRED)
 include_directories(${FREETYPE_INCLUDE_DIRS})
 
+find_package(LibUV)
+include_directories(${LIBUV_INCLUDE_DIRS})
+
 add_subdirectory(assets)
 
 add_subdirectory(jsoncpp)
