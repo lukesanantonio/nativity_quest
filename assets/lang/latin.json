@@ -45,6 +45,7 @@
   "enemy_myrr": "Extraterrestrialis",
 
   "next_player": "Factor Proximus",
+  "player_turn_intro": "%'s turn",
 
   "attack": "Pugna",
   "use_item": "Uti item",

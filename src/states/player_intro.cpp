@@ -11,7 +11,8 @@ namespace game
     ui::Label make_l(Game& g, std::string pn) noexcept
     {
       auto l = ui::Label{g.graphics, g.font};;
-      l.str(pn + "'s turn!");
+      l.str_name("player_turn_intro");
+      l.str_args(pn);
       return l;
     }
   }

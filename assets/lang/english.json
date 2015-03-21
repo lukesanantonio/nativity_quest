@@ -45,6 +45,7 @@
   "enemy_myrr": "Myrr",
 
   "next_player": "Next Player",
+  "player_turn_intro": "%'s turn",
 
   "attack": "Attack",
   "use_item": "Use item",
