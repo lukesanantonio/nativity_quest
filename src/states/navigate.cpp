@@ -66,6 +66,9 @@ namespace game
       player.sprite_frame = player_index;
       respawn(player);
 
+      player.max_movement = players.travel_distance;
+      player.view_radius = players.view_radius;
+
       reset_fog(player, map.size());
       unfog(player, effects);
     }

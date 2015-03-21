@@ -3,6 +3,9 @@
   "height": 48,
   "scale": 0.25,
 
+  "travel_distance": 150,
+  "view_radius": 60,
+
   "player0_name": "Balthazar",
   "player1_name": "Rafaela",
   "player2_name": "Deborah",

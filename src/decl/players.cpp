@@ -14,6 +14,9 @@ namespace game { namespace decl
 
       sprite_scale_ = doc["scale"].GetDouble();
 
+      travel_distance = doc["travel_distance"].GetDouble();
+      view_radius = doc["view_radius"].GetDouble();
+
       starting_items_[0].assign(doc["player0_item"].GetString());
       starting_items_[1].assign(doc["player1_item"].GetString());
       starting_items_[2].assign(doc["player2_item"].GetString());

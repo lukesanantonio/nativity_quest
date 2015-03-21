@@ -33,6 +33,10 @@ namespace game { namespace decl
 
     inline Orientation_Info get_orientation_info(short o) const noexcept
     { return orient_info_[o]; }
+
+    double travel_distance;
+    double view_radius;
+
   private:
     double sprite_scale_;
 
