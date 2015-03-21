@@ -250,18 +250,15 @@ namespace game
 
     map_corner = viewport_src.pos;
 
-    auto map_sprite = get_asset<assets::Image_Asset>(game_, "map");
-
     auto viewport_src_rect = to_sdl_rect(viewport_src);
     SDL_RenderCopy(game_.graphics.renderer,
-                   map_sprite->image.texture(game_.graphics.renderer),
+                   map.map_sprite->image.texture(game_.graphics.renderer),
                    &viewport_src_rect, NULL);
 
     // Render the map overlay
-    auto map_overlay = get_asset<assets::Image_Asset>(game_, "map_overlay");
     SDL_RenderCopy(game_.graphics.renderer,
-                   map_overlay->image.texture(game_.graphics.renderer),
-                   &viewport_src_rect, NULL);
+                map.map_overlay_sprite->image.texture(game_.graphics.renderer),
+                &viewport_src_rect, NULL);
 
 
     // Render the player.
