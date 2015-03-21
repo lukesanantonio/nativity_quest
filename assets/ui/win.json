@@ -9,7 +9,8 @@
       "size": 78,
       "alignment": { "vertical": "center", "horizontal": "center" },
       "color": "black",
-      "back_color": "white"
+      "this_border": "black",
+      "this_background": "white"
     },
     {
       "id": "menu_return_button",
@@ -19,6 +20,7 @@
       "alignment": { "vertical": "bottom", "horizontal": "center" },
       "padding": { "bottom": 10 },
       "color": "black",
+      "parent_border": "black",
       "parent_background": "white"
     }
   ]
