@@ -1,0 +1,39 @@
+= Nativity Quest
+:imagesdir: readme_images
+Luke San Antonio Bialecki <lukesanantonio@gmail.com>
+July 28th, 2016
+
+== Disclaimer(s)
+
+* The code is publicly accessible but *not* open source. I won't be accepting
+  pull requests, etc.
+* I don't own all of the art assets.
+* This game has never been distributed.
+* Use at your own risk!
+* I don't personally support the religious references made in this game.
+* This is up here for reference purposes and is not in active development of any
+kind.
+* It is fully translated to Latin. Check out `assets/lang/` and
+  `src/common/translate.(h|cpp)` if you are into that sorta thing ;)
+
+== What the game looks like
+
+Spawning in:
+
+image::newturn.png[Wow, these graphics are bad!]
+
+Uh oh!
+
+image::uhoh.png[Something just spawned, a giant I think.]
+
+That's not a giant!
+
+image::knight.png[A picture of a knight is supposed to be here; hence the joke.]
+
+It's animated, and I drew it too!
+
+image::uncrating.png[Imagine an 8-bit chest opening. Then imagine a 3-year old using paint and you've got it.]
+
+Wow I wonder what it does!
+
+image::finding.png[So do I]
