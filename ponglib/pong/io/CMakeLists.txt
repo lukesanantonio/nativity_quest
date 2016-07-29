@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-add_library(io_core STATIC external_io.cpp ipc.cpp Logger.cpp net.cpp)
+add_library(io_core STATIC ipc.cpp Logger.cpp net.cpp)
 
 target_link_libraries(io_core common_core)
 
