@@ -9,7 +9,8 @@ macro(add_target_data target filename)
   add_custom_command(TARGET ${target} COMMAND ${CMAKE_COMMAND}
                      ARGS -E copy_if_different
                      ${CMAKE_CURRENT_SOURCE_DIR}/${filename}
-                     ${CMAKE_CURRENT_BINARY_DIR}/${filename})
+                     ${CMAKE_CURRENT_BINARY_DIR}/${filename}
+                     MAIN_DEPENDENCY ${target})
   install(FILES ${filename} DESTINATION share/${PROJECT_NAME})
 endmacro()
 macro(add_target_directory target dirname)
